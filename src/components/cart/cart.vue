@@ -27,29 +27,27 @@
             </tr>
           </thead>
           <tbody class="tbody">
-            <template v-for="(item, index) in 1">
+            <template v-for="(item, index) in list">
               <tr class="ul">
                 <td class="li radio">
-                  <el-checkbox-group v-model="data.checkedCities">
+                  <el-checkbox-group v-model="item.checked">
                     <el-checkbox style="margin-right: 10px;"></el-checkbox>
                   </el-checkbox-group>
                 </td>
                 <td class="li">
                   <div class="item-pic fl">
-                    <img src="../../assets/images/26.png" alt="" style="width: 100%;height: 100%;" />
+                    <img :src="item.imgPic" alt="" style="width: 100%;height: 100%;" />
                   </div>
                   <p class="ft-18 shoping-name">
-                    <router-link :to="{ path: '/cart/cart'}">
-                      罗马之恋(皮革相册）
-                    </router-link>
+                    <router-link :to="{ path: '/cart/cart'}">{{ item.name }}</router-link>
                   </p>
                   <p class="ft-14 shoping-desc" style="color: #898989;">甜蜜时光，纪念爱情</p>
                 </td>
-                <td class="li unitprice ft-24" style="color: #b5b5b6;">￥{{ data.uprice }}</td>
+                <td class="li unitprice ft-24" style="color: #b5b5b6;">￥{{ item.price }}</td>
                 <td class="li number">
                   <div class="item-amount ">
                     <el-button class="no-minus fl" @click="nominus" :class="{'disabled':pnums <= 1}">-</el-button>
-                    <el-input type="text" class="fl" placeholder="0" v-model="pnums"></el-input>
+                    <el-input type="text" class="fl" placeholder="0" v-model="item.count"></el-input>
                     <el-button class="add-max fl" @click="addmax" :class="{'disabled': pnums >= 1}">+</el-button>
                   </div>
                 </td>
@@ -99,6 +97,7 @@
             uprice: 0,  //  单价
             tprice: 0,  //  总价
           },
+          list: [],
         }
     },
     components: {
@@ -111,6 +110,12 @@
     created() {
       //  调用Vuex action
       this.$store.dispatch("init");
+
+      this.$http.get('../../../static/data/cart.json').then((res) => {
+          console.log(res.data.result.list);
+          this.list = res.data.result.list;
+      });
+
     },
     computed: {
       list() {
