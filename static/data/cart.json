@@ -1,19 +1,62 @@
 {
-  "orderCart" : [{
-    "pic" : "https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=7eca48c40633874488c8272e3066b29c/a9d3fd1f4134970ab8a006bb9fcad1c8a6865d56.jpg",
-    "title" : "雷神",
-    "desc" : "记录成长，留下时光",
-    "num" : 0,
-    "checkbox": "false",
-    "uprice" : "33.9",
-    "tprice" : "33.9"
-  },{
-    "pic" : "https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=7eca48c40633874488c8272e3066b29c/a9d3fd1f4134970ab8a006bb9fcad1c8a6865d56.jpg",
-    "title" : "雷神",
-    "desc" : "记录成长",
-    "num" : 10,
-    "checkbox": "false",
-    "uprice" : "48.9",
-    "tprice" : "13.9"
-  }]
+  "status": 0,
+  "message": "success",
+  "result": {
+    "totalHoney":59,
+    "list":[
+      {
+        "name": "面具1",
+        "price": 19,
+        "count": 1,
+        "amount": 19,
+        "imgPic": "static/img/test.jpg",
+        "gifts": [
+          {
+            "partId":"10001",
+            "partName":"打火机"
+          },
+          {
+            "partId":"10002",
+            "partName":"火柴"
+          }
+        ]
+      },
+      {
+        "name": "面具2",
+        "price": 20,
+        "count": 1,
+        "amount": 20,
+        "imgPic": "static/img/test1.jpg",
+        "gifts": [
+          {
+            "partId":"10001",
+            "partName":"打火机"
+          },
+          {
+            "partId":"10002",
+            "partName":"火柴盒"
+          }
+        ]
+      },
+      {
+        "name": "面具3",
+
+        "price": 20,
+        "count": 1,
+        "amount": 20,
+        "imgPic": "static/img/test1.jpg",
+        "gifts": [
+          {
+            "partId":"10001",
+            "partName":"打火机"
+          },
+          {
+            "partId":"10002",
+            "partName":"火柴盒"
+          }
+        ]
+      }
+    ]
+  }
+
 }

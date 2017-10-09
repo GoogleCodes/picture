@@ -26,8 +26,8 @@
               <td class="li operating">操作</td>
             </tr>
           </thead>
-          <tbody class="tbody">{{ list }}
-            <template v-for="(item, index) in list">
+          <tbody class="tbody">
+            <template v-for="(item, index) in 1">
               <tr class="ul">
                 <td class="li radio">
                   <el-checkbox-group v-model="data.checkedCities">
@@ -57,7 +57,9 @@
                   <p>￥{{ data.tprice }}</p>
                   <el-button @click="goLoad()">上传图片</el-button>
                 </td>
-                <td class="li operating clearshop">X</td>
+                <td class="li operating clearshop">
+                  <i class="block el-icon-close" @click="deleteShop(id)"></i>
+                </td>
               </tr>
             </template>
           </tbody>
@@ -116,6 +118,24 @@
       }
     },
     methods: {
+      //  删除商品
+      deleteShop(id) {
+        this.$confirm('确定不要这件商品吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
       //  全选商品
       handleCheckAllChange (event) {
         this.checkedCities = event.target.checked ? this.shopOptions : [];
