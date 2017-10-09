@@ -1,0 +1,125 @@
+<template>
+  <div>
+    <!-- header start -->
+    <div class="header w100">
+      <div class="header-main">
+        <router-link :to="{ path: '/' }">
+          <div class="header-logo fl"></div>
+        </router-link>
+        <div class="quguo-user fr" v-show="closeuser">
+          <div class="fl">
+            <router-link :to="{ path: '/admin/manage'}" style="color: #9fa0a0;" class="block">
+              <div class="iconfont icon-yonghu fl" > <!-- :style="{backgroundImage:'url('+ author +')'}" -->
+                <img :src="list.author" alt="" class="w11 h100" >
+              </div>
+              <div class="icon-username fl">{{ list.uname }}</div>
+            </router-link>
+          </div>
+          <div class="fl marLeft">|</div>
+          <div class="fl cart-round">
+            <el-badge :value="1" class="item">
+              <div class="iconfont icon-shoppingcar-ac fl marLeft"></div>
+              <el-button class="icon-cartname fl" @click="goCart()">购物车</el-button>
+            </el-badge>
+          </div>
+          <div class="fl marLeft goback" @click="goback()">
+            <div class="fl icon-line" style="margin-right: 10px;">|</div>
+            <span>退出</span>
+          </div>
+        </div>
+        <div class="header-userInfo fr" v-show="!closeuser">
+          <router-link :to="{ path: '/user/login' }" class="userInfo fl">登录</router-link>
+          <span class="userInfo fl">|</span>
+          <router-link :to="{ path: '/user/register' }" class="userInfo fl">注册</router-link>
+        </div>
+      </div>
+    </div>
+    <!-- header end -->
+  </div>
+</template>
+
+<script type="text/javascript">
+  export default {
+      name: 'top',
+      data () {
+          return {
+            closeuser: true,
+            author: '',
+            uname: '',
+            list: {},
+          };
+      },
+      mounted() {
+        this.isUser();
+      },
+      computed: {
+        user_info() {
+
+          return this.$store.state.user_info;
+        }
+      },
+      created() {
+          let arr = JSON.parse(this.$store.state.user_info);
+          this.list = arr.user;
+      },
+      watch: {
+        closeuser() {
+          this.isUser();
+        },
+      },
+      methods: {
+        isUser() {
+          let that = this, userJson = JSON.parse(localStorage.getItem('user_info'));
+          if (userJson !== null) {
+            that.closeuser = true;
+            that.uname = userJson.uname;
+            that.author = userJson.author;
+          } else {
+            that.closeuser = false;
+          }
+        },
+        goCart() {
+            this.$router.push({ path: '/cart/cart' });
+        },
+        goback() {
+          this.$confirm('确定要退出吗?, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$message({
+              type: 'success',
+              message: '退出成功!'
+            });
+            this.closeuser = false;
+            localStorage.removeItem('user_info');
+            //  跳回首页
+            this.$router.push({ path: '/'});
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消退出'
+            });
+          });
+        }
+      },
+  }
+</script>
+
+<style scoped>
+  /* header start */
+  .header .header-main .header-logo {
+    width: 65px;
+    height: 47px;
+    background: url("../../assets/images/logo.png") no-repeat;
+    margin: 5px 0px;
+  }
+
+  .quguo-user .goback {
+    position: absolute;
+    right: 0px;
+    cursor: pointer;
+  }
+
+  /* header end */
+</style>
