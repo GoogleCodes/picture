@@ -12,10 +12,14 @@
               <div class="product-text">高雅复古风</div>
             </div>
             <div class="right-upload">
-              <div class="upload-btn" @click="goUpLoading">
-                <i class="iconfont icon-shangchuan"></i>
-                <span>上传照片</span>
-              </div>
+              <el-button type="primary upload-btn" @click="goUpLoading">
+                <i class="el-icon-upload el-icon--right"></i>
+                <i>上传</i>
+              </el-button>
+              <!--<div class="upload-btn" @click="goUpLoading">-->
+                <!--<i class="iconfont icon-shangchuan"></i>-->
+                <!--<span>上传照片</span>-->
+              <!--</div>-->
               <p>仅支持上传png/jpg格式图片分辨率300dpi以上</p>
             </div>
           </div>
@@ -60,6 +64,7 @@
 </template>
 
 <script type="text/javascript">
+  import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
   export default {
     data() {
       return {
@@ -70,6 +75,7 @@
 
     },
     components: {
+      ElButton
 
     },
     methods: {
@@ -134,14 +140,18 @@
     width: 320px;
     margin-right: 190px;
   }
+
+
+
   .top-upload .right-upload .upload-btn {
     width: 320px;
     height: 80px;
     border-radius: 40px;
     background: #b01e26;
     text-align: center;
-    line-height: 80px;
+    line-height: 65px;
     cursor: pointer;
+    border: none;
   }
 
   .right-upload .upload-btn .icon-shangchuan {

@@ -1,50 +1,28 @@
-{
-  "status": 0,
-  "message": "success",
-  "result": {
-    "totalHoney":59,
-    "list":[{
-        "name": "面具1",
-        "price": 19,
-        "count": 1,
-        "amount": 19,
-        "checked": false,
-        "imgPic": "https://avatars3.githubusercontent.com/u/23470846?v=4&s=460",
-        "gifts": [{
-            "partId":"10001",
-            "partName":"打火机"
-          },{
-            "partId":"10002",
-            "partName":"火柴"
-          }]
-      },{
-        "name": "面具2",
-        "price": 20,
-        "count": 1,
-        "amount": 20,
-        "checked": false,
-        "imgPic": "https://avatars3.githubusercontent.com/u/23470846?v=4&s=460",
-        "gifts": [{
-            "partId":"10001",
-            "partName":"打火机"
-          },{
-            "partId":"10002",
-            "partName":"火柴盒"
-          }]
-      },{
-        "name": "面具3",
-        "price": 20,
-        "count": 1,
-        "amount": 20,
-        "checked": false,
-        "imgPic": "https://avatars3.githubusercontent.com/u/23470846?v=4&s=460",
-        "gifts": [{
-            "partId":"10001",
-            "partName":"打火机"
-          },{
-            "partId":"10002",
-            "partName":"火柴盒"
-          }]
-      }]
+[
+  {
+    "id": "1440",
+    "shotcut": "http://file.green-f.cn/2017/08/12/06/31/48/upload_2449506c0084dae3e9f726eee09b8747.jpg",
+    "name": "番茄 3个",
+    "price": 7.8,
+    "deliverytime": 0,
+    "peisongok": 1,
+    "format": "",
+    "formatName": "",
+    "nums": 1,
+    "checked": false,
+    "store": 997
+  },
+  {
+    "id": "79",
+    "shotcut": "http://qgshop.b0.upaiyun.com/2017/05/10/10/00/45/upload_393af73151960a6fa202534bed87855f.jpg",
+    "name": "西兰花 1个/份",
+    "price": 6.8,
+    "deliverytime": 0,
+    "peisongok": 1,
+    "format": "",
+    "formatName": "",
+    "nums": 1,
+    "checked": false,
+    "store": 989
   }
-}
+]

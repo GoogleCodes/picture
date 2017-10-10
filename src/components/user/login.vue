@@ -6,7 +6,7 @@
       <div class="login-form">
         <div class="tab">
           <div style="height: 40px;border-bottom: 1px solid #ccc;">
-            <div class="form-title fl ft-22">登录账号</div>
+            <div class="form-title fl ft-22">登录账号{{ user_info }}</div>
             <div class="fr form-h4">来有账号?
               <router-link :to="{ path : '/user/register'}" class="clickReg">点此注册</router-link>
             </div>
@@ -24,18 +24,13 @@
                 <el-input type="password" class="inputInfo" v-model="ruleForm.password" placeholder="请输入账户密码"></el-input>
               </el-form-item>
             </div>
-            <div class="form-input">
-              <el-form-item prop="type">
-                <div class="fl" style="cursor: pointer;">
-                  <el-checkbox-group v-model="ruleForm.type">
-                    <el-checkbox label="记住登录密码" name="type" v-model="remember"></el-checkbox>
-                  </el-checkbox-group>
-                </div>
-                <router-link :to="{ path: '/user/find'}" class="fr" style="color: #b11e25;">忘记密码</router-link>
-              </el-form-item>
-            </div>
           </el-form>
-
+          <div class="form-input">
+            <div class="fl" style="cursor: pointer;">
+              <el-checkbox label="记住登录密码" name="type" v-model="remember"></el-checkbox>
+            </div>
+            <router-link :to="{ path: '/user/find'}" class="fr" style="color: #b11e25;">忘记密码</router-link>
+          </div>
           <div class="form-input clear">
             <el-button
               class="comfirm"
@@ -69,13 +64,12 @@
         ruleForm: {
           username: null,
           password: null,
-          type: []
         },
         rules: {
-          username: [{ required: true, message: '请输入账户名！', trigger: 'blur' }],
-          password: [{ required: true, message: '请输入账户密码！', trigger: 'blur' }],
-          type: [{ type: 'array', required: false, message: '记住登录密码', trigger: 'change' }]
+          username: [{required: true, message: '请输入账户名！', trigger: 'blur'}],
+          password: [{required: true, message: '请输入账户密码！', trigger: 'blur'}]
         },
+        remember: false,
         fullscreenLoading: false,
       }
     },
@@ -110,9 +104,6 @@
                   message: '警告，账户用户名不正确!',
                   type: 'warning'
                 });
-                setTimeout(() => {
-                  that.fullscreenLoading = false;
-                }, 500);
                 break;
               case that.ruleForm.password !== pwrod:
                 that.$message({
@@ -120,11 +111,9 @@
                   message: '警告，账户密码不正确!',
                   type: 'warning'
                 });
-                setTimeout(() => {
-                  that.fullscreenLoading = false;
-                }, 500);
                 break;
               default:
+                that.fullscreenLoading = false;
                 that.$message({
                   showClose: true,
                   message: '恭喜，登录成功!',
@@ -138,6 +127,7 @@
                   user: options,
                   login: true
                 });
+//                localStorage.setItem('user_info', JSON.stringify(options));
                 setTimeout(() => {
                   that.$router.push({ path: '/' });
                   location.reload();
@@ -176,7 +166,7 @@
     width: 100%;
     height: 49px;
     border: none;
-    /*margin-top: 20px;*/
+    margin-top: 20px;
     color: #fff;
     background: #b11e25;
 
