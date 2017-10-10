@@ -42,6 +42,10 @@ import orderlist from '@/components/inside/order'
 //  皮革相册
 import picdetail from '@/components/pages/pic-detail'
 
+
+//  测试
+import ordcart from '@/components/cart/ord-cart'
+
 Vue.use(Router);
 
 export default new Router({
@@ -123,6 +127,10 @@ export default new Router({
       path: '/cart/cart',
       name: 'cart',
       component: cart,
+    },{
+      path: '/cart/ord-cart',
+      name: 'ordcart',
+      component: ordcart,
     },{
       path: '/cart/add-cart',
       name: 'addCart',

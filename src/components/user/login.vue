@@ -6,7 +6,7 @@
       <div class="login-form">
         <div class="tab">
           <div style="height: 40px;border-bottom: 1px solid #ccc;">
-            <div class="form-title fl ft-22">登录账号{{ user_info }}</div>
+            <div class="form-title fl ft-22">登录账号</div>
             <div class="fr form-h4">来有账号?
               <router-link :to="{ path : '/user/register'}" class="clickReg">点此注册</router-link>
             </div>

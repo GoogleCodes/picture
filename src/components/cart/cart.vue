@@ -11,7 +11,7 @@
         </p>
       </div>
       <div class="cart-content">
-        <el-table :data="data.list" border tooltip-effect="dark" style="width: 100%" >
+        <el-table ref="multipleTable"  :data="data.list" border tooltip-effect="dark" style="width: 100%" @selection-change="selected">
           <el-table-column type="selection" width="99"></el-table-column>
           <el-table-column label="商品名称" width="407">
             <template scope="scope">
@@ -28,26 +28,22 @@
           </el-table-column>
           <el-table-column prop="price" label="单价" width="210">
             <template scope="scope">
-              <div class="ft-24" style="color: #b5b5b6">{{ scope.row.price }}</div>
+              <div class="ft-24" style="color: #b5b5b6">  {{ scope.row.price | changePrice }}</div>
             </template>
           </el-table-column>
           <el-table-column prop="address" label="数量" width="250">
             <template scope="scope">
               <div class="item-amount ">
-                <el-button class="no-minus fl"
-                           @click="changeNumber(scope.row, -1)"
+                <el-button class="no-minus fl" @click="changeNumber(scope.row, -1)"
                            :class="{'disabled':scope.row.nums <= 1}">-</el-button>
-                <el-input type="text"
-                          class="fl" placeholder="0"
+                <el-input type="text" class="fl" placeholder="0" readonly="true"
                           v-model="scope.row.nums"></el-input>
-                <el-button class="add-max fl"
-                           @click="changeNumber(scope.row, 1)"
-                           :class="{'disabled':scope.row.nums >= 1}"
-                           style="margin-left: 20px;">+</el-button>
+                <el-button class="add-max fl" @click="changeNumber(scope.row, 1)"
+                           :class="{'disabled':scope.row.nums >= 1}" style="margin-left: 20px;">+</el-button>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="address" label="总价" show-overflow-tooltip width="143">
+          <el-table-column label="总价" width="143">
             <template scope="scope">
               <p class="ft-24 totalprice">{{ scope.row.price * scope.row.nums | changePrice }}</p>
               <el-button @click="goLoad()">上传图片</el-button>
@@ -55,66 +51,17 @@
           </el-table-column>
           <el-table-column prop="address" label="操作" show-overflow-tooltip width="88">
             <template scope="scope">
-              <el-button type="primary" icon="delete"></el-button>
+              <el-button type="primary" icon="delete" @click="deleteShop(scope.row)"></el-button>
             </template>
           </el-table-column>
         </el-table>
-
-        <table class="table-body">
-          <thead class="thead">
-            <tr class="ul">
-              <td class="li all-chonse">
-                <!--<i class="iconfont success icon-checked-fill" @click="changAll(0)" v-show="showVal"></i>-->
-                <!--<i class="iconfont circle icon-quxiaoquanxuan" @click="changAll(1)" v-show="!showVal"></i>-->
-                <el-checkbox v-model="data.checkAll">全选</el-checkbox>
-              </td>
-              <td class="li shoping">商品名称</td>
-              <td class="li unitprice">单价</td>
-              <td class="li number">数量</td>
-              <td class="li totalprice">总价</td>
-              <td class="li operating">操作</td>
-            </tr>
-          </thead>
-          <tbody class="tbody">
-            <template v-for="(item, index) in data.list">
-              <tr class="ul">
-                <td class="li radio">
-                  <el-checkbox style="margin-right: 13px;"></el-checkbox>
-                  <!--<i class="iconfont success icon-checked-fill"></i>-->
-                  <!--<i class="iconfont circle icon-quxiaoquanxuan"></i>-->
-                </td>
-                <td class="li">
-                  <div class="item-pic fl">
-                    <img :src="item.shotcut" alt="" style="width: 100%;height: 100%;" />
-                  </div>
-                  <p class="ft-18 shoping-name">
-                    <router-link :to="{ path: '/cart/cart'}">{{ item.name }}</router-link>
-                  </p>
-                  <p class="ft-14 shoping-desc" style="color: #898989;">{{ item.format }}</p>
-                </td>
-                <td class="li unitprice ft-24" style="color: #b5b5b6;">￥{{ item.price }}</td>
-                <td class="li number">
-                  <div class="item-amount ">
-                    <el-button class="no-minus fl" @click="changeNumber(item, -1)" :class="{'disabled':item.nums <= 1}">-</el-button>
-                    <el-input type="text" class="fl" placeholder="0" v-model="item.nums"></el-input>
-                    <el-button class="add-max fl" @click="changeNumber(item, 1)" :class="{'disabled':item.nums >= 1}">+</el-button>
-                  </div>
-                </td>
-                <td class="li totalprice ft-24" style="color: #e64147">
-                  <p>{{ item.price * item.nums | changePrice }}</p>
-                  <el-button @click="goLoad()">上传图片</el-button>
-                </td>
-                <td class="li operating clearshop">X</td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
       </div>
       <div class="bar-wrapper w100">
+        <!--<el-button class="toogle clear fl" @click="toggleSelection()">取消全选</el-button>-->
         <p class="shoping-desc ft-18 fl">继续购物 共1件商品，已选择1件</p>
         <div class="fr">
           <el-button class="fr" @click="goPay()">去结算</el-button>
-          <p class="ft-20 fr selectedItem">合计(不含运费)：36.00元</p>
+          <p class="ft-20 fr selectedItem">合计(不含运费)：{{ data.totalMoney  }}元</p>
         </div>
       </div>
     </div>
@@ -125,15 +72,12 @@
 
 <script type="text/javascript">
 
-  import cartlist from '@/components/cart/cart-list.vue'
-
   import ElRadio from "../../../node_modules/element-ui/packages/radio/src/radio";
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
   import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
   import ElCheckbox from "../../../node_modules/element-ui/packages/checkbox/src/checkbox";
   import ElCheckboxGroup from "../../../node_modules/element-ui/packages/checkbox/src/checkbox-group";
 
-  const cityOptions = ['上海'];
   export default {
     name: 'cart',
     data () {
@@ -146,7 +90,11 @@
             shopOptions: [1],
             list: [],
             chosen: [],
+            totalMoney: 0,  //  总金额
           },
+          multipleSelection:[],
+          //  删除的索引
+          delIndex: null
         }
     },
     components: {
@@ -155,14 +103,11 @@
       ElInput,
       ElButton,
       ElRadio,
-      cartlist,
     },
     created() {
       //  调用Vuex action
       this.$store.dispatch("init");
-
       this.$http.get('../../../static/data/cart.json').then((res) => {
-        console.log(res.data);
         this.data.list = res.data;
       });
 
@@ -171,41 +116,31 @@
       list() {
         return this.$store.state.list;
       },
-      className: function(){
-        const obj = {};
-        if(this.data.chosen.length > 0) {
-          for(let ch = 0;ch < this.data.chosen.length; ch++) {
-            if(this.data.chosen[ch].id == this.pid && this.data.chosen[ch].format == this.pformat) {
-              obj['active'] = true;
-              break;
-            } else {
-              obj['active'] = false;
-            }
-          }
-        } else {
-          obj['active'] = false;
-        }
-        return obj;
-      },
-      showVal: function(){
-        if(this.className.active){
-          return true;
-        }else{
-          return false;
-        }
-      }
     },
     // 定义过滤方法
     filters:{
       // 传入原始value然后返回处理后数据
       changePrice:function(value){
-        // toFixed(2)：保留两位小数(引用老师原句：该数值应为后端处理传过来的数据，前端进行计算容易丢失精度)
         return "￥"+value.toFixed(2);
       }
     },
     methods: {
-      changAll(type) {
-
+      //  取消全选
+      toggleSelection() {
+        this.$refs.multipleTable.clearSelection();
+        this.data.totalMoney = 0;
+      },
+      //  返回的参数为选中行对应的对象
+      selected (selection) {
+        this.multipleSelection = selection;
+        this.data.totalMoney = 0;
+        for(var i = 0; i < selection.length; i++) {
+          //  判断返回的值是否是字符串
+          if(typeof selection[i].nums == 'string') {
+            selection[i].nums = parseInt(selection[i].nums);
+          };
+          this.data.totalMoney += selection[i].nums * selection[i].price;
+        }
       },
       goLoad () {
           this.$router.push({ path : '../pages/onload'});
@@ -226,7 +161,28 @@
       //  去结算
       goPay () {
         this.$router.push({ path: '/cart/submit' });
-      }
+      },
+      //  删除商品
+      deleteShop(item) {
+        this.$confirm('确定要删除这件商品吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 通过this.shopList.indexOf方法查找到item在该对象的索引并且保存下来
+          this.delIndex = this.data.list.indexOf(item);
+          this.$delete(this.data.list, this.delIndex);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
     }
   };
 </script>
@@ -268,7 +224,7 @@
     width: 207px;
   }
 
-  .el-tooltip .totalprice {
+  .el-table__row .cell .totalprice {
     width: 107px;
     margin-bottom:10px;
   }
@@ -296,6 +252,7 @@
     margin: 40px 0px;
   }
 
+
   .tbody .ul .li .icon-checked-fill, .icon-quxiaoquanxuan ,
   .thead .ul .li .icon-checked-fill {
     font-size: 24px;
@@ -307,7 +264,7 @@
     color: #333;
   }
 
-  .cart-body .cart-content .tbody .ul .li .shoping-name {
+  .cell .shoping-name, .item-pic .shoping-desc{
     margin: 20px 0 0 0;
     text-indent: 1em;
     text-align: left;
@@ -369,7 +326,7 @@
   }
 
   .bar-wrapper .shoping-desc{
-    width: 50%;
+    width: 30%;
     color: #595757;
     margin-left: 40px;
   }
@@ -388,6 +345,20 @@
     color: #fff;
   }
 
+  .bar-wrapper .toogle {
+    cursor: pointer;
+    height: 45px;
+    width: 85px;
+    background: #fff;
+    border: 1px solid #c4c4c4;
+    color: #1f2d3d;
+    margin: 20px 0 0 20px;
+    border-radius: 4px;
+  }
+
+  /* cart-body end */
+
+  /* element table start */
   .el-table thead tr {
     height: 80px;
   }
@@ -428,5 +399,5 @@
     width: 130px;
     height: 97px;
   }
-  /* cart-body end */
+  /* element table end */
 </style>

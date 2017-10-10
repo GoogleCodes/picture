@@ -1,7 +1,6 @@
 <template>
 
   <div class="bgcolor">
-    <heads></heads>
     <div style="width: 1200px;margin: 0px auto;">
       <!-- 添加到购物车 -->
       <div class="hunsha-add-cart">
@@ -32,8 +31,6 @@
       </div>
       <other></other>
     </div>
-
-    <foots></foots>
   </div>
 </template>
 
