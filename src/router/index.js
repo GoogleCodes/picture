@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
+import store from '../store'
+
 //  首页
 import Index from '@/components/Index'
 //  定制
@@ -47,6 +50,8 @@ import picdetail from '@/components/pages/pic-detail'
 import ordcart from '@/components/cart/ord-cart'
 
 Vue.use(Router);
+
+let routes = [];
 
 export default new Router({
   routes: [{
@@ -142,3 +147,37 @@ export default new Router({
     component: submit,
   }]
 })
+
+const router = new Router({
+  routes,
+  mode: 'hash', //default: hash ,history
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return {x: 0, y: 0}
+    }
+  }
+});
+
+
+router.beforeEach((to, from, next) => {
+  let toName = to.name;
+  // let fromName = from.name
+  let is_login = store.state.user_info.login;
+
+  if (!is_login && toName !== 'login') {
+    next({
+      name: 'login'
+    })
+  } else {
+    if (is_login && toName === 'login') {
+      next({
+        path: '/'
+      })
+    } else {
+      next()
+    }
+  }
+});
+

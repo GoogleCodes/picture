@@ -44,24 +44,24 @@
             <div class="tuijian-header">
               <h1 class="tuijian-h1">热门推荐</h1>
               <div class="line"></div>
-              <span class="tuijian-span">时光印记，定格美好的回忆</span>
+              <span class="tuijian-span">{{ data.desc }}</span>
             </div>
             <div style="margin-top: 100px;">
               <template v-for="item in data.arr">
-                  <div class="card-tuijian fl">
-                    <router-link :to="{ path: '/pages/detail'}" class="block w100 h100">
-                      <div class="card-tuijian-pic fl">
-                        <img :src="item.pic" alt="" style="width: 100%;height: 100%;"/>
+                <div class="card-tuijian fl">
+                    <router-link :to="{ path: '/pages/detail', query:{ id:item.id }}" class="block w100 h100" >
+                    <div class="card-tuijian-pic fl">
+                      <img :src="item.pic" alt="" style="width: 100%;height: 100%;"/>
+                    </div>
+                    <div class="card-tuijian-desc fl">
+                      <div class="desc-title">{{ item.title }}</div>
+                      <span class="desc-msg blocks">{{ item.desc }}</span>
+                      <div class="desc-pic">
+                        <img :src="item.small" alt="" style="width: 100%;height: 100%;" />
                       </div>
-                      <div class="card-tuijian-desc fl">
-                        <div class="desc-title">{{ item.title }}</div>
-                        <span class="desc-msg blocks">{{ item.desc }}</span>
-                        <div class="desc-pic">
-                          <img :src="item.small" alt="" style="width: 100%;height: 100%;" />
-                        </div>
-                      </div>
-                    </router-link>
-                  </div>
+                    </div>
+                  </router-link>
+                </div>
               </template>
             </div>
           </div>
@@ -85,18 +85,21 @@
       return {
         data: {
           arr: [],
+          desc: '',
         }
       }
     },
-    created() {
-      console.log(this.$store.nCounts);
+    mounted() {
       this.getIndex();
+    },
+    created() {
+
     },
     methods: {
       getIndex() {
         this.$http.get('../../../static/data/index.json').then((res) => {
+          this.data.desc = res.data.description;
           this.data.arr = res.data.tuijian;
-          console.log(this.data.arr);
         });
       }
     }

@@ -1,6 +1,8 @@
 <template>
   <div class="bgcolor">
-    <div style="margin: 15px 0;"></div>
+    <!--<div style="margin: 15px 0;"></div>-->
+
+
     <div class="cart-body">
       <div class="cart-head">
         <div class="cart-h1">SHOPPING CART</div>
@@ -19,10 +21,8 @@
                 <div class="item-pic fl">
                   <img :src="scope.row.shotcut" alt="" style="width: 100%;height: 100%;" />
                 </div>
-                <p class="ft-18 shoping-name">
-                  <router-link :to="{ path: '/cart/cart'}">{{ scope.row.name }}</router-link>
-                </p>
-                <p class="ft-14 shoping-desc" style="color: #898989;">{{ scope.row.format }}</p>
+                <p class="ft-18 shoping-name fl">{{ scope.row.title }}</p>
+                <p class="ft-14 shoping-desc fl" style="color: #898989;">{{ scope.row.desc }}</p>
               </router-link>
             </template>
           </el-table-column>
@@ -36,7 +36,7 @@
               <div class="item-amount ">
                 <el-button class="no-minus fl" @click="changeNumber(scope.row, -1)"
                            :class="{'disabled':scope.row.nums <= 1}">-</el-button>
-                <el-input type="text" class="fl" placeholder="0" readonly="true"
+                <el-input class="fl" placeholder="0" @change="handleInput(scope.row)" readonly
                           v-model="scope.row.nums"></el-input>
                 <el-button class="add-max fl" @click="changeNumber(scope.row, 1)"
                            :class="{'disabled':scope.row.nums >= 1}" style="margin-left: 20px;">+</el-button>
@@ -57,11 +57,10 @@
         </el-table>
       </div>
       <div class="bar-wrapper w100">
-        <!--<el-button class="toogle clear fl" @click="toggleSelection()">取消全选</el-button>-->
         <p class="shoping-desc ft-18 fl">继续购物 共1件商品，已选择1件</p>
         <div class="fr">
           <el-button class="fr" @click="goPay()">去结算</el-button>
-          <p class="ft-20 fr selectedItem">合计(不含运费)：{{ data.totalMoney  }}元</p>
+          <p class="ft-20 fr selectedItem">合计(不含运费)：{{ data.totalMoney | changePrice }}元</p>
         </div>
       </div>
     </div>
@@ -82,14 +81,9 @@
     name: 'cart',
     data () {
         return {
-          pnums: 0,
           data: {
-            checkAll: true,
-            isIndeterminate: true,
-            checkedCities: [],
-            shopOptions: [1],
             list: [],
-            chosen: [],
+            total: 0, //  总价
             totalMoney: 0,  //  总金额
           },
           multipleSelection:[],
@@ -107,15 +101,21 @@
     created() {
       //  调用Vuex action
       this.$store.dispatch("init");
-      this.$http.get('../../../static/data/cart.json').then((res) => {
-        this.data.list = res.data;
-      });
+      this.data.list = JSON.parse(localStorage.getItem('cart_info'));
+//      this.$http.get('../../../static/data/cart.json').then((res) => {
+//        this.data.list = res.data;
+//      });
 
     },
     computed: {
       list() {
         return this.$store.state.list;
       },
+    },
+    watch: {
+        $route (to) {
+          this.data.list = JSON.parse(localStorage.getItem('cart_info'));
+        }
     },
     // 定义过滤方法
     filters:{
@@ -157,10 +157,16 @@
             item.nums = 1;
           }
         }
+        this.selected(this.multipleSelection);
       },
       //  去结算
       goPay () {
         this.$router.push({ path: '/cart/submit' });
+      },
+      handleInput(value) {
+        value.price * value.nums
+        //  增加商品数量也需要重新计算商品总价
+        this.selected(this.multipleSelection);
       },
       //  删除商品
       deleteShop(item) {
@@ -169,9 +175,14 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          // 通过this.shopList.indexOf方法查找到item在该对象的索引并且保存下来
-          this.delIndex = this.data.list.indexOf(item);
-          this.$delete(this.data.list, this.delIndex);
+          let pid = 0;
+          for (var i in this.data.list) {
+            pid = this.data.list[i].id;
+          }
+          this.$store.commit('DELCARTOBJ',pid);
+          setTimeout(() => {
+            location.reload();
+          }, 500);
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -190,6 +201,13 @@
 <style type="text/css">
 
   @import "../../../static/css/cart.css";
+
+  .cart-body {
+    width: 1200px;
+    margin: 0px auto;
+    position: relative;
+    top: 45px;
+  }
 
   .cart-body .cart-content .table-body {
     width: 100%;
@@ -264,10 +282,21 @@
     color: #333;
   }
 
-  .cell .shoping-name, .item-pic .shoping-desc{
-    margin: 20px 0 0 0;
+  .cell .shoping-name, .cell .shoping-desc {
+    /*margin: 20px 0 0 0;*/
     text-indent: 1em;
+    width: 64%;
+    line-height: 35px;
     text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .cell .shoping-desc {
+    text-indent: 1.3em;
+    line-height: 21px;
+    height: 62px;
+    text-align: left;
+    word-break: break-all;
   }
 
   .cart-body .cart-content .tbody .ul .li .shoping-desc {
@@ -344,18 +373,6 @@
     border-radius: 0px;
     color: #fff;
   }
-
-  .bar-wrapper .toogle {
-    cursor: pointer;
-    height: 45px;
-    width: 85px;
-    background: #fff;
-    border: 1px solid #c4c4c4;
-    color: #1f2d3d;
-    margin: 20px 0 0 20px;
-    border-radius: 4px;
-  }
-
   /* cart-body end */
 
   /* element table start */

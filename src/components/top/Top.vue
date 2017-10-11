@@ -54,21 +54,25 @@
       },
       computed: {
         user_info() {
-
-          return this.$store.state.user_info;
+          try {
+            let arr = JSON.parse(this.$store.state.user_info);
+            this.list = arr.user;
+          } catch(e) {}
+          return this.list;
         }
       },
       created() {
-          let arr = JSON.parse(this.$store.state.user_info);
-          this.list = arr.user;
+
       },
       watch: {
-        closeuser() {
-          this.isUser();
-        },
+        $route(to) {
+
+        }
       },
       methods: {
         isUser() {
+          //  调用user_info
+          this.user_info;
           let that = this, userJson = JSON.parse(localStorage.getItem('user_info'));
           if (userJson !== null) {
             that.closeuser = true;

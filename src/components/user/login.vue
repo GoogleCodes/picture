@@ -32,9 +32,9 @@
             <router-link :to="{ path: '/user/find'}" class="fr" style="color: #b11e25;">忘记密码</router-link>
           </div>
           <div class="form-input clear">
-            <el-button
-              class="comfirm"
-              @click="logining('ruleForm')" type="primary" v-loading.fullscreen.lock="fullscreenLoading">登录</el-button>
+            <el-button class="comfirm" @click="logining('ruleForm')"
+                       type="primary"
+                       v-loading.fullscreen.lock="fullscreenLoading">登录</el-button>
           </div>
         </div>
       </div>
@@ -142,9 +142,7 @@
 
     },
     computed: {
-      user_info() {
-          return this.$store.state.user_info;
-      }
+
     },
     components: {
       ElFormItem, ElForm, ElButton, ElInput, heads,

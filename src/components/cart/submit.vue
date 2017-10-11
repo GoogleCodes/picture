@@ -1,6 +1,6 @@
 <template>
   <div class="bgcolor">
-    <div class="cart-body">
+    <div class="cart-body" style="padding-top: 50px;">
       <div class="cart-head">
         <div class="cart-h1">CHECK OUT</div>
         <p class="cart-h2">
@@ -10,16 +10,16 @@
         </p>
       </div>
       <div class="cart-content" style="padding-bottom: 100px;">
-
-        <div class="cart-address cart-box fl">
-          <p class="ft-18 cart-box-head">
-            <strong>恩小猫</strong>/<strong>13672964196</strong>
-          </p>
-          <p class="cart-box-desc" style="color: #898989;">
-            <span class="block">中国 广东 佛山 顺德区 </span>
-            <span class="block">佛市顺德区大良街道6号（邮编：528300）</span></p>
-        </div>
-
+        <template v-for="(item, index) in list">
+          <div class="cart-address cart-box fl">
+            <p class="ft-18 cart-box-head">
+              <strong>恩小猫</strong>/<strong>{{ item.phone }}</strong>
+            </p>
+            <p class="cart-box-desc" style="color: #898989;">
+              <span class="block">{{ item.waddress }}</span>
+              <span class="block">{{ item.address }}</span></p>
+          </div>
+        </template>
         <div class="cart-address fl" @click="openAddress">
           <div class="form-box ft-20">
             <span style="font-size: 30px;">+</span>
@@ -29,16 +29,15 @@
         <div class="distribution clear">
           <div class="distr-title ft-18">配送方式</div>
           <ul>
-            <li class="fl">申通快递</li>
-            <li class="fl">顺丰速递</li>
-            <li class="fl">顺丰到付</li>
-            <li class="fl">上门自提</li>
+            <li class="fl expressli" v-for="(item, index) in exporess"
+                :class="{'active':index == currentExpress}" @click="currExpress(index, item)">申通快递</li>
           </ul>
           <div class="pay clear">
             <div class="pay-title ft-18 clear">选中支付方式</div>
             <ul>
-              <li class="fl iconfont icon-zhifubao" style="color: #25abee;"></li>
-              <li class="fl iconfont icon-weixinzhifu" style="color: #41b035;"></li>
+              <li class="fl payli" v-for="(item, index) in pay"
+                  :style="{background: 'url('+ item.pic +') no-repeat top center',
+                  backgroundPositionY: '10px'}" :class="{'active':index == payindex}" @click="chonsePay(index, item)"></li>
             </ul>
           </div>
         </div>
@@ -81,34 +80,48 @@
 
     <div class="popup" @click="overflowLayer" v-show="layer"></div>
     <div class="layer" v-show="layer">
-      <div class="layer-head ft-18">使用新地址：</div>
-      <div class="bf-selected">
-        <div class="select-content">
-          <span class="fl">所在地区: <i>*</i></span>
-          <el-cascader :options="address" :props="props" style="width: 88%;"></el-cascader>
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
+        <div class="layer-head ft-18">使用新地址：</div>
+        <div class="bf-selected">
+            <div class="select-content">
+              <el-form-item prop="whereAddress">
+                <span class="fl">所在地区: <i>*</i></span>
+                <el-cascader :options="address" v-model="ruleForm.whereAddress" :props="props" style="width: 88%;"></el-cascader>
+              </el-form-item>
+            </div>
+            <div class="select-content">
+              <el-form-item prop="address" class="fl">
+                <div class="fl combox-input-wrap">
+                  <span>详细地址: <i>*</i></span>
+                  <el-input type="text" v-model="ruleForm.address" placeholder="请精确到门牌号"></el-input>
+                </div>
+              </el-form-item>
+              <el-form-item prop="zip" class="fl">
+                <div class="fl">
+                  <span>邮编: <i>*</i></span>
+                  <el-input type="text" v-model="ruleForm.zip"  max="6" placeholder="六位数"></el-input>
+                </div>
+              </el-form-item>
+            </div>
+          <el-form-item>
+            <div class="select-content">
+              <el-form-item prop="address" class="fl">
+                <div class="fl item-name">
+                  <span>收货人:　 <i>*</i></span>
+                  <el-input type="text" v-model="ruleForm.receiver"  placeholder="某某某"></el-input>
+                </div>
+              </el-form-item>
+              <el-form-item prop="address" class="fl">
+                <div class="fl item-name">
+                  <span>手机号码: <i>*</i></span>
+                  <el-input type="text"  v-model="ruleForm.phone"  placeholder="132*******" class="item-phone"></el-input>
+                </div>
+              </el-form-item>
+            </div>
+          </el-form-item>
         </div>
-        <div class="select-content">
-          <div class="fl combox-input-wrap">
-            <span>详细地址: <i>*</i></span>
-            <el-input type="text" placeholder="请精确到门牌号" />
-          </div>
-          <div class="fl">
-            <span>邮编: <i>*</i></span>
-            <el-input type="text" max="6" placeholder="六位数" />
-          </div>
-        </div>
-        <div class="select-content">
-          <div class="fl item-name">
-            <span>收货人:　 <i>*</i></span>
-            <el-input type="text" placeholder="某某某" />
-          </div>
-          <div class="fl item-name">
-            <span>手机号码: <i>*</i></span>
-            <el-input type="text" placeholder="132*******" class="item-phone" />
-          </div>
-        </div>
-      </div>
-      <el-button class="submit-message">提交信息</el-button>
+        <el-button class="submit-message" @click="submitMessage('ruleForm')">提交信息</el-button>
+      </el-form>
     </div>
   </div>
 </template>
@@ -118,23 +131,74 @@
   import chinaData from '../../../static/api/address.json'
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
   import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
+  import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
+  import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item";
 
   export default {
     name: 'submit',
     data() {
         return {
+          ruleForm: {
+            whereAddress: null, //  详细地址
+            address: null,      //地址
+            zip: null,          //邮编
+            receiver: null,     //收货人
+            phone: null,        //联系人电话
+          },
+          rules: {
+            address: [{required: true, message: '请输入具体地址！', trigger: 'blur'}],
+            zip: [{required: true, message: '请输入邮编！', trigger: 'blur'}],
+            receiver: [{required: true, message: '请输入收货人的姓名！', trigger: 'blur'}],
+            phone: [{required: true, message: '请输入联系人电话号码！', trigger: 'blur'}]
+          },
+          list: JSON.parse(localStorage.getItem('Info_address')),
           layer: false,
           address: chinaData,
           props: {
             value: 'label',
             children: 'cities'
-          }
+          },
+          currentExpress: 0,
+          exporess: [{exp_title: '顺丰速递'},
+            {exp_title: '申通快递'},
+            {exp_title: '顺丰快递'},
+            {exp_title: '上门自提'},],
+          pay: [
+            {pic: '../../../static/images/43.jpg'},
+            {pic: '../../../static/images/44.jpg'},
+          ],
+          payindex: 0,
         }
     },
     created () {
-
+      console.log(this.list);
     },
     methods: {
+      submitMessage(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (!valid) {
+            return false;
+          }
+          //  登录提交
+          let json = {
+            waddress : this.ruleForm.whereAddress,
+            address : this.ruleForm.address,
+            zip : this.ruleForm.zip,
+            receiver : this.ruleForm.receiver,
+            phone : this.ruleForm.phone,
+          }
+          var arr = [];
+          arr.push(json);
+          localStorage.setItem('Info_address',JSON.stringify(arr));
+          console.log(json);
+        });
+      },
+      chonsePay(index, item) {
+        this.payindex = index;
+      },
+      currExpress(index, item) {
+        this.currentExpress = index
+      },
       openAddress() {
           this.layer = true;
       },
@@ -143,7 +207,7 @@
       }
     },
     components: {
-      ElInput, ElButton,
+      ElFormItem, ElForm, ElInput, ElButton,
     }
   };
 </script>
@@ -169,9 +233,9 @@
     left: 0px;
     right: 0px;
     width: 926px;
-    height: 440px;
+    height: 510px;
     background: #fff;
-    margin: 150px auto;
+    margin: 0px auto;
   }
 
   .layer .layer-head {
@@ -298,12 +362,24 @@
     margin-bottom: 20px;
   }
 
-  .cart-body .cart-content .distribution ul li {
+  .distribution ul .payli ,
+  .distribution ul .expressli {
     padding: 12px 46px;
-    border: 1px solid #c9caca;
+    border: 2px solid #c9caca;
     margin: 0px 25px 0 0;
     cursor: pointer;
   }
+
+  .cart-body .cart-content .distribution ul .active {
+    border: 2px solid #b11e25;
+    background: #b11e25;
+    color: #fff;
+  }
+
+  .distribution ul .active {
+    background: #b11e25;
+  }
+
 
   .cart-body .cart-content .distribution ul li:last-child {
     margin: 0px;
@@ -321,6 +397,7 @@
     line-height: 29px;
     font-size: 30px;
   }
+
 
   .list-goods {
     margin: 0 20px;

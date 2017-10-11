@@ -9,8 +9,8 @@
         <div class="exper-pic fl">
           <div class="exper-pic-wrap">
             <el-carousel height="420px">
-              <el-carousel-item v-for="item in 2" :key="item">
-                <img src="../../assets/images/23.png" alt="" style="width: 100%;height: 420px;">
+              <el-carousel-item v-for="item in data.pic">
+                <img :src="item.src" alt="" style="width: 100%;height: 420px;">
               </el-carousel-item>
             </el-carousel>
           </div>
@@ -20,25 +20,37 @@
         </div>
         <div class="tb-wrap fl">
           <div class="right-select fr">
-            <div class="select-title">金色古典<span>MP14533-2B</span></div>
-            <div class="select-text">高雅复古风</div>
-            <div class="select-price">¥360.00</div>
+            <div class="select-title">{{ list.title }}<span>{{ list.title_desc }}</span></div>
+            <div class="select-text">{{ list.desc }}</div>
+            <div class="select-price">¥{{ list.price }}</div>
             <div class="select-color">
-              <span class="left">款色：</span>
-              <span class="right">金黄色</span>
+              <span class="left fl">款色：</span>
+              <ul>
+                <li class="right"
+                    v-for="(item, index) in list.guige"
+                    :class="{'active':index == guigeIndex}"
+                    @click="currentGuiGeIndex(index, item.a)">{{ item.a }}</li>
+              </ul>
             </div>
-            <div class="select-size">
+            <div class="select-size clear">
               <span class="left">尺寸：</span>
               <ul class="right clearfix">
-                <li v-for="list in size">{{ list }}</li>
+                <li v-for="(list,index) in list.size"
+                    :class="{'active':index == currentIndex}"
+                    @click="currentGoIndex(index, list.one)">{{ list.one }}</li>
               </ul>
             </div>
             <div class="select-num">
               <span class="left fl">数量：</span>
               <div class="item-amount ">
-                <el-button class="no-minus fl" @click="nominus" :class="{'disabled':pnums <= 1}">-</el-button>
-                <el-input type="text" class="fl" placeholder="0" v-model="pnums"></el-input>
-                <el-button class="add-max fl" @click="addmax" :class="{'disabled': pnums >= 1}">+</el-button>
+                <el-button class="no-minus fl"
+                           @click="changeNumber(list, -1)"
+                           :class="{'disabled':list.nums <= 1}">-</el-button>
+                <el-input type="text" class="fl" placeholder="0" v-model="list.nums" readonly></el-input>
+                <el-button class="add-max fl"
+                           style="margin-left: 10px;"
+                           @click="changeNumber(list, 1)"
+                           :class="{'disabled': list.nums >= 1}">+</el-button>
               </div>
             </div>
             <div class="select-btn clear">
@@ -77,12 +89,6 @@
                   <th>挡板材质</th>
                   <th>白玻璃/有机板</th>
                 </tr>
-                <tr>
-                  <th>产品名称</th>
-                  <th>啡色古典</th>
-                  <th>挡板材质</th>
-                  <th>白玻璃/有机板</th>
-                </tr>
               </thead>
             </table>
           </div>
@@ -114,40 +120,98 @@
     name: 'dingzhi',
     data() {
       return {
+        list: {
+          shotcut: 'https://img.alicdn.com/simba/img/TB1hwrqeMoQMeJjy0FoSuwShVXa.jpg',
+          nums: 0, //  商品的数量
+          title: '金色古典',
+          title_desc: 'MP14533-2B',
+          desc: '高雅复古风',
+          price: 192,
+          guige: [
+            {a : '金黄色'},
+            {a : '蓝色'},
+          ],
+          size: [
+            {"one": "一寸"},
+            {"one": "二村"},
+          ],
+        },
         data: {
-          list: [],
+          pic: [{
+            "src" : 'https://img.alicdn.com/simba/img/TB1OsO5cnZRMeJjSsppSutrEpXa.jpg',
+          },{
+            "src": 'https://img.alicdn.com/simba/img/TB1hwrqeMoQMeJjy0FoSuwShVXa.jpg'
+          }],
           dtype: 1,
+          currGuiGe: "",
+          currSize: "",
         },
-        size: {
-          one: '26寸',
-        },
-        pnums: 0,
+        // 用于保存每件商品的对象
+        shopItem: {},
+        //  用于保存用户添加到购车的商品数组
+        buyLists: [],
+        guigeIndex: 0,
+        currentIndex: 0,
       }
     },
-    created () {
+    watch: {
 
     },
+    created () {
+      console.log();
+    },
     methods: {
-      nominus() {
-        if (this.pnums > 0) {
-          this.pnums--;
-        }
+      currentGuiGeIndex(index, item) {
+        this.guigeIndex = index;
+        this.data.currGuiGe = item;
       },
-      addmax() {
-        if (this.pnums < 0) {
-          return false;
+      currentGoIndex(index, item) {
+        this.currentIndex = index;
+        this.data.currSize = item;
+      },
+      changeNumber(item,flag) {
+        //  大于0为加
+        if (flag > 0) {
+          //  item数量自增1
+          item.nums++;
+        } else {
+          //  item数量自减1
+          item.nums--;
+          if(item.nums <= 1) {
+            item.nums = 1;
+          }
         }
-        this.pnums++;
       },
       goCart() {
         let that = this;
+        var optionItem = {
+          id: '15',
+          shotcut: this.list.shotcut,
+          title: this.list.title,
+          t_desc: this.list.title_desc,
+          desc: this.list.desc,
+          nums: this.list.nums,
+          price: this.list.price,
+          guiGe: this.data.guige,
+          size: this.data.currSize,
+        };
+//        if (this.data.nums == this.shopItem.nums) {
+//          return;
+//        }
+//        let index = that.buyLists.findIndex((value, index,  arr) => {
+//          console.log(value.id, optionItem.id);
+//          return value.id === optionItem.id;
+//        });
+        this.buyLists.push(optionItem);
+        localStorage.setItem('cart_info', JSON.stringify(this.buyLists));
+
         this.$message({
           message: '恭喜你，加入购物车成功！',
           type: 'success'
         });
-        setInterval(function() {
-          that.$router.push({ path: '/cart/submit' });
-        },500);
+//        setInterval(function() {
+//          that.$router.push({ path: '/cart/submit' });
+//        },500);
       }
     },
     components: {
@@ -204,20 +268,33 @@
   .right-select .select-size .right {
     float: left;
     width: 295px;
+    cursor: pointer;
     margin-bottom: 20px;
   }
-  .right-select .select-size .right li {
+
+
+  .right-select .select-size .right li, .right-select .select-color .right {
     float: left;
     width: 125px;
     height: 32px;
-    margin-right: 18px;
-    margin-bottom: 10px;
+    margin: 0 18px 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     text-align: center;
     line-height: 32px;
     font-size: 15px;
   }
+
+  .right-select .select-color .right {
+    margin: 18px 17px 0 0;
+  }
+
+  .right-select .select-size .right .active, .right-select .select-color .active  {
+    border: 1px solid #b11e25;
+    background: #b11e25;
+    color: #fff;
+  }
+
   .right-select .select-num {
     color: #666;
   }

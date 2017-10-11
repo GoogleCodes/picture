@@ -14,6 +14,10 @@ import store from './store'
 import router from './router'
 //  导入element组件
 import ElementUI from 'element-ui'
+
+//  导入路由
+import VueRouter from 'vue-router'
+
 //  导入API
 import { fetchGet, fetchPost, fetchPut, fetchDelete } from './router/utils.js'
 Vue.prototype.$getData = fetchGet;
@@ -32,6 +36,13 @@ Vue.config.productionTip = false;
 
 //是否开启工具调试
 Vue.config.devtools = process.env.NODE_ENV === 'development'
+
+
+//  全局路由配置
+//  路由开始之前的操作
+// router.beforeEach((to,  form, next) => {
+//
+// });
 
 /* eslint-disable no-new */
 new Vue({
