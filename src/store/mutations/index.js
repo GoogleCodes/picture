@@ -1,6 +1,7 @@
 
 import * as type from '../../store/mutations/type'
-// import {cookieStorage} from '../../common/storage'
+
+import { localStor } from '../../common/storage'
 
 export default {
   // //设置用户信息和是否登录
@@ -17,11 +18,34 @@ export default {
   //  测试
   [type.INIT](state, list) {
     state.list = list
-    console.log(1111);
+  },
+
+  [type.SET_CART_NUMBER](state, obj) {
+    state.count = obj.length;
+  },
+
+  //  修改购物车单个商品
+  [type.SET_CART_OBJ](state,obj) {
+    if (state.cart.length > 0) {
+      let added = false;
+      for(let plist = 0;plist < state.cart.length; plist++) {
+        if(typeof state.cart[plist] === 'object' && state.cart[plist].id == obj.id) {
+          state.cart[plist].nums += obj.nums;
+          added = true;
+          break;
+        }
+      }
+      if(!added) {
+        state.cart.push(obj);
+      }
+    } else {
+      state.cart.push(obj);
+    }
+    localStorage.setItem('cart_info',JSON.stringify(state.cart));
   },
 
   //  增加购物车单个商品数量
-  [type.INCRECARTNUMS](state,id,format) {
+  [type.INCRECARTNUMS](state,id,title) {
     for(let plist = 0; plist < state.cart.length; plist++) {
       if(typeof state.cart[plist] === 'object' && state.cart[plist].id == id) {
         state.cart[plist].nums += 1;
@@ -32,7 +56,7 @@ export default {
   },
 
   //  减少购物车单个商品数量
-  [type.REDUCECARTNUMS](state,id,format) {
+  [type.REDUCECARTNUMS](state,id,title) {
     for (let plist = 0; plist < state.cart.length; plist++) {
       if (typeof state.cart[plist] === 'object' && state.cart[plist].id == id) {
         if (state.cart[plist].nums >= 1) {

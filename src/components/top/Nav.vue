@@ -3,54 +3,18 @@
     <!-- nav start -->
     <div class="nav clear">
       <ul class="fl">
-        <li>
-          <router-link :to="{ path : '/'}" class="blocks nav-href">
-            <span>首页</span>
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ path : '/inside/orderlist'}" class="blocks nav-href">
-            皮册定制
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ path : '/inside/dingzhi'}" class="blocks nav-href">
-            字画装裱
-          </router-link>
-        </li>
-        <li>
-          <a href="javascript:void(0);" class="blocks nav-href">
-            <span>照片装裱</span>
-            <div class="dropDomn">
-            <div class="triangle"></div>
-            <ul class="drop-ul fl">
-              <li class="clear">时尚对裱册12寸竖</li>
-              <li class="clear">时尚对裱册12寸竖</li>
-            </ul>
+        <li v-for="(item, index) in data.list">
+          <router-link :to="{ path: item.src}" class="blocks nav-href">
+            <span>{{ item.title }}</span>
+            <div class="dropDomn" v-show="dropDowm">
+              <div class="triangle"></div>
+              <ul class="drop-ul fl">
+                <li class="clear" v-for="(wrap, index) in item.dounav">{{ wrap.title}}</li>
+              </ul>
+            </div>
             <div class="dropDome-Image fl"></div>
-          </div>
-          </a>
-        </li>
-        <li>
-          <router-link :to="{ path : '/pages/frame'}" class="blocks nav-href">
-            婚纱套系
           </router-link>
         </li>
-        <li><a href="javascript:void(0);" class="blocks nav-href">特殊本</a></li>
-        <li>
-          <a href="javascript:void(0);" class="blocks nav-href">
-            照片冲印
-            <div class="dropDomn">
-            <div class="triangle"></div>
-            <ul class="drop-ul fl">
-              <li class="clear">时尚对裱册12寸竖</li>
-              <li class="clear">时尚对裱册12寸竖</li>
-            </ul>
-            <div class="dropDome-Image fl"></div>
-          </div>
-          </a>
-        </li>
-        <li><a href="javascript:void(0);" class="blocks nav-href" style="margin-right: 0px;">装饰画</a></li>
       </ul>
       <router-link :to="{ path: '/inside/dingzhi'}" class="block" style="position: relative;right: -35px;">
         <div class="fr Experience"></div>
@@ -65,14 +29,24 @@
   export default {
     data() {
       return {
-
+        dropDowm: false,
+        data: {
+          list: [],
+        },
       }
     },
     created() {
+      this.getNav();
+    },
+    mounted() {
 
     },
     methods: {
-
+      getNav() {
+        this.$http.get(this.$api.get_content.nav).then((res) => {
+          this.data.list = res.data.nav;
+        });
+      }
     },
   }
 </script>
@@ -89,6 +63,10 @@
 
   .nav ul li {
     float: left;
+  }
+
+  .nav ul li:last-child .nav-href {
+    margin: 12px 0 12px 0;
   }
 
   .nav ul li .nav-href {

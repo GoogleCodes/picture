@@ -14,16 +14,16 @@ import store from './store'
 import router from './router'
 //  导入element组件
 import ElementUI from 'element-ui'
-
 //  导入路由
 import VueRouter from 'vue-router'
-
 //  导入API
-import { fetchGet, fetchPost, fetchPut, fetchDelete } from './router/utils.js'
+import api from './common/port_uri'
+import { fetchGet, fetchPost, fetchPut, fetchDelete } from './api/utils.js'
 Vue.prototype.$getData = fetchGet;
 Vue.prototype.$postData = fetchPost;
 Vue.prototype.$putData = fetchPut;
 Vue.prototype.$deleteData = fetchDelete;
+Vue.prototype.$api = api;
 
 //  使用element-ui
 Vue.use(ElementUI);
@@ -31,17 +31,30 @@ Vue.use(ElementUI);
 //  网络请求模块vue-resource
 Vue.use(VueResource);
 
+//  导入API
+// Vue.use(api);
+
 //  发布后是否显示提示
 Vue.config.productionTip = false;
 
 //是否开启工具调试
 Vue.config.devtools = process.env.NODE_ENV === 'development'
 
-
-//  全局路由配置
-//  路由开始之前的操作
-// router.beforeEach((to,  form, next) => {
+// const rout = new VueRouter({
+//   router,
+//   mode: 'hash', //default: hash ,history
+//   scrollBehavior (to, from, savedPosition) {
+//     console.log(to);
+//     if (savedPosition) {
+//       return savedPosition
+//     } else {
+//       return {x: 0, y: 0}
+//     }
+//   }
+// });
 //
+// rout.beforeEach((to, from, next) => {
+//   console.log(to);
 // });
 
 /* eslint-disable no-new */

@@ -10,11 +10,12 @@
           <img src="../../assets/images/21.png" alt="">
         </div>
         <div class="experience-tab" id="tabing">
-          <el-button class="tab-chonse fl active">高雅现代相框</el-button>
-          <el-button class="tab-chonse fr">字画相框</el-button>
+          <el-button class="tab-chonse fl" v-for="(item, index) in data.tabTitle"
+                     :class="{'active':index == data.dType}"
+                     @click="chonseTab(index, item)">{{ item.title }}</el-button>
         </div>
         <div id="content">
-          <div class="picture-list">
+          <div class="picture-list" v-show="picVisiList">
             <template v-for="item in data.list">
               <div class="experience-list fl">
                 <router-link :to="{ path: '/pages/detail'}" class="block">
@@ -26,14 +27,14 @@
               </div>
             </template>
           </div>
-          <div class="picture-list" style="display: none;">
+          <div class="picture-list" v-show="!picVisiList">
             <template v-for="item in data.list">
               <div class="experience-list fl">
                 <router-link :to="{ path: '/pages/detail'}" class="block">
                   <div class="experience-pic">
                     <img :src="item.pic" style="width: 100%;height: 100%;" alt="" >
                   </div>
-                  <div class="experience-desc ft-18">{{ item.title }}</div>
+                  <div class="experience-desc ft-18">邪神</div>
                 </router-link>
               </div>
             </template>
@@ -60,55 +61,33 @@
     data() {
       return {
         data: {
+          tabTitle: [{
+            title: '高雅现代相框',
+          },{
+            title: '字画相框',
+          }],
           list: [],
-          dtype: 1
-        }
+          dType: 0,
+          tabIndex: 1
+        },
+        picVisiList: false,
       }
     },
     created () {
       this.getPicItem();
     },
     methods: {
-      getPicItem() {
+      chonseTab(index, item) {
+        if (this.data.dType = index) {
+          this.picVisiList = true
+        } else {
+          this.picVisiList = false
+        }
+      },
+      getPicItem () {
         this.$http.get('../../../static/data/order.json').then((res) => {
           this.data.list = res.data.order;
         });
-      },
-      $id (id) {
-          return document.getElementById(id);
-      },
-      siblings: function (dom,callback) {
-        var pdom = dom.parentElement;
-        var tabArr = [].slice.call(pdom.children);
-        tabArr.filter(function(obj){
-          if(obj!=dom)callback.call(obj);
-        });
-      },
-      siblingsDom:function (){
-        var cardDom = this.$id("tabing");
-        var liDomes = cardDom.children;
-        var len = liDomes.length;
-        for(var i = 0; i < len; i++) {
-          //给对象缓存自有属性
-          liDomes[i].index = i;
-          var _this = this;
-          liDomes[i].onclick = function(){
-            this.className = "active";
-            this.style.color = "#81c429";
-            //同辈元素互斥
-            _this.siblings(this,function(){
-              this.className = "";
-              this.style.color = "#333";
-            });
-            //把对应的选项卡的内容显示出来
-            var tabDom = document.getElementById("content").children[this.index];
-            tabDom.style.display = "block";
-            //拿它的父亲对象
-            _this.siblings(tabDom,function(){
-              this.style.display = "none";
-            });
-          };
-        }
       },
     },
     components: {
@@ -125,19 +104,19 @@
     border: 1px solid #b11e25;
   }
 
-  /*.experience #content {*/
-    /*width: 100%;*/
-    /*height: 100%;*/
-    /*overflow: hidden;*/
-    /*position: relative;*/
-  /*}*/
+  .experience #content {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
 
-  /*.experience .picture-list {*/
-    /*!*position: absolute;*!*/
-    /*!*top: 0px;*!*/
-    /*!*left: 0px;*!*/
-    /*height: 100%;*/
-    /*width: 100%;*/
-  /*}*/
+  .experience .picture-list {
+    /*position: absolute;*/
+    /*top: 0px;*/
+    /*left: 0px;*/
+    height: 100%;
+    width: 100%;
+  }
 
 </style>

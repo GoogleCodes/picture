@@ -63,6 +63,11 @@
 
         }
     },
+    watch: {
+      $route(to) {
+        console.log(to);
+      }
+    },
     created() {
 
     },

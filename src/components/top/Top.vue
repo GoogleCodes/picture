@@ -17,7 +17,7 @@
           </div>
           <div class="fl marLeft">|</div>
           <div class="fl cart-round">
-            <el-badge :value="1" class="item">
+            <el-badge :value="count" class="item">
               <div class="iconfont icon-shoppingcar-ac fl marLeft"></div>
               <el-button class="icon-cartname fl" @click="goCart()">购物车</el-button>
             </el-badge>
@@ -56,18 +56,19 @@
         user_info() {
           try {
             let arr = JSON.parse(this.$store.state.user_info);
-            this.list = arr.user;
+            this.list = arr.user
           } catch(e) {}
           return this.list;
+        },
+        count() { //  购物车总数
+            return this.$store.state.count;
         }
       },
       created() {
 
       },
       watch: {
-        $route(to) {
 
-        }
       },
       methods: {
         isUser() {
@@ -121,7 +122,7 @@
 
   .quguo-user .goback {
     position: absolute;
-    right: 0px;
+    right: 25px;
     cursor: pointer;
   }
 

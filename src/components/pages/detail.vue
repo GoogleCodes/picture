@@ -26,8 +26,7 @@
             <div class="select-color">
               <span class="left fl">款色：</span>
               <ul>
-                <li class="right"
-                    v-for="(item, index) in list.guige"
+                <li class="right" v-for="(item, index) in list.guige"
                     :class="{'active':index == guigeIndex}"
                     @click="currentGuiGeIndex(index, item.a)">{{ item.a }}</li>
               </ul>
@@ -46,9 +45,9 @@
                 <el-button class="no-minus fl"
                            @click="changeNumber(list, -1)"
                            :class="{'disabled':list.nums <= 1}">-</el-button>
-                <el-input type="text" class="fl" placeholder="0" v-model="list.nums" readonly></el-input>
+                <el-input type="text" class="fl" placeholder="0"
+                          v-model="list.nums" readonly></el-input>
                 <el-button class="add-max fl"
-                           style="margin-left: 10px;"
                            @click="changeNumber(list, 1)"
                            :class="{'disabled': list.nums >= 1}">+</el-button>
               </div>
@@ -120,22 +119,7 @@
     name: 'dingzhi',
     data() {
       return {
-        list: {
-          shotcut: 'https://img.alicdn.com/simba/img/TB1hwrqeMoQMeJjy0FoSuwShVXa.jpg',
-          nums: 0, //  商品的数量
-          title: '金色古典',
-          title_desc: 'MP14533-2B',
-          desc: '高雅复古风',
-          price: 192,
-          guige: [
-            {a : '金黄色'},
-            {a : '蓝色'},
-          ],
-          size: [
-            {"one": "一寸"},
-            {"one": "二村"},
-          ],
-        },
+        list: JSON.parse(localStorage.getItem('detail')),
         data: {
           pic: [{
             "src" : 'https://img.alicdn.com/simba/img/TB1OsO5cnZRMeJjSsppSutrEpXa.jpg',
@@ -158,7 +142,7 @@
 
     },
     created () {
-      console.log();
+
     },
     methods: {
       currentGuiGeIndex(index, item) {
@@ -184,34 +168,32 @@
       },
       goCart() {
         let that = this;
+        if (this.list.nums == 0) {
+          this.$message({
+            message: '请增加商品！谢谢啦！亲 (☄⊙ω⊙)☄',
+            type: 'warning'
+          });
+          return;
+        }
         var optionItem = {
-          id: '15',
+          id: this.list.id,
           shotcut: this.list.shotcut,
           title: this.list.title,
-          t_desc: this.list.title_desc,
           desc: this.list.desc,
           nums: this.list.nums,
-          price: this.list.price,
+          price: parseInt(this.list.price),
           guiGe: this.data.guige,
           size: this.data.currSize,
         };
-//        if (this.data.nums == this.shopItem.nums) {
-//          return;
-//        }
-//        let index = that.buyLists.findIndex((value, index,  arr) => {
-//          console.log(value.id, optionItem.id);
-//          return value.id === optionItem.id;
-//        });
-        this.buyLists.push(optionItem);
-        localStorage.setItem('cart_info', JSON.stringify(this.buyLists));
-
+        this.$store.commit('SETCARTOBJ',optionItem);
         this.$message({
           message: '恭喜你，加入购物车成功！',
           type: 'success'
         });
-//        setInterval(function() {
-//          that.$router.push({ path: '/cart/submit' });
-//        },500);
+        setInterval(function() {
+          location.reload();
+          that.$router.push({ path: '/cart/cart' });
+        },500);
       }
     },
     components: {
@@ -320,6 +302,7 @@
   .select-num .item-amount .el-input .el-input__inner {
     text-align: center;
     font-weight: bold;
+    margin-left: 0px;
   }
 
   .select-num .item-amount .el-input, .add-max {

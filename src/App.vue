@@ -2,14 +2,12 @@
   <div id="app">
     <heads></heads>
     <router-view></router-view>
-    <foots></foots>
   </div>
 </template>
 
 <script type="text/javascript">
 
   import heads from '@/components/top/Top.vue'
-  import foots from '@/components/footer/Footer.vue'
 
 export default {
   name: 'app',
@@ -23,8 +21,10 @@ export default {
   },
   components: {
     heads,
-    foots
   }
 }
 </script>
+
+
+
 

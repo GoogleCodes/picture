@@ -3,7 +3,7 @@
     <!-- content start -->
     <div class="content clear">
       <div class="con-pro">
-        <img src="../../assets/images/02.png" alt="" style="width: 100%;height: 100%;">
+        <img src="../../../static/images/02.png" alt="" style="width: 100%;height: 100%;">
       </div>
       <div class="wrap clear">
         <div class="wrap-card fl">
@@ -25,21 +25,20 @@
           <div class="wrap-card-text">纯手工装裱</div>
           <div class="wrap-card-desc">
             质感卓越，进口画芯高清质感图，高仿颜料纹理质感，佳能高级打印机准确输出，还原画芯真实色彩
-        </div>
+          </div>
         </div>
 
         <div class="wrap-list clear">
-          <div class="wrap-li fl">
-            <div class="wrap-li-pic"></div>
-            <p>相册系列</p>
-            <a href="javascript:void(0);" class="wrap-more">了解更多 &gt;</a>
-          </div>
-          <div class="wrap-li fl"></div>
-          <div class="wrap-li fl" style="margin: 0px;"></div>
-          <div class="wrap-li fl"></div>
-          <div class="wrap-li fl"></div>
-          <div class="wrap-li fl" style="margin: 0px;"></div>
-
+          <template v-for="(item, index) in data.albumList">
+            <div class="wrap-li fl" :style="{background: 'url('+ item.pic +') no-repeat 100%'}">
+              <div class="wrap-li-pic"></div>
+              <div v-if="item.title !== ''" style="background: rgba(0,0,0,0.3);width: 100%;height: 100%;border-radius: 100%;">
+                <p>{{ item.title }}</p>
+                <a href="javascript:void(0);" class="wrap-more">{{ item.desc }}</a>
+              </div>
+              <div v-else=""style="background: rgba(255,255,255,0.1);width: 100%;height: 100%;border-radius: 100%;"></div>
+            </div>
+          </template>
           <div class="wrap-tujian clear">
             <div class="tuijian-header">
               <h1 class="tuijian-h1">热门推荐</h1>
@@ -48,8 +47,8 @@
             </div>
             <div style="margin-top: 100px;">
               <template v-for="item in data.arr">
-                <div class="card-tuijian fl">
-                    <router-link :to="{ path: '/pages/detail', query:{ id:item.id }}" class="block w100 h100" >
+                <div class="card-tuijian fl" @click="goDetail(item)">
+                    <!--<router-link :to="{ path: '/pages/detail', query:{ id:item.id }}" class="block w100 h100" >-->
                     <div class="card-tuijian-pic fl">
                       <img :src="item.pic" alt="" style="width: 100%;height: 100%;"/>
                     </div>
@@ -60,7 +59,7 @@
                         <img :src="item.small" alt="" style="width: 100%;height: 100%;" />
                       </div>
                     </div>
-                  </router-link>
+                  <!--</router-link>-->
                 </div>
               </template>
             </div>
@@ -68,11 +67,11 @@
         </div>
       </div>
       <div class="con-pro clear pro-moves">
-        <img src="../../assets/images/08.png" alt="" style="width: 100%;height: 100%;">
+        <img src="../../../static/images/08.png" alt="" style="width: 100%;height: 100%;">
         <a href="javascript:void(0);" class="block move"></a>
       </div>
       <div class="con-pro clear pro-moves">
-        <img src="../../assets/images/09.png" alt="" style="width: 100%;height: 100%;">
+        <img src="../../../static/images/09.png" alt="" style="width: 100%;height: 100%;">
       </div>
     </div>
     <!-- content end -->
@@ -81,27 +80,59 @@
 
 <script type="text/javascript">
   export default {
+    name: 'Content',
     data() {
       return {
+        albumVisi: false,
         data: {
           arr: [],
           desc: '',
+          albumList: [],
         }
       }
     },
     mounted() {
       this.getIndex();
+      this.getAlbum();
     },
     created() {
 
     },
+    watch: {
+      $route (to) {
+        console.log(to);
+      }
+    },
     methods: {
-      getIndex() {
-        this.$http.get('../../../static/data/index.json').then((res) => {
+      getIndex () {
+        this.$http.get(this.$api.get_content.index_def).then((res) => {
           this.data.desc = res.data.description;
           this.data.arr = res.data.tuijian;
         });
-      }
+      },
+      goDetail (item) {
+        var options = {
+          title: item.title,
+          desc: item.desc,
+          id: item.id,
+          pic: item.pic,
+          price: item.price,
+          small: item.small,
+          size: item.size,
+          nums: item.nums,
+          guige: item.guige,
+        };
+        localStorage.setItem('detail', JSON.stringify(options));
+        this.$router.push({
+          path : '/pages/detail',
+          query:{ id:item.id }
+        });
+      },
+      getAlbum () {
+        this.$http.get(this.$api.get_content.album).then((res) => {
+          this.data.albumList = res.data.Album;
+        });
+      },
     }
   }
 </script>
@@ -149,7 +180,7 @@
   .content .wrap .wrap-card .wrap-card-icon {
     width: 90px;
     height: 90px;
-    background: url("../../assets/images/03.png") no-repeat;
+    background: url("../../../static/images/03.png") no-repeat;
     margin: 35px auto 0px;
   }
 
@@ -265,6 +296,11 @@
     width: 85%;
     height: 170px;
     margin: 10px 17px;
+  }
+
+
+  .content .wrap .wrap-list .wrap-li:nth-child(3n) {
+    margin: 0px;
   }
 
   /* content end */

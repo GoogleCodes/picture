@@ -5,30 +5,58 @@
       "id": 1,
       "pic" : "https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=7eca48c40633874488c8272e3066b29c/a9d3fd1f4134970ab8a006bb9fcad1c8a6865d56.jpg",
       "title" : "儿童款相册",
-      "desc" : "记录成长，留下时光",
+      "desc" : "AAAAAAAAAAA",
       "small" : "https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=5f0e3b4d7e899e516c83324623ceb256/0d338744ebf81a4c3bfb0479d22a6059242da6b1.jpg",
-      "price" : "99.8"
+      "price" : 11,
+      "nums" : 0,
+      "guige": [
+        {"a" : "金黄色"},
+        {"a" : "蓝色"}],
+      "size": [
+        {"one": "一寸"},
+        {"one": "二村"}]
     },{
       "id": 2,
       "pic" : "https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=7eca48c40633874488c8272e3066b29c/a9d3fd1f4134970ab8a006bb9fcad1c8a6865d56.jpg",
       "title" : "少年款相册",
-      "desc" : "记录成长，留下时光",
+      "desc" : "BBBBBBBBBB",
       "small" : "https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=5f0e3b4d7e899e516c83324623ceb256/0d338744ebf81a4c3bfb0479d22a6059242da6b1.jpg",
-      "price" : "99.8"
+      "price" : 148,
+      "nums" : 0,
+      "guige": [
+        {"a" : "金黄色"},
+        {"a" : "蓝色"}],
+      "size": [
+        {"one": "十寸"},
+        {"one": "六寸"}]
     },{
       "id": 3,
       "pic" : "https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=7eca48c40633874488c8272e3066b29c/a9d3fd1f4134970ab8a006bb9fcad1c8a6865d56.jpg",
       "title" : "中年款相册",
-      "desc" : "记录成长，留下时光",
+      "desc" : "CCCCCCCCC",
       "small" : "https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=5f0e3b4d7e899e516c83324623ceb256/0d338744ebf81a4c3bfb0479d22a6059242da6b1.jpg",
-      "price" : "99.8"
+      "price" : 183,
+      "nums" : 0,
+      "guige": [
+        {"a" : "金黄色"},
+        {"a" : "蓝色"}],
+      "size": [
+        {"one": "一寸"},
+        {"one": "三村"}]
     },{
       "id": 4,
       "pic" : "https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=7eca48c40633874488c8272e3066b29c/a9d3fd1f4134970ab8a006bb9fcad1c8a6865d56.jpg",
       "title" : "老年款相册",
-      "desc" : "记录成长，留下时光",
+      "desc" : "DDDDDDDDD",
       "small" : "https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=5f0e3b4d7e899e516c83324623ceb256/0d338744ebf81a4c3bfb0479d22a6059242da6b1.jpg",
-      "price" : "99.8"
+      "price" : 456,
+      "nums" : 0,
+      "guige": [
+        {"a" : "金黄色"},
+        {"a" : "蓝色"}],
+      "size": [
+        {"one": "一寸"},
+        {"one": "二村"}]
     }
   ]
 }

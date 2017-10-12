@@ -40,7 +40,7 @@
     },
     methods: {
       getOther() {
-        this.$http.get('../../../static/data/other.json').then((res) => {
+        this.$http.get(this.$api.get_other.other).then((res) => {
           this.data.arr = res.data.other;
         });
       }

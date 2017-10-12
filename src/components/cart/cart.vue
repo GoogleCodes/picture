@@ -13,11 +13,11 @@
         </p>
       </div>
       <div class="cart-content">
-        <el-table ref="multipleTable"  :data="data.list" border tooltip-effect="dark" style="width: 100%" @selection-change="selected">
+        <el-table ref="multipleTable" :data="data.list" border tooltip-effect="dark" style="width: 100%" @selection-change="selected">
           <el-table-column type="selection" width="99"></el-table-column>
           <el-table-column label="商品名称" width="407">
             <template scope="scope">
-              <router-link :to="{ path: '/pages/detail'}" class="block">
+              <router-link :to="{ path: '/pages/detail' , query:{ id:scope.row.id }}" class="block">
                 <div class="item-pic fl">
                   <img :src="scope.row.shotcut" alt="" style="width: 100%;height: 100%;" />
                 </div>
@@ -34,11 +34,11 @@
           <el-table-column prop="address" label="数量" width="250">
             <template scope="scope">
               <div class="item-amount ">
-                <el-button class="no-minus fl" @click="changeNumber(scope.row, -1)"
+                <el-button class="no-minus fl" @click.stop="changeNumber(scope.row, -1)"
                            :class="{'disabled':scope.row.nums <= 1}">-</el-button>
                 <el-input class="fl" placeholder="0" @change="handleInput(scope.row)" readonly
                           v-model="scope.row.nums"></el-input>
-                <el-button class="add-max fl" @click="changeNumber(scope.row, 1)"
+                <el-button class="add-max fl" @click.stop="changeNumber(scope.row, 1)"
                            :class="{'disabled':scope.row.nums >= 1}" style="margin-left: 20px;">+</el-button>
               </div>
             </template>
@@ -83,6 +83,7 @@
         return {
           data: {
             list: [],
+            number: 0,
             total: 0, //  总价
             totalMoney: 0,  //  总金额
           },
@@ -99,32 +100,36 @@
       ElRadio,
     },
     created() {
-      //  调用Vuex action
       this.$store.dispatch("init");
-      this.data.list = JSON.parse(localStorage.getItem('cart_info'));
-//      this.$http.get('../../../static/data/cart.json').then((res) => {
-//        this.data.list = res.data;
-//      });
-
+      this.fetchData();
     },
     computed: {
       list() {
         return this.$store.state.list;
       },
+      number() {
+          for (let i in this.data.list) {
+            this.number = this.data.list[i].nums;
+          }
+      }
     },
     watch: {
         $route (to) {
-          this.data.list = JSON.parse(localStorage.getItem('cart_info'));
+
         }
     },
     // 定义过滤方法
     filters:{
       // 传入原始value然后返回处理后数据
       changePrice:function(value){
-        return "￥"+value.toFixed(2);
+        return "￥" + value.toFixed(2);
       }
     },
     methods: {
+      fetchData() {
+        this.data.list = JSON.parse(localStorage.getItem('cart_info'));
+//        this.$store.commit('SET_CART_NUMBER', this.data.list);
+      },
       //  取消全选
       toggleSelection() {
         this.$refs.multipleTable.clearSelection();
@@ -146,21 +151,27 @@
           this.$router.push({ path : '../pages/onload'});
       },
       changeNumber(item,flag) {
-        //  大于0为加
         if (flag > 0) {
-          //  item数量自增1
-          item.nums++;
+          this.$store.commit('INCRECARTNUMS',item.id, item.title);
         } else {
-          //  item数量自减1
-          item.nums--;
+          this.$store.commit('REDUCECARTNUMS',item.id, item.title);
           if(item.nums <= 1) {
             item.nums = 1;
           }
         }
-        this.selected(this.multipleSelection);
+//        this.selected(this.multipleSelection);
       },
       //  去结算
       goPay () {
+        var options = {}
+        console.log(this.multipleSelection.length);
+        if (this.multipleSelection.length == 0) {
+          this.$message({
+            message: '请选择商品!',
+            type: 'warning'
+          });
+          return;
+        }
         this.$router.push({ path: '/cart/submit' });
       },
       handleInput(value) {

@@ -50,8 +50,6 @@
   import { mapActions } from 'vuex'
   import { SET_USER_INFO } from '../../store/actions/type'
 
-//  import { increment } from '../../store/actions/type'
-
   import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
   import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
@@ -93,7 +91,7 @@
             password : this.ruleForm.password,
           };
           that.fullscreenLoading = true;
-          that.$http.get('../../../static/data/login.json', json).then((res) => {
+          that.$http.get(this.$api.port_user.login, json).then((res) => {
             let uname = res.data.login.username;
             let pwrod = res.data.login.password;
             let pic = res.data.login.pic;
@@ -127,7 +125,6 @@
                   user: options,
                   login: true
                 });
-//                localStorage.setItem('user_info', JSON.stringify(options));
                 setTimeout(() => {
                   that.$router.push({ path: '/' });
                   location.reload();

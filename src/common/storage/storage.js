@@ -10,14 +10,14 @@
 
 class Storage {
 
-  constructor(type) {
-    if (type === 'local') {
-      this.store = window.localStorage
-    } else if (type === 'session') {
-      this.store = window.sessionStorage
-    }
-    this.prefix = storage_prefix
-  }
+  // constructor(type) {
+  //   if (type === 'local') {
+  //     this.store = window.localStorage
+  //   } else if (type === 'session') {
+  //     this.store = window.sessionStorage
+  //   }
+  //   this.prefix = storage_prefix
+  // }
 
   set(key, value) {
     try {
@@ -60,4 +60,5 @@ class Storage {
 }
 
 export const localStorage = new Storage('local')
-export const sessionStorage = new Storage('session')
+// export const sessionStorage = new Storage('session')
+

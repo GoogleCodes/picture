@@ -10,10 +10,14 @@ export default {
 
   //  初始化
   [actions.INIT]({commit}) {
-    console.log(typeof commit, commit);
-    $.ajax('../../../static/data/cart.json', function(res) {
-      commit("init", res.data);
-    });
+    // $.ajax('../../../static/data/cart.json', function(res) {
+    //   commit("init", res.data);
+    // });
+  },
+
+  //  购物车数量
+  [actions.SET_CART_NUMBER]({commit}, cartObj) {
+    commit(mutations.SET_CART_NUMBER,cartObj);
   },
 
   //再次购买添加商品
@@ -21,14 +25,19 @@ export default {
   //   dispatch('SETCARTOBJS',cartobjs);
   // }
 
+  //  修改购物车单个商品
+  [actions.SET_CART_OBJ]({commit},cartObj) {
+    commit(mutations.SET_CART_OBJ, cartObj);
+  },
+
   //  增加购物车单个商品数量
-  [actions.REDUCECARTNUMS]({commit}, id,format) {
-    commit(mutations.REDUCECARTNUMS,  id,format)
+  [actions.REDUCECARTNUMS]({commit}, id,title) {
+    commit(mutations.REDUCECARTNUMS,  id,title)
   },
 
   //  减少购物车单个商品数量
-  [actions.REDUCECARTNUMS]({commit}, id,format) {
-    commit(mutations.REDUCECARTNUMS,  id,format)
+  [actions.REDUCECARTNUMS]({commit}, id,title) {
+    commit(mutations.REDUCECARTNUMS,  id,title)
   },
 
   //  删除购物车单个商品
