@@ -69,9 +69,9 @@ export default {
   },
 
   //  删除购物车单个商品
-  [type.DELCARTOBJ] (state,id,format) {
+  [type.DELCARTOBJ] (state, id,  format) {
     for(let plist = 0; plist < state.cart.length; plist++) {
-        if(typeof state.cart[plist] === 'object' && state.cart[plist].id == id){
+        if(typeof state.cart[plist] === 'object' && state.cart[plist].id == id) {
         state.cart.splice(plist,1);
         break;
       }

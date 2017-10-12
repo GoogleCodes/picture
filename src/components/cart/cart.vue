@@ -128,7 +128,7 @@
     methods: {
       fetchData() {
         this.data.list = JSON.parse(localStorage.getItem('cart_info'));
-//        this.$store.commit('SET_CART_NUMBER', this.data.list);
+        this.$store.commit('SET_CART_NUMBER', this.data.list);
       },
       //  取消全选
       toggleSelection() {
@@ -153,18 +153,19 @@
       changeNumber(item,flag) {
         if (flag > 0) {
           this.$store.commit('INCRECARTNUMS',item.id, item.title);
+//          this.fetchData();
         } else {
           this.$store.commit('REDUCECARTNUMS',item.id, item.title);
+//          this.fetchData();
           if(item.nums <= 1) {
             item.nums = 1;
           }
         }
-//        this.selected(this.multipleSelection);
+        this.selected(this.multipleSelection);
       },
       //  去结算
       goPay () {
         var options = {}
-        console.log(this.multipleSelection.length);
         if (this.multipleSelection.length == 0) {
           this.$message({
             message: '请选择商品!',
@@ -186,11 +187,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          let pid = 0;
-          for (var i in this.data.list) {
-            pid = this.data.list[i].id;
-          }
-          this.$store.commit('DELCARTOBJ',pid);
+          this.$store.commit('DELCARTOBJ',item.id);
           setTimeout(() => {
             location.reload();
           }, 500);
