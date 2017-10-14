@@ -74,7 +74,9 @@
         isUser() {
           //  调用user_info
           this.user_info;
-          let that = this, userJson = JSON.parse(localStorage.getItem('user_info'));
+          let that = this, userJson = this.$storageGet('user_info');
+
+          console.log(userJson);
           if (userJson !== null) {
             that.closeuser = true;
             that.uname = userJson.uname;

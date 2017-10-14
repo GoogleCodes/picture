@@ -100,7 +100,7 @@
     },
     watch: {
       $route (to) {
-        console.log(to);
+
       }
     },
     methods: {
@@ -122,16 +122,17 @@
           nums: item.nums,
           guige: item.guige,
         };
-        localStorage.setItem('detail', JSON.stringify(options));
+        this.$storageSet('detail',  options);
         this.$router.push({
           path : '/pages/detail',
           query:{ id:item.id }
         });
       },
       getAlbum () {
-        this.$http.get(this.$api.get_content.album).then((res) => {
-          this.data.albumList = res.data.Album;
+        this.$getData(this.$api.get_content.album).then((res) => {
+          console.log(res);
         });
+
       },
     }
   }
@@ -302,6 +303,6 @@
   .content .wrap .wrap-list .wrap-li:nth-child(3n) {
     margin: 0px;
   }
-
   /* content end */
+
 </style>

@@ -19,8 +19,8 @@
       </div>
 
       <div class="trade_status" style="border: none;margin: 53px 0px 0px">
-        <div class="infoBlock fl" style="margin: 35px 0 0px 0px">
-          <div class="infor-title">
+        <div class="infoBlock fl" style="margin: 35px 0 0px 0px;border: 1px solid #c9caca">
+          <div class="infor-title" >
             <h3>订单信息</h3>
           </div>
           <div class="table-list">

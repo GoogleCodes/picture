@@ -20,3 +20,6 @@ export const DELCARTOBJ = 'DELCARTOBJ'
 //  购物车总数量
 export const SET_CART_NUMBER = 'SET_CART_NUMBER'
 
+//  记住登录
+export const GET_CHECKED_LOGIN = 'GET_CHECKED_LOGIN'
+

@@ -7,7 +7,7 @@
 exports.index_def = '../../../static/data/index.json'
 
 //  相册系列
-exports.album = '../../../static/data/album.json'
+exports.album = '/api/home/index/index'
 
 //  导航栏
 exports.nav = '../../../static/data/nav.json'

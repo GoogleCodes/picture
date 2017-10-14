@@ -51,114 +51,119 @@ import ordcart from '@/components/cart/ord-cart'
 
 Vue.use(Router);
 
-let routes = [];
+let routes = [{
+  path: '/',
+  header: true,
+  name: 'Index',
+  component: Index,
+},{
+  path: '/inside/dingzhi',
+  name: 'dingzhi',
+  component: dingzhi
+},{
+  path: '/inside/orderlist',
+  name: 'orderlist',
+  component: orderlist
+},{
+  path: '/pages/detail',
+  name: 'detail',
+  component: detail
+},{
+  path: '/pages/pic-detail',
+  name: 'picdetail',
+  component: picdetail
+},{
+  path: '/pages/onload',
+  name: 'onload',
+  component: onloadpic
+},{
+  path: '/pages/onloadtwo',
+  name: 'onloadtwo',
+  component: onloadtwo
+},{
+  path: '/pages/frame',
+  name: 'frame',
+  component: frame
+},{
+  path: '/user/login',
+  name: 'login',
+  component: login,
+},{
+  path: '/user/register',
+  name: 'reg',
+  component: register,
+},{
+  path: '/user/find',
+  name: 'find',
+  component: find,
+},{
+  path: '/admin/admin',
+  name: 'admin',
+  component: admin,
+  children: [{
+    path: '/admin/vip',
+    name: 'vip',
+    component: vip,
+  },{
+    path: '/admin/changepwd',
+    name: 'changepwd',
+    component: changepwd,
+  },{
+    path: '/admin/shoping',
+    name: 'shoping',
+    component: shoping,
+  },{
+    path: '/admin/manage',
+    name: 'manage',
+    component: manage,
+  },{
+    path: '/admin/address',
+    name: 'address',
+    component: address,
+  },{
+    path: '/admin/increase',
+    name: 'increase',
+    component: increase,
+  }],
+},{
+  path: '/cart/cart',
+  name: 'cart',
+  component: cart,
+},{
+  path: '/cart/ord-cart',
+  name: 'ordcart',
+  component: ordcart,
+},{
+  path: '/cart/add-cart',
+  name: 'addCart',
+  header: true,
+  component: addcart,
+},{
+  path: '/cart/submit',
+  name: 'submit',
+  component: submit,
+}];
 
-export default new Router({
-  routes: [{
-      path: '/',
-      header: true,
-      name: 'Index',
-      component: Index,
-    },{
-      path: '/inside/dingzhi',
-      name: 'dingzhi',
-      component: dingzhi
-    },{
-      path: '/inside/orderlist',
-      name: 'orderlist',
-      component: orderlist
-    },{
-      path: '/pages/detail',
-      name: 'detail',
-      component: detail
-    },{
-      path: '/pages/pic-detail',
-      name: 'picdetail',
-      component: picdetail
-    },{
-      path: '/pages/onload',
-      name: 'onload',
-      component: onloadpic
-    },{
-      path: '/pages/onloadtwo',
-      name: 'onloadtwo',
-      component: onloadtwo
-    },{
-      path: '/pages/frame',
-      name: 'frame',
-      component: frame
-    },{
-      path: '/user/login',
-      name: 'login',
-      component: login,
-    },{
-      path: '/user/register',
-      name: 'reg',
-      component: register,
-    },{
-      path: '/user/find',
-      name: 'find',
-      component: find,
-    },{
-      path: '/admin/admin',
-      name: 'admin',
-      component: admin,
-      children: [{
-        path: '/admin/vip',
-        name: 'vip',
-        component: vip,
-      },{
-        path: '/admin/changepwd',
-        name: 'changepwd',
-        component: changepwd,
-      },{
-        path: '/admin/shoping',
-        name: 'shoping',
-        component: shoping,
-      },{
-        path: '/admin/manage',
-        name: 'manage',
-        component: manage,
-      },{
-        path: '/admin/address',
-        name: 'address',
-        component: address,
-      },{
-        path: '/admin/increase',
-        name: 'increase',
-        component: increase,
-      }],
-    },{
-      path: '/cart/cart',
-      name: 'cart',
-      component: cart,
-    },{
-      path: '/cart/ord-cart',
-      name: 'ordcart',
-      component: ordcart,
-    },{
-      path: '/cart/add-cart',
-      name: 'addCart',
-      header: true,
-      component: addcart,
-    },{
-    path: '/cart/submit',
-    name: 'submit',
-    component: submit,
-  }]
-})
 
-// const router = new Router({
-//   routes,
-//   mode: 'hash', //default: hash ,history
-//   scrollBehavior (to, from, savedPosition) {
-//     if (savedPosition) {
-//       return savedPosition
-//     } else {
-//       return {x: 0, y: 0}
-//     }
-//   }
-// });
+const router = new Router({
+  routes,
+  mode: 'hash', //default: hash ,history
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return {x: 0, y: 0}
+    }
+  }
+});
 
+//全局路由配置
+//路由开始之前的操作
+router.beforeEach((to, from, next) => {
+
+});
+
+
+export default router;
 
 

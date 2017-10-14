@@ -15,6 +15,8 @@ export default {
     // });
   },
 
+  [actions.GET_CHECKED_LOGIN]({commit}) {},
+
   //  购物车数量
   [actions.SET_CART_NUMBER]({commit}, cartObj) {
     commit(mutations.SET_CART_NUMBER,cartObj);

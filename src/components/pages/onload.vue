@@ -1,64 +1,75 @@
 <template>
   <div class="bgcolor">
     <div class="cart-upload-pic w1200">
-      <div class="container">
-        <div class="upload-pic">
-          <div class="top-upload clearfix">
-            <div class="left-pic">
-              <img src="../../assets/images/31.jpg" alt="">
-            </div>
-            <div class="left-content">
-              <div class="product-title">金色古典<span>MP14533-2B</span></div>
-              <div class="product-text">高雅复古风</div>
-            </div>
-            <div class="right-upload">
-              <el-button type="primary upload-btn" @click="goUpLoading">
-                <i class="el-icon-upload el-icon--right"></i>
-                <i>上传</i>
-              </el-button>
-              <!--<div class="upload-btn" @click="goUpLoading">-->
-                <!--<i class="iconfont icon-shangchuan"></i>-->
-                <!--<span>上传照片</span>-->
-              <!--</div>-->
-              <p>仅支持上传png/jpg格式图片分辨率300dpi以上</p>
-            </div>
-          </div>
-          <div class="bottom-tip">
-            <img src="../../../static/images/37.png" alt="">
-            <span class="tip">照片 . jpg上传成功</span>
-            <span class="size">图片尺寸 ： 1000 x1366像素</span>
-          </div>
-        </div>
-        <!-- 图片展示 -->
-        <div class="show-pic">
-          <div class="no-pic">
-            <img src="../../../static/images/34.png" alt="">
-            <span>暂无图片</span>
-          </div>
-          <ul class="pic-list clearfix" style="display: none;">
-            <li class="pic-item">
-              <img class="pic" src="../../assets/images/30.jpg" alt="">
-              <div class="time">
-                <img src="../../../static/images/36.png" alt="">
-                <span>2017-08-18</span>
+
+
+        <div class="el-upload-icon">
+          <!--<slot></slot>-->
+
+          <div class="container">
+            <div class="upload-pic">
+              <div class="top-upload clearfix">
+                <div class="left-pic">
+                  <img src="../../assets/images/31.jpg" alt="">
+                </div>
+                <div class="left-content">
+                  <div class="product-title">金色古典<span>MP14533-2B</span></div>
+                  <div class="product-text">高雅复古风</div>
+                </div>
+                <div class="right-upload">
+                  <el-upload class="image-uploader-warp" action="https://jsonplaceholder.typicode.com/posts/">
+                    <slot>
+
+                    </slot>
+                    <el-button type="primary upload-btn" @click="goUpLoading">
+                      <i class="el-icon-upload el-icon--right"></i>
+                      <i>上传</i>
+                    </el-button>
+                  </el-upload>
+                  <!--<div class="upload-btn" @click="goUpLoading">-->
+                  <!--<i class="iconfont icon-shangchuan"></i>-->
+                  <!--<span>上传照片</span>-->
+                  <!--</div>-->
+                  <p>仅支持上传png/jpg格式图片分辨率300dpi以上</p>
+                </div>
               </div>
-              <div class="cancel">
-                <img src="../../../static/images/35.png" alt="">
+              <div class="bottom-tip">
+                <img src="../../../static/images/37.png" alt="">
+                <span class="tip">照片 . jpg上传成功</span>
+                <span class="size">图片尺寸 ： 1000 x1366像素</span>
               </div>
-            </li>
-          </ul>
-        </div>
-        <!-- 功能按钮 -->
-        <div class="bottom-btn clearfix">
-          <div class="left-back">
-            <router-link :to="{ path: '/cart/cart'}">返回购物车</router-link>
+            </div>
+            <!-- 图片展示 -->
+            <div class="show-pic">
+              <div class="no-pic">
+                <img src="../../../static/images/34.png" alt="">
+                <span>暂无图片</span>
+              </div>
+              <ul class="pic-list clearfix" style="display: none;">
+                <li class="pic-item">
+                  <img class="pic" src="../../assets/images/30.jpg" alt="">
+                  <div class="time">
+                    <img src="../../../static/images/36.png" alt="">
+                    <span>2017-08-18</span>
+                  </div>
+                  <div class="cancel">
+                    <img src="../../../static/images/35.png" alt="">
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <!-- 功能按钮 -->
+            <div class="bottom-btn clearfix">
+              <div class="left-back">
+                <router-link :to="{ path: '/cart/cart'}">返回购物车</router-link>
+              </div>
+              <div class="right-ok">
+                <router-link :to="{ path: ''}">确认提交</router-link>
+              </div>
+              <span class="right-tip">您已经传了3张照片</span>
+            </div>
           </div>
-          <div class="right-ok">
-            <router-link :to="{ path: ''}">确认提交</router-link>
-          </div>
-          <span class="right-tip">您已经传了3张照片</span>
         </div>
-      </div>
     </div>
   </div>
 </template>

@@ -19,4 +19,7 @@ export const DELCARTOBJ = 'delSingle'
 //  购物车数量
 export const SET_CART_NUMBER = 'set_cart_number'
 
+//  记住登录
+export const GET_CHECKED_LOGIN = 'get_checked_login'
+
 

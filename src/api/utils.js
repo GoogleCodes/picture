@@ -2,9 +2,9 @@
  * Created by SamHong on 2017/9/28.
  */
 
-
 import axios from 'axios'
 import qs from 'qs'
+
 
 //  get
 export const fetchGet = (target, data) => {
@@ -35,6 +35,11 @@ export const fetchPost = (target, data) => {
     var postData = qs.stringify(data);
     axios({
       url: localStorage.apiDomain + 'public' + target,
+      header: {
+        'Access-Control-Allow-Origin' : '*',
+        'Access-Control-Allow-Methods' : 'GET,POST,PATCH,PUT,OPTIONS',
+        'Access-Control-Allow-Headers' : 'x-requested-with,content-type'
+      },
       method: 'post',
       data: postData,
       withCredentials: false
@@ -52,6 +57,11 @@ export const fetchPut = (target, data) => {
     var postData = qs.stringify(data);
     axios({
       url: localStorage.apiDomain + 'public' + target,
+      header: {
+        'Access-Control-Allow-Origin' : '*',
+        'Access-Control-Allow-Methods' : 'GET,POST,PATCH,PUT,OPTIONS',
+        'Access-Control-Allow-Headers' : 'x-requested-with,content-type'
+      },
       method: 'put',
       data: postData,
       withCredentials: false
@@ -84,4 +94,35 @@ export const fetchDelete = (target, data) => {
       reject(error)
     })
   })
+};
+
+
+//  json 序列化
+export const storageSet = (key,value) => {
+  try {
+    value = JSON.stringify(value);
+  } catch(e) {
+    value = value;
+  }
+  window.localStorage.setItem(key,value);
+};
+
+export const storageGet = (key) => {
+  if (!key) {
+    throw new Error('没有找到key。');
+    return
+  }
+  if (typeof key === 'object') {
+    throw new Error('key不能是一个对象。');
+  }
+  if (key == null) {
+    return {}
+  }
+  let key_Obj = null;
+  try {
+    key_Obj = JSON.parse(window.localStorage.getItem(key));
+  } catch(e) {
+    key = {};
+  }
+  return key_Obj;
 };

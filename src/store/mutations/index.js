@@ -3,6 +3,10 @@ import * as type from '../../store/mutations/type'
 
 import { localStor } from '../../common/storage'
 
+import { storageSet, storageGet } from '../../api/utils.js'
+
+import Vue from 'vue'
+
 export default {
   // //设置用户信息和是否登录
   [type.SET_USER_INFO](state, userinfo){  //  userinfo
@@ -11,13 +15,18 @@ export default {
     if (userinfo === null) {
       localStorage.remove('user_info')
     } else {
-      localStorage.setItem('user_info', JSON.stringify(userinfo));
+      storageSet('user_info',userinfo);
     }
   },
 
   //  测试
   [type.INIT](state, list) {
     state.list = list
+  },
+
+  [type.GET_CHECKED_LOGIN](state, checked_login) {
+    state.checked_login = checked_login;
+    storageSet('checked_login',state.checked_login);
   },
 
   [type.SET_CART_NUMBER](state, obj) {
@@ -41,7 +50,7 @@ export default {
     } else {
       state.cart.push(obj);
     }
-    localStorage.setItem('cart_info',JSON.stringify(state.cart));
+    storageSet('cart_info',state.cart);
   },
 
   //  增加购物车单个商品数量
@@ -52,7 +61,7 @@ export default {
         break;
       }
     }
-    localStorage.setItem('cart_info',JSON.stringify(state.cart));
+    storageSet('cart_info',state.cart);
   },
 
   //  减少购物车单个商品数量
@@ -65,7 +74,7 @@ export default {
         }
       }
     }
-    localStorage.setItem('cart_info',JSON.stringify(state.cart));
+    storageSet('cart_info',state.cart);
   },
 
   //  删除购物车单个商品
@@ -76,7 +85,7 @@ export default {
         break;
       }
     }
-    localStorage.setItem('cart_info',JSON.stringify(state.cart));
+    storageSet('cart_info',state.cart);
   },
 
 }

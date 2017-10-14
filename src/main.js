@@ -18,12 +18,23 @@ import ElementUI from 'element-ui'
 import VueRouter from 'vue-router'
 //  导入API
 import api from './common/port_uri'
-import { fetchGet, fetchPost, fetchPut, fetchDelete } from './api/utils.js'
+import { tool_verify } from './api/tool'
+import {
+  fetchGet,
+  fetchPost,
+  fetchPut,
+  fetchDelete,
+  storageSet,
+  storageGet } from './api/utils.js'
 Vue.prototype.$getData = fetchGet;
 Vue.prototype.$postData = fetchPost;
 Vue.prototype.$putData = fetchPut;
 Vue.prototype.$deleteData = fetchDelete;
 Vue.prototype.$api = api;
+Vue.prototype.$storageSet = storageSet;
+Vue.prototype.$storageGet = storageGet;
+Vue.prototype.$toolVerify = tool_verify;
+
 
 //  使用element-ui
 Vue.use(ElementUI);
@@ -31,16 +42,16 @@ Vue.use(ElementUI);
 //  网络请求模块vue-resource
 Vue.use(VueResource);
 
-//  导入API
-// Vue.use(api);
-
 //  发布后是否显示提示
 Vue.config.productionTip = false;
+
+//  设置域名
+localStorage.setItem('apiDomain','http://192.168.0.13/');
 
 //是否开启工具调试
 Vue.config.devtools = process.env.NODE_ENV === 'development'
 
-// const rout = new VueRouter({
+// let rout = new VueRouter({
 //   router,
 //   mode: 'hash', //default: hash ,history
 //   scrollBehavior (to, from, savedPosition) {
@@ -52,9 +63,18 @@ Vue.config.devtools = process.env.NODE_ENV === 'development'
 //     }
 //   }
 // });
+// rout.map(router);
 //
 // rout.beforeEach((to, from, next) => {
 //   console.log(to);
+//   //  窗体滚动事件
+//   $(window).scroll(function() {
+//     if($(window).scrollTop() >= 350) {
+//       $(".icon-dingbu").fadeIn(500);
+//     } else {
+//       $(".icon-dingbu").stop(true,true).fadeOut(500);
+//     }
+//   });
 // });
 
 /* eslint-disable no-new */

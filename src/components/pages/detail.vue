@@ -9,9 +9,12 @@
         <div class="exper-pic fl">
           <div class="exper-pic-wrap">
             <el-carousel height="420px">
-              <el-carousel-item v-for="item in data.pic">
-                <img :src="item.src" alt="" style="width: 100%;height: 420px;">
-              </el-carousel-item>
+              <template v-for="item in data.pic">
+                <el-carousel-item>
+                  <img :src="item.src" alt="" style="width: 100%;height: 420px;">
+                </el-carousel-item>
+              </template>
+
             </el-carousel>
           </div>
           <div class="exper-pic-item">

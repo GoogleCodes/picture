@@ -370,7 +370,7 @@
     width: 100%;
     height: 18px;
     margin-top: 10px;
-    background: url('../../src/assets/images/17.png') no-repeat -3px -35px;
+    background: url('../images/17.png') no-repeat -3px -35px;
 }
 
 .admin .admin-right {

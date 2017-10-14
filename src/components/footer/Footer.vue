@@ -35,7 +35,7 @@
         </ul>
       </div>
       <div class="footer-copy">
-        © 2017 jiangmuxin All Rights Reserved.
+        © {{ getYear }} jiangmuxin All Rights Reserved.
         <a href="http://www.miibeian.gov.cn/" style="color: #595757">粤ICP备17069217号-1</a>
         扫一扫New Business Inquiries
     </div>
@@ -51,6 +51,11 @@
         return {
 
         }
+    },
+    computed: {
+      getYear() {
+        return new Date().getFullYear()
+      }
     },
     watch: {
 

@@ -3,6 +3,7 @@
     <banner></banner>
     <elenav></elenav>
     <elecontent></elecontent>
+    <gotop></gotop>
   </div>
 </template>
 
@@ -11,6 +12,7 @@
   import heads from '@/components/top/Top.vue'
   import elenav from '@/components/top/Nav.vue'
   import banner from '@/components/top/banner.vue'
+  import gotop from '@/components/content/gotop.vue'
   import elecontent from '@/components/content/Content.vue'
   import foots from '@/components/footer/Footer.vue'
 
@@ -33,6 +35,7 @@
       heads,
       elenav,
       elecontent,
+      gotop,
       banner,
       foots,
     }
@@ -66,6 +69,7 @@
     font-weight: bold;
   }
 
+  /* header-tab start */
   .header-tab {
     width: 100%;
     height: 45px;
@@ -79,5 +83,6 @@
     font-size: 30px;
     padding-left: 0.5em;
   }
+  /* header-tab end */
 
 </style>
