@@ -45,7 +45,6 @@ import orderlist from '@/components/inside/order'
 //  皮革相册
 import picdetail from '@/components/pages/pic-detail'
 
-
 //  测试
 import ordcart from '@/components/cart/ord-cart'
 
@@ -56,6 +55,7 @@ let routes = [{
   header: true,
   name: 'Index',
   component: Index,
+  children: [],
 },{
   path: '/inside/dingzhi',
   name: 'dingzhi',
@@ -157,10 +157,11 @@ const router = new Router({
   }
 });
 
-//全局路由配置
-//路由开始之前的操作
+// 全局路由配置
+// 路由开始之前的操作
 router.beforeEach((to, from, next) => {
-
+  next();
+  console.log(to);
 });
 
 

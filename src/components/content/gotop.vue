@@ -1,6 +1,6 @@
 <template>
   <!-- icon-dingbu start -->
-  <div class="iconfont icon-dingbu"></div>
+  <div class="iconfont icon-dingbu" @click="goTopBack()"></div>
   <!-- icon-dingbu end -->
 </template>
 
@@ -11,8 +11,22 @@
 
       }
     },
+    created() {
+      //  窗体滚动事件
+      $(window).scroll(function() {
+        if($(window).scrollTop() >= 350) {
+          $(".icon-dingbu").fadeIn(500);
+        } else {
+          $(".icon-dingbu").stop(true,true).fadeOut(500);
+        }
+      });
+    },
     methods: {
-
+      goTopBack() {
+        $('html,body').animate({
+          scrollTop: 0,
+        },200);
+      },
     },
   }
 </script>

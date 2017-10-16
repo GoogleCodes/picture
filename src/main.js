@@ -66,15 +66,7 @@ Vue.config.devtools = process.env.NODE_ENV === 'development'
 // rout.map(router);
 //
 // rout.beforeEach((to, from, next) => {
-//   console.log(to);
-//   //  窗体滚动事件
-//   $(window).scroll(function() {
-//     if($(window).scrollTop() >= 350) {
-//       $(".icon-dingbu").fadeIn(500);
-//     } else {
-//       $(".icon-dingbu").stop(true,true).fadeOut(500);
-//     }
-//   });
+
 // });
 
 /* eslint-disable no-new */
