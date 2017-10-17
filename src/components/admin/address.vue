@@ -9,21 +9,12 @@
 
       <div class="trade_status" style="width: 99%;">
         <template v-for="(item, index) in data.list">
-          <div class="infoBlock fl" :class="{'infoactive':index == currentIndex}" @click="currentIndex=index">
-            <!--<div class="infor-title" style="text-indent: 0.5em">-->
-              <!--<el-radio-group v-model="item.isDefault" @change="setDefault(item.addressId)">-->
-                <!--<el-radio class="radio"-->
-                          <!--label="false"-->
-                          <!--v-if="!item.isDefault">设置默认</el-radio>-->
-                <!--<el-radio class="radio" v-if="item.isDefault"-->
-                          <!--label="false">默认地址</el-radio>-->
-              <!--</el-radio-group>-->
-            <!--</div>-->
-            <div class="infor-title" v-if="!item.isDefault" @click="setDefault(item.addressId)">
+          <div class="infoBlock fl" :class="{'infoactive':index == currentIndex}" @click="goCurrent(index)">
+            <div class="infor-title" v-if="item.select == 0" @click="setDefault(item.id)">
               <i class="iconfont icon-quxiaoquanxuan ft-24"></i>
               <span>设置默认</span>
             </div>
-            <div class="infor-title" v-if="item.isDefault">
+            <div class="infor-title" v-else-if="item.select == 1">
               <i class="iconfont icon-checked-fill"></i>
               <span>默认地址</span>
             </div>
@@ -31,7 +22,7 @@
               <ul>
                 <li>
                   <span>收货人：</span>
-                  <span>{{ item.userName }}</span>
+                  <span>{{ item.sname }}</span>
                 </li>
                 <li>
                   <span>联系电话：</span>
@@ -39,7 +30,7 @@
                 </li>
                 <li>
                   <span>详细地址：</span>
-                  <span>{{ item.streetName }}</span>
+                  <span>{{ item.adr }}</span>
                 </li>
               </ul>
             </div>
@@ -51,12 +42,11 @@
             <span>添加新地址</span>
           </router-link>
           <!--<a href="javascript:void(0);" class="public-btn add-address block"></a>-->
-          <a href="javascript:void(0);" class="public-btn delete-address block">
+          <a href="javascript:void(0);" class="public-btn delete-address block" @click="delAddress()">
             <i class="iconfont icon-shanchu"></i>
-            删除地址
-        </a>
+            <span>删除地址</span>
+          </a>
         </div>
-
       </div>
     </div>
   </div>
@@ -85,34 +75,68 @@
       components: {
 
       },
+      watch: {
+
+      },
       methods: {
-          setAddress() {
-              this.$http.get(this.$api.get_address.url_address).then((res) => {
-                  this.data.list = res.data.result;
-              });
-          },
-          setDefault(addressId) {
-              for (let i = 0; i < this.data.list.length; i++) {
-                console.log(this.data.list[i].addressId);
-                if (this.data.list[i].addressId == addressId) {
-                  this.data.list[i].isDefault = true;
-                } else {
-                  this.data.list[i].isDefault = false;
-                }
-              }
-              return;
-              this.data.list.forEach((item, index) => {
-                  if (item.addressId == addressId) {
-                      console.log(item.addressId,addressId);
-                      item.isDefault = true;
-                      console.log(item.isDefault);
-                  } else {
-                      console.log(item.addressId,addressId);
-                      item.isDefault = false;
-                      console.log(item.isDefault);
-                  }
-              });
+        goCurrent(index) {
+          this.currentIndex = index;
+        },
+        setAddress() {
+          this.$goFetch.fetchGet(this.$api.get_address.get_address + '?id=6').then((res) => {
+              console.log(res);
+              this.data.list = res.data;
+          });
+        },
+        setDefault(id) {
+          let set_id = 0;
+          for (let i = 0; i < this.data.list.length; i++) {
+            set_id = this.data.list[i];
           }
+          if (set_id.id == id) {
+            set_id.select = 1;
+          } else {
+            set_id.select = 0;
+          }
+          this.$goFetch.fetchGet(this.$api.get_address.set_add_default + '?id='+ id +'&uid=6').then((res) => {
+            if (res.code == 0) {
+              this.$message({
+                message: res.msg,
+                type: 'warning'
+              });
+            } else if (res.code == 1) {
+              this.$message({
+                message: res.msg,
+                type: 'success'
+              });
+              setTimeout(() => {
+                  location.reload();
+              }, 500);
+            }
+          });
+        },
+        delAddress() {
+          let set_id = 0;
+          for (let i = 0; i < this.data.list.length; i++) {
+            set_id = this.data.list[i];
+          }
+          this.$goFetch.fetchGet(this.$api.get_address.del_address + '?id='+ set_id.id +'').then((res) => {
+            if (res.code == 0) {
+              this.$message({
+                message: res.msg,
+                type: 'warning'
+              });
+            } else if (res.code == 1) {
+              this.$message({
+                message: res.msg,
+                type: 'success'
+              });
+              setTimeout(() => {
+                location.reload();
+              }, 500);
+            }
+          });
+        }
       }
   };
 </script>

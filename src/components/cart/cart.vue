@@ -57,7 +57,7 @@
         </el-table>
       </div>
       <div class="bar-wrapper w100">
-        <p class="shoping-desc ft-18 fl">继续购物 共1件商品，已选择1件</p>
+        <p class="shoping-desc ft-18 fl">继续购物 共{{ count }}件商品，已选择{{ isChonseShop }}件</p>
         <div class="fr">
           <el-button class="fr" @click="goPay()">去结算</el-button>
           <p class="ft-20 fr selectedItem">合计(不含运费)：{{ data.totalMoney | changePrice }}元</p>
@@ -89,7 +89,8 @@
           },
           multipleSelection:[],
           //  删除的索引
-          delIndex: null
+          delIndex: null,
+          isChonseShop: 0,
         }
     },
     components: {
@@ -107,6 +108,9 @@
       list() {
         return this.$store.state.list;
       },
+      count() { //  购物车总数
+        return this.$store.state.count;
+      },
       number() {
           for (let i in this.data.list) {
             this.number = this.data.list[i].nums;
@@ -114,9 +118,9 @@
       }
     },
     watch: {
-        $route (to) {
+      $route (to) {
 
-        }
+      }
     },
     // 定义过滤方法
     filters:{
@@ -127,7 +131,7 @@
     },
     methods: {
       fetchData() {
-        this.data.list = JSON.parse(localStorage.getItem('cart_info'));
+        this.data.list = this.$storageGet('cart_info');// JSON.parse(localStorage.getItem('cart_info'));
         this.$store.commit('SET_CART_NUMBER', this.data.list);
       },
       //  取消全选
@@ -137,6 +141,7 @@
       },
       //  返回的参数为选中行对应的对象
       selected (selection) {
+        this.isChonseShop = selection.length;
         this.multipleSelection = selection;
         this.data.totalMoney = 0;
         for(var i = 0; i < selection.length; i++) {

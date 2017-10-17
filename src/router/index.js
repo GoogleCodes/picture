@@ -161,7 +161,6 @@ const router = new Router({
 // 路由开始之前的操作
 router.beforeEach((to, from, next) => {
   next();
-  console.log(to);
 });
 
 

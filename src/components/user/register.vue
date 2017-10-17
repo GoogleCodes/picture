@@ -41,8 +41,8 @@
             </div>
             <div class="form-input">
               <div class="form-h2 lineHeight50 fl">确认密码：</div>
-              <el-form-item>
-                <el-input class="inputInfo input fl" placeholder="再次输入密码" />
+              <el-form-item prop="repwd">
+                <el-input class="inputInfo input fl" v-model="ruleForm.repwd" placeholder="再次输入密码" />
               </el-form-item>
             </div>
           </el-form>
@@ -70,16 +70,18 @@
       return {
         codeText: "获取验证码",
         ruleForm: {
-          code: null,
-          name: null,
-          phone: null,
-          password: null,
+          code: null,       //  验证码
+          name: null,           //  名称
+          phone: null, //  手机号码
+          password: null,       //  密码
+          repwd: null,          //  确认密码
         },
         rules: {
           code: [{required: true, message: '请输入验证码！', trigger: 'blur'}],
           name: [{required: true, message: '请输入姓名！', trigger: 'blur'}],
           phone: [{required: true, message: '请输入账户名！', trigger: 'blur'}],
-          password: [{required: true, message: '请输入账户密码！', trigger: 'blur'}]
+          password: [{required: true, message: '请输入账户密码！', trigger: 'blur'}],
+          repwd: [{required: true, message: '再次输入密码', trigger: 'blur'}]
         },
         //  请求时的loading效果
         load_data: false,
@@ -104,23 +106,34 @@
             return;
           }
           this.load_data = true;
-          let options = {
-              tel: this.ruleForm.phone,
-              pwd: this.ruleForm.password,
-          };
-          this.$postData(this.$api.port_user.set_reg + '?uname=13250672958&tel=13250672958&pwd=123&repwd=123&code=123').then((res) => {
+          this.$goFetch.fetchPost(this.$api.port_user.set_reg +
+            '?uname=' + this.ruleForm.name +
+            '&tel=' + this.ruleForm.phone +
+            '&pwd=' + this.ruleForm.password +
+            '&repwd=' + this.ruleForm.repwd +
+            '&code=' + this.ruleForm.code).then((res) => {
               this.load_data = false;
-              console.log(res);
+              if (res.code == 0) {
+                this.$message({
+                  message: res.msg,
+                  type: 'warning'
+                });
+                return false;
+              } else if (res.code == 1) {
+                this.$message({
+                    message: '恭喜你，注册成功！',
+                    type: 'success'
+                });
+                setTimeout(() => {
+                    this.$router.push({ path: '/user/login' });
+                }, 1000);
+              }
           });
-          this.$message({
-              message: '恭喜你，注册成功！',
-              type: 'success'
-          });
+
         });
-//        this.$router.push({ path: '/user/login' });
       },
       getCode() {
-        let count = 25;
+        let count = 10;
         let times = setInterval(() => {
           count--;
           this.codeText = "还有" + count + "秒";
@@ -129,8 +142,21 @@
             this.codeText = "获取验证码"
           }
         },1000);
-        this.$postData(this.$api.port_user.get_code + '?tel=13250672958').then((res) => {
-          console.log(res);
+        this.$pubFetch.fetchPost(this.$api.port_user.get_reg_code + '?tel=13232800159').then((res) => {
+          clearInterval(times);
+          this.codeText = "获取验证码";
+          if(res.code == 0) {
+            this.$message({
+              message: res.msg,
+              type: 'warning'
+            });
+            return;
+          } else if (res.code == 1) {
+            this.$message({
+              message: res.msg,
+              type: 'success'
+            });
+          }
         })
       }
     },

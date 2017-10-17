@@ -85,7 +85,7 @@
     width: 120px;
     height: 39px;
     margin: 5px 0px;
-    background: url("../../assets/images/01.png") no-repeat;
+    background: url("../../../static/images/01.png") no-repeat;
   }
 
   .nav ul li .nav-href .dropDomn {

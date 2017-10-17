@@ -16,9 +16,6 @@ import router from './router'
 import ElementUI from 'element-ui'
 //  导入路由
 import VueRouter from 'vue-router'
-//  导入API
-import api from './common/port_uri'
-import { tool_verify } from './api/tool'
 import {
   fetchGet,
   fetchPost,
@@ -30,11 +27,17 @@ Vue.prototype.$getData = fetchGet;
 Vue.prototype.$postData = fetchPost;
 Vue.prototype.$putData = fetchPut;
 Vue.prototype.$deleteData = fetchDelete;
-Vue.prototype.$api = api;
 Vue.prototype.$storageSet = storageSet;
 Vue.prototype.$storageGet = storageGet;
-Vue.prototype.$toolVerify = tool_verify;
 
+import * as fetch from './api/utils.js'
+import { tool_verify } from './api/tool'
+//  验证
+Vue.prototype.$toolVerify = tool_verify;
+Vue.prototype.$goFetch = fetch;
+//  导入API
+import api from './common/port_uri'
+Vue.prototype.$api = api;
 
 //  使用element-ui
 Vue.use(ElementUI);
@@ -50,24 +53,6 @@ localStorage.setItem('apiDomain','http://192.168.0.13/');
 
 //是否开启工具调试
 Vue.config.devtools = process.env.NODE_ENV === 'development'
-
-// let rout = new VueRouter({
-//   router,
-//   mode: 'hash', //default: hash ,history
-//   scrollBehavior (to, from, savedPosition) {
-//     console.log(to);
-//     if (savedPosition) {
-//       return savedPosition
-//     } else {
-//       return {x: 0, y: 0}
-//     }
-//   }
-// });
-// rout.map(router);
-//
-// rout.beforeEach((to, from, next) => {
-
-// });
 
 /* eslint-disable no-new */
 new Vue({

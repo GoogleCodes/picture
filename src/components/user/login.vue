@@ -61,8 +61,8 @@
     data () {
       return {
         ruleForm: {
-          username: null,
-          password: null,
+          username: '13232800159',
+          password: '',
         },
         rules: {
           username: [{required: true, message: '请输入账户名！', trigger: 'blur'}],
@@ -83,7 +83,7 @@
         set_user_info: SET_USER_INFO
       }),
       changeGo (event) {
-          this.$storageSet('checked_login',event);
+          this.$pubFetch.storageGet('checked_login',event);
       },
       logining (formName) {
         let that = this;
@@ -91,51 +91,35 @@
           if (!valid) {
             return false;
           }
-          //  登录提交
-          let json = {
-            username : this.ruleForm.username,
-            password : this.ruleForm.password,
-          };
           that.load_data = true;
-          that.$postData(this.$api.port_user.login + '?tel='+ this.ruleForm.username + '&pwd=' + this.ruleForm.password + '').then((res) => {
-              if (res.msg == '该手机号码尚未注册') {
+          that.$goFetch.fetchPost(this.$api.port_user.get_login + '?tel='+ this.ruleForm.username + '&pwd=' + this.ruleForm.password + '').then((res) => {
+              if(res.code == 0) {
+                that.load_data = false;
                 this.$message({
-                  message: '警告哦，该手机号码尚未注册',
+                  message: res.msg,
                   type: 'warning',
-                  duration: 3000
                 });
-                this.$notify({
-                  title: '该手机号码尚未注册',
-                  message: '请前往注册页面注册!',
-                  duration: 3000,
+                return false;
+              } else {
+                that.load_data = false;
+                that.$message({
+                  showClose: true,
+                  message: res.msg,
                   type: 'warning'
                 });
-                that.load_data = false;
-                setInterval(() => {
-                  this.$router.push({ path: 'user/register' });
-                }, 3000);
+                that.set_user_info({
+                  user: {
+                    id: res.data.id,
+                    name: res.data.uname,
+                    tel: this.ruleForm.username,
+                  },
+                  login: true
+                });
+                setTimeout(() => {
+                  this.$router.push({ path: '/' });
+                  location.reload();
+                }, 500);
               }
-//              that.load_data = true;
-//              let uname = res.data.login.username;
-//              let pwrod = res.data.login.password;
-//              let pic = res.data.login.pic;
-//              that.$message({
-//                showClose: true,
-//                message: '恭喜，登录成功!',
-//                type: 'warning'
-//              });
-//              let options = {
-//                tel : "13250672958",
-//                pwd : "123"
-//              };
-//              that.set_user_info({
-//                user: options,
-//                login: true
-//              });
-              setTimeout(() => {
-                that.$router.push({ path: '/' });
-                location.reload();
-              }, 500);
           });
         });
       }

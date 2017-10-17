@@ -54,8 +54,8 @@
     line-height: 45px;
     margin-top: 7px;
     color: #9fa0a0;
-  width: 260px;
-  position: relative;
+    width: 325px;
+    position: relative;
 }
 
 .header .header-main .quguo-user .icon-yonghu {
@@ -79,7 +79,8 @@
 
 .header .header-main .quguo-user .cart-round {
     position: relative;
-  width: 120px;
+    width: 120px;
+    height: 47px;
 }
 
 .quguo-user .cart-round .item {

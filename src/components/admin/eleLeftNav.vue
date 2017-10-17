@@ -65,13 +65,20 @@
     },
     watch: {
       $route(to) {
-        console.log(to);
+
       }
     },
     created() {
-
+      this.isUserTrue();
     },
     methods: {
+      isUserTrue() {
+        if (this.$goFetch.storageGet('user_info') === 'undefined') {
+          setTimeout(() => {
+            this.$router.push({ path: '/user/login'}, 200)
+          });
+        }
+      },
       goBack() {
         this.$confirm('确定要退出吗?, 是否继续?', '提示', {
           confirmButtonText: '确定',

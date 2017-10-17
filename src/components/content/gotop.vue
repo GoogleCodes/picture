@@ -45,6 +45,7 @@
     font-size: 26px;
     color: #fff;
     cursor: pointer;
+    display: none;
   }
   /* icon-dingbu end */
 </style>

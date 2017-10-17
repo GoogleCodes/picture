@@ -15,20 +15,29 @@
   import foots from '@/components/footer/Footer.vue'
 
   export default {
-    name: 'admin',
-    data () {
-      return {
+      name: 'admin',
+      data () {
+          return {
 
-      }
-    },
-    created () {
-
-    },
-    components: {
-      heads,
-      foots,
-      eleLeft
-    }
+          }
+      },
+      created () {
+          this.isUserTrue();
+      },
+      components: {
+          heads,
+          foots,
+          eleLeft
+      },
+      methods: {
+          isUserTrue() {
+              if (localStorage.getItem('user_info') === 'undefined') {
+                  setTimeout(() => {
+                      this.$router.push({ path: '/user/login'}, 200)
+                  });
+              }
+          }
+      },
   };
 </script>
 

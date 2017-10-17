@@ -5,7 +5,6 @@
 import axios from 'axios'
 import qs from 'qs'
 
-
 //  get
 export const fetchGet = (target, data) => {
   if (data) {
@@ -125,4 +124,8 @@ export const storageGet = (key) => {
     key = {};
   }
   return key_Obj;
+};
+
+export const storageRemove = (key) => {
+  return window.localStorage.removeItem(key);
 };

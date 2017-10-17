@@ -12,7 +12,7 @@
               <div class="iconfont icon-yonghu fl" > <!-- :style="{backgroundImage:'url('+ author +')'}" -->
                 <img :src="list.author" alt="" class="w11 h100" >
               </div>
-              <div class="icon-username fl">{{ list.uname }}</div>
+              <div class="icon-username fl">{{ list.name }}</div>
             </router-link>
           </div>
           <div class="fl marLeft">|</div>
@@ -57,6 +57,7 @@
           try {
             let arr = JSON.parse(this.$store.state.user_info);
             this.list = arr.user
+            console.log(this.list, "---");
           } catch(e) {}
           return this.list;
         },
@@ -74,9 +75,8 @@
         isUser() {
           //  调用user_info
           this.user_info;
-          let that = this, userJson = this.$storageGet('user_info');
+          let that = this, userJson = this.$goFetch.storageGet('user_info');
 
-          console.log(userJson);
           if (userJson !== null) {
             that.closeuser = true;
             that.uname = userJson.uname;
@@ -99,9 +99,12 @@
               message: '退出成功!'
             });
             this.closeuser = false;
-            localStorage.removeItem('user_info');
+            this.$goFetch.storageRemove('user_info');
+            this.$goFetch.storageSet('user_info',undefined);
             //  跳回首页
-            this.$router.push({ path: '/'});
+            setTimeout(() => {
+              this.$router.push({ path: '/'});
+            }, 1500);
           }).catch(() => {
             this.$message({
               type: 'info',
@@ -118,7 +121,7 @@
   .header .header-main .header-logo {
     width: 65px;
     height: 47px;
-    background: url("../../assets/images/logo.png") no-repeat;
+    background: url("../../../static/images/logo.png") no-repeat;
     margin: 5px 0px;
   }
 
