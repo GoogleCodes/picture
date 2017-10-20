@@ -1,0 +1,94 @@
+<template>
+  <!-- footer start -->
+  <div class="footer clear" v-show="$route.meta.footer">
+    <ul>
+      <li class="fl">
+        <router-link :to="{ path: '/'}" class="foot-href">
+          <i class="iconfont icon-homel block"></i>
+          <span>主页</span>
+        </router-link>
+      </li>
+      <li class="fl">
+        <router-link :to="{ path: '/cart/cart'}" class="foot-href">
+          <i class="iconfont icon-cart block"></i>
+          <span>购物车</span>
+        </router-link>
+      </li>
+      <li class="fl">
+        <router-link :to="{ path: '/'}" class="foot-href">
+          <i class="iconfont icon-dingdan1 block"></i>
+          <span>订单</span>
+        </router-link>
+      </li>
+      <li class="fl">
+        <router-link :to="{ path: '/'}" class="foot-href">
+          <i class="iconfont icon-geren block"></i>
+          <span>我的</span>
+        </router-link>
+      </li>
+    </ul>
+  </div>
+  <!-- footer end -->
+</template>
+
+<script type="text/javascript">
+  export default {
+    name: 'foots',
+    data() {
+        return {
+
+        }
+    },
+    computed: {
+      getYear() {
+        return new Date().getFullYear()
+      }
+    },
+    watch: {
+
+    },
+    created() {
+
+    },
+    methods: {
+
+    }
+  };
+</script>
+
+<style type="text/css">
+  .footer {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 50px;
+    z-index: 100;
+    background: #000;
+  }
+
+  .footer ul li {
+    width: 25%;
+    text-align: center;
+  }
+
+  .footer ul li .foot-href {
+    color: #fff;
+  }
+  .footer ul li .foot-href:active {
+    color: #b11e25;
+  }
+
+
+  .footer ul li .iconfont {
+    position: relative;
+    top: 4px;
+    font-size: 20px;
+  }
+
+  .footer ul li span {
+    position: relative;
+    top: 2px;
+  }
+
+</style>
