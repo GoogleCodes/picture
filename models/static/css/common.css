@@ -33,7 +33,7 @@ input:disabled,select:disabled,textarea:disabled{background:#ccc;}
 .red{color:red;}
 .green{color:green;}
 
-.colb3{color:#b3b3b3;}
+.c_b3b3b3{color:#b3b3b3;}
 
 /*改变谷歌滚动条的样式*/
 ::selection{background:pink;}

@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-bottom: 53px;">
+  <div style="padding-bottom: 53px;margin-top: 56px;">
     <template v-for="item in 3">
       <div class="order-list">
         <div class="order-number fl w100">订单号 ：50681150656</div>

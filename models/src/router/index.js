@@ -62,6 +62,7 @@ let routes = [{
   component: Index,
   meta: {
     header: true,
+    position: 1,
     footer: true,
   },
   children: [],
@@ -89,6 +90,7 @@ let routes = [{
   component: order,
   meta: {
     header: false,
+    position: 3,
     title: '商品列表',
     goback: true,
     footer: true,
@@ -183,61 +185,74 @@ let routes = [{
   path: '/admin/admin',
   name: 'admin',
   component: admin,
-  children: [{
-    path: '/admin/vip',
-    name: 'vip',
-    component: vip,
-    meta: {
-      header: false,
-      footer: true,
-    }
-  },{
-    path: '/admin/changepwd',
-    name: 'changepwd',
-    component: changepwd,
-    meta: {
-      header: false,
-      footer: true,
-    }
-  },{
-    path: '/admin/shoping',
-    name: 'shoping',
-    component: shoping,
-    meta: {
-      header: false,
-      footer: true,
-    }
-  },{
-    path: '/admin/manage',
-    name: 'manage',
-    component: manage,
-    meta: {
-      header: false,
-      footer: true,
-    }
-  },{
-    path: '/admin/address',
-    name: 'address',
-    component: address,
-    meta: {
-      header: false,
-      footer: true,
-    }
-  },{
-    path: '/admin/increase',
-    name: 'increase',
-    component: increase,
-    meta: {
-      header: false,
-      footer: true,
-    }
-  }],
+  meta: {
+    header: false,
+    position: 4,
+    footer: true,
+    title: '会员中心',
+    goback: true,
+  },
+},{
+  path: '/admin/vip',
+  name: 'vip',
+  component: vip,
+  meta: {
+    header: false,
+    footer: true,
+    title: '会员中心',
+    goback: true,
+  }
+},{
+  path: '/admin/changepwd',
+  name: 'changepwd',
+  component: changepwd,
+  meta: {
+    header: false,
+    footer: true,
+  }
+},{
+  path: '/admin/shoping',
+  name: 'shoping',
+  component: shoping,
+  meta: {
+    header: false,
+    footer: true,
+  }
+},{
+  path: '/admin/manage',
+  name: 'manage',
+  component: manage,
+  meta: {
+    header: false,
+    footer: true,
+  }
+},{
+  path: '/admin/address',
+  name: 'address',
+  component: address,
+  meta: {
+    header: false,
+    title: '收货地址',
+    footer: true,
+    goback: true,
+  }
+},{
+  path: '/admin/increase',
+  name: 'increase',
+  component: increase,
+  meta: {
+    header: false,
+    title: '增加地址',
+    footer: true,
+    goback: true,
+  }
 },{
   path: '/cart/cart',
   name: 'cart',
   component: cart,
   meta: {
     header: false,
+    position: 2,
     footer: true,
     title: '购物车',
     goback: true,

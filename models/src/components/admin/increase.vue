@@ -1,35 +1,32 @@
 <template>
   <div>
     <div class="admin-right fr">
-      <div class="orderHistory">
-        <h1 class="ft-26">Add Address</h1>
-        <div class="line"></div>
-        <h5 class="order-h5">添加收货地址</h5>
-      </div>
-
-      <div class="trade_status" style="width:99%;padding-bottom: 116px;">
+      <div class="trade_status">
         <div class="item-add">
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
-            <div class="form-title ft-18">增加收货地址</div>
-            <el-form-item prop="name">
-              <input type="text" class="block" placeholder="收货人姓名" v-model="ruleForm.name">
-            </el-form-item>
-            <el-form-item prop="telphone">
-              <input type="tel" class="block" placeholder="电话" v-model="ruleForm.telphone">
-            </el-form-item>
-            <el-form-item>
-              <el-cascader :options="addressData" v-model="selectedOptions" :props="props"></el-cascader>
-            </el-form-item>
-            <el-form-item>
-              <input type="text" class="block" placeholder="详细地址（街道、小区、门牌号）" v-model="ruleForm.address">
-            </el-form-item>
-            <el-form-item class=" fl">
-              <el-checkbox-group v-model="isDefault" @change="goDefault">
-                <el-checkbox label="设置为默认收货地址"></el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-            <el-button class="fr save-btn" @click="gosave('ruleForm')">确认保存</el-button>
+            <div class="form-item">
+              <span class="fl item-desc">收货人</span>
+              <el-input type="text" class="block" placeholder="收货人姓名" v-model="ruleForm.name"></el-input>
+            </div>
+            <div class="form-item">
+              <span class="fl item-desc">手机号</span>
+              <el-input type="tel" class="block" placeholder="电话" v-model="ruleForm.telphone"></el-input>
+            </div>
+            <div class="form-item">
+              <span class="fl item-desc">所在地区</span>
+              <el-cascader class="select-input" :options="addressData" v-model="selectedOptions" :props="props"></el-cascader>
+            </div>
+            <div class="form-item " style="height: auto;padding: 14px 10px;">
+              <span class="fl item-desc">详细地址</span>
+              <el-input type="textarea" placeholder="详细地址（街道、小区、门牌号）" v-model="ruleForm.address"></el-input>
+            </div>
           </el-form>
+          <div class="radio-item" style="line-height: 40px;">
+            <el-checkbox-group v-model="isDefault" @change="goDefault">
+              <el-radio label="设置为默认收货地址"></el-radio>
+            </el-checkbox-group>
+          </div>
+          <el-button class="save-btn" @click="gosave('ruleForm')">确认保存</el-button>
         </div>
       </div>
     </div>
@@ -80,32 +77,75 @@
           console.log(event);
         },
         gosave (formName) {
-          this.$refs[formName].validate((valid) => {
-            if (!valid) {
-              return false;
-            }
-            this.$goFetch.fetchPost(this.$api.get_address.url_address +
-              '?id=6&sname=123&tel=13232800159&adr=123&select=false').then((res) => {
-              console.log(res);
-            })
-          });
+          this.$goFetch.fetchPost(this.$api.get_address.url_address +
+            '?id=6&sname=123&tel=13232800159&adr=123&select=false').then((res) => {
+            console.log(res);
+          })
         }
       }
   }
 </script>
 
+
+
 <style>
-
-  .el-cascader {
+  .admin-right {
     width: 100%;
+    margin-top: 46px;
+  }
+  .trade_status {
+
+  }
+  .item-add .form-item {
+    height: 40px;
+    padding: 0px 10px;
+    background: #fff;
+  }
+  .item-add .form-item .item-desc {
+    line-height: 40px;
+    width: 60px;
+  }
+  .item-add .form-item .el-input {
+    width: 80%;
+  }
+  .form-item .el-input .el-input__inner {
+    border: none;
+  }
+  .form-item .el-form-item__content {
+    width: 90%;
+  }
+  .form-item .el-input__icon {
+    /*right: -32px;*/
+  }
+  .form-item .el-textarea {
+    width: 80%;
+  }
+  .form-item .el-textarea__inner {
+    height: 90px;
+    border: none;
+    margin-top: 5px;
+  }
+  .form-item .el-cascader__label {
+    padding: 0 0 0 10px;
+  }
+  .item-add .form-item .select-input {
+    width: 80%;
+  }
+  .item-add .radio-item {
+    margin: 10px 0px;
+    padding: 0px 10px;
+    background: #fff;
+  }
+  .item-add .save-btn {
+    background: #b11e25;
+    border: 1px solid #b11e25;
+    color: #fff;
+    height: 40px;
+    width: 90%;
+    display: block;
+    margin: 40px auto;
+
   }
 
-  .el-cascader .el-cascader__label{
-    line-height: 77px;
-  }
-
-  .default-address ,.icon-checked-fill {
-      font-size: 16px;
-  }
 
 </style>

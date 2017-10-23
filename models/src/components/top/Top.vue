@@ -203,3 +203,13 @@
   /* nav end */
 
 </style>
+
+
+<style>
+  .el-menu--dark .el-submenu .el-menu {
+    background: #333;
+  }
+  .el-menu--dark .el-menu-item:hover, .el-menu--dark .el-submenu__title:hover {
+    background: #333;
+  }
+</style>

@@ -1,13 +1,22 @@
 <template>
   <div class="goback" v-show="$route.meta.goback">
-    <i class="iconfont icon-zuobian"></i>
+    <i class="iconfont icon-zuobian" @click="goBack()"></i>
     <span class="goback-title ft-18">{{ $route.meta.title }}</span>
   </div>
 </template>
 
 <script type="text/javascript">
   export default {
+      data() {
+          return {
 
+          }
+      },
+      methods: {
+          goBack() {
+              window.history.back();
+          }
+      }
   }
 </script>
 
@@ -16,7 +25,11 @@
   .goback {
     width: 100%;
     height: 47px;
+    position: fixed;
     background: #222;
+    top: 0px;
+    z-index: 100;
+    left: 0px;
   }
 
   .goback .icon-zuobian {

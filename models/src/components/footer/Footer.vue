@@ -3,25 +3,25 @@
   <div class="footer clear" v-show="$route.meta.footer">
     <ul>
       <li class="fl">
-        <router-link :to="{ path: '/'}" class="foot-href">
+        <router-link :to="{ path: '/'}" class="foot-href" :class="{'active' : $route.meta.position === 1 }">
           <i class="iconfont icon-homel block"></i>
           <span>主页</span>
         </router-link>
       </li>
       <li class="fl">
-        <router-link :to="{ path: '/cart/cart'}" class="foot-href">
+        <router-link :to="{ path: '/cart/cart'}" class="foot-href" :class="{'active' : $route.meta.position === 2 }">
           <i class="iconfont icon-cart block"></i>
           <span>购物车</span>
         </router-link>
       </li>
       <li class="fl">
-        <router-link :to="{ path: '/pages/order'}" class="foot-href">
+        <router-link :to="{ path: '/pages/order'}" class="foot-href" :class="{'active' : $route.meta.position === 3 }">
           <i class="iconfont icon-dingdan1 block"></i>
           <span>订单</span>
         </router-link>
       </li>
       <li class="fl">
-        <router-link :to="{ path: '/admin/admin'}" class="foot-href">
+        <router-link :to="{ path: '/admin/admin'}" class="foot-href" :class="{'active' : $route.meta.position === 4 }">
           <i class="iconfont icon-geren block"></i>
           <span>我的</span>
         </router-link>
@@ -74,6 +74,9 @@
 
   .footer ul li .foot-href {
     color: #fff;
+  }
+  .footer ul li .active {
+    color: #b11e25;
   }
   .footer ul li .foot-href:active {
     color: #b11e25;

@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div style="width: 100%;height: 100%;background: #fff;overflow: hidden">
+      <div class="info-body">
         <router-link :to="{ path: '/pages/pic-detail'}" class="block">
           <div class="order-msg fl">
             <div class="line" style="">
@@ -70,7 +70,9 @@
             <span class="fl money">应付：</span>
             <span class="fl c_b11e25">￥39.80</span>
           </div>
-          <div class="gopay fr">立即支付</div>
+          <div class="gopay fr util-btn">立即支付</div>
+          <!--<div class="cancel fl util-btn">取消订单</div>-->
+          <!--<div class="confirm fr util-btn">确认订单</div>-->
         </div>
       </div>
     </div>
@@ -79,6 +81,7 @@
 
 
 <script type="text/javascript">
+  import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
 
   export default {
     data() {
@@ -87,7 +90,7 @@
     created() {
 
     },
-    components: {},
+    components: {ElButton},
     methods: {},
   }
 
@@ -127,7 +130,7 @@
   }
 
   .info-express .exp-content .ex-line {
-    margin-left: 40px;
+    margin-left: 32px;
   }
 
   .info-express .exp-content .ex-line .info-address {
@@ -147,6 +150,14 @@
     overflow: hidden;
     border-bottom: 1px solid #ccc;
     margin-bottom: 10px;
+  }
+
+  .info-body {
+    width: 100%;
+    height: 100%;
+    background: rgb(255, 255, 255);
+    overflow: hidden;
+    margin-top: 10px;
   }
 
   .order-list .order-msg .wrap {
@@ -241,18 +252,23 @@
     background: #fff;
   }
 
-  .pic-detail .comment .comment-money, .pic-detail .comment .gopay {
+  .pic-detail .comment .util-btn,
+  .pic-detail .comment .util-btn {
     line-height: 45px;
     width: 50%;
     text-align: center;
     box-sizing: border-box;
   }
 
+  .pic-detail .comment .comment-money {
+    line-height: 45px;
+  }
+
   .pic-detail .comment .comment-money .money {
     padding-left: 32px;
   }
 
-  .pic-detail .comment .gopay {
+  .pic-detail .comment .gopay , .pic-detail .comment .confirm {
     background: #b11e25;
     color: #fff;
   }

@@ -332,14 +332,6 @@
 
 /* admin-right start */
 
-.admin-right .trade_status {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    margin: 66px 0px;
-    border: 1px solid #b5b5b6;
-}
-
 .admin-right .trade_status .vip-content {
     width: 916px;
     margin: 0px auto;
@@ -570,28 +562,8 @@
     background: #f7f8f8;
 }
 
-.admin-right .item-add {
-    width: 400px;
-    margin: 57px auto;
-}
-
 .admin-right .item-add .form-title {
     color: #595757;
-}
-
-.admin-right .item-add input[type='text'] ,input[type='tel'] {
-    width: 100%;
-    height: 46px;
-    border: 1px solid #dcdddd;
-    color: #b5b5b6;
-    margin: 15px 0 10px;
-    background: #fafbfc;
-    text-indent: 1em;
-}
-
-.admin-right .item-add .default-address .icon-moren {
-    color: #9fa0a0;
-    font-size: 30px;
 }
 
 .admin-right .item-add .default-address {
@@ -604,15 +576,6 @@
     color: #b11e25;
 }
 
-.admin-right .item-add .save-btn {
-    color: #595757;
-    width: 182px;
-    height: 39px;
-    border: 1px solid #9fa0a0;
-    background: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-}
 .admin-right .item-add .save-btn:hover {
     background: #b11e25;
     border: 1px solid #b11e25;

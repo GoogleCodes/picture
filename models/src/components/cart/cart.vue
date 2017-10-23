@@ -1,12 +1,12 @@
 <template>
   <div style="padding-top: 45px;">
-    <div class="cart-nothing">
+    <div class="cart-nothing" style="display: none;">
       <div class="cart-pic">
         <img src="../../../static/images/48.png" class="w100 h100" alt="">
       </div>
       <div class="ft-16 cart-desc">暂无商品，去逛逛吧</div>
     </div>
-    <div style="display: none;">
+    <div>
       <div class="cart-body">
         <div class="cart-box" v-for="(item, index) in 10">
           <div class="addition fl">
@@ -204,7 +204,6 @@
   /* cart-box end */
 
   /* cart-nothing start */
-
   .cart-nothing {
     width: 153px;
     margin: 132px auto;
