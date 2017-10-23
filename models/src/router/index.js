@@ -44,11 +44,15 @@ import register from '@/components/user/register'
 import modify from '@/components/user/modify'
 //  商品列表
 import orderlist from '@/components/inside/order'
+
 import proseries from '@/components/content/proseries'
 //  皮革相册
 import picdetail from '@/components/pages/pic-detail'
 //  测试
 import ordcart from '@/components/cart/ord-cart'
+
+//  订单列表
+import order from '@/components/pages/order-list'
 
 Vue.use(Router);
 
@@ -75,6 +79,18 @@ let routes = [{
   component: orderlist,
   meta: {
     header: false,
+    title: '产品系列',
+    goback: true,
+    footer: true,
+  }
+},{
+  path: '/pages/order',
+  name: 'order',
+  component: order,
+  meta: {
+    header: false,
+    title: '商品列表',
+    goback: true,
     footer: true,
   }
 },{
@@ -95,7 +111,9 @@ let routes = [{
   component: picdetail,
   meta: {
     header: false,
-    footer: true,
+    title: '订单详情',
+    goback: true,
+    footer: false,
   }
 },{
   path: '/pages/onload',

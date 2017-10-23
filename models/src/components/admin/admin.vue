@@ -22,7 +22,7 @@
           }
       },
       created () {
-//          this.isUserTrue();
+          this.isUserTrue();
       },
       components: {
           heads,

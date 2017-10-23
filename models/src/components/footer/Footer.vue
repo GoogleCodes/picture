@@ -15,13 +15,13 @@
         </router-link>
       </li>
       <li class="fl">
-        <router-link :to="{ path: '/'}" class="foot-href">
+        <router-link :to="{ path: '/pages/order'}" class="foot-href">
           <i class="iconfont icon-dingdan1 block"></i>
           <span>订单</span>
         </router-link>
       </li>
       <li class="fl">
-        <router-link :to="{ path: '/'}" class="foot-href">
+        <router-link :to="{ path: '/admin/admin'}" class="foot-href">
           <i class="iconfont icon-geren block"></i>
           <span>我的</span>
         </router-link>

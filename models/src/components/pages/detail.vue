@@ -324,6 +324,7 @@
     top: 0px;
     left: 0px;
     background: rgba(0,0,0,0.5);
+    z-index: 100;
   }
 
   .item-layer .select-color ,
