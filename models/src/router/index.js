@@ -143,6 +143,8 @@ let routes = [{
   component: frame,
   meta: {
     header: false,
+    goback: true,
+    title: '体验区',
     footer: true,
   }
 },{

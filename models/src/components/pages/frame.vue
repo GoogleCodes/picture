@@ -1,46 +1,44 @@
 <template>
-  <div>
+  <div class="frame-bg" style="">
     <!-- tab-banner start-->
     <div class="tab-banner">
-      <img src="../../../static/images/42.jpg" alt="" class="w100 h100" >
+      <img src="../../../static/images/51.png" alt="" class="w100 h100" >
+    </div>
+    <div class="wrap-pic">
+      <img src="../../../static/images/54.png" alt="" class="w100 h100" >
+      <div class="wrap-pic-text w100">
+        <span class="ft-28">体验区</span>
+        <div class="line"></div>
+        <div class="pic-desc ft-16">
+          <span>匠杺，是一辈子只做好一件事，<br />用漫长岁月传承一门手艺；<br />匠杺用心为每一个相框赋予美好，<br />保留最珍贵的回忆。<br />从这里开始.......</span>
+        </div>
+      </div>
     </div>
     <!-- tab-banner end -->
 
     <!-- frame-product start -->
-    <div class="frame-product w1200">
+    <div class="frame-product">
       <div class="container">
-        <div class="product-top-title">
-          <h3>PHOTO FRAME</h3>
-          <p class="line"></p>
-          <p>婚纱相框</p>
-        </div>
         <ul class="product-list clearfix">
-          <li>
-            <div class="frame-pic">
-              <img src="../../../static/images/40.jpg" alt="" class="w100 h100" />
-              <div class="filter-layer" style=""></div>
-            </div>
-            <div class="content">
-              <h3>复古木纹</h3>
-              <p>MP14533-2B</p>
-              <router-link :to="{ path: '/'}" class="display">
-                <span class="more">查看更多</span>
+          <template v-for="item in 4">
+            <li class="fl">
+              <router-link :to="{ path: '/'}" class="w100 h100 block">
+                <div class="prod-pic">
+                  <img src="../../../static/images/55.png" alt="" class="w100 h100" >
+                </div>
+                <div class="content">
+                  <h3>复古木纹</h3>
+                </div>
               </router-link>
-            </div>
-          </li>
+            </li>
+          </template>
         </ul>
         <div class="show-more">
-          <span class="btn-more">展开更多</span>
+          <span class="btn-more">加载更多</span>
         </div>
       </div>
     </div>
     <!-- frame-product end -->
-
-    <!-- frame-ban start -->
-    <div class="frame-ban w1200">
-      <img src="../../../static/images/41.jpg" alt="" class="w100 h100" >
-    </div>
-    <!-- frame-ban end -->
   </div>
 </template>
 
@@ -69,115 +67,57 @@
 </script>
 
 <style type="text/css">
-  /* 产品内容 */
-  .frame-product {
-    margin: 45px auto;
-  }
-  .frame-product .product-top-title {
-    width: 100%;
-    height: 136px;
-    padding-top: 100px;
-    margin-bottom: 40px;
-    background: url("../../../static/images/39.jpg");
-    text-align: center;
-  }
-  .frame-product .product-top-title h3 {
-    text-align: center;
-    font-size: 29px;
-    font-style: italic;
-    color: #fff;
-  }
-  .frame-product .product-top-title .line {
-    margin: 3px 525px;
-    height: 0;
-    border-bottom: 1px solid #fff;
-  }
-  .frame-product .product-top-title p {
-    text-align: center;
-    font-size: 27px;
-    color: #fff;
-  }
-  /* 产品列表 */
-  .frame-product .product-list {
-    width: 1230px;
-  }
-  .frame-product .product-list li {
-    float: left;
-    position: relative;
-    width: 584px;
-    height: 381px;
-    margin-right: 28px;
-    margin-bottom: 28px;
-    box-shadow: 0 0 5px #ccc;
-  }
-
-  .frame-product .product-list li .frame-pic {
-    width: 584px;
-    position: relative;
-    height: 381px;
-  }
-
-  .frame-pic .filter-layer {
-    background: rgba(0,0,0,0.5);
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -ms-filter: blur(2px);
-    -o-filter: blur(2px);
-    position: absolute;
-    filter: blur(2px);
-    height: 100%;
-    width: 100%;
-    left: 0px;
-    top: 0px;
-  }
-
-  .frame-product .product-list li .content {
-    position: absolute;
-    width: 200px;
-    top: 120px;
-    left: 50%;
-    margin-left: -100px;
-    text-align: center;
-  }
-  .frame-product .product-list li .content h3 {
-    font-size: 26px;
-    color: #fff;
-  }
-  .frame-product .product-list li .content p {
-    font-size: 13px;
-    color: #fff;
-    margin: 12px;
-  }
-  .frame-product .product-list li .content span {
-    display: inline-block;
-    width: 122px;
-    height: 40px;
+  /* frame-bg start */
+  .frame-bg {
     background: #fff;
-    border-radius: 20px;
-    color: #000;
-    line-height: 40px;
-    cursor: pointer;
+    padding: 30px 0px;
   }
-  .frame-product .show-more {
+  .frame-bg .wrap-pic {
+    width: 300px;
+    margin: 30px auto;
+    position: relative;
+  }
+  .frame-bg .wrap-pic .wrap-pic-text {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    text-align: center;
+  }
+  .frame-bg .wrap-pic .line {
+    width: 60px;
+    height: 3px;
+    margin: 10px auto 0px;
+    background: #b11e25;
+  }
+  .frame-bg .wrap-pic .wrap-pic-text .pic-desc {
+    color: #6d706f;
+    margin: 30px 10px;
+    line-height: 30px;
+  }
+  /* frame-bg end */
+  .frame-product {
+    margin: 87px auto 0px;
+  }
+  .frame-product .container ul li {
+    width: 45%;
+    margin: 25px 0px 0px 10px;
+  }
+  .frame-product .container ul li .prod-pic {
+    width: 100%;
+    height: 100%;
+  }
+  .frame-product .container ul li .content {
+    text-align: center;
+    margin: 20px auto 0px;
+  }
+  .frame-product .container .show-more {
+    text-align: center;
+    line-height: 90px;
+  }
+  /* tab-banner start */
+  .tab-banner {
     margin-top: 18px;
-    margin-bottom: 40px;
-    text-align: center;
   }
-  .frame-product .show-more .btn-more {
-    display: inline-block;
-    width: 184px;
-    height: 42px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    line-height: 42px;
-    text-align: center;
-    color: #4D4D4D;
-    cursor: pointer;
-  }
+  /* tab-banner end */
 
-
-  .frame-ban {
-    height: 400px;
-    margin: 45px auto;
-  }
 </style>
