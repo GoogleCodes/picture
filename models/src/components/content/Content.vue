@@ -9,7 +9,7 @@
 
       <div class="series">
         <div class="shop-series fl">
-          <router-link :to="{ path: '/'}" class="block">
+          <router-link :to="{ path: '/content/proseries'}" class="block">
             <div class="shop-series-pic">
               <img src="../../../static/images/30.png" class="w100 h100" alt="">
             </div>
@@ -20,7 +20,7 @@
           </router-link>
         </div>
         <div class="shop-series fl">
-          <router-link :to="{ path: '/'}" class="block">
+          <router-link :to="{ path: '/content/proseries'}" class="block">
             <div class="shop-series-pic">
               <img src="../../../static/images/30.png" class="w100 h100" alt="">
             </div>
@@ -40,11 +40,11 @@
     <div class="recommend">
       <div class="re-title ft-18">
         <h1 class="fl">热门推荐</h1>
-        —
+        <span>—</span>
         <span class="ft-14">时光印记，定格美好的回忆</span>
       </div>
-      <div class="re-wrap-shop">
-        <el-carousel height="180px">
+      <div class="re-wrap-shop clear">
+        <el-carousel height="180px" style="padding: 0px;">
           <el-carousel-item>
             <div class="card-tuijian fl" @click="goDetail(item)">
               <div class="card-tuijian-pic fl">
@@ -299,7 +299,7 @@
 
   .re-wrap-shop {
     height: 163px;
-    margin: 20px 18px;
+    margin: 20px 10px;
   }
 
   .re-wrap-shop .card-tuijian {

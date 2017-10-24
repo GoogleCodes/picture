@@ -160,24 +160,6 @@
     width: 960px;
 }
 
-.admin .admin-right .orderHistory {
-    text-align: center;
-    margin: 30px 0 0;
-}
-
-.admin .admin-right .orderHistory .line {
-    width: 57px;
-    height: 3px;
-    background: #b11e25;
-    margin: 10px auto 0px;
-}
-
-.admin .admin-right .orderHistory .order-h5 {
-    color: #595757;
-    margin-top: 5px;
-    font-weight: 500;
-}
-
 .admin .admin-right .order-title {
     width: 100%;
     height: 60px;
@@ -309,3 +291,13 @@
     /* order start */
 
 /* admin end */
+
+/* el-message-box start */
+.el-message-box {
+  width: 85%;
+}
+
+.el-message-box__content {
+  padding: 18px 20px;
+}
+/* el-message-box end */

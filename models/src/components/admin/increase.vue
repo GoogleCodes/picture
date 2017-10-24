@@ -74,12 +74,30 @@
       },
       methods: {
         goDefault (event) {
-          console.log(event);
+
         },
         gosave (formName) {
           this.$goFetch.fetchPost(this.$api.get_address.url_address +
-            '?id=6&sname=123&tel=13232800159&adr=123&select=false').then((res) => {
-            console.log(res);
+            '?id=6&sname='+ this.ruleForm.name +
+            '&tel='+ this.ruleForm.telphone +
+            '&adr='+ this.selectedOptions + this.ruleForm.address).then((res) => {
+            if (res.code == 0) {
+              this.$message({
+                message: res.msg,
+                type: 'warning'
+              });
+            } else if (res.code == 1) {
+              this.$message({
+                message: res.msg,
+                type: 'success'
+              });
+              setTimeout((res) => {
+                this.$router.push({
+                  path: '/admin/address'
+                });
+              }, 500);
+            }
+
           })
         }
       }

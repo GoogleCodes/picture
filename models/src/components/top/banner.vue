@@ -1,6 +1,6 @@
 <template>
   <!-- banner start -->
-  <el-carousel height="180px" style="z-index: -1">
+  <el-carousel height="180px">
     <el-carousel-item>
       <img src="../../../static/images/banner_xiadan.png" class="w100 h100" alt="">
     </el-carousel-item>
@@ -38,7 +38,11 @@
 <style type="text/css">
   .el-carousel {
     clear: both;
-    padding-top: 45px;
+    z-index: 2;
+    background: #fff;
+    overflow: hidden;
+    padding-top: 50px;
+    background: #fff;
   }
 </style>
 

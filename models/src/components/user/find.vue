@@ -71,25 +71,25 @@
     },
     methods: {
       getCode () {
-        let count = 10;
-        let times = setInterval(() => {
-          --count;
-          this.num = count;
-          if (count == 0) {
-            this.num = "获取验证码"
-            clearTimeout(times);
-          }
-        },1000);
-        if (!this.$toolVerify.isTel(this.ruleForm.phone)) {
-          this.$message({
-            showClose: true,
-            message: '请输入正确的手机号码格式！谢谢!',
-            type: 'warning',
-            duration: 2000,
-          });
-          return;
-        }
-        this.$goFetch.fetchPost(this.$pubFetch.port_user.get_find_code + '?tel='+ this.ruleForm.phone +'').then((res) => {
+//        let count = 10;
+//        let times = setInterval(() => {
+//          --count;
+//          this.num = count;
+//          if (count == 0) {
+//            this.num = "获取验证码"
+//            clearTimeout(times);
+//          }
+//        },1000);
+//        if (!this.$toolVerify.isTel(this.ruleForm.phone)) {
+//          this.$message({
+//            showClose: true,
+//            message: '请输入正确的手机号码格式！谢谢!',
+//            type: 'warning',
+//            duration: 2000,
+//          });
+//          return;
+//        }
+        this.$goFetch.fetchPost(this.$api.port_user.get_find_code + '?tel='+ this.ruleForm.phone +'').then((res) => {
           if(res.code == 0) {
             this.$message({
               message: res.msg,

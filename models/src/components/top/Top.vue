@@ -17,9 +17,13 @@
         <el-menu-item index="1">主页</el-menu-item>
         <el-submenu index="2">
           <template slot="title">皮册定制</template>
-          <el-menu-item-group title="分组一">
-            <el-menu-item index="2-1">时尚对裱册12寸竖</el-menu-item>
-          </el-menu-item-group>
+          <el-menu-item index="2-1">时尚对裱册12寸竖</el-menu-item>
+          <!--<el-menu-item-group title="分组一"></el-menu-item-group>-->
+        </el-submenu>
+        <el-submenu index="3">
+          <template slot="title">
+            <router-link :to="{ path: '/cart/cart'}">体验区</router-link>
+          </template>
         </el-submenu>
       </el-menu>
     </div>
@@ -175,41 +179,47 @@
     background: #333;
   }
 
-  .nav .el-col-8 {
-    width: 100%;
-  }
-
-  .el-submenu .el-menu-item {
-    min-width: 195px;
-  }
-
-  .nav .el-menu--dark {
-    background: #333;
-  }
-
-  .el-menu--dark .el-submenu .el-menu {
-    background: #222;
-  }
-
-  .el-menu-item-group__title {
-    color: #808080;
-  }
-
-  .el-menu--dark .el-menu-item, .el-menu--dark .el-submenu__title {
-    color: #808080;
-    border-bottom: 0.01rem solid #666;
-  }
-
   /* nav end */
 
 </style>
 
 
 <style>
+  /* nav start */
+  .nav .el-col-8 {
+    width: 100%;
+  }
+  .el-submenu .el-menu-item {
+    min-width: 195px;
+  }
+  .nav .el-menu--dark {
+    background: #333;
+  }
   .el-menu--dark .el-submenu .el-menu {
+    background: #222;
+  }
+  .el-menu-item-group__title {
+    color: #808080;
+  }
+  .el-menu--dark .el-menu-item , .el-menu--dark .el-submenu__title {
+    color: #808080;
+    border-bottom: 0.01rem solid #666;
+  }
+  .el-submenu__title a {
+    color: #808080;
+
+  }
+  .el-menu--dark .el-submenu .el-menu {
+    background: #333;
+  }
+  .el-submenu.is-active .el-submenu__title {
+    border-bottom-color: #666;
+  }
+  .el-menu--dark .el-submenu .el-menu .el-menu-item:hover {
     background: #333;
   }
   .el-menu--dark .el-menu-item:hover, .el-menu--dark .el-submenu__title:hover {
     background: #333;
   }
+  /* nav end */
 </style>

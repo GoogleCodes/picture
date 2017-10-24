@@ -1,22 +1,16 @@
 <template>
   <div>
-    <div class="admin-right fr">
-      <div class="orderHistory">
-        <h1 class="ft-26" style="font-weight: 500;">Member Introduction</h1>
-        <div class="line"></div>
-        <h5 class="order-h5">我的会员</h5>
-      </div>
-      <div class="trade_status" style="width:99%;padding-bottom: 116px;">
+    <div class="admin-right">
+      <div class="trade_status" style="padding: 52px 0px 80px;">
         <div class="vip-content">
           <div class="vip-title ft-21">
             <div class="line"></div>
-            <span>我的会员</span>
           </div>
           <div class="vip-item">
             <h4 class="ft-14">一、会员等级说明</h4>
-            <p style="color: #999;">根据成长值将用户划分为6个不同的等级，成长值越高，等级越高，享有的特权就越高</p>
+            <p class="desc">根据成长值将用户划分为6个不同的等级，成长值越高，等级越高，享有的特权就越高</p>
             <div class="vip-icon">
-              <img src="../../assets/images/24.png" alt="" style="width:100%;height: 100%;">
+              <img src="../../../static/images/53.png" alt="" class="w100 h100">
             </div>
             <h4 class="ft-14" style="margin-top: 50px;">二、会员等级规则</h4>
             <table class="vip-table">
@@ -76,8 +70,11 @@
               </tr>
               </tbody>
             </table>
+            <p class="desc">
+              举例：会员小A在2015年2月1日升级为普通会员，截止至2016年1月31日总成长值为1050，此时扣除500成长值，剩余成长值为550，系统根据剩余成长值重新判断会员小A为普通会员，有效期为1年。
+            </p>
             <h4 class="ft-14">三、会员活动</h4>
-            <p>我们的技术正在夜以继日的开发呢，敬请期待哟~~</p>
+            <p class="desc">我们的技术正在夜以继日的开发呢，敬请期待哟~~</p>
           </div>
         </div>
       </div>
@@ -85,3 +82,20 @@
   </div>
 </template>
 
+<style type="text/css">
+  /* vip start */
+  .trade_status{
+    background: #fff;
+  }
+  .vip-item {
+    padding: 0px 10px;
+  }
+  .vip-item .vip-icon {
+    width: 300px;
+  }
+  .vip-item .desc {
+    color: #999;
+    margin-top: 15px;
+  }
+  /* vip end */
+</style>

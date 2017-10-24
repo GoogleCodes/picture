@@ -108,6 +108,7 @@ scrollbarbutton:hover{-moz-appearance:none !important;background-color:rgb(255,0
 
 
 /* 通用颜色 开始*/
+.c_868989 {color: #868989;}
 .c_898989 {color: #898989;}
 .c_9fa0a0 {color: #9fa0a0;}
 .c_4d4d4d {color: #4d4d4d;}
@@ -129,3 +130,6 @@ body {
   height: 100%;
   width: 100%;
 }
+
+
+/*background: linear-gradient(to right,rgba(255,255,255,0),#ffffff 50%)*/

@@ -5,13 +5,12 @@
         <div class="head-pic">
           <img src="../../../static/images/50.png" class="w100 h100" alt="">
         </div>
-        <div class="head-name ft-20">昵称</div>
+        <!--<div class="head-name ft-20">{{ userList.name }}</div>-->
         <div class="head-vip">
           <span class="iconvip iconfont icon-vip1"></span>
           <span class="vipspan">普通会员</span>
         </div>
       </div>
-
       <ul>
         <li>
           <router-link :to="{ path: '/pages/order'}" class="block w100 h100">
@@ -37,7 +36,7 @@
           </router-link>
         </li>
         <li>
-          <router-link :to="{ path: '/'}" class="block">
+          <router-link :to="{ path: '/admin/vip'}" class="block w100 h100">
             <div class="fl">
               <i class="iconfont icon-vip2 c_b3b3b3"></i>
               <span class="ft-16" style="margin-left: 5px;">我的会员</span>
@@ -100,11 +99,11 @@
       name: 'admin',
       data () {
           return {
-
+            userList: {},
           }
       },
       created () {
-//          this.isUserTrue();
+          this.isUserTrue();
       },
       components: {
           heads,
@@ -115,8 +114,10 @@
           isUserTrue() {
               if (localStorage.getItem('user_info') === 'undefined') {
                   setTimeout(() => {
-                      this.$router.push({ path: '/user/login'}, 200)
-                  });
+                      this.$router.push({ path: '/user/login'})
+                  }, 1);
+              } else {
+                this.userList = this.$storageGet('user_info');
               }
           },
           goBack() {
@@ -127,12 +128,17 @@
               }).then(() => {
                   this.$message({
                     type: 'success',
-                    message: '删除成功!'
+                    message: '退出成功!'
                   });
+                  localStorage.removeItem('user_info');
+                  this.$storageSet('user_info',undefined);
+                  //  跳回首页
+                  this.$router.push({ path: '/'});
+                  location.reload();
               }).catch(() => {
                   this.$message({
                     type: 'info',
-                    message: '已取消删除'
+                    message: '已取消退出'
                   });
               });
           }
@@ -207,4 +213,5 @@
   .el-message-box__content {
     padding: 18px 20px;
   }
+
 </style>

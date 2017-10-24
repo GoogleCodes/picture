@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div style="background: #fff">
     <banner></banner>
-    <elecontent></elecontent>
+    <div>
+      <elecontent></elecontent>
+    </div>
     <gotop></gotop>
   </div>
 </template>

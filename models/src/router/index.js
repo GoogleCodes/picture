@@ -50,7 +50,8 @@ import proseries from '@/components/content/proseries'
 import picdetail from '@/components/pages/pic-detail'
 //  测试
 import ordcart from '@/components/cart/ord-cart'
-
+//  绘画装饰
+import paintings from '@/components/pages/paintings'
 //  订单列表
 import order from '@/components/pages/order-list'
 
@@ -100,7 +101,10 @@ let routes = [{
   name: 'proseries',
   component: proseries,
   meta: {
+    position: 1,
     header: false,
+    goback: true,
+    title: '婚纱装裱',
     footer: true,
   }
 },{
@@ -147,7 +151,7 @@ let routes = [{
   component: login,
   meta: {
     header: false,
-    footer: true,
+    footer: false,
     title: '登录帐号',
     goback: true,
   }
@@ -199,6 +203,7 @@ let routes = [{
   meta: {
     header: false,
     footer: true,
+    position: 4,
     title: '会员中心',
     goback: true,
   }
@@ -280,6 +285,16 @@ let routes = [{
   component: submit,
   meta: {
     header: false,
+    footer: true,
+  }
+},{
+  path: '/pages/paintings',
+  name: 'paintings',
+  component: paintings,
+  meta: {
+    header: false,
+    goback: true,
+    title: '装饰画',
     footer: true,
   }
 }];

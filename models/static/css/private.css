@@ -332,25 +332,10 @@
 
 /* admin-right start */
 
-.admin-right .trade_status .vip-content {
-    width: 916px;
-    margin: 0px auto;
-}
-
-.admin-right .trade_status .vip-content .vip-title {
-    margin-top: 15px;
-    padding: 15px 0px;
-    border-bottom: 1px solid #ccc;
-}
-
-.admin-right .trade_status .vip-content .vip-item {
-    margin: 22px 22px 0px;
-}
-
 .vip-content .vip-item .vip-table {
-    width: 630px;
+    width: 100%;
     text-align: center;
-    margin: 37px auto;
+    margin: 37px auto 10px;
 }
 
 .vip-content .vip-item .vip-table .thead {
@@ -373,7 +358,7 @@
     width: 29px;
     height: 20px;
     position: absolute;
-    background: url('../../src/assets/images/25.png') no-repeat;
+    /*background: url('../../static/images/25.png') no-repeat;*/
     left: 6px;
     top: 13px;
 }
@@ -401,12 +386,6 @@
 .vip-content .vip-item .vip-table .tbody tr td {
     border: 1px solid #ccc;
     position: relative;
-}
-
-.vip-content .vip-item .vip-icon {
-    width: 465px;
-    height: 280px;
-    margin: 17px auto 0;
 }
 
 .admin-right .trade-form {

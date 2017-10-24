@@ -1,54 +1,43 @@
 <template>
   <div style="padding-top: 45px;">
+    <div class="col-wrapper">
+      <div class="notify-box">
+        <div class="ntips fl">购物车中共有1件商品</div>
+        <div class="fr" @click="changMode()">{{ data.modeText }}</div>
+      </div>
+    </div>
     <div class="cart-nothing" style="display: none;">
       <div class="cart-pic">
         <img src="../../../static/images/48.png" class="w100 h100" alt="">
       </div>
       <div class="ft-16 cart-desc">暂无商品，去逛逛吧</div>
     </div>
-    <div>
-      <div class="cart-body">
-        <div class="cart-box" v-for="(item, index) in 10">
-          <div class="addition fl">
-            <i class="iconfont icon-quxiaoquanxuan c_9e9d9d"  @click="unActIt()" v-show="data.showVal"></i>
-            <i class="iconfont icon-checked-fill c_b11e25" @click="actIt()" v-show="!data.showVal"></i>
-          </div>
-          <div class="maininfo fl">
-            <div class="img fl">
-              <img src="../../../static/images/30.jpg" alt="" class="w100 h100">
-            </div>
-            <div class="msg fl">
-              <p class="name ft-16">照片冲印、手机上传打印照片</p>
-              <p class="format c_898989">定格记忆 冲印美好</p>
-            </div>
-          </div>
-          <div class="money fr c_e64147 ft-14">
-            <label class="unit">¥</label>
-            <label>99.1</label>
-            <p class="c_898989">x1</p>
-          </div>
-        </div>
-      </div>
-      <div class="bar-wrapper w100 clear">
-      <span class="iconfont icon-checked-fill c_b11e25" v-show="!data.allsel">
+    <cart-list :chosen.sync="choseAll" v-for="item in data.list" :img="item.shotcut"
+               :pid="item.id" :pname="item.name" :pformat="item.format"
+               :showValue="data.showVal" :mode="editMode"
+               :pprice="item.price" :pnums="item.nums"></cart-list>
+    <div class="bar-wrapper w100 clear">
+      <span class="iconfont icon-checked-fill c_b11e25" v-show="!data.allsel"  @click="changAll(0)">
         <i class="ft-16">全选</i>
       </span>
-        <span class="iconfont icon-quxiaoquanxuan c_9e9d9d" v-show="data.allsel">
+      <span class="iconfont icon-quxiaoquanxuan c_9e9d9d" v-show="data.allsel"  @click="changAll(1)">
         <i class="ft-16">取消</i>
       </span>
-        <el-button class="fr gopay" @click="goPay()">去结算</el-button>
-        <p class="ft-14 fr total-price">
-          <span class="c_898989">合计</span>
-          <span class="c_e64147">{{ data.totalMoney | changePrice }}</span>
-        </p>
-      </div>
+      <el-button class="fr gopay" @click="goPay()">去结算</el-button>
+      <p class="ft-14 fr total-price">
+        <span class="c_898989">合计</span>
+        <span class="c_e64147">{{ data.totalMoney | changePrice }}</span>
+      </p>
     </div>
+
   </div>
 
 </template>
 
 
 <script type="text/javascript">
+
+  import cartList from '@/components/cart/cart-list.vue'
 
   import ElRadio from "../../../node_modules/element-ui/packages/radio/src/radio";
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
@@ -60,8 +49,12 @@
     name: 'cart',
     data () {
         return {
+          editMode: 0,
+          choseAll: [],
           data: {
-            list: [],
+            modeText: '编辑',
+            btnText: '删除',
+            list: this.$storageGet('cart_info'),
             number: 0,
             total: 0, //  总价
             totalMoney: 0,  //  总金额
@@ -76,8 +69,10 @@
       ElInput,
       ElButton,
       ElRadio,
+      cartList
     },
     created() {
+      console.log(this.data.list);
       this.$store.dispatch("init");
     },
     computed: {
@@ -96,6 +91,14 @@
       }
     },
     methods: {
+      changAll(type) {
+
+      },
+      changMode() {
+        this.data.modeText = this.data.modeText === '编辑' ? '完成' : '编辑';
+        this.editMode = this.editMode ? 0 : 1;
+        this.choseAll = [];
+      },
       //  去结算
       goPay () {
 //        var options = {}
@@ -122,6 +125,15 @@
 
   @import "../../../static/css/cart.css";
 
+  /* col-wrapper start */
+  .col-wrapper {
+    padding: 0px 10px;
+    height: 45px;
+    background: #c40000;
+    color: #fff;
+    line-height: 45px;
+  }
+  /* col-wrapper end */
 
   /* cart-box start */
   .bar-wrapper .gopay {
@@ -162,43 +174,6 @@
   .bar-wrapper .total-price {
     line-height: 45px;
     margin-right: 10px;
-  }
-
-  .cart-body .cart-box {
-    margin: 10px 0px;
-    background: #fff;
-    overflow: hidden;
-    padding: 10px;
-  }
-
-  .cart-box .addition {
-    margin: 24px 12px 0px 0px;
-  }
-
-  .cart-box .addition .iconfont {
-    font-size: 24px;
-  }
-
-  .cart-box .maininfo {
-    width: 72%;
-    height: 72px;
-  }
-
-  .cart-box .maininfo .img {
-    width: 30%;
-    height: 73px;
-  }
-
-  .cart-box .maininfo .msg {
-    width: 65%;
-    margin-left: 10px;
-  }
-
-  .cart-box .money {
-    width: 3rem;
-    font-weight: bold;
-    text-align: center;
-    margin: 10px 0px 0px 0px;
   }
 
   /* cart-box end */

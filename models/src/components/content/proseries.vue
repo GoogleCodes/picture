@@ -11,7 +11,7 @@
             <span class="ft-14 c_b3b3b3">高雅复古风格</span>
             <h1 class="moeny ft-18 c_e64147">￥39.80</h1>
           </div>
-          <el-button class="fr">查看详情</el-button>
+          <el-button class="fr" @click="goInfo()">查看详情</el-button>
         </div>
       </div>
     </template>
@@ -29,14 +29,16 @@
 
           }
       },
-    created(){
+    created() {
 
     },
-    mounder (){
+    mounder () {
 
     },
     methods: {
-
+      goInfo() {
+        this.$router.push({ path: '/'});
+      }
     }
   }
 </script>
@@ -44,13 +46,14 @@
 <style type="text/css">
   /* proseries start */
   .proseries {
-    margin: 10px 15px;
-    padding-bottom: 60px;
+    margin: 48px 0px;
+    padding: 8px 15px 5px;
+    background: #fff;
   }
 
   .proseries .el-more {
     border: none;
-    margin: 0px auto;
+    margin: 30px auto;
     display: block;
   }
 
@@ -65,6 +68,7 @@
 
   .pro-desc .pro-desc-title {
     background: #f2f2f2;
+    padding: 0px 10px;
   }
 
   .pro-desc .moeny {
