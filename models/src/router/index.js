@@ -14,6 +14,8 @@ import onloadpic from '@/components/pages/onload'
 import onloadtwo from '@/components/pages/onloadtwo'
 //  相框
 import frame from '@/components/pages/frame'
+//  相框详情页
+import fdetail from '@/components/pages/frame-detail'
 //  购物车
 import cart from '@/components/cart/cart'
 //  加入购物车
@@ -54,6 +56,8 @@ import ordcart from '@/components/cart/ord-cart'
 import paintings from '@/components/pages/paintings'
 //  订单列表
 import order from '@/components/pages/order-list'
+//  订单确认
+import orddetail from '@/components/pages/ord-detail'
 
 Vue.use(Router);
 
@@ -153,6 +157,16 @@ let routes = [{
     footer: true,
   }
 },{
+  path: '/pages/frame-detail',
+  name: 'fdetail',
+  component: fdetail,
+  meta: {
+    header: false,
+    goback: true,
+    title: '体验区',
+    footer: false,
+  }
+},{
   path: '/user/login',
   name: 'login',
   component: login,
@@ -190,6 +204,16 @@ let routes = [{
     header: false,
     footer: true,
     title: '找回密码',
+    goback: true,
+  }
+},{
+  path: '/pages/ord-detail',
+  name: 'orddetail',
+  component: orddetail,
+  meta: {
+    header: false,
+    footer: false,
+    title: '订单确认',
     goback: true,
   }
 },{

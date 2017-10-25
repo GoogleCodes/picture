@@ -98,6 +98,9 @@
 
 <style type="text/css">
   /* pic-detail start */
+  .pic-detail {
+    margin-top: 46px;
+  }
   .pic-detail .bl-express-box {
     padding: 0px 40px;
     height: 77px;

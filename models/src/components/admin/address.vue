@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="info-address">
+    <div class="info-address" v-loading="load_data" element-loading-text="正在获取信息中...">
       <ul>
         <template v-for="item in data.list">
           <li class="clear">
@@ -27,7 +27,7 @@
                   <i class="iconfont icon-checked-fill c_b11e25"></i>
                   <span>默认地址</span>
                 </div>
-                <div class="delete iconfont icon-shanchu fr"></div>
+                <div class="delete iconfont icon-shanchu fr" @click="delAddress(item.id)"></div>
               </div>
             </div>
           </li>
@@ -58,7 +58,8 @@
                 isRadio: false,
             },
             userid: this.$storageGet('user_info').user,
-            radio: '1'
+            radio: '1',
+            load_data: false,
           }
       },
       created() {
@@ -73,6 +74,37 @@
 
       },
       methods: {
+        delAddress(id) {
+          this.$confirm('此操作将删除该地址, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.load_data = true;
+            this.$goFetch.fetchGet(this.$api.get_address.del_address + '?id='+ id +'').then((res) => {
+              this.load_data = false;
+              if (res.code == 0) {
+                this.$message({
+                  message: res.msg,
+                  type: 'warning'
+                });
+              } else if (res.code == 1) {
+                this.$message({
+                  message: res.msg,
+                  type: 'success'
+                });
+                setTimeout(() => {
+                  location.reload();
+                }, 400);
+              }
+            });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+        },
         setDefault(id) {
           let set_id = 0;
           for (let i = 0; i < this.data.list.length; i++) {
@@ -130,7 +162,8 @@
     line-height: 35px;
   }
   .info-address ul li .address-msg {
-    height: 55px;
+    height: auto;
+    max-height: 55px;
     line-height: 25px;
     overflow: hidden;
     border-bottom: 1px solid #f2f2f2;
@@ -161,4 +194,14 @@
     padding: 12px 15px;
   }
 
+</style>
+<style>
+  /* el-message-box start */
+  .el-message-box {
+    width: 85%;
+  }
+  .el-message-box__content {
+    padding: 18px 20px;
+  }
+  /* el-message-box end */
 </style>

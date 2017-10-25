@@ -9,7 +9,6 @@
               <img src="../../../static/images/23.png" alt="" class="w100 h100">
             </div>
             <div class="wrap fl">
-
                 <div class="wrap-title ft-16">#北欧风格装饰画 高格调 </div>
                 <div class="wrap-desc clear c_898989">装饰你的新房子 </div>
                 <div class="wrap-money">￥99.80</div>
@@ -20,9 +19,9 @@
           </div>
         </router-link>
         <div class="warp-input clear">
-          <el-button class="fr">立即付款</el-button>
-          <el-button class="fr">取消订单</el-button>
-          <el-button class="fr">确认收货</el-button>
+          <el-button class="fr" @click="goToPay(1)">立即付款</el-button>
+          <el-button class="fr" @click="cancelOrd(1)">取消订单</el-button>
+          <el-button class="fr" @click="confirmOrd(1)">确认收货</el-button>
         </div>
       </div>
     </template>
@@ -48,7 +47,46 @@
 
       },
       methods: {
-
+          confirmOrd(id) {
+            this.$confirm('确定要收货?, 是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.$message({
+                type: 'success',
+                message: '收货成功!'
+              });
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消收货'
+              });
+            });
+          },
+          goToPay(id) {
+              this.$router.push({
+                  path: '/pages/ord-detail',
+                  query: {pid: id}
+              })
+          },
+          cancelOrd (id) {
+            this.$confirm('确定要删除该商品?, 是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消删除'
+              });
+            });
+          }
       }
   }
 </script>
@@ -155,4 +193,15 @@
   }
 
   /* order-list end */
+</style>
+
+<style>
+  /* el-message-box start */
+  .el-message-box {
+    width: 85%;
+  }
+  .el-message-box__content {
+    padding: 18px 20px;
+  }
+  /* el-message-box end */
 </style>

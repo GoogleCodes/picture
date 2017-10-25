@@ -4,6 +4,8 @@
 
 import axios from 'axios'
 import qs from 'qs'
+import { Message } from 'element-ui'
+import getUri from '../common/port_uri'
 
 //  get
 export const fetchGet = (target, data) => {
@@ -17,12 +19,14 @@ export const fetchGet = (target, data) => {
   }
   return new Promise((resolve, reject) => {
     axios({
-      url: localStorage.apiDomain + 'public' + target,
+      url: getUri.get_http_ip.HTTP_IP + 'public' + target,
       method: 'get',
       withCredentials: false
     }).then(function (response) {
       resolve(response.data)
+      Message.success(response.data.msg);
     }).catch(function (error) {
+      Message.warning(error)
       reject(error)
     })
   })
@@ -33,7 +37,7 @@ export const fetchPost = (target, data) => {
   return new Promise((resolve, reject) => {
     var postData = qs.stringify(data);
     axios({
-      url: localStorage.apiDomain + 'public' + target,
+      url: getUri.get_http_ip.HTTP_IP + 'public' + target,
       header: {
         'Access-Control-Allow-Origin' : '*',
         'Access-Control-Allow-Methods' : 'GET,POST,PATCH,PUT,OPTIONS',
@@ -55,7 +59,7 @@ export const fetchPut = (target, data) => {
   return new Promise((resolve, reject) => {
     var postData = qs.stringify(data);
     axios({
-      url: localStorage.apiDomain + 'public' + target,
+      url: getUri.get_http_ip.HTTP_IP + 'public' + target,
       header: {
         'Access-Control-Allow-Origin' : '*',
         'Access-Control-Allow-Methods' : 'GET,POST,PATCH,PUT,OPTIONS',
@@ -84,12 +88,13 @@ export const fetchDelete = (target, data) => {
   }
   return new Promise((resolve, reject) => {
     axios({
-      url: localStorage.apiDomain + 'public' + target,
+      url: getUri.get_http_ip.HTTP_IP + 'public' + target,
       method: 'delete',
       withCredentials: false
     }).then(function (response) {
       resolve(response.data)
     }).catch(function (error) {
+      Message.warning(error);
       reject(error)
     })
   })

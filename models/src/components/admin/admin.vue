@@ -205,13 +205,12 @@
 </style>
 
 <style>
-
+  /* el-message-box start */
   .el-message-box {
     width: 85%;
   }
-
   .el-message-box__content {
     padding: 18px 20px;
   }
-
+  /* el-message-box end */
 </style>
