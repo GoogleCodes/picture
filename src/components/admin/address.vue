@@ -9,7 +9,7 @@
 
       <div class="trade_status" style="width: 99%;">
         <template v-for="(item, index) in data.list">
-          <div class="infoBlock fl" :class="{'infoactive':index == currentIndex}" @click="goCurrent(index)">
+          <div class="infoBlock fl" :class="{'infoactive':index == currentIndex}" @click="goCurrent(index, item.id)">
             <div class="infor-title" v-if="item.select == 0" @click="setDefault(item.id)">
               <i class="iconfont icon-quxiaoquanxuan ft-24"></i>
               <span>设置默认</span>
@@ -62,6 +62,7 @@
           return {
             deReadio: '0',
             currentIndex: 0,
+            currentId: 0,
             data: {
                 list: [],
                 isRadio: false,
@@ -79,12 +80,12 @@
 
       },
       methods: {
-        goCurrent(index) {
+        goCurrent(index, id) {
           this.currentIndex = index;
+          this.currentId = id;
         },
         setAddress() {
           this.$goFetch.fetchGet(this.$api.get_address.get_address + '?id=6').then((res) => {
-              console.log(res);
               this.data.list = res.data;
           });
         },
@@ -116,25 +117,32 @@
           });
         },
         delAddress() {
-          let set_id = 0;
-          for (let i = 0; i < this.data.list.length; i++) {
-            set_id = this.data.list[i];
-          }
-          this.$goFetch.fetchGet(this.$api.get_address.del_address + '?id='+ set_id.id +'').then((res) => {
-            if (res.code == 0) {
-              this.$message({
-                message: res.msg,
-                type: 'warning'
-              });
-            } else if (res.code == 1) {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
-              setTimeout(() => {
-                location.reload();
-              }, 500);
-            }
+          this.$confirm('此操作将删除该地址, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$goFetch.fetchGet(this.$api.get_address.del_address + '?id='+ this.currentId +'').then((res) => {
+              if (res.code == 0) {
+                this.$message({
+                  message: res.msg,
+                  type: 'warning'
+                });
+              } else if (res.code == 1) {
+                this.$message({
+                  message: res.msg,
+                  type: 'success'
+                });
+                setTimeout(() => {
+                  location.reload();
+                }, 400);
+              }
+            });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
           });
         }
       }

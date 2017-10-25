@@ -13,7 +13,7 @@
         </p>
       </div>
       <div class="cart-content">
-        <el-table ref="multipleTable" :data="data.list" border tooltip-effect="dark" style="width: 100%" @selection-change="selected">
+        <el-table ref="multipleTable" :data="setCart" border tooltip-effect="dark" style="width: 100%" @selection-change="selected">
           <el-table-column type="selection" width="99"></el-table-column>
           <el-table-column label="商品名称" width="407">
             <template scope="scope">
@@ -101,26 +101,30 @@
       ElRadio,
     },
     created() {
-      this.$store.dispatch("init");
+
+    },
+    mounted() {
       this.fetchData();
     },
     computed: {
-      list() {
-        return this.$store.state.list;
+      setCart() {
+        return this.$store.state.setCart;
       },
       count() { //  购物车总数
         return this.$store.state.count;
       },
-      number() {
-          for (let i in this.data.list) {
-            this.number = this.data.list[i].nums;
-          }
+      reversedNumber() {
+        this.data.list = this.$storageGet('cart_info')
+        for (let i in this.data.list) {
+            this.number = this.data.list[i].nums
+        }
+        return this.number
       }
     },
     watch: {
-      $route (to) {
-
-      }
+      number () {
+        this.fetchData();
+      },
     },
     // 定义过滤方法
     filters:{

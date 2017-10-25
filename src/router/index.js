@@ -44,9 +44,11 @@ import register from '@/components/user/register'
 import orderlist from '@/components/inside/order'
 //  皮革相册
 import picdetail from '@/components/pages/pic-detail'
-
 //  测试
 import ordcart from '@/components/cart/ord-cart'
+
+import news from '@/components/content/news'
+import newdetail from '@/components/content/newsdetail'
 
 Vue.use(Router);
 
@@ -142,6 +144,14 @@ let routes = [{
   path: '/cart/submit',
   name: 'submit',
   component: submit,
+},{
+  path: '/content/news',
+  name: 'news',
+  component: news,
+},{
+  path: '/content/newsdetail',
+  name: 'newdetail',
+  component: newdetail,
 }];
 
 
@@ -162,7 +172,6 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   next();
 });
-
 
 export default router;
 

@@ -22,4 +22,7 @@ export const SET_CART_NUMBER = 'set_cart_number'
 //  记住登录
 export const GET_CHECKED_LOGIN = 'get_checked_login'
 
+//  获取购物车数据
+export const SET_CART_STORAGE = 'set_cart_storage'
+
 

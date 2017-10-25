@@ -47,4 +47,9 @@ export default {
     commit(mutations.DELCARTOBJ,  id,format)
   },
 
+  //  获取购物车数据
+  [actions.SET_CART_STORAGE]({commit}, selarray) {
+    commit(mutations.SET_CART_STORAGE, selarray);
+  }
+
 }

@@ -7,7 +7,7 @@
     </div>
 
     <div class="trade_status" style="width:99%;padding-bottom: 116px;">
-      <div class="trade-form">
+      <div class="trade-form" v-loading="load_data" element-loading-text="正在登陆中...">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
           <el-form-item prop="nowpwd">
             <el-input type="password" class="block" placeholder="当前密码" v-model="ruleForm.nowpwd" />
@@ -41,6 +41,8 @@
           newpwd: [{ required: true, message: '请输入新密码', trigger: 'blur' },],
           dopwd: [{ required: true, message: '再次输入密码', trigger: 'blur' },]
         },
+        uid: 0,
+        load_data: false,
       }
     },
     methods: {
@@ -49,12 +51,34 @@
           if (!valid) {
             return false;
           }
-          this.$message({
-            showClose: true,
-            message: '警告哦，这是一条警告消息',
-            type: 'warning'
+          this.load_data = true;
+          this.uid = this.$storageGet('user_info').user.id;
+          this.$goFetch.fetchPost(this.$api.port_user.get_chapwd +
+            '?id= '+ this.uid +
+            '&opwd='+ this.ruleForm.nowpwd +
+            '&npwd='+ this.ruleForm.newpwd +
+            '&nrepwd='+ this.ruleForm.dopwd +'').then((res) => {
+            this.load_data = false;
+            if (res.code == 0) {
+              this.$message({
+                showClose: true,
+                message: res.msg,
+                type: 'warning'
+              });
+            } else if (res.code == 1) {
+              this.$message({
+                showClose: true,
+                message: res.msg,
+                type: 'success'
+              });
+              this.$goFetch.storageRemove('user_info');
+              this.$goFetch.storageSet('user_info',undefined);
+              //  跳回首页
+              setTimeout(() => {
+                this.$router.push({ path: '/user/login'});
+              }, 1500);
+            }
           });
-
         });
       }
     }

@@ -43,8 +43,8 @@
     },
     methods: {
       getNav() {
-        this.$http.get(this.$api.get_content.nav).then((res) => {
-          this.data.list = res.data.nav;
+        this.$http.get(this.$api.get_content.GET_NAV).then((res) => {
+            this.data.list = res.data.nav;
         });
       }
     },

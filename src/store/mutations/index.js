@@ -21,6 +21,9 @@ export default {
 
   //  测试
   [type.INIT](state, list) {
+    for (let plist in state.cart) {
+
+    }
     state.list = list
   },
 
@@ -29,8 +32,9 @@ export default {
     storageSet('checked_login',state.checked_login);
   },
 
+  //  获取购物车商品数量
   [type.SET_CART_NUMBER](state, obj) {
-    state.count = obj.length;
+    state.cart_count = obj.length;
   },
 
   //  修改购物车单个商品
@@ -87,5 +91,25 @@ export default {
     }
     storageSet('cart_info',state.cart);
   },
+
+  //  获取购物车数据
+  [type.SET_CART_OBJ] (state, obj) {
+    if(state.cart.length > 0) {
+      let added = false;
+      for(let plist = 0;plist < state.cart.length; plist++) {
+        if(typeof state.cart[plist] === 'object' && state.cart[plist].id == obj.id) {
+          state.cart[plist].nums += obj.nums;
+          added = true;
+          break;
+        }
+      }
+      if(!added) {
+        state.cart.push(obj);
+      }
+    }else{
+      state.cart.push(obj);
+    }
+    storageSet('cart_info',state.cart);
+  }
 
 }

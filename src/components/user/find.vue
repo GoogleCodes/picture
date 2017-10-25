@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%;height: 100%;position: relative;background: #f8f8f8;">
+  <div class="bgColor">
     <!-- login start -->
     <div class="administrator"></div>
     <div class="login w609" style="height: 560px;">

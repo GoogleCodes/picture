@@ -17,7 +17,7 @@
           </div>
           <div class="fl marLeft">|</div>
           <div class="fl cart-round">
-            <el-badge :value="count" class="item">
+            <el-badge :value="cart_count" class="item">
               <div class="iconfont icon-shoppingcar-ac fl marLeft"></div>
               <el-button class="icon-cartname fl" @click="goCart()">购物车</el-button>
             </el-badge>
@@ -57,12 +57,16 @@
           try {
             let arr = JSON.parse(this.$store.state.user_info);
             this.list = arr.user
-            console.log(this.list, "---");
           } catch(e) {}
-          return this.list;
+          return this.$store.state.user_info;
         },
-        count() { //  购物车总数
-            return this.$store.state.count;
+        cart_count() { //  购物车总数
+          if (localStorage.getItem('cart_info') == undefined) {
+            this.$store.state.cart_count = 0;
+          } else {
+            this.$store.commit('SET_CART_NUMBER', this.$storageGet('cart_info'));
+          }
+          return this.$store.state.cart_count;
         }
       },
       created() {
@@ -75,8 +79,7 @@
         isUser() {
           //  调用user_info
           this.user_info;
-          let that = this, userJson = this.$goFetch.storageGet('user_info');
-
+          let that = this, userJson = this.$storageGet('user_info');
           if (userJson !== null) {
             that.closeuser = true;
             that.uname = userJson.uname;

@@ -10,3 +10,5 @@ exports.get_reg_code = '/api/home/User/regsend'
 exports.get_find_code = '/api/home/User/findsend'
 //  重置密码
 exports.get_find_pwd = '/api/home/User/findpwd'
+//  管理中心修改密码
+exports.get_chapwd = '/api/home/User/chapwd'

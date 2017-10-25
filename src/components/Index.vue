@@ -10,11 +10,12 @@
 <script type="text/javascript">
 
   import heads from '@/components/top/Top.vue'
-  import elenav from '@/components/top/Nav.vue'
   import banner from '@/components/top/banner.vue'
-  import gotop from '@/components/content/gotop.vue'
-  import elecontent from '@/components/content/Content.vue'
   import foots from '@/components/footer/Footer.vue'
+
+  import gotop from '@/components/content/gotop.vue'
+  import elenav from '@/components/top/Nav.vue'
+  import elecontent from '@/components/content/Content.vue'
 
   export default {
     name: 'index',

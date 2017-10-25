@@ -71,7 +71,10 @@
         <a href="javascript:void(0);" class="block move"></a>
       </div>
       <div class="con-pro clear pro-moves">
-        <img src="../../../static/images/09.png" alt="" style="width: 100%;height: 100%;">
+        <router-link :to="{ path: 'content/news'}">
+          <img src="../../../static/images/09.png" alt="" style="width: 100%;height: 100%;">
+        </router-link>
+
       </div>
     </div>
     <!-- content end -->
@@ -96,7 +99,9 @@
       this.getAlbum();
     },
     created() {
-
+      this.$http.get('http://www.getcodeing.com/api/user/getuser').then((res) => {
+          console.log(res);
+      });
     },
     watch: {
       $route (to) {
@@ -132,7 +137,6 @@
         this.$getData(this.$api.get_content.album).then((res) => {
           console.log(res);
         });
-
       },
     }
   }
