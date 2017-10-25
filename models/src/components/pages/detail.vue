@@ -2,7 +2,7 @@
 
   <div>
     <!-- content start -->
-    <el-carousel>
+    <el-carousel style="margin-top: 46px;">
       <template>
         <el-carousel-item>
           <img src="../../../static/images/banner_xiadan.png" alt="" class="w100 h100">

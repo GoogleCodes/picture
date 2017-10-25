@@ -10,7 +10,7 @@
       </li>
       <li class="fl">
         <router-link :to="{ path: '/cart/cart'}" class="foot-href" :class="{'active' : $route.meta.position === 2 }">
-          <el-badge :value="3" class="item">
+          <el-badge :value="getNumber" class="item">
             <i class="iconfont icon-cart block"></i>
             <span>购物车</span>
           </el-badge>
@@ -44,6 +44,9 @@
     computed: {
       getYear() {
         return new Date().getFullYear()
+      },
+      getNumber() {
+          return this.$storageGet('cart_info').length
       }
     },
     watch: {

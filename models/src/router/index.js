@@ -110,7 +110,12 @@ let routes = [{
 },{
   path: '/pages/detail',
   name: 'detail',
-  component: detail
+  component: detail,
+  meta: {
+    goback: true,
+    title: '产品详情',
+    footer: true,
+  },
 },{
   path: '/pages/pic-detail',
   name: 'picdetail',
@@ -318,9 +323,7 @@ const router = new Router({
 // 路由开始之前的操作
 router.beforeEach((to, from, next) => {
   next();
-  console.log(to);
 });
-
 
 export default router;
 

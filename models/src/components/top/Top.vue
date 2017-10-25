@@ -51,7 +51,6 @@
           try {
             let arr = JSON.parse(this.$store.state.user_info);
             this.list = arr.user
-            console.log(this.list, "---");
           } catch(e) {}
           return this.list;
         },
@@ -82,7 +81,6 @@
           //  调用user_info
           this.user_info;
           let that = this, userJson = this.$goFetch.storageGet('user_info');
-
           if (userJson !== null) {
             that.closeuser = true;
             that.uname = userJson.uname;

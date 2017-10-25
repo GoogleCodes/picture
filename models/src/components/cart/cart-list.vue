@@ -1,29 +1,29 @@
 <template>
-  <div>
-    <div>
-      <div class="cart-body">
-        <div class="cart-box">
-          <div class="addition fl">
-            <i class="iconfont icon-quxiaoquanxuan c_9e9d9d" @click="unActIt()" v-show="showValue"></i>
-            <i class="iconfont icon-checked-fill c_b11e25" @click="actIt()" v-show="!showValue"></i>
-          </div>
-          <div class="maininfo fl">
-            <div class="img fl">
-              <img :src="img" alt="" class="w100 h100">
-            </div>
-            <div class="msg fl">
-              <p class="name ft-16">{{ pname }}</p>
-              <p class="format c_898989">{{ pformat }}</p>
-            </div>
-          </div>
-          <div class="money fr c_e64147 ft-14" v-show="mode !== 1">
-            <label class="unit">¥</label>
-            <label>{{ pprice }}</label>
-            <p class="c_898989">x{{ pnums }}</p>
-          </div>
-          <div class="money fr iconfont icon-shanchu" v-show="mode == 1" @click="deleteShopItem()"></div>
-        </div>
+  <div class="cart-body" :class="className">
+    <div class="cart-box">
+      <div class="addition fl">
+        <!--<i class="iconfont icon-quxiaoquanxuan c_9e9d9d" :class="{'chose':list.checked}" @click="unActIt(list)" v-if="list.checked"></i>-->
+        <!--<i class="iconfont icon-checked-fill c_b11e25" :class="{'chose':list.checked}" @click="unActIt(list)" v-else-if="!list.checked"></i>-->
+        <i class="iconfont icon-checked-fill c_b11e25" @click="unActIt()" v-show="showVal"></i>
+        <i class="iconfont icon-quxiaoquanxuan c_9e9d9d" @click="actIt()" v-show="!showVal"></i>
       </div>
+      <router-link :to="{ path: '/pages/detail', query:{pid: pid}}" class="block w100 h100">
+        <div class="maininfo fl">
+          <div class="img fl">
+            <img :src="img" alt="" class="w100 h100">
+          </div>
+          <div class="msg fl">
+            <p class="name ft-16">{{ pName }}</p>
+            <p class="format c_898989">{{ pformat }}</p>
+          </div>
+        </div>
+      </router-link>
+      <div class="money fr c_e64147 ft-14" v-show="mode !== 1">
+        <label class="unit">¥</label>
+        <label>{{ pprice }}</label>
+        <p class="c_898989">x{{ pnums }}</p>
+      </div>
+      <div class="money fr iconfont icon-shanchu" v-show="mode == 1" @click="deleteShop(pid)"></div>
     </div>
   </div>
 </template>
@@ -31,55 +31,59 @@
 <script type="text/javascript">
   export default {
       props: {
-        pid: {
-            type: [Number,String],
-            required: true,
-        },
-        img: {
-            type: String,
-            required: true,
-        },
-        pname: {
-            type: String,
-            required: true,
-        },
-        pformat: {
-            type: String,
-            required: true,
-        },
-        pprice: {
-          type: [Number,String],
-          required: true
-        },
-        pnums: {
-          type: [Number,String],
-          required: true
-        },
-        mode: {
-            type: Number,
-            required: true,
-        },
-        showValue: {
-            type: Boolean,
-            required: false
-        },
-        chosen: {
-          type: Array,
-          twoWay: true,
-          required: true
-        }
+          pid: {
+              type: [Number,String],
+              required: true,
+          },
+          img: {
+              type: String,
+              required: true,
+          },
+          pName: {
+              type: String,
+              required: true,
+          },
+          pformat: {
+              type: String,
+              required: true,
+          },
+          pprice: {
+              type: [Number,String],
+              required: true
+          },
+          pnums: {
+              type: [Number,String],
+              required: true
+          },
+          mode: {
+              type: Number,
+              required: true,
+          },
+          chosen: {
+              type: Array,
+              twoWay: true,
+              required: true
+          },
+          list: {
+              type: Object,
+              required: false,
+          },
       },
       data() {
           return {
-//            showVal: false
+
           }
+      },
+      created() {
+
       },
       computed: {
           className() {
+              let that = this;
               const obj = {};
-              if (this.chosen.length > 0) {
-                  for (let ch = 0; ch < this.chosen.length; ch++) {
-                      if (this.chosen[ch].id == this.pid) {
+              if(that.chosen.length > 0) {
+                  for (let ch in this.chosen) {
+                      if (this.chosen[ch].id === this.pid && this.chosen[ch].format === this.pformat) {
                           obj['active'] = true;
                       } else {
                           obj['active'] = false;
@@ -91,20 +95,46 @@
               return obj;
           },
           showVal() {
-              if(this.className.active){
+              if (this.className.active){
                   return true;
-              }else{
+              } else {
                   return false;
               }
           }
       },
       methods: {
-          deleteShopItem() {
-              this.$confirm('确定不要这件商品吗？, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
+          actIt() {
+              if(!this.className.active) {
+                  this.chosen.push({
+                    id: this.pid,
+                    format: this.pformat
+                  });
+              }
+          },
+          unActIt() {
+              if(this.className.active) {
+                  let getIndex = null;
+                  for(let ch = 0;ch < this.chosen.length; ch++) {
+                      if(this.chosen[ch].id === this.pid && this.chosen[ch].format === this.pformat) {
+                          getIndex = ch;
+                          break;
+                      }
+                  }
+                  if(getIndex >= 0) {
+                      this.chosen.splice(getIndex,1);
+                  }
+              }
+          },
+          deleteShop(id) {
+              this.$confirm('确定要删除这件商品吗?', '提示', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  type: 'warning'
               }).then(() => {
+                  this.$store.commit('DELCARTOBJ',id);
+                  setTimeout(() => {
+                      location.reload();
+                  }, 500);
                   this.$message({
                       type: 'success',
                       message: '删除成功!'
@@ -115,27 +145,6 @@
                       message: '已取消删除'
                   });
               });
-          },
-          unActIt() {
-              if(this.className.active){
-                  let getIndex = null;
-                  for(let ch = 0;ch < this.chosen.length; ch++) {
-                      if(this.chosen[ch].id == this.pid && this.chosen[ch].format == this.pformat) {
-                          getIndex = ch;
-                          break;
-                      }
-                  }
-                  if(getIndex >= 0) {
-                      this.chosen.splice(getIndex,1);
-                  }
-              }
-          },
-          actIt() {
-              if(!this.className.active) {
-                  this.chosen.push({
-                      id: this.pid,
-                  });
-              }
           },
       },
   }
