@@ -1,8 +1,6 @@
 <template>
   <div class="bgcolor">
     <!--<div style="margin: 15px 0;"></div>-->
-
-
     <div class="cart-body">
       <div class="cart-head">
         <div class="cart-h1">SHOPPING CART</div>
@@ -12,6 +10,23 @@
           <span class="line block fr"></span>
         </p>
       </div>
+
+      <ul style="display: none;">
+        <template v-for="(item, index) in setCart">
+          <li style="width: 100%;">
+            <div style="width: 100%;">
+              <br />
+              <el-input v-model="item.number"></el-input>
+              <el-button class="no-minus fl" @click="changeNumber(item, -1)" :class="{'disabled':item.number <= 1}">-</el-button>
+              <br />
+              <el-input type="text" class="fl" readonly v-model="item.number" placeholder="0"></el-input>
+              <br />
+              <el-button class="add-max fl" @click="changeNumber(item, 1)" :class="{'disabled':item.number >= 1}">+</el-button>
+            </div>
+          </li>
+        </template>
+      </ul>
+
       <div class="cart-content">
         <el-table ref="multipleTable" :data="setCart" border tooltip-effect="dark" style="width: 100%" @selection-change="selected">
           <el-table-column type="selection" width="99"></el-table-column>
@@ -19,10 +34,10 @@
             <template scope="scope">
               <router-link :to="{ path: '/pages/detail' , query:{ id:scope.row.id }}" class="block">
                 <div class="item-pic fl">
-                  <img :src="scope.row.shotcut" alt="" style="width: 100%;height: 100%;" />
+                  <img :src="scope.row.goods.img" alt="" style="width: 100%;height: 100%;" />
                 </div>
-                <p class="ft-18 shoping-name fl">{{ scope.row.title }}</p>
-                <p class="ft-14 shoping-desc fl" style="color: #898989;">{{ scope.row.desc }}</p>
+                <p class="ft-18 shoping-name fl">{{ scope.row.goods.descript }}</p>
+                <p class="ft-14 shoping-desc fl" style="color: #898989;">详情信息</p>
               </router-link>
             </template>
           </el-table-column>
@@ -33,19 +48,19 @@
           </el-table-column>
           <el-table-column prop="address" label="数量" width="250">
             <template scope="scope">
-              <div class="item-amount ">
-                <el-button class="no-minus fl" @click.stop="changeNumber(scope.row, -1)"
-                           :class="{'disabled':scope.row.nums <= 1}">-</el-button>
-                <el-input class="fl" placeholder="0" @change="handleInput(scope.row)" readonly
-                          v-model="scope.row.nums"></el-input>
-                <el-button class="add-max fl" @click.stop="changeNumber(scope.row, 1)"
-                           :class="{'disabled':scope.row.nums >= 1}" style="margin-left: 20px;">+</el-button>
+              <div class="item-amount">
+                <el-button slot="prepend" class="no-minus fl" @click="changeNumber(scope.row, -1)"
+                           :class="{'disabled':scope.row.number <= 1}">-</el-button>
+                <el-input type="text" class="fl" readonly
+                          v-model="scope.row.number" placeholder="0"></el-input>
+                <el-button  slot="append" class="add-max fl" @click="changeNumber(scope.row, 1)"
+                           :class="{'disabled':scope.row.number >= 1}" style="margin-left: 20px;">+</el-button>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="总价" width="143">
             <template scope="scope">
-              <p class="ft-24 totalprice">{{ scope.row.price * scope.row.nums | changePrice }}</p>
+              <p class="ft-24 totalprice">{{ scope.row.price * scope.row.number | changePrice }}</p>
               <el-button @click="goLoad()">上传图片</el-button>
             </template>
           </el-table-column>
@@ -84,12 +99,11 @@
           data: {
             list: [],
             number: 0,
-            total: 0, //  总价
-            totalMoney: 0,  //  总金额
+            total: 0,           //  总价
+            totalMoney: 0,      //  总金额
           },
           multipleSelection:[],
-          //  删除的索引
-          delIndex: null,
+          delIndex: null,       //  删除的索引
           isChonseShop: 0,
         }
     },
@@ -101,30 +115,23 @@
       ElRadio,
     },
     created() {
-
+      console.log(this.setCart);
     },
     mounted() {
-      this.fetchData();
+//      this.fetchData();
     },
     computed: {
       setCart() {
-        return this.$store.state.setCart;
+          return this.$store.state.setCart;
       },
       count() { //  购物车总数
-        return this.$store.state.count;
-      },
-      reversedNumber() {
-        this.data.list = this.$storageGet('cart_info')
-        for (let i in this.data.list) {
-            this.number = this.data.list[i].nums
-        }
-        return this.number
+        return this.$store.state.cart_count;
       }
     },
     watch: {
-      number () {
-        this.fetchData();
-      },
+        $route() {
+            this.setCart;
+        }
     },
     // 定义过滤方法
     filters:{
@@ -135,7 +142,8 @@
     },
     methods: {
       fetchData() {
-        this.data.list = this.$storageGet('cart_info');// JSON.parse(localStorage.getItem('cart_info'));
+        this.setCart;
+//        this.data.list = this.$storageGet('cart_info');
         this.$store.commit('SET_CART_NUMBER', this.data.list);
       },
       //  取消全选
@@ -148,26 +156,35 @@
         this.isChonseShop = selection.length;
         this.multipleSelection = selection;
         this.data.totalMoney = 0;
-        for(var i = 0; i < selection.length; i++) {
+        for(var i in selection) {
           //  判断返回的值是否是字符串
-          if(typeof selection[i].nums == 'string') {
-            selection[i].nums = parseInt(selection[i].nums);
-          };
-          this.data.totalMoney += selection[i].nums * selection[i].price;
+          if(typeof selection[i].number == 'string') {
+            selection[i].number = parseInt(selection[i].number);
+          }
+          this.data.totalMoney += selection[i].number * selection[i].price;
         }
       },
       goLoad () {
           this.$router.push({ path : '../pages/onload'});
       },
       changeNumber(item,flag) {
+        let options = {};
         if (flag > 0) {
-          this.$store.commit('INCRECARTNUMS',item.id, item.title);
-//          this.fetchData();
+          item.number += 1;
+          options = {
+              id: item.id,
+              num: item.number,
+          };
+          this.$store.commit('INCRECARTNUMS', options);
         } else {
-          this.$store.commit('REDUCECARTNUMS',item.id, item.title);
-//          this.fetchData();
-          if(item.nums <= 1) {
-            item.nums = 1;
+          item.number -= 1;
+          options = {
+            id: item.id,
+            num: item.number,
+          };
+          this.$store.commit('REDUCECARTNUMS', options);
+          if(item.number <= 1) {
+            item.number = 1;
           }
         }
         this.selected(this.multipleSelection);

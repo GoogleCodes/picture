@@ -33,13 +33,14 @@ export default {
   },
 
   //  增加购物车单个商品数量
-  [actions.REDUCECARTNUMS]({commit}, id,title) {
-    commit(mutations.REDUCECARTNUMS,  id,title)
+  [actions.INCRECARTNUMS]({commit}, id, number) {
+    console.log(id,title);
+    commit(mutations.INCRECARTNUMS,  id,number)
   },
 
   //  减少购物车单个商品数量
-  [actions.REDUCECARTNUMS]({commit}, id,title) {
-    commit(mutations.REDUCECARTNUMS,  id,title)
+  [actions.REDUCECARTNUMS]({commit}, id, title) {
+    commit(mutations.REDUCECARTNUMS,  id, title)
   },
 
   //  删除购物车单个商品

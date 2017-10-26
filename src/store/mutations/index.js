@@ -58,22 +58,23 @@ export default {
   },
 
   //  增加购物车单个商品数量
-  [type.INCRECARTNUMS](state,id,title) {
+  [type.INCRECARTNUMS](state, obj) {
+    console.log(state, obj);
     for(let plist = 0; plist < state.cart.length; plist++) {
-      if(typeof state.cart[plist] === 'object' && state.cart[plist].id == id) {
-        state.cart[plist].nums += 1;
+      if(typeof state.cart[plist] === 'object' && state.cart[plist].id === obj.id) {
+        state.cart[plist].number = obj.num;
         break;
       }
     }
-    storageSet('cart_info',state.cart);
+    storageSet('cart_info',state.cart)
   },
 
   //  减少购物车单个商品数量
-  [type.REDUCECARTNUMS](state,id,title) {
+  [type.REDUCECARTNUMS](state, obj) {
     for (let plist = 0; plist < state.cart.length; plist++) {
-      if (typeof state.cart[plist] === 'object' && state.cart[plist].id == id) {
-        if (state.cart[plist].nums >= 1) {
-          if(state.cart[plist].nums >= 1) state.cart[plist].nums -= 1;
+      if (typeof state.cart[plist] === 'object' && state.cart[plist].id == obj.id) {
+        if (state.cart[plist].number >= 1) {
+          if(state.cart[plist].number >= 1) state.cart[plist].number = obj.num;
           break;
         }
       }
@@ -82,7 +83,7 @@ export default {
   },
 
   //  删除购物车单个商品
-  [type.DELCARTOBJ] (state, id,  format) {
+  [type.DELCARTOBJ] (state, id, format) {
     for(let plist = 0; plist < state.cart.length; plist++) {
         if(typeof state.cart[plist] === 'object' && state.cart[plist].id == id) {
         state.cart.splice(plist,1);

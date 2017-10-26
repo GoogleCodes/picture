@@ -1,20 +1,19 @@
-[
-  {
-    "id": "1440",
-    "shotcut": "http://file.green-f.cn/2017/08/12/06/31/48/upload_2449506c0084dae3e9f726eee09b8747.jpg",
-    "name": "番茄 3个",
-    "price": 7.8,
-    "format": "",
-    "nums": 1,
-    "checked": false
+[{
+  "id": 1,
+  "goods":{
+    "img":"http://i1.mifile.cn/a1/pms_1474859997.10825620!80x80.jpg",
+    "descript":"小米手环2"
   },
-  {
-    "id": "79",
-    "shotcut": "http://qgshop.b0.upaiyun.com/2017/05/10/10/00/45/upload_393af73151960a6fa202534bed87855f.jpg",
-    "name": "西兰花 1个/份",
-    "price": 6.8,
-    "format": "",
-    "nums": 1,
-    "checked": false
-  }
-]
+  "price":149,
+  "number":1,
+  "goodTotal":149
+},{
+  "id": 2,
+  "goods":{
+    "img":"http://i1.mifile.cn/a1/pms_1482321199.12589253!80x80.jpg",
+    "descript":"小米活塞耳机 清新版 黑色"
+  },
+  "price":29,
+  "number":1,
+  "goodTotal":29
+}]
