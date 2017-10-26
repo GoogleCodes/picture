@@ -43,7 +43,7 @@ export default {
       let added = false;
       for(let plist = 0;plist < state.cart.length; plist++) {
         if(typeof state.cart[plist] === 'object' && state.cart[plist].id == obj.id) {
-          state.cart[plist].nums += obj.nums;
+          state.cart[plist].number += obj.number;
           added = true;
           break;
         }
@@ -83,7 +83,7 @@ export default {
   },
 
   //  删除购物车单个商品
-  [type.DELCARTOBJ] (state, id, format) {
+  [type.DEL_CART_OBJ] (state, id, format) {
     for(let plist = 0; plist < state.cart.length; plist++) {
         if(typeof state.cart[plist] === 'object' && state.cart[plist].id == id) {
         state.cart.splice(plist,1);

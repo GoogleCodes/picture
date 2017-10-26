@@ -16,7 +16,7 @@
             <h4 class="ft-14">一、会员等级说明</h4>
             <p style="color: #999;">根据成长值将用户划分为6个不同的等级，成长值越高，等级越高，享有的特权就越高</p>
             <div class="vip-icon">
-              <img src="../../assets/images/24.png" alt="" style="width:100%;height: 100%;">
+              <img src="../../../static/images/24.png" alt="" style="width:100%;height: 100%;">
             </div>
             <h4 class="ft-14" style="margin-top: 50px;">二、会员等级规则</h4>
             <table class="vip-table">

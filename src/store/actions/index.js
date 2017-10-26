@@ -28,7 +28,7 @@ export default {
   // }
 
   //  修改购物车单个商品
-  [actions.SET_CART_OBJ]({commit},cartObj) {
+  [actions.SET_CART_OBJ]({commit}, cartObj) {
     commit(mutations.SET_CART_OBJ, cartObj);
   },
 
@@ -44,8 +44,8 @@ export default {
   },
 
   //  删除购物车单个商品
-  [actions.DELCARTOBJ]({commit}, id, format) {
-    commit(mutations.DELCARTOBJ,  id,format)
+  [actions.DEL_CART_OBJ]({commit}, id, format) {
+    commit(mutations.DEL_CART_OBJ,  id,format)
   },
 
   //  获取购物车数据

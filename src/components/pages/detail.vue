@@ -6,7 +6,7 @@
         <img src="../../assets/images/19.png" alt="" style="width: 100%;height: 100%;">
       </div>
       <div class="experience" style="margin: 70px auto;background: #fff">
-        <div class="exper-pic fl">
+        <div class="exper-pic fl" style="display: none;">
           <div class="exper-pic-wrap">
             <el-carousel height="420px">
               <template v-for="item in data.pic">
@@ -21,6 +21,74 @@
             <div class="a1" v-for="item in 5"></div>
           </div>
         </div>
+
+        <div class="pc-slide">
+          <div class="view">
+            <div class="swiper-container">
+              <a class="arrow-left" href="javscript:void(0);"></a>
+              <a class="arrow-right" href="javscript:void(0);"></a>
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <a target="_blank">
+                    <img src="../../../static/images/detail/b1.jpg" alt="">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a target="_blank">
+                    <img src="../../../static/images/detail/b2.jpg" alt="">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a target="_blank">
+                    <img src="../../../static/images/detail/b3.jpg" alt="">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a target="_blank">
+                    <img src="../../../static/images/detail/b4.jpg" alt="">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a target="_blank">
+                    <img src="../../../static/images/detail/b5.jpg" alt="">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a target="_blank">
+                    <img src="../../../static/images/detail/b6.jpg" alt="">
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="preview">
+            <a class="arrow-left" href="javascript:void(0);"></a>
+            <a class="arrow-right" href="javascript:void(0);"></a>
+            <div class="swiper-container">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide active-nav">
+                  <img src="../../../static/images/detail/s1.jpg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="../../../static/images/detail/s2.jpg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="../../../static/images/detail/s3.jpg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="../../../static/images/detail/s4.jpg" alt="">
+                </div>
+                <div class="swiper-slide">
+                  <img src="../../../static/images/detail/s5.jpg" alt="">
+                </div>
+                <div class="swiper-slide slide6">
+                  <img src="../../../static/images/detail/s6.jpg" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="tb-wrap fl">
           <div class="right-select fr">
             <div class="select-title">{{ list.title }}<span>{{ list.title_desc }}</span></div>
@@ -145,6 +213,10 @@
 
     },
     created () {
+      $('.view .arrow-right,.preview .arrow-right').on('click', function(e) {
+          console.log(1233);
+
+      })
 
     },
     methods: {
@@ -178,17 +250,21 @@
           });
           return;
         }
-        var optionItem = {
+        var option = {
           id: this.list.id,
-          shotcut: this.list.shotcut,
-          title: this.list.title,
+          goods: {
+            img: 'http://i1.mifile.cn/a1/pms_1474859997.10825620!80x80.jpg',
+            descript: this.list.title,
+          },
           desc: this.list.desc,
-          nums: this.list.nums,
+          number: this.list.nums,
           price: parseInt(this.list.price),
           guiGe: this.data.guige,
           size: this.data.currSize,
         };
-        this.$store.commit('SETCARTOBJ',optionItem);
+        console.log(option);
+        this.$store.commit('SET_CART_OBJ',option);
+        return;
         this.$message({
           message: '恭喜你，加入购物车成功！',
           type: 'success'
@@ -439,5 +515,91 @@
     border: 2px solid #3e3a39;
     height: 35px;
   }
+
+  /* preview */
+  .pc-slide {
+    margin: 23px;
+    float: left;
+  }
+
+  .view .swiper-container {
+    width: 500px;
+    height: 500px;
+  }
+
+  .view .arrow-left {
+    background: url('../../../static/images/detail/index_tab_l.png') no-repeat left top;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    margin-top: -25px;
+    width: 28px;
+    height: 51px;
+    z-index: 10;
+  }
+
+  .view .arrow-right {
+    background: url('../../../static/images/detail/index_tab_r.png') no-repeat left bottom;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -25px;
+    width: 28px;
+    height: 51px;
+    z-index: 10;
+  }
+
+  .preview {
+    width: 100%;
+    margin-top: 10px;
+    position: relative;
+  }
+
+  .preview .swiper-container {
+    width: 430px;
+    height: 82px;
+    margin-left: 35px;
+  }
+
+  .preview .swiper-slide {
+    width: 87px;
+    height: 82px;
+  }
+
+  .preview .slide6 {
+    width: 82px;
+  }
+
+  .preview .arrow-left {
+    background: url('../../../static/images/detail/feel3.png') no-repeat left top;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    margin-top: -9px;
+    width: 9px;
+    height: 18px;
+    z-index: 10;
+  }
+
+  .preview .arrow-right {
+    background: url('../../../static/images/detail/feel4.png') no-repeat left bottom;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -9px;
+    width: 9px;
+    height: 18px;
+    z-index: 10;
+  }
+
+  .preview img {
+    padding: 1px;
+  }
+
+  .preview .active-nav img {
+    padding: 0;
+    border: 1px solid #F00;
+  }
+  /* preview */
 
 </style>

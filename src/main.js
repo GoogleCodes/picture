@@ -6,7 +6,7 @@ import 'element-ui/lib/theme-default/index.css'
 import Vue from 'vue'
 //  导入主视图文件
 import App from './App'
-
+//  导入路由
 import VueResource from 'vue-resource'
 //导入状态管理器
 import store from './store'
@@ -47,9 +47,6 @@ Vue.use(VueResource);
 
 //  发布后是否显示提示
 Vue.config.productionTip = false;
-
-//  设置域名
-localStorage.setItem('apiDomain','http://192.168.0.13/');
 
 //是否开启工具调试
 Vue.config.devtools = process.env.NODE_ENV === 'development'

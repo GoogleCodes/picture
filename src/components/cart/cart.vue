@@ -213,7 +213,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$store.commit('DELCARTOBJ',item.id);
+          this.$store.commit('DEL_CART_OBJ',item.id);
           setTimeout(() => {
             location.reload();
           }, 500);

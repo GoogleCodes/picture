@@ -14,7 +14,7 @@ export const INCRECARTNUMS = 'increNums'
 export const REDUCECARTNUMS = 'reduceNums'
 
 //  删除购物车单个商品
-export const DELCARTOBJ = 'delSingle'
+export const DEL_CART_OBJ = 'delSingle'
 
 //  购物车数量
 export const SET_CART_NUMBER = 'set_cart_number'

@@ -5,9 +5,9 @@
         <div class="product-title">PRESENTATION</div>
         <span class="product-text">浏览其他</span>
         <ul class="product-list clearfix">
-          <template v-for="item in data.arr">
+          <template v-for="(item, index) in data.arr">
             <li class="product-item">
-                <router-link :to="{ path: '/'}" class="block">
+                <router-link :to="{ path: '/', query:{pid: index}}" class="block">
                     <div class="pic">
                       <img :src="item.img" alt="">
                     </div>

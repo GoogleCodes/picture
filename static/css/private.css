@@ -448,7 +448,7 @@
     width: 29px;
     height: 20px;
     position: absolute;
-    background: url('../../src/assets/images/25.png') no-repeat;
+    background: url('../../static/images/25.png') no-repeat;
     left: 6px;
     top: 13px;
 }

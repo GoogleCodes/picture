@@ -145,7 +145,7 @@
 <style>
   /* content start */
   .content {
-    margin: 50px auto 0px;
+    margin: 0px auto;
   }
 
   .content .con-pro {
