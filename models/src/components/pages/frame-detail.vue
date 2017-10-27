@@ -1,40 +1,49 @@
 <template>
   <div>
-    <div class="frame-bg" style="">
-      <div class="frame-detail">
-        <div class="fl det-pic">
-          <img src="../../../static/images/56.png" class="w100 h100" alt="">
+    <div class="frame-bg">
+      <div style="padding: 0 0 30px;">
+        <div class="frame-detail">
+          <div class="fl det-pic">
+            <img src="../../../static/images/56.png" class="w100 h100" alt="">
+          </div>
+          <div class="fr det-news">
+            <p class="ft-18 det-title">复古木纹</p>
+            <p class="det-desc c_b3b3b3">质感卓越，进口画芯高清质感图</p>
+          </div>
         </div>
-        <div class="fr det-news">
-          <p class="ft-18 det-title">复古木纹</p>
-          <p class="det-desc c_b3b3b3">质感卓越，进口画芯高清质感图</p>
-        </div>
-      </div>
-      <div>
-        <el-select v-model="value" placeholder="选择相框">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-        </el-select>
-        <el-select v-model="value" placeholder="选择尺寸">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-        </el-select>
-      </div>
 
-      <div class="onload-ele">
         <div>
-          <el-upload action="https://jsonplaceholder.typicode.com/posts/"
-                     list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
-            <i class="el-icon-plus"></i>
-          </el-upload>
-          <el-dialog v-model="dialogVisible" size="tiny">
-            <img width="100%" :src="dialogImageUrl" alt="">
-          </el-dialog>
+          <el-select v-model="value" placeholder="选择相框">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+          <el-select v-model="value" placeholder="选择尺寸">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
         </div>
-      </div>
-      <div class="matop_20">仅支持上传png/jpg格式图片分辨率300dpi以上</div>
 
-      <div class="btn-util">
-        <a href="javascript:void(0);" class="block fl btn showpic" @click="visiLayer = true">预览效果</a>
-        <a href="javascript:void(0);" class="block fr btn again">重新上传</a>
+        <div class="onload-ele">
+          <div>
+            <el-upload action="http://yuyin.ittun.com/public/api/home/ceshi/imgupload"
+                       list-type="picture-card"
+                       name="img"
+                       class="image-uploader-warp"
+                       :drag="false"
+                       :on-preview="handlePreview"
+                       :on-success="handleAvatarSuccess"
+                       :before-upload="handleBeforeUpload">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog v-model="dialogVisible" size="tiny">
+              <img width="100%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+          </div>
+        </div>
+        <div class="matop_20">仅支持上传png/jpg格式图片分辨率300dpi以上</div>
+
+        <div class="btn-util">
+          <a href="javascript:void(0);" class="block fl btn showpic" @click="visiLayer = true">预览效果</a>
+          <a href="javascript:void(0);" class="block fr btn again">重新上传</a>
+        </div>
       </div>
     </div>
     <div class="layer w100 h100" v-show="visiLayer" @click="clearLayer()"></div>
@@ -100,13 +109,15 @@
       clearLayer() {
         this.visiLayer = false;
       },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
+      handleBeforeUpload(file) {
+        console.log(file);
       },
-      handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
-      }
+      handlePreview(file, fileList) {
+        console.log(file, fileList)
+      },
+      handleAvatarSuccess(res, file) {
+        console.log(res);
+      },
     }
   }
 </script>

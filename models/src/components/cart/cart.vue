@@ -149,13 +149,14 @@
 
   /* cart-box start */
   .bar-wrapper .gopay {
-    width: 120px;
-    height: 45px;
+    padding: 14px 28px;
     background: #b11e25;
     border: 1px solid #b11e25;
     color: #fff;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
     margin-right: 10px;
+    border-radius: 0px;
   }
 
   .bar-wrapper {

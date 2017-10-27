@@ -1,20 +1,39 @@
 <template>
 
-  <div>
-    <!-- content start -->
-    <!--<el-carousel style="margin-top: 46px;">-->
-      <!--<template>-->
-        <!--<el-carousel-item>-->
-          <!--<img src="../../../static/images/banner_xiadan.png" alt="" class="w100 h100">-->
-        <!--</el-carousel-item>-->
-      <!--</template>-->
-    <!--</el-carousel>-->
+  <div style="background: #fff;">
 
-    <ele-swipers></ele-swipers>
+    <div>
+      <div style="margin-top: 46px;">
+        <swiper :options="swiperOption" ref="mySwiper">
+          <!-- slides -->
+          <template v-for="(item, index) in data.pic">
+            <swiper-slide  :style="{
+                  background: 'url('+ item.src +') no-repeat',
+                  backgroundSize: 'cover',
+                  height: '180px'}">
+            </swiper-slide>
+          </template>
+          <div class="swiper-pagination" slot="pagination"></div>
+          <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
+          <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
+        </swiper>
+        <!-- swiper2 Thumbs -->
+        <swiper style="display: none;height: 50px;background: #fff;" :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
+          <template v-for="(item, index) in data.pic">
+            <swiper-slide :style="{
+                  background: 'url('+ item.src +') no-repeat',
+                  width: '23%',
+                  backgroundSize: 'cover'}">
+            </swiper-slide>
+          </template>
+        </swiper>
+      </div>
+
+    </div>
 
     <div class="experience clear">
       <div class="tb-wrap">
-        <div class="right-select">
+        <div class="right-select fl">
           <div class="select-title">
             <span class="c_5d6060">照片冲印、手机上传打印照片</span>
           </div>
@@ -24,7 +43,9 @@
           <div class="select-price">
             <span>¥58.5</span>
           </div>
-          <el-button class="fr" @click="showLayer()">开始冲印</el-button>
+        </div>
+        <div class="fr">
+
         </div>
       </div>
     </div>
@@ -32,47 +53,8 @@
       <img src="../../../static/images/45.png" alt="" class="w100 h100">
     </div>
 
-    <div class="thislayer" v-show="layer" @click="goLayer()"></div>
-    <div class="item-layer" v-show="layer">
-      <div class="item-shop-msg">
-        <div class="shop-pic fl"></div>
-        <div class="shop-desc fl">
-          <p class="ft-16 c_5d6060">照片冲印、手机上传打印照片</p>
-          <span class="ft-14">单价 : <i class="money">0.60元</i></span>
-        </div>
-        <div class="iconfont fr icon-guanbi c_5d6060" @click="goLayer()"></div>
-      </div>
-      <div class="select-color clear">
-        <span class="left fl">相纸：</span>
-        <ul class="right clearfix fl">
-          <li class="right" v-for="(item, index) in 2" :class="{'active':index == guigeIndex}"
-              @click="currentGuiGeIndex(index, item.a)">123</li>
-        </ul>
-      </div>
-      <div class="select-size clear">
-        <span class="left fl">尺寸：</span>
-        <ul class="right clearfix fl">
-          <li v-for="(list,index) in 3"
-              :class="{'active':index == currentIndex}"
-              @click="currentGoIndex(index, list.one)">11</li>
-        </ul>
-      </div>
-      <div class="select-num clear">
-        <span class="left fl">数量：</span>
-        <!--<div class="item-amount ">-->
-          <!--<el-button class="no-minus fl" @click="changeNumber(list, -1)" :class="{'disabled':list.nums <= 1}">-</el-button>-->
-          <!--<el-input type="text" class="fl" placeholder="0" v-model="list.nums" readonly></el-input>-->
-          <!--<el-button class="add-max fl" @click="changeNumber(list, 1)" :class="{'disabled': list.nums >= 1}">+</el-button>-->
-        <!--</div>-->
-      </div>
-      <div class="select-btn clear">
-        <el-button class="ft-16" @click="goCart()">去上传照片</el-button>
-      </div>
-
-    </div>
-
   </div>
-    <!-- content end -->
+  <!-- content end -->
 </template>
 
 
@@ -95,9 +77,9 @@
         list: this.$storageGet('detail'),//JSON.parse(localStorage.getItem('detail')),
         data: {
           pic: [{
-            "src" : 'https://img.alicdn.com/simba/img/TB1OsO5cnZRMeJjSsppSutrEpXa.jpg',
+            "src" : '../../static/images/23.png',
           },{
-            "src": 'https://img.alicdn.com/simba/img/TB1hwrqeMoQMeJjy0FoSuwShVXa.jpg'
+            "src": '../../static/images/23.png'
           }],
           dtype: 1,
           currGuiGe: "",
@@ -109,25 +91,47 @@
         buyLists: [],
         guigeIndex: 0,
         currentIndex: 0,
-        layer: false,
         price: 0,
+        swiperOption: {
+          // swiper options 所有的配置同swiper官方api配置
+          autoplay: 3000,
+          notNextTick: true,
+          direction: 'horizontal',
+          grabCursor: true,
+          pagination: '.swiper-pagination',
+          prevButton: '.swiper-button-prev',
+          nextButton: '.swiper-button-next',
+          observeParents: true,
+          spaceBetween: 10,
+          debugger: true,
+
+        },
+        swiperOptionThumbs: {
+          notNextTick: true,
+          spaceBetween: 10,
+          centeredSlides: true,
+          slidesPerView: 'auto',
+          touchRatio: 0.2,
+          slideToClickedSlide: true
+        },
       }
     },
     watch: {
+
+    },
+    mounted() {
+      const mySwiper = this.$refs.mySwiper.swiper
+      const swiperThumbs = this.$refs.swiperThumbs.swiper
+      mySwiper.params.control = swiperThumbs
+      swiperThumbs.params.control = mySwiper
+    },
+    computed: {
 
     },
     created () {
 
     },
     methods: {
-      goLayer() {
-        this.layer = false;
-      },
-      showLayer() {
-        if (!this.layer) {
-          this.layer = true;
-        }
-      },
       currentGuiGeIndex(index, item) {
         this.guigeIndex = index;
         this.data.currGuiGe = item;
@@ -322,75 +326,6 @@
     background: #fff;
     position: relative;
     top: -20px;
-  }
-
-  .thislayer {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    background: rgba(0,0,0,0.5);
-    z-index: 100;
-  }
-
-  .item-layer .select-color ,
-  .item-layer .select-size ,
-  .item-layer .select-num {
-    margin: 10px 20px;
-    overflow: hidden;
-  }
-
-
-  .item-layer .select-color .left ,
-  .item-layer .select-size .left ,
-  .item-layer .select-num .left{
-    display: inline-block;
-    width: 85px;
-    line-height: 35px;
-    color: #9fa0a0;
-  }
-
-  .item-layer .select-size .right li ,
-  .item-layer .select-color .right li {
-    width: 85px;
-    height: 35px;
-    float: left;
-    background: #fff;
-    text-align: center;
-    line-height: 32px;
-    color: #9fa0a0;
-    box-sizing: border-box;
-    border: 2px solid #9fa0a0;
-    border-radius: 5px;
-  }
-
-  .item-layer .select-size .right .active,
-  .item-layer .select-color .right .active {
-    background: #b11e25;
-    color: #fff;
-    border: 2px solid #b11e25;
-  }
-
-  .item-layer .select-size .right li,
-  .item-layer .select-color .right li{
-    margin: 5px 10px 0px 0px;
-  }
-
-  .item-layer .select-size .right li:nth-child(2n) ,
-  .item-layer .select-color .right li:nth-child(2n){
-    margin: 5px 0px 0px 0px;
-  }
-
-  .select-btn .el-button {
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
-    border: 1px solid #414042;
-    background: #414042;
-    color: #fff;
-    height: 2.5rem;
-    border-radius: 0;
   }
 
   .tb-wrap {

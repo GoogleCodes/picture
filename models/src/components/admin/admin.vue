@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="admin clear">
-      <div class="head">
+      <div class="head" :style="{
+                          background: 'url(../../../static/images/banner/01.jpg) no-repeat',
+                          backgroundSize: 'cover'}">
         <div class="head-pic">
           <img src="../../../static/images/50.png" class="w100 h100" alt="">
         </div>

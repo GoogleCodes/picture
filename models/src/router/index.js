@@ -59,6 +59,8 @@ import order from '@/components/pages/order-list'
 //  订单确认
 import orddetail from '@/components/pages/ord-detail'
 
+import otherdetail from '@/components/pages/other-detail'
+
 Vue.use(Router);
 
 let routes = [{
@@ -129,6 +131,16 @@ let routes = [{
     title: '订单详情',
     goback: true,
     footer: false,
+  }
+},{
+  path: '/pages/other-detail',
+  name: 'otherdetail',
+  component: otherdetail,
+  meta: {
+    header: false,
+    title: '产品详情',
+    goback: true,
+    footer: true,
   }
 },{
   path: '/pages/onload',

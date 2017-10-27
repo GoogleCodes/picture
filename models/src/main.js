@@ -14,6 +14,8 @@ import store from './store'
 import router from './router'
 //  导入element组件
 import ElementUI from 'element-ui'
+//  导入swiper-css
+require('swiper/dist/css/swiper.css')
 //  导入路由
 import VueRouter from 'vue-router'
 import {
@@ -41,6 +43,11 @@ Vue.prototype.$api = api;
 
 //  使用element-ui
 Vue.use(ElementUI);
+
+//  导入swiper组件
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+
+Vue.use(VueAwesomeSwiper)
 
 //  网络请求模块vue-resource
 Vue.use(VueResource);

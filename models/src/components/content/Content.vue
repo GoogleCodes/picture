@@ -146,12 +146,15 @@
           path : '/pages/detail',
           query:{ id:item.id }
         });
+        setTimeout((res) => {
+            location.reload();
+        },100);
+        window.scrollTo(0,0);
       },
       getAlbum () {
-        this.$getData(this.$api.get_content.album).then((res) => {
-          console.log(res);
-        });
-
+//        this.$getData(this.$api.get_content.album).then((res) => {
+//          console.log(res);
+//        });
       },
     }
   }

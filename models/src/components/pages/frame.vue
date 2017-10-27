@@ -70,7 +70,7 @@
   /* frame-bg start */
   .frame-bg {
     background: #fff;
-    padding: 30px 0px;
+    padding: 0px;
   }
   .frame-bg .wrap-pic {
     width: 300px;
@@ -116,7 +116,7 @@
   }
   /* tab-banner start */
   .tab-banner {
-    margin-top: 18px;
+    /*margin-top: 18px;*/
   }
   /* tab-banner end */
 
