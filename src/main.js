@@ -14,6 +14,11 @@ import store from './store'
 import router from './router'
 //  导入element组件
 import ElementUI from 'element-ui'
+//  swiper.css
+import '../static/css/idangerous.swiper.css'
+
+require('swiper/dist/css/swiper.css')
+
 //  导入路由
 import VueRouter from 'vue-router'
 import {
@@ -39,6 +44,11 @@ Vue.prototype.$goFetch = fetch;
 import api from './common/port_uri'
 Vue.prototype.$api = api;
 
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+
+// mount with global
+Vue.use(VueAwesomeSwiper)
+
 //  使用element-ui
 Vue.use(ElementUI);
 
@@ -50,6 +60,12 @@ Vue.config.productionTip = false;
 
 //是否开启工具调试
 Vue.config.devtools = process.env.NODE_ENV === 'development'
+
+// If used in Nuxt.js/SSR, you should keep it only in browser build environment
+if (process.browser) {
+  const VueAwesomeSwiper = require('vue-awesome-swiper/ssr')
+  Vue.use(VueAwesomeSwiper)
+}
 
 /* eslint-disable no-new */
 new Vue({

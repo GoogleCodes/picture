@@ -9,6 +9,7 @@ import Index from '@/components/Index'
 import dingzhi from '@/components/inside/dingzhi'
 //  商品详情
 import detail from '@/components/pages/detail'
+import deSwiper from '@/components/pages/swiper'
 //  上传图片
 import onloadpic from '@/components/pages/onload'
 import onloadtwo from '@/components/pages/onloadtwo'
@@ -70,6 +71,14 @@ let routes = [{
   path: '/pages/detail',
   name: 'detail',
   component: detail
+},{
+  path: '/pages/swiper',
+  name: 'deSwiper',
+  component: deSwiper,
+  meta: {
+    top: false,
+    footer: false
+  }
 },{
   path: '/pages/pic-detail',
   name: 'picdetail',
@@ -160,8 +169,10 @@ const router = new Router({
   mode: 'hash', //default: hash ,history
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
+      console.log(savedPosition)
       return savedPosition
     } else {
+      console.log(x,y);
       return {x: 0, y: 0}
     }
   }

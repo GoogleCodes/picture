@@ -129,11 +129,6 @@
     background: #fff;
   }
 
-  .pic-detail .exper-pic {
-    width: 100%;
-    background: #fff;
-  }
-
   .pic-detail .tb-wrap {
     padding: 64px 0px;
     border-bottom: 1px solid #ddd;

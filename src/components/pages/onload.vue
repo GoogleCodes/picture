@@ -1,11 +1,7 @@
 <template>
   <div class="bgcolor">
     <div class="cart-upload-pic w1200">
-
-
         <div class="el-upload-icon">
-          <!--<slot></slot>-->
-
           <div class="container">
             <div class="upload-pic">
               <div class="top-upload clearfix">
@@ -17,11 +13,17 @@
                   <div class="product-text">高雅复古风</div>
                 </div>
                 <div class="right-upload">
-                  <el-upload class="image-uploader-warp" action="https://jsonplaceholder.typicode.com/posts/">
-                    <slot>
-
-                    </slot>
-                    <el-button type="primary upload-btn" @click="goUpLoading">
+                  <el-upload action="http://yuyin.ittun.com/public/api/home/ceshi/imgupload"
+                             name="abc"
+                             class="image-uploader-warp"
+                             :drag="false"
+                             :on-preview="handlePreview"
+                             :on-success="handleAvatarSuccess"
+                             :before-upload="handleBeforeUpload"
+                             :onError="uploadError"
+                             :on-remove="handleRemove">
+                    <slot></slot>
+                    <el-button  type="primary" class="upload-btn">
                       <i class="el-icon-upload el-icon--right"></i>
                       <i>上传</i>
                     </el-button>
@@ -75,11 +77,21 @@
 </template>
 
 <script type="text/javascript">
+
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
+
   export default {
     data() {
       return {
-
+        fileList: [
+          {
+            name: 'food.jpeg',
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'},
+          {
+            name: 'food2.jpeg',
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          }],
+        file: null,
       }
     },
     created() {
@@ -90,8 +102,20 @@
 
     },
     methods: {
-      goUpLoading() {
-
+      handleBeforeUpload(file) {
+        console.log(file);
+      },
+      handleAvatarSuccess(res, file) {
+        console.log(res);
+      },
+      handlePreview(file, fileList) {
+        console.log(file, fileList)
+      },
+      uploadError (response, file, fileList) {
+        console.log('上传失败，请重试！')
+      },
+      handleRemove(file) {
+        console.log(file);
       }
     }
   }

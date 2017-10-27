@@ -48,17 +48,17 @@
             <div style="margin-top: 100px;">
               <template v-for="item in data.arr">
                 <div class="card-tuijian fl" @click="goDetail(item)">
-                    <!--<router-link :to="{ path: '/pages/detail', query:{ id:item.id }}" class="block w100 h100" >-->
-                    <div class="card-tuijian-pic fl">
-                      <img :src="item.pic" alt="" style="width: 100%;height: 100%;"/>
+                  <!--<router-link :to="{ path: '/pages/detail', query:{ id:item.id }}" class="block w100 h100" >-->
+                  <div class="card-tuijian-pic fl">
+                    <img :src="item.pic" alt="" style="width: 100%;height: 100%;"/>
+                  </div>
+                  <div class="card-tuijian-desc fl">
+                    <div class="desc-title">{{ item.title }}</div>
+                    <span class="desc-msg blocks">{{ item.desc }}</span>
+                    <div class="desc-pic">
+                      <img :src="item.small" alt="" style="width: 100%;height: 100%;" />
                     </div>
-                    <div class="card-tuijian-desc fl">
-                      <div class="desc-title">{{ item.title }}</div>
-                      <span class="desc-msg blocks">{{ item.desc }}</span>
-                      <div class="desc-pic">
-                        <img :src="item.small" alt="" style="width: 100%;height: 100%;" />
-                      </div>
-                    </div>
+                  </div>
                   <!--</router-link>-->
                 </div>
               </template>
@@ -99,9 +99,7 @@
       this.getAlbum();
     },
     created() {
-      this.$http.get('http://www.getcodeing.com/api/user/getuser').then((res) => {
-          console.log(res);
-      });
+
     },
     watch: {
       $route (to) {
@@ -132,11 +130,15 @@
           path : '/pages/detail',
           query:{ id:item.id }
         });
+        setTimeout(() => {
+            location.reload();
+        },100)
+        window.scrollTo(0,0);
       },
       getAlbum () {
-        this.$getData(this.$api.get_content.album).then((res) => {
-          console.log(res);
-        });
+//        this.$getData(this.$api.get_content.album).then((res) => {
+//          console.log(res);
+//        });
       },
     }
   }

@@ -1,11 +1,17 @@
 <template>
 
   <div class="bgcolor">
+
     <div class="content clear" style="margin: 0px auto;">
       <div class="con-pro" style="height: 360px;">
         <img src="../../assets/images/19.png" alt="" style="width: 100%;height: 100%;">
       </div>
       <div class="experience" style="margin: 70px auto;background: #fff">
+
+        <!-- banner start -->
+        <detailSwiper></detailSwiper>
+        <!-- banner end -->
+
         <div class="exper-pic fl" style="display: none;">
           <div class="exper-pic-wrap">
             <el-carousel height="420px">
@@ -14,78 +20,10 @@
                   <img :src="item.src" alt="" style="width: 100%;height: 420px;">
                 </el-carousel-item>
               </template>
-
             </el-carousel>
           </div>
           <div class="exper-pic-item">
             <div class="a1" v-for="item in 5"></div>
-          </div>
-        </div>
-
-        <div class="pc-slide">
-          <div class="view">
-            <div class="swiper-container">
-              <a class="arrow-left" href="javscript:void(0);"></a>
-              <a class="arrow-right" href="javscript:void(0);"></a>
-              <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                  <a target="_blank">
-                    <img src="../../../static/images/detail/b1.jpg" alt="">
-                  </a>
-                </div>
-                <div class="swiper-slide">
-                  <a target="_blank">
-                    <img src="../../../static/images/detail/b2.jpg" alt="">
-                  </a>
-                </div>
-                <div class="swiper-slide">
-                  <a target="_blank">
-                    <img src="../../../static/images/detail/b3.jpg" alt="">
-                  </a>
-                </div>
-                <div class="swiper-slide">
-                  <a target="_blank">
-                    <img src="../../../static/images/detail/b4.jpg" alt="">
-                  </a>
-                </div>
-                <div class="swiper-slide">
-                  <a target="_blank">
-                    <img src="../../../static/images/detail/b5.jpg" alt="">
-                  </a>
-                </div>
-                <div class="swiper-slide">
-                  <a target="_blank">
-                    <img src="../../../static/images/detail/b6.jpg" alt="">
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="preview">
-            <a class="arrow-left" href="javascript:void(0);"></a>
-            <a class="arrow-right" href="javascript:void(0);"></a>
-            <div class="swiper-container">
-              <div class="swiper-wrapper">
-                <div class="swiper-slide active-nav">
-                  <img src="../../../static/images/detail/s1.jpg" alt="">
-                </div>
-                <div class="swiper-slide">
-                  <img src="../../../static/images/detail/s2.jpg" alt="">
-                </div>
-                <div class="swiper-slide">
-                  <img src="../../../static/images/detail/s3.jpg" alt="">
-                </div>
-                <div class="swiper-slide">
-                  <img src="../../../static/images/detail/s4.jpg" alt="">
-                </div>
-                <div class="swiper-slide">
-                  <img src="../../../static/images/detail/s5.jpg" alt="">
-                </div>
-                <div class="swiper-slide slide6">
-                  <img src="../../../static/images/detail/s6.jpg" alt="">
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -186,17 +124,14 @@
   import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
   import ElInputNumber from "../../../node_modules/element-ui/packages/input-number/src/input-number";
 
+  import detailSwiper from '@/components/pages/swiper'
+
   export default {
     name: 'dingzhi',
     data() {
       return {
         list: JSON.parse(localStorage.getItem('detail')),
         data: {
-          pic: [{
-            "src" : 'https://img.alicdn.com/simba/img/TB1OsO5cnZRMeJjSsppSutrEpXa.jpg',
-          },{
-            "src": 'https://img.alicdn.com/simba/img/TB1hwrqeMoQMeJjy0FoSuwShVXa.jpg'
-          }],
           dtype: 1,
           currGuiGe: "",
           currSize: "",
@@ -213,10 +148,22 @@
 
     },
     created () {
-      $('.view .arrow-right,.preview .arrow-right').on('click', function(e) {
-          console.log(1233);
 
-      })
+    },
+    components: {
+      ElInputNumber,
+      ElInput,
+      ElButton,
+      heads,
+      elenav,
+      foots,
+      other,
+      detailSwiper,
+    },
+    computed: {
+
+    },
+    mounted() {
 
     },
     methods: {
@@ -274,15 +221,6 @@
           that.$router.push({ path: '/cart/cart' });
         },500);
       }
-    },
-    components: {
-      ElInputNumber,
-      ElInput,
-      ElButton,
-      heads,
-      elenav,
-      foots,
-      other,
     }
   }
 </script>
@@ -523,7 +461,7 @@
   }
 
   .view .swiper-container {
-    width: 500px;
+    width: 660px;
     height: 500px;
   }
 
@@ -602,4 +540,32 @@
   }
   /* preview */
 
+</style>
+
+
+<style scoped>
+  .swiper-container {
+    margin: 20px;
+  }
+  .swiper-slide {
+    background-size: cover;
+    background-position: center;
+  }
+  .gallery-top {
+    height: 80%!important;
+    width: 100%;
+  }
+  .gallery-thumbs {
+    height: 20%!important;
+    box-sizing: border-box;
+    padding: 10px 0;
+  }
+  .gallery-thumbs .swiper-slide {
+    width: 25%;
+    height: 100%;
+    opacity: 0.4;
+  }
+  .gallery-thumbs .swiper-slide-active {
+    opacity: 1;
+  }
 </style>
