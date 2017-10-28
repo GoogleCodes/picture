@@ -79,7 +79,7 @@
       },
       watch: {
           chosen() {
-              let that = this;
+              let that = this, arr = [];
               for (let i in this.chosen) {
                   if (that.chosen[i] == this.pid) {
                       that.actives = true;
@@ -110,22 +110,21 @@
           },
           unActIt() {
               this.actives = !this.actives;
-              let arr = [];
               if(this.actives) {
-                  let getIndex = null, ch = 0;
-//                  arr.push(this.pid);
-//                  this.chosen = arr;
-//                  console.log(this.chosen, arr);
-                  for(ch; ch < this.chosen.length; ch++) {
-                        console.log(this.chosen[ch]);
-//                      if(this.chosen[ch] === this.pid) {
-//                          getIndex = ch;
-//                          break;
-//                      }
+                this.chosen.push({
+                  id: this.pid,
+                });
+              } else if(!this.actives) {
+                let getIndex = null;
+                for(let ch = 0;ch < this.chosen.length; ch++) {
+                  if(this.chosen[ch].id == this.pid) {
+                    getIndex = ch;
+                    break;
                   }
-//                  if(getIndex >= 0) {
-//                      this.chosen.splice(getIndex,1);
-//                  }
+                }
+                if(getIndex >= 0) {
+                  this.chosen.splice(getIndex,1);
+                }
               }
           },
           deleteShop(id) {

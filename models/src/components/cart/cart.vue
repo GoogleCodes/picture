@@ -26,7 +26,7 @@
         <el-button class="fr gopay" @click="goPay()">去结算</el-button>
         <p class="ft-14 fr total-price">
           <span class="c_898989">合计</span>
-          <span class="c_e64147">{{ chosePrice }}</span>
+          <span class="c_e64147 ft-18 ft-we">{{ chosePrice }}</span>
         </p>
       </div>
     </div>
@@ -122,11 +122,6 @@
             arr.push(this.data.cartShoplist[cl].id);
           }
           this.choseAll = arr;
-//          if (this.allsel) {
-//            this.choseAll = [];
-//          } else {
-//
-//          }
         } else if (type == 0) {
           this.choseAll = arr = [];
         }

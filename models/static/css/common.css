@@ -80,10 +80,9 @@ scrollbarbutton:hover{-moz-appearance:none !important;background-color:rgb(255,0
 .ft-30{font-size:30px;}
 .ft-32{font-size:32px;}
 .ft-34{font-size:34px;}
-
-
 .ft-35{font-size:35px;}
 .ft-36{font-size:36px;}
+.ft-we{font-weight: bold;}
 /* 字体大小 结束 */
 
 .w100{width:100%;}
