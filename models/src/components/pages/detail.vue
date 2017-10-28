@@ -52,7 +52,7 @@
       <div class="select-size clear">
         <span class="left fl">尺寸：</span>
         <ul class="right clearfix fl">
-          <li v-for="(list,index) in 3"
+          <li v-for="(list,index) in 2"
               :class="{'active':index == currentIndex}"
               @click="currentGoIndex(index, list.one)">11</li>
         </ul>

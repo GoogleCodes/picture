@@ -186,7 +186,8 @@
 
   /* content start */
   .content {
-    margin: 20px auto 65px;
+    margin: 20px auto;
+    padding: 0px 0px 95px;
   }
 
   .content .pro-moves .move {

@@ -20,7 +20,7 @@
             </div>
           </el-form>
           <div class="form-input clear matop_10">
-            <el-button class="comfirm" style="margin-top: 50px" @click="goModify('ruleForm')">提交</el-button>
+            <el-button class="comfirm" style="margin-top: 20px" @click="goModify('ruleForm')">提交</el-button>
           </div>
         </div>
       </div>

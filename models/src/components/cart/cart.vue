@@ -26,7 +26,7 @@
         <el-button class="fr gopay" @click="goPay()">去结算</el-button>
         <p class="ft-14 fr total-price">
           <span class="c_898989">合计</span>
-          <span class="c_e64147">{{ data.totalMoney | changePrice }}</span>
+          <span class="c_e64147">{{ chosePrice }}</span>
         </p>
       </div>
     </div>
@@ -57,7 +57,6 @@
         return {
           editMode: 0,
           choseAll: [],
-          choseAllFlag: false,
           data: {
             modeText: '编辑',
             cartShoplist: this.$storageGet('cart_info'),
@@ -78,7 +77,6 @@
     },
     created() {
       this.$store.dispatch("init");
-      console.log(this.data.cartShoplist);
     },
     computed: {
       allsel() {
@@ -87,6 +85,21 @@
         }
         return false;
       },
+      chosePrice() {
+        let sum = 0;
+        if (this.choseAll.length <= 0) {
+          return sum.toFixed(2);
+        }
+        for (let ch in this.choseAll) {
+          for (let pl in this.data.cartShoplist) {
+            if (this.choseAll[ch] === this.data.cartShoplist[pl].id) {
+              sum += this.data.cartShoplist[pl].price * this.data.cartShoplist[pl].nums;
+              break;
+            }
+          }
+        }
+        return sum.toFixed(2);
+      }
     },
     watch: {
 
@@ -103,13 +116,19 @@
         if(this.choseAll.length > 0) {
           this.choseAll.splice(0,this.choseAll.length);
         }
+        let arr = [];
         if(type === 1) {
           for(let cl in this.data.cartShoplist) {
-            this.choseAll.push({
-              id: this.data.cartShoplist[cl].id,
-              format: this.data.cartShoplist[cl].format
-            });
+            arr.push(this.data.cartShoplist[cl].id);
           }
+          this.choseAll = arr;
+//          if (this.allsel) {
+//            this.choseAll = [];
+//          } else {
+//
+//          }
+        } else if (type == 0) {
+          this.choseAll = arr = [];
         }
       },
       changMode() {

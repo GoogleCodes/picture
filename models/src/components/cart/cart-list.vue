@@ -1,11 +1,11 @@
 <template>
-  <div class="cart-body" :class="className">
+  <div class="cart-body" :class="actives">
     <div class="cart-box">
       <div class="addition fl">
         <!--<i class="iconfont icon-quxiaoquanxuan c_9e9d9d" :class="{'chose':list.checked}" @click="unActIt(list)" v-if="list.checked"></i>-->
         <!--<i class="iconfont icon-checked-fill c_b11e25" :class="{'chose':list.checked}" @click="unActIt(list)" v-else-if="!list.checked"></i>-->
-        <i class="iconfont icon-checked-fill c_b11e25" @click="unActIt()" v-show="showVal"></i>
-        <i class="iconfont icon-quxiaoquanxuan c_9e9d9d" @click="actIt()" v-show="!showVal"></i>
+        <i class="iconfont icon-checked-fill c_b11e25" @click="unActIt" v-show="actives"></i>
+        <i class="iconfont icon-quxiaoquanxuan c_9e9d9d" @click="unActIt" v-show="!actives"></i>
       </div>
       <router-link :to="{ path: '/pages/detail', query:{pid: pid}}" class="block w100 h100">
         <div class="maininfo fl">
@@ -71,29 +71,27 @@
       },
       data() {
           return {
-
+            actives: false
           }
       },
       created() {
 
       },
-      computed: {
-          className() {
+      watch: {
+          chosen() {
               let that = this;
-              const obj = {};
-              if(that.chosen.length > 0) {
-                  for (let ch in this.chosen) {
-                      if (this.chosen[ch].id === this.pid && this.chosen[ch].format === this.pformat) {
-                          obj['active'] = true;
-                      } else {
-                          obj['active'] = false;
-                      }
+              for (let i in this.chosen) {
+                  if (that.chosen[i] == this.pid) {
+                      that.actives = true;
+                      break;
                   }
-              } else {
-                  obj['active'] = false;
               }
-              return obj;
+              if(that.chosen.length == 0) {
+                that.actives = false;
+              }
           },
+      },
+      computed: {
           showVal() {
               if (this.className.active){
                   return true;
@@ -104,25 +102,30 @@
       },
       methods: {
           actIt() {
-              if(!this.className.active) {
+              if(!this.actives) {
                   this.chosen.push({
                     id: this.pid,
-                    format: this.pformat
                   });
               }
           },
           unActIt() {
-              if(this.className.active) {
-                  let getIndex = null;
-                  for(let ch = 0;ch < this.chosen.length; ch++) {
-                      if(this.chosen[ch].id === this.pid && this.chosen[ch].format === this.pformat) {
-                          getIndex = ch;
-                          break;
-                      }
+              this.actives = !this.actives;
+              let arr = [];
+              if(this.actives) {
+                  let getIndex = null, ch = 0;
+//                  arr.push(this.pid);
+//                  this.chosen = arr;
+//                  console.log(this.chosen, arr);
+                  for(ch; ch < this.chosen.length; ch++) {
+                        console.log(this.chosen[ch]);
+//                      if(this.chosen[ch] === this.pid) {
+//                          getIndex = ch;
+//                          break;
+//                      }
                   }
-                  if(getIndex >= 0) {
-                      this.chosen.splice(getIndex,1);
-                  }
+//                  if(getIndex >= 0) {
+//                      this.chosen.splice(getIndex,1);
+//                  }
               }
           },
           deleteShop(id) {

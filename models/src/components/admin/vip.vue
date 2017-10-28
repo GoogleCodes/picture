@@ -13,6 +13,7 @@
               <img src="../../../static/images/53.png" alt="" class="w100 h100">
             </div>
             <h4 class="ft-14" style="margin-top: 50px;">二、会员等级规则</h4>
+
             <table class="vip-table">
               <thead class="thead">
               <tr>
@@ -62,7 +63,7 @@
               <tr>
                 <td>
                   <i class="icon w5 block"></i>
-                  高级会员
+                  <span>高级会员</span>
               </td>
                 <td>4000~10000</td>
                 <td>2000</td>
@@ -81,6 +82,44 @@
     </div>
   </div>
 </template>
+
+<script type="text/javascript">
+  export default {
+    data() {
+        return {
+          tableData: [{
+            date: '注册会员',
+            name: '王小虎',
+            province: '上海',
+            city: '普陀区',
+            address: '上海市普陀区金沙江路 1518 弄',
+            zip: 200333
+          }, {
+            date: '普通会员',
+            name: '王小虎',
+            province: '上海',
+            city: '普陀区',
+            address: '上海市普陀区金沙江路 1518 弄',
+            zip: 200333
+          }, {
+            date: '中级会员',
+            name: '王小虎',
+            province: '上海',
+            city: '普陀区',
+            address: '上海市普陀区金沙江路 1518 弄',
+            zip: 200333
+          }, {
+            date: '高级会员',
+            name: '王小虎',
+            province: '上海',
+            city: '普陀区',
+            address: '上海市普陀区金沙江路 1518 弄',
+            zip: 200333
+          }]
+        }
+    },
+  }
+</script>
 
 <style type="text/css">
   /* vip start */
