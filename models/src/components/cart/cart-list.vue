@@ -111,13 +111,11 @@
           unActIt() {
               this.actives = !this.actives;
               if(this.actives) {
-                this.chosen.push({
-                  id: this.pid,
-                });
+                this.chosen.push(this.pid);
               } else if(!this.actives) {
                 let getIndex = null;
                 for(let ch = 0;ch < this.chosen.length; ch++) {
-                  if(this.chosen[ch].id == this.pid) {
+                  if(this.chosen[ch] == this.pid) {
                     getIndex = ch;
                     break;
                   }
