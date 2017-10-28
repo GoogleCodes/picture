@@ -1,6 +1,6 @@
 <template>
   <div class="proseries">
-    <template v-for="item in 5">
+    <template v-for="(item, index) in 5">
       <div class="matop_10" style="height: 100%;overflow: hidden;">
         <div class="pro-pic">
           <img src="../../../static/images/43.png" alt="" class="w100 h100" >
@@ -11,7 +11,7 @@
             <span class="ft-14 c_b3b3b3">高雅复古风格</span>
             <h1 class="moeny ft-18 c_e64147">￥39.80</h1>
           </div>
-          <el-button class="fr" @click="goInfo()">查看详情</el-button>
+          <el-button class="fr" @click="goInfo(index)">查看详情</el-button>
         </div>
       </div>
     </template>
@@ -36,8 +36,8 @@
 
     },
     methods: {
-      goInfo() {
-        this.$router.push({ path: '/'});
+      goInfo(id) {
+        this.$router.push({ path: '/pages/detail', query: {id:id}});
       }
     }
   }

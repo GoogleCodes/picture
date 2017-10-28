@@ -66,7 +66,9 @@
         <!--</div>-->
       </div>
       <div class="select-btn clear">
-        <el-button class="ft-16" @click="goCart()">去上传照片</el-button>
+        <router-link :to="{ path: '/pages/onload', query:{id: 1}}" class="w100 h100 block">
+          <el-button class="ft-16">去上传照片</el-button>
+        </router-link>
       </div>
 
     </div>

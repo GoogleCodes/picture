@@ -61,6 +61,11 @@ import orddetail from '@/components/pages/ord-detail'
 
 import otherdetail from '@/components/pages/other-detail'
 
+//  成功加入购物车
+import cartOther from '@/components/pages/other'
+//  订单支付
+import gopay from '@/components/pages/gopay'
+
 Vue.use(Router);
 
 let routes = [{
@@ -148,7 +153,29 @@ let routes = [{
   component: onloadpic,
   meta: {
     header: false,
+    goback: true,
+    title: '照片上传',
     footer: true,
+  }
+},{
+  path: '/pages/other',
+  name: 'cartOther',
+  component: cartOther,
+  meta: {
+    header: false,
+    goback: true,
+    title: '购物车',
+    footer: false,
+  }
+},{
+  path: '/pages/gopay',
+  name: 'gopay',
+  component: gopay,
+  meta: {
+    header: false,
+    goback: true,
+    title: '订单支付',
+    footer: false,
   }
 },{
   path: '/pages/onloadtwo',
