@@ -11,7 +11,6 @@
 
   import heads from '@/components/top/Top.vue'
   import banner from '@/components/top/banner.vue'
-  import foots from '@/components/footer/Footer.vue'
 
   import gotop from '@/components/content/gotop.vue'
   import elenav from '@/components/top/Nav.vue'
@@ -38,7 +37,6 @@
       elecontent,
       gotop,
       banner,
-      foots,
     }
   }
 </script>

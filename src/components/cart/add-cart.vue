@@ -1,7 +1,6 @@
 <template>
-
   <div class="bgcolor">
-    <div style="width: 1200px;margin: 0px auto;">
+    <div style="width: 1200px;margin: 0px auto 45px;">
       <!-- 添加到购物车 -->
       <div class="hunsha-add-cart">
         <div class="container clearfix">
@@ -29,7 +28,7 @@
           </div>
         </div>
       </div>
-      <other></other>
+      
     </div>
   </div>
 </template>
@@ -63,10 +62,11 @@
 <style>
   /* 添加到购物车 */
   .hunsha-add-cart {
-    margin-top: 25px;
+    //  margin-top: 25px;
+    padding-top: 40px;
   }
   .hunsha-add-cart .container {
-    margin-top: 70px;
+    // margin-top: 70px;
     padding-top: 50px;
     padding-bottom: 70px;
     background: #fff;

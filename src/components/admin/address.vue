@@ -28,7 +28,7 @@
                   <span>联系电话：</span>
                   <span>{{ item.tel }}</span>
                 </li>
-                <li>
+                <li style="height: 60px;overflow: hidden;">
                   <span>详细地址：</span>
                   <span>{{ item.adr }}</span>
                 </li>

@@ -4,7 +4,7 @@
     <div class="nav clear">
       <ul class="fl">
         <li v-for="(item, index) in data.list">
-          <router-link :to="{ path: item.src}" class="blocks nav-href">
+          <router-link :to="{ path: '/inside/orderlist', query: {id: item.id}}" class="blocks nav-href">
             <span>{{ item.title }}</span>
             <div class="dropDomn" v-show="dropDowm">
               <div class="triangle"></div>
@@ -43,8 +43,8 @@
     },
     methods: {
       getNav() {
-        this.$http.get(this.$api.get_content.GET_NAV).then((res) => {
-            this.data.list = res.data.nav;
+        this.$http.get('http://yuyin.ittun.com/public/api/home/front/getPrdClassify').then((res) => {
+            this.data.list = res.data.data;
         });
       }
     },

@@ -191,7 +191,8 @@
       },
       //  去结算
       goPay () {
-        var options = {}
+        console.log(this.multipleSelection);
+        // this.$store.commit('SET_GO_PAY',this.multipleSelection);
         if (this.multipleSelection.length == 0) {
           this.$message({
             message: '请选择商品!',

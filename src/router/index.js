@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
 import store from '../store'
-
 //  首页
 import Index from '@/components/Index'
 //  定制
@@ -59,108 +57,178 @@ let routes = [{
   name: 'Index',
   component: Index,
   children: [],
+  meta: {
+    footer: true
+  },
 },{
   path: '/inside/dingzhi',
   name: 'dingzhi',
-  component: dingzhi
+  component: dingzhi,
+  meta: {
+    footer: true
+  },
 },{
   path: '/inside/orderlist',
   name: 'orderlist',
-  component: orderlist
+  component: orderlist,
+  meta: {
+    footer: true
+  },
 },{
   path: '/pages/detail',
   name: 'detail',
-  component: detail
+  component: detail,
+  meta: {
+    footer: true
+  },
 },{
   path: '/pages/swiper',
   name: 'deSwiper',
   component: deSwiper,
   meta: {
-    top: false,
     footer: false
   }
 },{
   path: '/pages/pic-detail',
   name: 'picdetail',
-  component: picdetail
+  component: picdetail,
+  meta: {
+    footer: false,
+  }
 },{
   path: '/pages/onload',
   name: 'onload',
-  component: onloadpic
+  component: onloadpic,
+  meta: {
+    footer: false,
+  }
 },{
   path: '/pages/onloadtwo',
   name: 'onloadtwo',
-  component: onloadtwo
+  component: onloadtwo,
+  meta: {
+    footer: false,
+  }
 },{
   path: '/pages/frame',
   name: 'frame',
-  component: frame
+  component: frame,
+  meta: {
+    footer: false,
+  }
 },{
   path: '/user/login',
   name: 'login',
   component: login,
+  meta: {
+    footer: false,
+  }
 },{
   path: '/user/register',
   name: 'reg',
   component: register,
+  meta: {
+    footer: false,
+  }
 },{
   path: '/user/find',
   name: 'find',
   component: find,
+  meta: {
+    footer: false,
+  }
 },{
   path: '/admin/admin',
   name: 'admin',
   component: admin,
+  meta: {
+    footer: true,
+  },
   children: [{
     path: '/admin/vip',
     name: 'vip',
     component: vip,
+    meta: {
+      footer: true,
+    },
   },{
     path: '/admin/changepwd',
     name: 'changepwd',
     component: changepwd,
+    meta: {
+      footer: true,
+    },
   },{
     path: '/admin/shoping',
     name: 'shoping',
     component: shoping,
+    meta: {
+      footer: true,
+    },
   },{
     path: '/admin/manage',
     name: 'manage',
     component: manage,
+    meta: {
+      footer: true,
+    },
   },{
     path: '/admin/address',
     name: 'address',
     component: address,
+    meta: {
+      footer: true,
+    },
   },{
     path: '/admin/increase',
     name: 'increase',
     component: increase,
+    meta: {
+      footer: true,
+    },
   }],
 },{
   path: '/cart/cart',
   name: 'cart',
   component: cart,
+  meta: {
+    footer: true,
+  },
 },{
   path: '/cart/ord-cart',
   name: 'ordcart',
   component: ordcart,
+  meta: {
+    footer: true,
+  },
 },{
   path: '/cart/add-cart',
   name: 'addCart',
-  header: true,
   component: addcart,
+  meta: {
+    footer: true
+  },
 },{
   path: '/cart/submit',
   name: 'submit',
   component: submit,
+  meta: {
+    footer: true,
+  },
 },{
   path: '/content/news',
   name: 'news',
   component: news,
+  meta: {
+    footer: true,
+  },
 },{
   path: '/content/newsdetail',
   name: 'newdetail',
   component: newdetail,
+  meta: {
+    footer: true,
+  },
 }];
 
 
@@ -172,7 +240,6 @@ const router = new Router({
       console.log(savedPosition)
       return savedPosition
     } else {
-      console.log(x,y);
       return {x: 0, y: 0}
     }
   }
@@ -185,5 +252,3 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router;
-
-

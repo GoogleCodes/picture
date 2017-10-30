@@ -1,6 +1,6 @@
 <template>
   <div class="bgColor">
-      <div class="news" v-loading="load_data" element-loading-text="正在登陆中...">
+      <div class="news" v-loading="load_data" element-loading-text="加载中...">
           <div class="product-title">Exhibition cooperation</div>
           <div class="product-text">展会合作</div>
           <ul>

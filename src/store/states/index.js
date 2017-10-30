@@ -14,6 +14,7 @@ export default {
   //  购物车缓存
   cart: localStorage.getItem('cart_info') ? JSON.parse(localStorage.getItem('cart_info')) : [],
   setCart: storageGet('cart_info') || [],
+  gopay: []
 }
 
 

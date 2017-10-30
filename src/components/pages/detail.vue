@@ -35,8 +35,7 @@
             <div class="select-color">
               <span class="left fl">款色：</span>
               <ul>
-                <li class="right" v-for="(item, index) in list.guige"
-                    :class="{'active':index == guigeIndex}"
+                <li class="right" v-for="(item, index) in list.guige" :class="{'active':index == guigeIndex}"
                     @click="currentGuiGeIndex(index, item.a)">{{ item.a }}</li>
               </ul>
             </div>
@@ -104,7 +103,7 @@
       </div>
 
       <div class="w1200 mauto clear" style="overflow: hidden;">
-        <other></other>
+        <other :cid="list.id" :number="list.nums"></other>
       </div>
 
     </div>
@@ -117,7 +116,6 @@
 <script type="text/javascript">
 
   import heads from '@/components/top/Top.vue'
-  import foots from '@/components/footer/Footer.vue'
   import elenav from '@/components/top/Nav.vue'
   import other from '@/components/pages/other.vue'
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
@@ -148,7 +146,7 @@
 
     },
     created () {
-
+      
     },
     components: {
       ElInputNumber,
@@ -156,7 +154,6 @@
       ElButton,
       heads,
       elenav,
-      foots,
       other,
       detailSwiper,
     },
@@ -211,15 +208,15 @@
         };
         console.log(option);
         this.$store.commit('SET_CART_OBJ',option);
-        return;
+        console.log(this.$storageGet('cart_info'));
         this.$message({
           message: '恭喜你，加入购物车成功！',
           type: 'success'
         });
-        setInterval(function() {
-          location.reload();
-          that.$router.push({ path: '/cart/cart' });
-        },500);
+        // setInterval(function() {
+        //   location.reload();
+        //   that.$router.push({ path: '/cart/cart' });
+        // },500);
       }
     }
   }

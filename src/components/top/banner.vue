@@ -4,9 +4,7 @@
     <template v-for="(item, index) in list">
     <el-carousel-item>
       <div class="banner clear">
-
           <img :src="item.pic" alt="" >
-
         <!--<div class="banner-title">杺 叶</div>-->
         <!--<div class="banner-text">-->
           <!--<img src="../../../static/images/banner/01.jpg" alt="">-->

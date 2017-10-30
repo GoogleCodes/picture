@@ -1,4 +1,3 @@
-
 import * as actions from '../../store/actions/type'
 import * as mutations from '../../store/mutations/type'
 
@@ -51,6 +50,11 @@ export default {
   //  获取购物车数据
   [actions.SET_CART_STORAGE]({commit}, selarray) {
     commit(mutations.SET_CART_STORAGE, selarray);
+  },
+
+  //  去支付
+  [actions.SET_GO_PAY]({commit}, arr){
+    commit(mutations.SET_GO_PAY, arr);
   }
 
 }

@@ -2,7 +2,7 @@
   <div class="admin-left fl">
     <div class="admin-pic">
       <img src="../../assets/images/16.png" alt="" style="width: 100%;height: 100%;">
-      <h2 class="admin-uname ft-16">用户昵称</h2>
+      <h2 class="admin-uname ft-16">{{ list.name }}</h2>
       <p class="admin-vip"></p>
     </div>
     <div class="admin-nav">
@@ -55,20 +55,24 @@
   export default {
     data() {
       return {
-
+        list: {},
+        vipname: '',
       }
     },
     computed: {
         user_info() {
-
+          try {
+            let arr = this.$storageGet('user_info');// JSON.parse(this.$store.state.user_info);
+            this.list = arr.user
+          } catch(e) {}
+          return this.$store.state.user_info;
         }
     },
     watch: {
-      $route(to) {
-
-      }
+      
     },
-    created() {
+    mounted() {
+      console.log(this.user_info);
       this.isUserTrue();
     },
     methods: {

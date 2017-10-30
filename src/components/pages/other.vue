@@ -5,15 +5,15 @@
         <div class="product-title">PRESENTATION</div>
         <span class="product-text">浏览其他</span>
         <ul class="product-list clearfix">
-          <template v-for="(item, index) in data.arr">
+          <template v-for="(item, index) in list">
             <li class="product-item">
-                <router-link :to="{ path: '/', query:{pid: index}}" class="block">
-                    <div class="pic">
-                      <img :src="item.img" alt="">
-                    </div>
-                    <div class="item-title">{{ item.title }}</div>
-                    <div class="item-text">典雅现代，木纹情怀</div>
-                </router-link>
+              <router-link :to="{ path: '/', query:{pid: index}}" class="block">
+                <div class="pic">
+                  <img :src="item.img" alt="">
+                </div>
+                <div class="item-title">{{ item.title }}</div>
+                <div class="item-text">典雅现代，木纹情怀</div>
+              </router-link>
             </li>
           </template>
         </ul>
@@ -25,23 +25,38 @@
 <script type="text/javascript">
 
   export default {
+    props: {
+      cid: {
+        type: [Number,String],
+        required: true
+      },
+      number: {
+        type: Number,
+        required: true
+      }
+    },
     components: {
 
     },
     data() {
       return {
-        data: {
-          arr: [],
-        },
+        list: [],
       }
     },
-    created() {
+    mounted() {
       this.getOther();
     },
     methods: {
       getOther() {
-        this.$http.get(this.$api.get_other.other).then((res) => {
-          this.data.arr = res.data.other;
+        this.$http.get('http://yuyin.ittun.com/public/api/home/front/randProduct?cid=' + this.cid + '&num=' + this.number ).then((res) => {
+          console.log(res.data.data);
+          if (res.data.code == 0) {
+            this.$message({
+              message: res.data.msg,
+              type: 'warning'
+            })
+          }
+          this.list = res.data.data;
         });
       }
     },

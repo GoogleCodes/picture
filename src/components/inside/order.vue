@@ -18,7 +18,7 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>黄金糕</el-dropdown-item>
             </el-dropdown-menu>
-          </el-dropdown>
+          </el-dropdown>    
         </div>
         <div class="fl classif">
           <el-dropdown>
@@ -165,8 +165,8 @@
     },
     methods: {
       getOrder() {
-        this.$http.get('../../../static/data/index.json').then((res) => {
-          this.data.list = res.data.tuijian;
+        this.$http.get('http://yuyin.ittun.com/public/api/home/front/productInfo?id=' + this.$route.query.id).then((res) => {
+          this.data.list = res.data.data;
         });
       }
     }

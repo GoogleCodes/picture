@@ -13,11 +13,11 @@
         <template v-for="(item, index) in list">
           <div class="cart-address cart-box fl">
             <p class="ft-18 cart-box-head">
-              <strong>恩小猫</strong>/<strong>{{ item.phone }}</strong>
+              <strong>{{ item.sname }}</strong>/<strong>{{ item.tel }}</strong>
             </p>
             <p class="cart-box-desc" style="color: #898989;">
-              <span class="block">{{ item.waddress }}</span>
-              <span class="block">{{ item.address }}</span></p>
+              <span class="block">{{ item.adr }}</span>
+            </p>
           </div>
         </template>
         <div class="cart-address fl" @click="openAddress">
@@ -47,31 +47,34 @@
             <span>商品清单</span>
             <router-link :to="{ path: '/cart/cart'}" class="backcart fr">返回购物车 &gt;</router-link>
           </div>
-          <div class="list-shoping">
-            <div class="fl" style="margin: 35px 0px;">
-              <div class="shoping-pic fl">
-                <img src="../../assets/images/26.png" alt="" class="w100 h100" />
+          <template v-for="(item, index) in shopmsg">
+            <div class="list-shoping clear">
+              <div class="fl" style="margin: 35px 0px;">
+                <div class="shoping-pic fl">
+                  <img :src="item.goods.img" alt="" class="w100 h100" />
+                </div>
+                <div class="shoping-title fl">
+                  <p class="ft-20">{{ item.goods.descript }}</p>
+                  <p class="ft-14" style="color: #898989;margin-top: 10px;">{{ item.desc }}</p>
+                </div>
               </div>
-              <div class="shoping-title fl">
-                <p class="ft-20">罗马之恋(皮革相册）</p>
-                <p class="ft-14" style="color: #898989;margin-top: 10px;">甜蜜时光，纪念爱情</p>
+              <div class="price ft-18">
+                <div class="fr" style="color: #b11e25;margin-left: 100px;">￥99.9</div>
+                <div class="fr">
+                  <span>￥{{ item.price }}</span>
+                  <i>X</i>
+                  <span>{{ item.number }}</span>
+                </div>
               </div>
             </div>
-            <div class="price ft-18">
-              <div class="fr" style="color: #b11e25;margin-left: 100px;">￥99.9</div>
-              <div class="fr">
-                <span>￥99.9</span>
-                <i>X</i>
-                <span>1</span>
-              </div>
-            </div>
-          </div>
+          </template>
+          
         </div>
       </div>
 
       <div class="item-price">
         <div class="fl">
-          <span class="total ft-18">合计金额：￥<i>99.9</i></span>
+          <span class="total ft-18">合计金额：￥<i>{{ lastPaySum }}</i></span>
           <span class="actual ft-14">实际金额：<strong class="ft-28">￥99.9</strong></span>
         </div>
         <el-button class="submit-order fr">提交订单</el-button>
@@ -151,7 +154,8 @@
             receiver: [{required: true, message: '请输入收货人的姓名！', trigger: 'blur'}],
             phone: [{required: true, message: '请输入联系人电话号码！', trigger: 'blur'}]
           },
-          list: JSON.parse(localStorage.getItem('Info_address')),
+          shopmsg: this.$storageGet('gopayData_info'),
+          list: [],
           layer: false,
           address: chinaData,
           props: {
@@ -170,10 +174,31 @@
           payindex: 0,
         }
     },
-    created () {
-      console.log(this.list);
+    mounted () {
+      console.log(this.shopmsg);
+      this.setAddress();
+    },
+    computed: {
+      amount () {
+        return this.shopmsg.length;
+      },
+      lastPaySum () {
+        let sum = 0;
+        if(this.amount > 0) {
+          for (let ll in this.shopmsg) {
+            sum += this.shopmsg[ll].price * this.shopmsg[ll].number
+          }
+        }
+        return sum.toFixed(2);
+      },
     },
     methods: {
+      setAddress() {
+          this.$goFetch.fetchGet(this.$api.get_address.get_address + '?id=6').then((res) => {
+              this.list = res.data;
+              console.log(res.data);
+          });
+        },
       submitMessage(formName) {
         this.$refs[formName].validate((valid) => {
           if (!valid) {

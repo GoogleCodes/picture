@@ -1,6 +1,6 @@
 <template>
   <!-- footer start -->
-  <div class="footer clear">
+  <div class="footer clear" v-show="$route.meta.footer">
     <div class="footer-quality">
       <ul>
         <li class="quality-li fl fm">印刷遍色 免费重印</li>

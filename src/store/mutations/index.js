@@ -37,25 +37,6 @@ export default {
     state.cart_count = obj.length;
   },
 
-  //  修改购物车单个商品
-  [type.SET_CART_OBJ](state,obj) {
-    if (state.cart.length > 0) {
-      let added = false;
-      for(let plist = 0;plist < state.cart.length; plist++) {
-        if(typeof state.cart[plist] === 'object' && state.cart[plist].id == obj.id) {
-          state.cart[plist].number += obj.number;
-          added = true;
-          break;
-        }
-      }
-      if(!added) {
-        state.cart.push(obj);
-      }
-    } else {
-      state.cart.push(obj);
-    }
-    storageSet('cart_info',state.cart);
-  },
 
   //  增加购物车单个商品数量
   [type.INCRECARTNUMS](state, obj) {
@@ -93,13 +74,13 @@ export default {
     storageSet('cart_info',state.cart);
   },
 
-  //  获取购物车数据
+  //  修改购物车单个商品
   [type.SET_CART_OBJ] (state, obj) {
     if(state.cart.length > 0) {
       let added = false;
       for(let plist = 0;plist < state.cart.length; plist++) {
         if(typeof state.cart[plist] === 'object' && state.cart[plist].id == obj.id) {
-          state.cart[plist].nums += obj.nums;
+          state.cart[plist].number += obj.number;
           added = true;
           break;
         }
@@ -111,6 +92,12 @@ export default {
       state.cart.push(obj);
     }
     storageSet('cart_info',state.cart);
+  },
+
+  //  提交订单
+  [type.SET_GO_PAY] (state, arr) {
+    storageSet('gopayData_info',arr);
+    console.log(state.gopay, arr);
   }
 
 }

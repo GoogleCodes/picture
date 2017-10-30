@@ -3,4 +3,4 @@
  */
 
 //  浏览其他商品
-exports.other = "../../../static/data/other.json"
+exports.other = "api/home/front/randProduct"
