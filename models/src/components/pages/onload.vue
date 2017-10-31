@@ -11,19 +11,19 @@
             <span>张 上传中不要离开本页</span>
           </div>
           <ul>
-            <template v-for="(item, index) in 3">
-              <li class="fl">
+            <template v-for="(item, index) in fileList">
+              <li class="fl" :class="{ 'chonsepic': index == chonseIndex }" @click="choosePic(item, index)">
                 <div class="onload-pic">
-                  <i class="el-icon-close icon-guanbi"></i>
+                  <i class="el-icon-close icon-guanbi" @click="deletePic(index, item)"></i>
                   <i class="el-icon-check chonseok"></i>
                   <!--<img src="../../../static/images/35.png" class="icon-guanbi" @click="clearpic()" />-->
-                  <img src="../../../static/images/46.png" class="w100 h100" alt="">
+                  <img :src="item.url" class="w100 h100" alt="">
                   <!--<img src="../../../static/images/47.png" class="chonseok" alt="">-->
                 </div>
                 <div class="input">
-                  <el-button class="prev fl">-</el-button>
-                  <el-input class="fl" placeholder="0" readonly></el-input>
-                  <el-button class="next fl">+</el-button>
+                  <el-button class="prev fl" @click="changeNumber(item, -1)">-</el-button>
+                  <el-input v-model="item.num" class="fl" placeholder="0" readonly></el-input>
+                  <el-button class="next fl" @click="changeNumber(item, 1)">+</el-button>
                 </div>
               </li>
             </template>
@@ -32,18 +32,30 @@
         </div>
         <div class="upload-pic clear">
           <div class="top-upload clearfix">
-            <a href="javascript:void(0);" class="fl block href-btn add-pic">增加照片</a>
-            <a href="javascript:void(0);" class="fl block href-btn">增加购物车</a>
+            <!--<a href="javascript:void(0);" class="fl block href-btn add-pic">增加照片</a>-->
+            <a href="javascript:void(0);" class="block href-btn">增加购物车</a>
           </div>
-          <el-upload action="https://jsonplaceholder.typicode.com/posts/"
-                     :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList"
-                     list-type="picture">
-            <el-button class="onload" size="small" type="primary">
-              <i class="el-icon-upload el-icon--right"></i>
-              <i>点击上传</i>
-            </el-button>
+
+          <el-upload ref="upload" :drag="false" name="img"
+            action="http://yuyin.ittun.com/public/api/home/front/imgupload"
+                     :on-preview="handlePreview"
+                     :on-remove="handleRemove"
+                     :on-success="handleAvatarSuccess"
+                     :file-list="fileList" :auto-upload="false">
+            <el-button slot="trigger" size="small" type="primary" class="fl">选取文件</el-button>
+            <el-button style="margin-left: 10px;" size="small" type="success" class="fr" @click="submitUpload">上传到服务器</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
+
+          <!--<el-upload action="https://jsonplaceholder.typicode.com/posts/"-->
+                     <!--:on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList"-->
+                     <!--list-type="picture">-->
+            <!--<el-button class="onload" size="small" type="primary">-->
+              <!--<i class="el-icon-upload el-icon&#45;&#45;right"></i>-->
+              <!--<i>点击上传</i>-->
+            <!--</el-button>-->
+            <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+          <!--</el-upload>-->
         </div>
         <div class="c_9fa0a0 toast">点击照片可以删除</div>
       </div>
@@ -57,24 +69,73 @@
   export default {
     data() {
       return {
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+        fileList: [{
+            id: 1,
+            name: 'food.jpeg',
+            num: 1,
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          },{
+          id: 2,
+          name: 'food.jpeg',
+          num: 1,
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        }
+        ],
+        chonseIndex: 0,
+        chonseok: false,
+        piclist: [],
+        num: 0,
       }
     },
     created() {
-      this.$http.get('http://www.getcodeing.com/api/user/getuser').then((res) => {
-          console.log(res);
-      });
+
     },
     components: {
       ElButton
 
     },
     methods: {
+      changeNumber(item,flag) {
+        if (flag > 0) {
+          item.num += 1;
+        } else {
+          item.num -= 1;
+          if (item.num <= 1) {
+            item.num = 1;
+          }
+        }
+      },
+      submitUpload() {
+        this.$refs.upload.submit();
+      },
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
       handlePreview(file) {
         console.log(file);
+      },
+      choosePic() {
+
+      },
+      deletePic(index, item) {
+        let getIndex = null;
+        for (let i in this.fileList) {
+          this.fileList[i].index = i
+          if (this.fileList[i].index === index) {
+            getIndex = i;
+            break;
+          }
+        }
+        if (getIndex >= 0) {
+          this.fileList.splice(getIndex,1);
+          console.log(this.fileList);
+        }
+      },
+      handleAvatarSuccess(res, file) {
+        this.piclist.push({
+          url: res.data,
+          num: 0,
+        });
       },
       clearpic() {
         this.$confirm('确定要删除图片吗?', '提示', {
@@ -120,12 +181,14 @@
   .container .label ul li {
     height: 100%;
     width: 43%;
-    margin: 10px 27px 20px 0px;
+    margin: 10px 11px 0px;
     display: inline-block;
   }
+
   .container .label ul li:nth-child(2n) {
-    margin: 10px 0px 0px;
+    margin: 10px 7px 0px;
   }
+
   .container .label ul li .input {
     margin-top: 10px;
   }
@@ -152,8 +215,9 @@
 
   .label ul li .onload-pic .icon-guanbi {
     position: absolute;
-    top: -10px;
-    right: -12px;
+    top: 0;
+    right: 0;
+    font-size: 12px;
   }
 
   .onload-pic .chonseok {
@@ -174,6 +238,10 @@
     /*border: 1px solid #20a0ff;*/
     color: #fff;
     padding: 10px 33px;
+  }
+
+  .container .el-upload__tip {
+    margin: 10px;
   }
 
   .container .toast {
@@ -197,7 +265,7 @@
   }
 
   .upload-pic .top-upload .href-btn {
-    width: 45%;
+    width: 93%;
     background: #b11e25;
     height: 40px;
     border-radius: 5px;
@@ -214,7 +282,7 @@
   }
 
   .upload-pic .top-upload .href-btn:last-child {
-    margin: 10px 0px;
+    margin: 10px auto;
   }
 
   .input .el-input {

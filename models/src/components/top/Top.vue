@@ -15,15 +15,10 @@
     <div class="nav clear" v-show="visiLayer">
       <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="dark">
         <el-menu-item index="1">主页</el-menu-item>
-        <el-submenu index="2">
-          <template slot="title">皮册定制</template>
+        <el-submenu :index="index | TextToString" v-for="(item, index) in navList">
+          <template slot="title">{{ item.title }}</template>
           <el-menu-item index="2-1">时尚对裱册12寸竖</el-menu-item>
           <!--<el-menu-item-group title="分组一"></el-menu-item-group>-->
-        </el-submenu>
-        <el-submenu index="3">
-          <template slot="title">
-            <router-link :to="{ path: '/cart/cart'}">体验区</router-link>
-          </template>
         </el-submenu>
       </el-menu>
     </div>
@@ -41,10 +36,22 @@
             uname: '',
             list: {},
             visiLayer: false,
+            navList: [],
+            freeMode: {
+              freeMode: true,
+            },
+            doubleul: false,
+            current: 0,
           };
       },
       mounted() {
         this.isUser();
+        this.getNav();
+      },
+      filters: {
+          TextToString (value) {
+            return value.toString();
+          },
       },
       computed: {
         user_info() {
@@ -65,7 +72,23 @@
 
       },
       methods: {
-        goLayer() {
+        goPages(item) {
+          for (let i in this.navList) {
+            if (this.navList[i].id === item.id) {
+              this.doubleul = true;
+            } else {
+              this.doubleul = false;
+            }
+          }
+//          this.$router.push({ path: '/'});
+        },
+        getNav() {
+          this.$http.get('http://yuyin.ittun.com/public/api/home/front/getPrdClassify').then((res) => {
+            this.navList = res.data.data;
+          });
+        },
+        goLayer(e) {
+
           this.visiLayer = true;
         },
         showLayer() {
@@ -78,7 +101,6 @@
 
         },
         isUser() {
-          //  调用user_info
           this.user_info;
           let that = this, userJson = this.$goFetch.storageGet('user_info');
           if (userJson !== null) {
@@ -161,7 +183,7 @@
     position: fixed;
     top: 0px;
     left: 0px;
-    background: rgba(0,0,0,0.0);
+    background: rgba(0,0,0,0.5);
     z-index: 280;
   }
   /* layer end */
@@ -176,7 +198,6 @@
     z-index: 300;
     background: #333;
   }
-
   /* nav end */
 
 </style>

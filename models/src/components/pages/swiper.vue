@@ -37,8 +37,6 @@
           </swiper-slide>
         </template>
         <div class="swiper-pagination" slot="pagination"></div>
-        <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
-        <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
       </swiper>
     </div>
     <!-- swiper2 Thumbs -->
@@ -81,8 +79,6 @@
                   direction: 'horizontal',
                   grabCursor: true,
                   pagination: '.swiper-pagination',
-                  prevButton: '.swiper-button-prev',
-                  nextButton: '.swiper-button-next',
                   observeParents: true,
                   spaceBetween: 10,
                   debugger: true,

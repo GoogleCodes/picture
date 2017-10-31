@@ -57,14 +57,14 @@
               @click="currentGoIndex(index, list.one)">11</li>
         </ul>
       </div>
-      <div class="select-num clear">
-        <span class="left fl">数量：</span>
+      <!--<div class="select-num clear">-->
+        <!--<span class="left fl">数量：</span>-->
         <!--<div class="item-amount ">-->
           <!--<el-button class="no-minus fl" @click="changeNumber(list, -1)" :class="{'disabled':list.nums <= 1}">-</el-button>-->
           <!--<el-input type="text" class="fl" placeholder="0" v-model="list.nums" readonly></el-input>-->
           <!--<el-button class="add-max fl" @click="changeNumber(list, 1)" :class="{'disabled': list.nums >= 1}">+</el-button>-->
         <!--</div>-->
-      </div>
+      <!--</div>-->
       <div class="select-btn clear">
         <router-link :to="{ path: '/pages/onload', query:{id: 1}}" class="w100 h100 block">
           <el-button class="ft-16">去上传照片</el-button>
@@ -391,7 +391,7 @@
     border: 1px solid #414042;
     background: #414042;
     color: #fff;
-    height: 2.5rem;
+    height: 2.7rem;
     border-radius: 0;
   }
 
