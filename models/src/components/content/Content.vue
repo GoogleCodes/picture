@@ -64,12 +64,14 @@
     </div>
 
     <div>
-      <div class="" style="margin: 15px 10px;">
-        <img src="../../../static/images/41.png" class="w100 h100" alt="">
-      </div>
-      <div class="" style="margin: 15px 10px;">
-        <img src="../../../static/images/42.png" class="w100 h100" alt="">
-      </div>
+      <!--<div class="" style="margin: 15px 10px;">-->
+        <!--<img src="../../../static/images/41.png" class="w100 h100" alt="">-->
+      <!--</div>-->
+      <router-link :to="{ path: '/content/news'}" class="block w100 h100">
+        <div class="" style="margin: 15px 10px;">
+          <img src="../../../static/images/42.png" class="w100 h100" alt="">
+        </div>
+      </router-link>
     </div>
 
     <!-- content start -->

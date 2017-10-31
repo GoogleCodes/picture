@@ -58,7 +58,7 @@
   }
 
   .proseries .pro-pic img {
-    border-radius: 0px 10px 0px 10px;
+    border-radius: 10px;
     margin-bottom: 10px;
   }
 

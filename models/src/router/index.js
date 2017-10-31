@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import store from '../store'
-
 //  首页
 import Index from '@/components/Index'
 //  定制
@@ -58,14 +57,15 @@ import paintings from '@/components/pages/paintings'
 import order from '@/components/pages/order-list'
 //  订单确认
 import orddetail from '@/components/pages/ord-detail'
-
+//  产品详情
 import otherdetail from '@/components/pages/other-detail'
-
 //  成功加入购物车
 import cartOther from '@/components/pages/other'
 //  订单支付
 import gopay from '@/components/pages/gopay'
-
+//  新闻
+import news from '@/components/content/news'
+import newsdetail from '@/components/content/newsdetail'
 Vue.use(Router);
 
 let routes = [{
@@ -84,6 +84,26 @@ let routes = [{
   component: dingzhi,
   meta: {
     header: false,
+    footer: true,
+  }
+},{
+  path: '/content/news',
+  name: 'news',
+  component: news,
+  meta: {
+    header: false,
+    title: '新闻列表',
+    goback: true,
+    footer: true,
+  }
+},{
+  path: '/content/newsdetail',
+  name: 'newsdetail',
+  component: newsdetail,
+  meta: {
+    header: false,
+    title: '新闻内容',
+    goback: true,
     footer: true,
   }
 },{
