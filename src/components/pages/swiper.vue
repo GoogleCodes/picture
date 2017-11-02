@@ -29,9 +29,9 @@
   <div style="width:650px;height: 500px;" class="fl">
     <swiper style="width:650px;" :options="swiperOption" ref="mySwiper">
       <!-- slides -->
-      <template v-for="(item, index) in data.pic">
+      <template v-for="(item, index) in listpic">
         <swiper-slide :style="{
-                  background: 'url('+ item.src +') no-repeat',
+                  background: 'url('+ item.url +') no-repeat',
                   height: '350px'}">
         </swiper-slide>
       </template>
@@ -43,9 +43,8 @@
     </swiper>
     <!-- swiper2 Thumbs -->
     <swiper style="height: 75px;" :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
-      <template v-for="(item, index) in data.pic">
-        <swiper-slide :style="{
-                  background: 'url('+ item.src +') no-repeat',
+      <template v-for="(item, index) in listpic">
+        <swiper-slide :style="{ background: 'url('+ item.url +') no-repeat',
                   backgroundSize: 'cover'}">
         </swiper-slide>
       </template>
@@ -59,6 +58,13 @@
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
   export default {
+      props: {
+        listpic: {
+          type: Array,
+          twoWay: true,
+          required: true,
+        }
+      },
       data() {
           return {
               data: {
@@ -102,10 +108,10 @@
           }
       },
       mounted() {
-          const mySwiper = this.$refs.mySwiper.swiper
-          const swiperThumbs = this.$refs.swiperThumbs.swiper
-          mySwiper.params.control = swiperThumbs
-          swiperThumbs.params.control = mySwiper
+        const mySwiper = this.$refs.mySwiper.swiper
+        const swiperThumbs = this.$refs.swiperThumbs.swiper
+        mySwiper.params.control = swiperThumbs
+        swiperThumbs.params.control = mySwiper
       },
       components: {
           swiper,

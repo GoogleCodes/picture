@@ -27,6 +27,7 @@ export default {
     state.list = list
   },
 
+  //  记录是否记住登录
   [type.GET_CHECKED_LOGIN](state, checked_login) {
     state.checked_login = checked_login;
     storageSet('checked_login',state.checked_login);

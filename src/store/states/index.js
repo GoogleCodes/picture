@@ -10,9 +10,10 @@ export default {
   count: 0,
   //  购物车商品数量
   cart_count: 0,
+  //  记录是否记住登录
   checked_login: false,
   //  购物车缓存
-  cart: localStorage.getItem('cart_info') ? JSON.parse(localStorage.getItem('cart_info')) : [],
+  cart: localStorage.getItem('cart_info') ? storageGet('cart_info') : [],
   setCart: storageGet('cart_info') || [],
   gopay: []
 }

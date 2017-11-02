@@ -43,8 +43,8 @@
     },
     methods: {
       getNav() {
-        this.$http.get('http://yuyin.ittun.com/public/api/home/front/getPrdClassify').then((res) => {
-            this.data.list = res.data.data;
+        this.$getData('/api/home/front/getPrdClassify').then((res) => {
+            this.data.list = res.data;
         });
       }
     },

@@ -83,7 +83,8 @@
         set_user_info: SET_USER_INFO
       }),
       changeGo (event) {
-          this.$pubFetch.storageGet('checked_login',event);
+        // this.$storageGet('checked_login',event);
+        event ? this.checked_login = event : this.checked_login = event;
       },
       logining (formName) {
         let that = this;

@@ -4,4 +4,4 @@
 
 exports.HTTP_IP = "http://192.168.0.32/"
 
-exports.GET_YUYIN_HTTP = "http://yuyin.ittun.com/public/"
+exports.GET_YUYIN_HTTP = "http://yuyin.ittun.com/"

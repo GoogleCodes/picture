@@ -1,43 +1,29 @@
 <template>
   <div class="bgcolor">
-    <div class="content clear" style="margin: 0px auto;">
+    <div class="content clear" style="margin: 0px auto 25px;">
       <div class="con-pro" style="height: 360px;">
-        <img src="../../assets/images/19.png" alt="" style="width: 100%;height: 100%;">
+        <img :src="list.shotcut" alt="" style="width: 100%;height: 100%;">
       </div>
-      <div class="experience" style="margin: 70px auto;background: #fff">
-
+      <div class="experience" style="margin: 0px auto;background: #fff">
         <!-- banner start -->
-        <detailSwiper></detailSwiper>
+        <detailSwiper :listpic="swiperList"></detailSwiper>
         <!-- banner end -->
-
-        <div class="exper-pic fl" style="display: none;">
-          <div class="exper-pic-wrap">
-            <el-carousel height="420px">
-              <template v-for="item in data.pic">
-                <el-carousel-item>
-                  <img :src="item.src" alt="" style="width: 100%;height: 420px;">
-                </el-carousel-item>
-              </template>
-            </el-carousel>
-          </div>
-          <div class="exper-pic-item">
-            <div class="a1" v-for="item in 5"></div>
-          </div>
-        </div>
 
         <div class="tb-wrap fl">
           <div class="right-select fr">
-            <div class="select-title">{{ list.title }}<span>{{ list.title_desc }}</span></div>
-            <div class="select-text">{{ list.desc }}</div>
-            <div class="select-price">¥{{ list.price }}</div>
-            <div class="select-color">
-              <span class="left fl">款色：</span>
-              <ul>
-                <li class="right" v-for="(item, index) in list.guige" :class="{'active':index == guigeIndex}"
-                    @click="currentGuiGeIndex(index, item.a)">{{ item.a }}</li>
-              </ul>
-            </div>
-            <div class="select-size clear">
+            <div class="select-title">{{ list.goods_name }}<span>{{ list.goods_remark }}</span></div>
+            <div class="select-text">{{ list.good_desc }}</div>
+            <div class="select-price">¥{{ list.shop_price }}</div>
+            <template v-for="(items, index) in myspecList">
+              <div class="select-color clear">
+                <div class="left fl">{{ items.spec }}：</div>
+                <ul style="width: 75%;float: right;" class="fl">
+                  <li v-for="(list,index) in items.item" class="fl" 
+                  :class="{'active': index == chooseIndex}" @click="changeGuige(index, list)">{{ list.item }}</li>
+                </ul>
+              </div>
+            </template>
+            <div class="select-size clear" style="display: none;">
               <span class="left">尺寸：</span>
               <ul class="right clearfix">
                 <li v-for="(list,index) in list.size"
@@ -45,15 +31,15 @@
                     @click="currentGoIndex(index, list.one)">{{ list.one }}</li>
               </ul>
             </div>
-            <div class="select-num">
+            <div class="select-num clear">
               <span class="left fl">数量：</span>
               <div class="item-amount ">
                 <el-button class="no-minus fl" @click="changeNumber(list, -1)"
-                           :class="{'disabled':list.nums <= 1}">-</el-button>
+                           :class="{'disabled':list.sales_sum <= 1}">-</el-button>
                 <el-input type="text" class="fl" placeholder="0"
-                          v-model="list.nums" readonly></el-input>
+                          v-model="list.sales_sum" readonly></el-input>
                 <el-button class="add-max fl" @click="changeNumber(list, 1)"
-                           :class="{'disabled': list.nums >= 1}">+</el-button>
+                           :class="{'disabled': list.sales_sum >= 1}">+</el-button>
               </div>
             </div>
             <div class="select-btn clear">
@@ -65,42 +51,16 @@
         <div class="detail-bottom clear">
           <div class="product-title">PRESENTATION</div>
           <span class="product-text">商品详情</span>
-          <div class="content-top clearfix">
-            <div class="pic-left">
-              <img src="../../../static/images/33.png" alt="" class="w100 h100">
-            </div>
-            <div class="text-right">
-              <div class="one">我们专注于</div>
-              <div class="two">We focus on the selection of raw materials</div>
-              <div class="three">原材料的精挑细选</div>
-              <div class="text-vertical ft-18">
-                <p>还原画芯真实色彩</p>
-                <p>佳能高级打印机准确输出</p>
-                <p>高仿颜料纹理质感</p>
-                <p>进口原画芯高清质感图</p>
-                <p>质感卓越</p>
-              </div>
-            </div>
-          </div>
-          <div class="content-bottom">
-            <!-- 底部表格 -->
-            <table>
-              <thead class="thead">
-                <tr>
-                  <th>产品名称</th>
-                  <th>啡色古典</th>
-                  <th>挡板材质</th>
-                  <th>白玻璃/有机板</th>
-                </tr>
-              </thead>
-            </table>
-          </div>
+          <div class="content-top clearfix" v-html="list.goods_content"></div>
         </div>
       </div>
 
-      <div class="w1200 mauto clear" style="overflow: hidden;">
+      <!--
+        <div class="w1200 mauto clear" style="overflow: hidden;">
         <other :cid="list.id" :number="list.nums"></other>
       </div>
+      -->
+      
 
     </div>
     <!-- content end -->
@@ -123,18 +83,21 @@
     name: 'dingzhi',
     data() {
       return {
-        list: JSON.parse(localStorage.getItem('detail')),
+        list: {},
+        swiperList: [],
         data: {
           dtype: 1,
           currGuiGe: "",
           currSize: "",
         },
+        choose:[],
         // 用于保存每件商品的对象
         shopItem: {},
         //  用于保存用户添加到购车的商品数组
         buyLists: [],
-        guigeIndex: 0,
         currentIndex: 0,
+        myspecList: {},
+        chooseIndex: 0,
       }
     },
     watch: {
@@ -144,7 +107,36 @@
       
     },
     mounted() {
-
+      this.$getData('/api/home/front/getgoods?id=' + this.$route.query.id).then((res) => {
+        let that = this;
+        switch (true) {
+          case res.code == 1:
+            this.$message({
+              message: res.msg,
+              type: 'success'
+            });
+            this.list = res.data;
+            this.swiperList = JSON.parse(res.data.photo);
+            for (let i in this.list.myspec) {
+              that.myspecList = this.list.myspec[i];
+            }
+            return true;
+          case res.data.code == 0:
+            this.$message({
+              message: res.msg,
+              type: 'warning'
+            });
+            return false;
+          default:
+        }
+        if (res.data.is_on_sale == 0) {
+          this.$message({
+            message: '商品已下架',
+            type: 'warning'
+          });
+          return false;
+        }
+      });
     },
     components: {
       ElInputNumber,
@@ -155,12 +147,23 @@
       detailSwiper,
     },
     computed: {
-
+      className() {
+        let name = {};
+        
+        name['active'] = true;
+        return name;
+      }
     },
     methods: {
-      currentGuiGeIndex(index, item) {
-        this.guigeIndex = index;
-        this.data.currGuiGe = item;
+      changeGuige(index, item) {
+        console.log(index,item);
+        for (let i in this.myspecList) {
+
+        }
+        if (item.id) {
+
+        }
+        this.chooseIndex = index;
       },
       currentGoIndex(index, item) {
         this.currentIndex = index;
@@ -170,12 +173,12 @@
         //  大于0为加
         if (flag > 0) {
           //  item数量自增1
-          item.nums++;
+          item.sales_sum++;
         } else {
           //  item数量自减1
-          item.nums--;
-          if(item.nums <= 1) {
-            item.nums = 1;
+          item.sales_sum--;
+          if(item.sales_sum <= 1) {
+            item.sales_sum = 1;
           }
         }
       },
@@ -195,17 +198,16 @@
           return false;
         }
         var option = {
-          id: this.list.id,
-          goods: {
-            img: 'http://i1.mifile.cn/a1/pms_1474859997.10825620!80x80.jpg',
-            descript: this.list.title,
-          },
-          desc: this.list.desc,
-          number: this.list.nums,
-          price: parseInt(this.list.price),
-          guiGe: this.data.guige,
-          size: this.data.currSize,
+          id: this.list.cat_id,
+          desc: this.list.good_desc,
+          number: this.list.sales_sum,
+          price: this.list.shop_price,
+          specdata: this.myspecList,
         };
+        this.$postData('/api/home/shopcar/add',option).then((res) => {
+          consoel.log(res);
+        });
+        return;
         this.$store.commit('SET_CART_OBJ',option);
         this.$message({
           message: '恭喜你，加入购物车成功！',
@@ -229,6 +231,7 @@
   .right-select .select-title {
     font-size: 26px;
     color: #000;
+    margin-bottom: 15px;
   }
   .right-select .select-title span {
     font-size: 14px;
@@ -244,10 +247,22 @@
     border-bottom: 1px solid #ccc;
     padding-bottom: 20px;
   }
+  .right-select .select-color {
+    line-height: 35px;
+    padding: 10px 0px;
+    min-height: 35px;
+  }
   .right-select .select-color .left {
     display: inline-block;
     width: 100px;
-    line-height: 80px;
+  }
+
+  .right-select .select-color ul li {
+    border-radius: 5px;
+    margin: 0px 20px 0px 0px;
+    width: 42%;
+    text-align: center;
+    border: 1px solid #fff;
   }
 
   .right-select .select-size {
@@ -291,6 +306,7 @@
 
   .right-select .select-num {
     color: #666;
+    padding-top: 25px;
   }
   .right-select .select-num .left {
     display: inline-block;
@@ -393,62 +409,6 @@
     padding-top: 60px;
     margin: 0 40px 48px;
   }
-  .detail-bottom .content-top .pic-left {
-    float: left;
-    width: 570px;
-    height: 754px;
-  }
-
-  .detail-bottom .content-top .text-right {
-    /* 右侧文本 */
-    float: right;
-    width: 354px;
-    margin-right: 115px;
-    padding-top: 140px;
-    text-align: center;
-  }
-  .detail-bottom .content-top .text-right .one {
-    font-size: 40px;
-    font-weight: lighter;
-  }
-  .detail-bottom .content-top .text-right .two {
-    font-size: 10px;
-    line-height: 40px;
-  }
-  .detail-bottom .content-top .text-right .three {
-    font-size: 40px;
-  }
-  .detail-bottom .content-top .text-right .text-vertical {
-    display: flex;
-    height: 300px;
-    flex-direction: row-reverse;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0 40px;
-  }
-  .detail-bottom .content-top .text-right .text-vertical p {
-    writing-mode: tb-rl;
-    color: #727171;
-  }
-  .detail-bottom .content-bottom {
-    margin: 0px 45px 100px;
-    color: #3e3a39;
-  }
-  .detail-bottom .content-bottom table {
-    width: 754px;
-    height: 334px;
-  }
-
-  .content-bottom table .thead tr {
-    border: 2px solid #3e3a39;
-  }
-
-  .content-bottom table .thead tr th {
-    text-align: center;
-    border: 2px solid #3e3a39;
-    height: 35px;
-  }
-
   /* preview */
   .pc-slide {
     margin: 23px;

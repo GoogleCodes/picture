@@ -19,7 +19,7 @@ export const fetchGet = (target, data) => {
   }
   return new Promise((resolve, reject) => {
     axios({
-      url: get_api.get_http_ip.HTTP_IP + 'public' + target,
+      url: get_api.get_http_ip.GET_YUYIN_HTTP + 'public' + target,
       method: 'get',
       withCredentials: false
     }).then(function (response) {
@@ -40,12 +40,7 @@ export const fetchPost = (target, data) => {
   return new Promise((resolve, reject) => {
     var postData = qs.stringify(data);
     axios({
-      url: get_api.get_http_ip.HTTP_IP + 'public' + target,
-      header: {
-        'Access-Control-Allow-Origin' : '*',
-        'Access-Control-Allow-Methods' : 'GET,POST,PATCH,PUT,OPTIONS',
-        'Access-Control-Allow-Headers' : 'x-requested-with,content-type'
-      },
+      url: get_api.get_http_ip.GET_YUYIN_HTTP + 'public' + target,
       method: 'post',
       data: postData,
       withCredentials: false
@@ -67,12 +62,7 @@ export const fetchPut = (target, data) => {
   return new Promise((resolve, reject) => {
     var postData = qs.stringify(data);
     axios({
-      url: get_api.get_http_ip.HTTP_IP + 'public' + target,
-      header: {
-        'Access-Control-Allow-Origin' : '*',
-        'Access-Control-Allow-Methods' : 'GET,POST,PATCH,PUT,OPTIONS',
-        'Access-Control-Allow-Headers' : 'x-requested-with,content-type'
-      },
+      url: get_api.get_http_ip.GET_YUYIN_HTTP + 'public' + target,
       method: 'put',
       data: postData,
       withCredentials: false
@@ -96,10 +86,15 @@ export const fetchDelete = (target, data) => {
   }
   return new Promise((resolve, reject) => {
     axios({
-      url: get_api.get_http_ip.HTTP_IP + 'public' + target,
+      url: get_api.get_http_ip.GET_YUYIN_HTTP + 'public' + target,
       method: 'delete',
       withCredentials: false
     }).then(function (response) {
+      if (response.data.code == 0) {
+        Message.warning(response.data.msg)
+      } else if (response.data.code == 1) {
+        Message.success(response.data.msg)
+      }
       resolve(response.data)
     }).catch(function (error) {
       reject(error)

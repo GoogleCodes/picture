@@ -36,17 +36,19 @@
     </div>
 
     <div class="shoping-list" v-loading="load_data" element-loading-text="正在加载中...">
-      <div class="nothing-shop" v-show="!showPages">
+      <!--
+      <div class="nothing-shop" v-show="!showPages" style="display: none;">
         <div class="iconfont icon-kong"></div>
         <div>暂时没有商品</div>
       </div>
+      -->
       <ul>
         <template v-for="item in data.list">
           <li class="fl">
             <router-link :to="{ path: '/pages/detail', query: {id: item.goods_id }}">
               <div class="shop-body">
                 <div class="pic-img">
-                  <img :src="item.photo" alt="" class="w100 h100">
+                  <img :src="item" alt="" class="w100 h100">
                 </div>
                 <div class="item-wrap">
                   <p class="ft-18">{{ item.goods_name }}</p>
@@ -169,33 +171,30 @@
       },
       handleCommand(command) {
         this.load_data = true;
-        this.$http.get('http://yuyin.ittun.com/public/api/home/front/goodsList?cid=' + this.$route.query.id + '&spec' + command).then((res) => {
-          this.data.list = res.data.data.data;
-          this.data.listPages = res.data.data;
+        this.$getData(this.$api.get_content.GET_ORDER + '?cid=' + this.$route.query.id + '&spec' + command).then((res) => {
+          this.data.list = res.data.data;
+          this.data.listPages = res.data;
           if (this.data.list.length == 0) {
-            this.load_data = false;
             this.$message({
               message: '暂时还没有产品',
               type: 'warning'
             });
-          } else if (res.data.code == 1) {
-            this.load_data = false;
           }
+          this.load_data = false;
         });
       },
+      //  获取规格
       getSpecif() {
-        this.$http.get('http://yuyin.ittun.com/public/api/home/front/speclist').then((res) => {
-          this.specif = res.data.data;
+        this.$getData(this.$api.get_content.GET_SPECIF).then((res) => {
+          this.specif = res.data;
         });
       },
       getOrder() {
         this.load_data = true;
-        this.$http.get('http://yuyin.ittun.com/public/api/home/front/goodsList').then((res) => {
-          if (res.data.code == 1) {
-            this.load_data = false;
-          }
-          this.data.list = res.data.data.data;
-          this.data.listPages = res.data.data;
+        this.$getData(this.$api.get_content.GET_ORDER).then((res) => {
+          this.load_data = false;
+          this.data.list = res.data.data;
+          this.data.listPages = res.data;
         });
       }
     }

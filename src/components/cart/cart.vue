@@ -115,10 +115,10 @@
       ElRadio,
     },
     created() {
-      console.log(this.setCart);
+      
     },
     mounted() {
-//      this.fetchData();
+     this.fetchData();
     },
     computed: {
       setCart() {
@@ -143,7 +143,7 @@
     methods: {
       fetchData() {
         this.setCart;
-//        this.data.list = this.$storageGet('cart_info');
+        this.data.list = this.$storageGet('cart_info');
         this.$store.commit('SET_CART_NUMBER', this.data.list);
       },
       //  取消全选

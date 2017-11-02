@@ -45,7 +45,7 @@
               <div class="line"></div>
               <span class="tuijian-span">{{ data.desc }}</span>
             </div>
-            <div style="margin-top: 100px;">
+            <div style="margin-top: 50px;">
               <template v-for="item in data.arr">
                 <div class="card-tuijian fl" @click="goDetail(item)">
                   <!--<router-link :to="{ path: '/pages/detail', query:{ id:item.id }}" class="block w100 h100" >-->
