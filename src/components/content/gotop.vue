@@ -37,15 +37,21 @@
     position: fixed;
     bottom: 50px;
     right: 50px;
-    width: 60px;
-    height: 60px;
-    background: #222;
+    width: 45px;
+    height: 45px;
+    background: #fff;
     text-align: center;
-    line-height: 60px;
+    line-height: 45px;
     font-size: 26px;
-    color: #fff;
+    color: #00c1de;
     cursor: pointer;
     display: none;
+    box-shadow: 0 6px 12px 0 rgba(0,0,0,.15);
+  }
+
+  .icon-dingbu:hover {
+    background: #00c1de;
+    color: #fff;
   }
   /* icon-dingbu end */
 </style>

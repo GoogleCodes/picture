@@ -58,6 +58,7 @@ let routes = [{
   component: Index,
   children: [],
   meta: {
+    header: true,
     footer: true
   },
 },{
@@ -65,6 +66,7 @@ let routes = [{
   name: 'dingzhi',
   component: dingzhi,
   meta: {
+    header: true,
     footer: true
   },
 },{
@@ -72,6 +74,7 @@ let routes = [{
   name: 'orderlist',
   component: orderlist,
   meta: {
+    header: true,
     footer: true
   },
 },{
@@ -79,6 +82,7 @@ let routes = [{
   name: 'detail',
   component: detail,
   meta: {
+    header: true,
     footer: true
   },
 },{
@@ -86,6 +90,7 @@ let routes = [{
   name: 'deSwiper',
   component: deSwiper,
   meta: {
+    header: true,
     footer: false
   }
 },{
@@ -93,6 +98,7 @@ let routes = [{
   name: 'picdetail',
   component: picdetail,
   meta: {
+    header: true,
     footer: false,
   }
 },{
@@ -100,6 +106,7 @@ let routes = [{
   name: 'onload',
   component: onloadpic,
   meta: {
+    header: true,
     footer: false,
   }
 },{
@@ -107,6 +114,7 @@ let routes = [{
   name: 'onloadtwo',
   component: onloadtwo,
   meta: {
+    header: true,
     footer: false,
   }
 },{
@@ -114,6 +122,7 @@ let routes = [{
   name: 'frame',
   component: frame,
   meta: {
+    header: true,
     footer: false,
   }
 },{
@@ -121,6 +130,7 @@ let routes = [{
   name: 'login',
   component: login,
   meta: {
+    header: true,
     footer: false,
   }
 },{
@@ -128,6 +138,7 @@ let routes = [{
   name: 'reg',
   component: register,
   meta: {
+    header: true,
     footer: false,
   }
 },{
@@ -135,6 +146,7 @@ let routes = [{
   name: 'find',
   component: find,
   meta: {
+    header: true,
     footer: false,
   }
 },{
@@ -142,6 +154,7 @@ let routes = [{
   name: 'admin',
   component: admin,
   meta: {
+    header: true,
     footer: true,
   },
   children: [{
@@ -149,6 +162,7 @@ let routes = [{
     name: 'vip',
     component: vip,
     meta: {
+      header: true,
       footer: true,
     },
   },{
@@ -156,6 +170,7 @@ let routes = [{
     name: 'changepwd',
     component: changepwd,
     meta: {
+      header: true,
       footer: true,
     },
   },{
@@ -163,6 +178,7 @@ let routes = [{
     name: 'shoping',
     component: shoping,
     meta: {
+      header: true,
       footer: true,
     },
   },{
@@ -170,6 +186,7 @@ let routes = [{
     name: 'manage',
     component: manage,
     meta: {
+      header: true,
       footer: true,
     },
   },{
@@ -177,6 +194,7 @@ let routes = [{
     name: 'address',
     component: address,
     meta: {
+      header: true,
       footer: true,
     },
   },{
@@ -184,6 +202,7 @@ let routes = [{
     name: 'increase',
     component: increase,
     meta: {
+      header: true,
       footer: true,
     },
   }],
@@ -192,6 +211,7 @@ let routes = [{
   name: 'cart',
   component: cart,
   meta: {
+    header: true,
     footer: true,
   },
 },{
@@ -199,6 +219,7 @@ let routes = [{
   name: 'ordcart',
   component: ordcart,
   meta: {
+    header: true,
     footer: true,
   },
 },{
@@ -206,6 +227,7 @@ let routes = [{
   name: 'addCart',
   component: addcart,
   meta: {
+    header: true,
     footer: true
   },
 },{
@@ -213,6 +235,7 @@ let routes = [{
   name: 'submit',
   component: submit,
   meta: {
+    header: true,
     footer: true,
   },
 },{
@@ -220,6 +243,7 @@ let routes = [{
   name: 'news',
   component: news,
   meta: {
+    header: true,
     footer: true,
   },
 },{
@@ -227,6 +251,7 @@ let routes = [{
   name: 'newdetail',
   component: newdetail,
   meta: {
+    header: true,
     footer: true,
   },
 }];

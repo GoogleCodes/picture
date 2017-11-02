@@ -1,7 +1,5 @@
 <template>
-
   <div class="bgcolor">
-
     <div class="content clear" style="margin: 0px auto;">
       <div class="con-pro" style="height: 360px;">
         <img src="../../assets/images/19.png" alt="" style="width: 100%;height: 100%;">
@@ -50,13 +48,11 @@
             <div class="select-num">
               <span class="left fl">数量：</span>
               <div class="item-amount ">
-                <el-button class="no-minus fl"
-                           @click="changeNumber(list, -1)"
+                <el-button class="no-minus fl" @click="changeNumber(list, -1)"
                            :class="{'disabled':list.nums <= 1}">-</el-button>
                 <el-input type="text" class="fl" placeholder="0"
                           v-model="list.nums" readonly></el-input>
-                <el-button class="add-max fl"
-                           @click="changeNumber(list, 1)"
+                <el-button class="add-max fl" @click="changeNumber(list, 1)"
                            :class="{'disabled': list.nums >= 1}">+</el-button>
               </div>
             </div>
@@ -115,7 +111,6 @@
 
 <script type="text/javascript">
 
-  import heads from '@/components/top/Top.vue'
   import elenav from '@/components/top/Nav.vue'
   import other from '@/components/pages/other.vue'
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
@@ -148,19 +143,18 @@
     created () {
       
     },
+    mounted() {
+
+    },
     components: {
       ElInputNumber,
       ElInput,
       ElButton,
-      heads,
       elenav,
       other,
       detailSwiper,
     },
     computed: {
-
-    },
-    mounted() {
 
     },
     methods: {
@@ -187,12 +181,18 @@
       },
       goCart() {
         let that = this;
-        if (this.list.nums == 0) {
+        if (localStorage.getItem('user_info') === 'undefined') {
+          this.$message('亲，请去登录一下');
+          setTimeout(() => {
+            this.$router.push({ path: '/user/login' });
+          }, 2000);
+          return false;
+        } else if (this.list.nums === 0) {
           this.$message({
-            message: '请增加商品！谢谢啦！亲 (☄⊙ω⊙)☄',
+            message: '请增加商品！谢谢啦！',
             type: 'warning'
           });
-          return;
+          return false;
         }
         var option = {
           id: this.list.id,
@@ -206,17 +206,15 @@
           guiGe: this.data.guige,
           size: this.data.currSize,
         };
-        console.log(option);
         this.$store.commit('SET_CART_OBJ',option);
-        console.log(this.$storageGet('cart_info'));
         this.$message({
           message: '恭喜你，加入购物车成功！',
           type: 'success'
         });
-        // setInterval(function() {
-        //   location.reload();
-        //   that.$router.push({ path: '/cart/cart' });
-        // },500);
+        setInterval(function() {
+          that.$router.push({ path: '/cart/cart' });
+          location.reload();
+        },500);
       }
     }
   }

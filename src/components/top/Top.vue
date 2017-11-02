@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- header start -->
-    <div class="header w100">
+    <div class="header w100" v-show="$route.meta.header">
       <div class="header-main">
         <router-link :to="{ path: '/' }">
           <div class="header-logo fl"></div>
@@ -9,7 +9,7 @@
         <div class="quguo-user fr" v-show="closeuser">
           <div class="fl">
             <router-link :to="{ path: '/admin/manage'}" style="color: #9fa0a0;" class="block">
-              <div class="iconfont icon-yonghu fl" > <!-- :style="{backgroundImage:'url('+ author +')'}" -->
+              <div class="iconfont icon-yonghu fl" > <!-- :style="{background:'url('+ author +')'}" -->
                 <img :src="list.author" alt="" class="w11 h100" >
               </div>
               <div class="icon-username fl">{{ list.name }}</div>
@@ -89,7 +89,7 @@
           }
         },
         goCart() {
-            this.$router.push({ path: '/cart/cart' });
+          this.$router.push({ path: '/cart/cart' });
         },
         goback() {
           this.$confirm('确定要退出吗?, 是否继续?', '提示', {

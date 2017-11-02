@@ -30,7 +30,7 @@
     <swiper style="width:650px;" :options="swiperOption" ref="mySwiper">
       <!-- slides -->
       <template v-for="(item, index) in data.pic">
-        <swiper-slide  :style="{
+        <swiper-slide :style="{
                   background: 'url('+ item.src +') no-repeat',
                   height: '350px'}">
         </swiper-slide>
@@ -89,9 +89,9 @@
                   observeParents: true,
                   spaceBetween: 10,
                   debugger: true,
-
               },
               swiperOptionThumbs: {
+                  autoplay: 3000,
                   notNextTick: true,
                   spaceBetween: 10,
                   centeredSlides: true,

@@ -9,9 +9,10 @@
           <span class="line block fr"></span>
         </p>
       </div>
-      <div class="cart-content" style="padding-bottom: 100px;">
+      <div class="cart-content">
         <template v-for="(item, index) in list">
-          <div class="cart-address cart-box fl">
+          <div class="cart-address cart-box fl" :class="{'actives': index == currAddress}" @click="goInChonseAdd(index, item)">
+            <p class="el-icon-check" v-if="item.select"></p>
             <p class="ft-18 cart-box-head">
               <strong>{{ item.sname }}</strong>/<strong>{{ item.tel }}</strong>
             </p>
@@ -77,7 +78,7 @@
           <span class="total ft-18">合计金额：￥<i>{{ lastPaySum }}</i></span>
           <span class="actual ft-14">实际金额：<strong class="ft-28">￥99.9</strong></span>
         </div>
-        <el-button class="submit-order fr">提交订单</el-button>
+        <el-button class="submit-order fr" @click="goToPayMoney()">提交订单</el-button>
       </div>
     </div>
 
@@ -149,7 +150,7 @@
             phone: null,        //联系人电话
           },
           rules: {
-            address: [{required: true, message: '请输入具体地址！', trigger: 'blur'}],
+            address: [{required: true, message: '请输入详细地址！', trigger: 'blur'}],
             zip: [{required: true, message: '请输入邮编！', trigger: 'blur'}],
             receiver: [{required: true, message: '请输入收货人的姓名！', trigger: 'blur'}],
             phone: [{required: true, message: '请输入联系人电话号码！', trigger: 'blur'}]
@@ -167,15 +168,18 @@
             {exp_title: '申通快递'},
             {exp_title: '顺丰快递'},
             {exp_title: '上门自提'},],
+          exporessText: '',
           pay: [
             {pic: '../../../static/images/43.jpg'},
             {pic: '../../../static/images/44.jpg'},
           ],
+          goWhatpay: '',
           payindex: 0,
+          currAddress: 0,
+          currAddJson: [],
         }
     },
     mounted () {
-      console.log(this.shopmsg);
       this.setAddress();
     },
     computed: {
@@ -194,17 +198,20 @@
     },
     methods: {
       setAddress() {
-          this.$goFetch.fetchGet(this.$api.get_address.get_address + '?id=6').then((res) => {
-              this.list = res.data;
-              console.log(res.data);
-          });
-        },
-      submitMessage(formName) {
+        this.$goFetch.fetchGet(this.$api.get_address.get_address + '?id=6').then((res) => {
+          this.list = res.data;
+          for (let i in this.list) {
+            if (this.list[i].select == 1) {
+              this.currAddJson = this.list[i]
+            }
+          }
+        });
+      },
+      submitMessage(formName) { //  提交信息
         this.$refs[formName].validate((valid) => {
           if (!valid) {
             return false;
           }
-          //  登录提交
           let json = {
             waddress : this.ruleForm.whereAddress,
             address : this.ruleForm.address,
@@ -212,17 +219,41 @@
             receiver : this.ruleForm.receiver,
             phone : this.ruleForm.phone,
           }
-          var arr = [];
-          arr.push(json);
-          localStorage.setItem('Info_address',JSON.stringify(arr));
-          console.log(json);
+          this.$goFetch.fetchPost(this.$api.get_address.url_address +
+            '?id=6&sname='+ this.ruleForm.receiver +
+            '&tel='+ this.ruleForm.phone +
+            '&adr='+ this.waddress + this.ruleForm.address).then((res) => {
+              console.log(res);
+            setTimeout((res) => {
+              this.layer = false;
+            }, 500);
+          })
         });
       },
+      goToPayMoney() {  //  提交订单去支付
+        var options = {
+          addressList: this.currAddJson,
+          payMoney: parseFloat(this.lastPaySum),
+          whatPay: this.goWhatpay,
+          Exporess: this.exporessText
+        };
+      },
+      goInChonseAdd(index, item) {
+        this.currAddress = index;
+        this.currAddJson = item;
+      },  
       chonsePay(index, item) {
         this.payindex = index;
+        if (index == 0) {
+          this.goWhatpay = 'wechar';
+        } else if (index == 1) {
+          this.goWhatpay = 'alipay';
+        }
       },
       currExpress(index, item) {
         this.currentExpress = index
+        this.exporessText = item.exp_title
+        console.log(this.exporessText);
       },
       openAddress() {
           this.layer = true;
@@ -280,8 +311,8 @@
   }
 
   .layer .bf-selected .select-content {
-    height: 43px;
-    line-height: 43px;
+    height: 55px;
+    line-height: 50px;
     margin-top: 10px;
   }
 
@@ -349,14 +380,31 @@
   .cart-body .cart-content .cart-address {
     width: 228px;
     height: 230px;
-    border: 1px solid #c9caca;
+    border: 2px solid #c9caca;
     box-sizing: border-box;
-    margin: 0 30px 35px;
+    margin: 0 36px 35px;
     cursor: pointer;
+    position: relative;
+  }
+
+  .cart-body .cart-content .cart-address .el-icon-check {
+    position: absolute;
+    right: 0px;
+    background: #b11e25;
+    color: #fff;
+    padding: 5px;
   }
 
   .cart-body .cart-content .cart-box {
     text-align: center;
+  }
+
+  .cart-body .cart-content .cart-box:nth-child(4n) {
+    margin: 0 0px 35px 30px;
+  }
+
+  .cart-body .cart-content .actives {
+    border: 2px solid #b11e25;
   }
 
   .cart-body .cart-content .cart-box .cart-box-head {
@@ -444,6 +492,10 @@
     border-bottom: 1px solid #c9caca;
   }
 
+  .list-goods .list-shoping:last-child {
+    border: none;
+  }
+
   .list-goods .list-shoping .shoping-title {
     margin: 24px 65px;
   }
@@ -456,6 +508,7 @@
     height: 125px;
     line-height: 125px;
     width: 100%;
+    padding-bottom: 25px;
   }
 
   .cart-body .item-price .total {
@@ -472,7 +525,13 @@
     border: 1px solid #c40000;
     background: #c40000;
     color: #fff;
-    margin: 32px 25px;
+    margin: 32px 0px 25px 0px;
+  }
+
+  .cart-body .item-price .el-button:hover {
+    border: 1px solid #b11e25;
+    background: #fff;
+    color: #b11e25;
   }
 
   /* cart-body */

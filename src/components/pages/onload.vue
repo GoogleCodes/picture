@@ -14,7 +14,7 @@
                 </div>
                 <div class="right-upload">
                   <el-upload action="http://yuyin.ittun.com/public/api/home/ceshi/imgupload"
-                             name="abc"
+                             name="img"
                              class="image-uploader-warp"
                              :drag="false"
                              :on-preview="handlePreview"

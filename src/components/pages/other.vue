@@ -7,12 +7,12 @@
         <ul class="product-list clearfix">
           <template v-for="(item, index) in list">
             <li class="product-item">
-              <router-link :to="{ path: '/', query:{pid: index}}" class="block">
+              <router-link :to="{ path: '/', query:{pid: item.goods_id }}" class="block">
                 <div class="pic">
-                  <img :src="item.img" alt="">
+                  <img :src="item.goods_thumb" alt="">
                 </div>
-                <div class="item-title">{{ item.title }}</div>
-                <div class="item-text">典雅现代，木纹情怀</div>
+                <div class="item-title">{{ item.goods_name }}</div>
+                <div class="item-text">{{ item.goods_remark }}</div>
               </router-link>
             </li>
           </template>
@@ -48,13 +48,13 @@
     },
     methods: {
       getOther() {
-        this.$http.get('http://yuyin.ittun.com/public/api/home/front/randProduct?cid=' + this.cid + '&num=' + this.number ).then((res) => {
+        this.$http.get('http://yuyin.ittun.com/public/api/home/front/randGoods?cid=' + 31 + '&num=' + 4 ).then((res) => {
           console.log(res.data.data);
           if (res.data.code == 0) {
-            this.$message({
-              message: res.data.msg,
-              type: 'warning'
-            })
+            // this.$message({
+            //   message: res.data.msg,
+            //   type: 'warning'
+            // })
           }
           this.list = res.data.data;
         });

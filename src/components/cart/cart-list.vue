@@ -8,12 +8,10 @@
     </p>
     <p class="ft-14 shoping-desc" style="color: #898989;">abbaba</p>
   </div>
-
 </template>
 
 
 <style type="text/css">
-
   .cart-body .cart-content .tbody .ul .li .item-pic {
     width: 130px;
     height: 97px;

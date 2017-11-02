@@ -10,97 +10,76 @@
     <div class="filter-con">
       <div class="filter-nav">
         <span class="fl">筛选条件 ：</span>
-        <div class="fl classif">
-          <el-dropdown>
-            <span class="el-dropdown-link">
-              分类<i class="el-icon-caret-bottom el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>黄金糕</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>    
-        </div>
-        <div class="fl classif">
-          <el-dropdown>
-            <span class="el-dropdown-link">
-              分类<i class="el-icon-caret-bottom el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>黄金糕</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </div>
-        <div class="fl classif">
-          <el-dropdown>
-            <span class="el-dropdown-link">
-              封面<i class="el-icon-caret-bottom el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>黄金糕</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </div>
-        <div class="fl classif">
-          <el-dropdown>
-            <span class="el-dropdown-link">
-              尺寸<i class="el-icon-caret-bottom el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>1m</el-dropdown-item>
-              <el-dropdown-item>2m</el-dropdown-item>
-              <el-dropdown-item>3m</el-dropdown-item>
-              <el-dropdown-item>4m</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </div>
-        <div class="fl classif">
-          <el-dropdown>
-            <span class="el-dropdown-link">
-              装帧<i class="el-icon-caret-bottom el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>黄金糕</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </div>
-
+        <template v-for="(item, index) in specif">
+          <div class="fl classif">
+            <el-dropdown @command="handleCommand">
+              <span class="el-dropdown-link">
+                <i>{{ item.spec_name }}</i>
+                <i class="el-icon-caret-bottom el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <template v-for="(warp, index) in item.children">
+                  <el-dropdown-item :command="warp.item">{{ warp.item }}</el-dropdown-item>
+                </template>
+              </el-dropdown-menu>
+            </el-dropdown>    
+          </div>
+        </template>
         <div class="fr search">
           <!-- :on-icon-click="handleIconClick" -->
           <el-input placeholder="输入产品名称进行搜索" icon="search" class="fl" ></el-input>
-          <el-button class="gosearch fl">搜索</el-button>
+          <!--
+            <el-button class="gosearch fl">搜索</el-button>
+          -->
         </div>
-
       </div>
     </div>
 
-    <div class="shoping-list">
+    <div class="shoping-list" v-loading="load_data" element-loading-text="正在加载中...">
+      <div class="nothing-shop" v-show="!showPages">
+        <div class="iconfont icon-kong"></div>
+        <div>暂时没有商品</div>
+      </div>
       <ul>
         <template v-for="item in data.list">
           <li class="fl">
-            <router-link :to="{ path: '/pages/detail'}">
+            <router-link :to="{ path: '/pages/detail', query: {id: item.goods_id }}">
               <div class="shop-body">
                 <div class="pic-img">
-                  <img :src="item.pic" alt="" class="w100 h100">
+                  <img :src="item.photo" alt="" class="w100 h100">
                 </div>
                 <div class="item-wrap">
-                  <p class="ft-18">{{ item.title }}</p>
+                  <p class="ft-18">{{ item.goods_name }}</p>
                   <span class="block item-desc">{{ item.desc }}</span>
                   <p class="item-money ft-18">
                     <i>￥</i>
-                    <span>36.00</span>
+                    <span>{{ item.shop_price }}</span>
                   </p>
                 </div>
               </div>
             </router-link>
           </li>
         </template>
-
       </ul>
-      <a href="javascript:void(0);" class="block clear shoping-move">
-        <span class="block" style="position: relative;top: 5px;">展开全部</span>
-        <i class="block el-icon-arrow-down" style="position: relative;top: -1px;"></i>
-      </a>
+
+      <!--
+        <a href="javascript:void(0);" class="block clear shoping-move">
+          <span class="block" style="position: relative;top: 5px;">展开全部</span>
+          <i class="block el-icon-arrow-down" style="position: relative;top: -1px;"></i>
+        </a>
+      -->
     </div>
+
+    <!-- pages start -->
+    <div class="clear goToPages" v-show="showPages">
+      <el-pagination @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="data.listPages.current_page"
+        :page-size="data.listPages.per_page" :total="data.listPages.total"
+        layout="total, prev, pager, next">
+      </el-pagination>
+    </div>
+    <!-- pages start -->
 
     <div class="utils-con">
       <div class="util-bg">
@@ -125,15 +104,18 @@
       <h1 class="ft-34 gift-title">相册礼盒</h1>
       <p class="gift-desc ft-14">一个精美的相册礼盒，能让产品更有价值感，提升档次和客户的满意度</p>
       <ul>
-        <li class="fl" v-for="list in 3">
-          <div class="gift-sp-pic">
-            <img src="../../../static/images/30.png" alt="" class="w100 h100" />
-          </div>
-          <div class="gift-sp-desc ft-18">相册礼盒名称</div>
-        </li>
+        <router-link :to="{ path: '/', query: {id: 1} }" class="w100 h100 block">
+          <li class="fl" v-for="list in 3">
+            <div class="gift-sp-pic">
+              <img src="../../../static/images/30.png" alt="" class="w100 h100" />
+            </div>
+            <div class="gift-sp-desc ft-18">相册礼盒名称</div>
+          </li>
+        </router-link>
       </ul>
     </div>
 
+    
     <div class="dingzhi clear">
       <router-link :to="{ path: ''}">
         <img src="../../../static/images/31.png" class="w100 h100" alt="">
@@ -152,21 +134,68 @@
     data () {
       return {
         data: {
-          list: []
-        }
+          list: [],
+          listPages: {},
+        },
+        //  规格
+        specif: [],
+        currentPage: 5,
+        load_data: false
       }
     },
-    created() {
+    mounted() {
       this.getOrder();
+      this.getSpecif();
     },
     components: {
       ElButton,
       elenav,
     },
+    computed: {
+      showPages () {
+        if(this.data.list.length == 0) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    },
     methods: {
+      handleSizeChange(val) {
+        console.log(val);
+      },
+      handleCurrentChange(val) {
+        console.log(`${val}`);
+      },
+      handleCommand(command) {
+        this.load_data = true;
+        this.$http.get('http://yuyin.ittun.com/public/api/home/front/goodsList?cid=' + this.$route.query.id + '&spec' + command).then((res) => {
+          this.data.list = res.data.data.data;
+          this.data.listPages = res.data.data;
+          if (this.data.list.length == 0) {
+            this.load_data = false;
+            this.$message({
+              message: '暂时还没有产品',
+              type: 'warning'
+            });
+          } else if (res.data.code == 1) {
+            this.load_data = false;
+          }
+        });
+      },
+      getSpecif() {
+        this.$http.get('http://yuyin.ittun.com/public/api/home/front/speclist').then((res) => {
+          this.specif = res.data.data;
+        });
+      },
       getOrder() {
-        this.$http.get('http://yuyin.ittun.com/public/api/home/front/productInfo?id=' + this.$route.query.id).then((res) => {
-          this.data.list = res.data.data;
+        this.load_data = true;
+        this.$http.get('http://yuyin.ittun.com/public/api/home/front/goodsList').then((res) => {
+          if (res.data.code == 1) {
+            this.load_data = false;
+          }
+          this.data.list = res.data.data.data;
+          this.data.listPages = res.data.data;
         });
       }
     }
@@ -197,12 +226,16 @@
   }
 
   .filter-nav .search .el-input {
-    width: 200px;
+    width: 320px;
+  }
+
+  .filter-nav .search .el-input .el-input__icon {
+    cursor: pointer;
   }
 
   .search .el-input .el-input__inner {
-    border-right: none;
-    border-radius: 5px 0px 0px 5px;
+    // border-right: none;  
+    // border-radius: 5px 0px 0px 5px;
   }
 
   .filter-nav .search .el-button {
@@ -221,6 +254,19 @@
     width: 1200px;
     height: 100%;
     margin: 47px auto;
+  }
+
+  .shoping-list .nothing-shop {
+    text-align: center;
+    line-height: 90px;
+    font-size: 26px;
+  }
+
+  .shoping-list .icon-kong {
+    font-size: 250px;
+    line-height: 150px;
+    width: 305px;
+    margin: 110px auto 30px;
   }
 
   .shoping-list ul li .shop-body {
@@ -371,5 +417,13 @@
     height: 400px;
   }
   /* dingzhi end */
+
+  /* goToPages start */
+  .goToPages {
+    width: 1200px;
+    padding-top: 30px;
+    margin: 0px auto;
+  }
+  /* goToPages end */
 
 </style>
