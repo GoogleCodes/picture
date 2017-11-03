@@ -21,6 +21,9 @@ export default {
   crated() {
 
   },
+  methods: {
+
+  },
   components: {
     heads,
     vfoot

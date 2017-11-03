@@ -19,12 +19,13 @@
                   <div class="left fl">{{ todo.spec }}：</div>
                   <ul style="width: 75%;float: right;" class="fl">
                     <!--
-                    <dome v-for="(list,index) in todo.item" :values="list.id" :texts="list.item"  @click="changeGuige(index, list.id, list.item)"></dome>
+                    <dome :list="myspecList" :values="list.id" :texts="list.item" v-for="(list,index) in todo.item" 
+                          @click="changeGuige(index, list.id, list.item)"></dome>
                     -->
                     
                     <template>
                       <li v-for="(list,index) in todo.item" class="fl" 
-                      :class="{'active': list.id == chooseIndex }" @click="changeGuige(index, list.id, list.item)">{{ list.item }}</li>
+                      :class="active" @click="changeGuige(index, list.id, list.item)">{{ list.item }}</li>
                     </template>
                     
                   </ul>
@@ -107,7 +108,7 @@
 
     },
     created () {
-      console.log(this.$parent);
+      
     },
     mounted() {
       this.getPostPrice();
@@ -150,11 +151,6 @@
       detailSwiper,
     },
     computed: {
-      className() {
-        let name = {};
-        name['active'] = this.actives;
-        return name;
-      },
       getGuigeName() {
         if (this.guigeName <= 0) {
           return '请选择商品规格和数量';
@@ -179,8 +175,17 @@
         }
       },
       changeGuige(index, id, name) {
+        this.active = !this.active;
+        // if (!this.active) {
+        //   for (let i in this.myspecList) {
+        //     for () {
+
+        //     }
+        //   }
+        // }
         this.$set(this.guige, index, id);
         this.$set(this.guigeName, index, name);
+        console.log(this.guige, "+++", this.guigeName);
         if (!this.checkGuige) {
           return;
         }

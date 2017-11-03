@@ -4,6 +4,10 @@
 <script type="text/javascript">
     export default {
         props: {
+            list: {
+                type: [Array,Object],
+                required: true
+            },
             values: {
                 type: [Number,String],
                 required: true,
@@ -20,14 +24,16 @@
         },
         computed: {
             className() {
-                console.log(this.$parent);
+                
             }
         },
         mounted() {
             
         },
         methods: {
-            
+            goToDome() {
+                
+            }
         }
     }
 </script>
