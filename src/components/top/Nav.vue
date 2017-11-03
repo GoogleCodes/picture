@@ -43,7 +43,8 @@
     },
     methods: {
       getNav() {
-        this.$getData('/api/home/front/getPrdClassify').then((res) => {
+        console.log(this.$api.get_content.GET_NAV);
+        this.$getData(this.$api.get_content.GET_NAV).then((res) => {
             this.data.list = res.data;
         });
       }

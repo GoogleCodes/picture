@@ -54,20 +54,20 @@
         methods: {
           getNews() {
             this.load_data = true;
-            this.$goFetch.fetchGet(this.$api.get_content.GET_NEWS).then((res) => {
-              if (res.code == 0) {
+            this.$http.get('http://192.168.0.32/public/api/portal/articles').then((res) => {
+              if (res.data.code == 0) {
                 this.load_data = false;
                 this.$message({
-                  message: res.msg,
+                  message: res.data.msg,
                   type: 'warning'
                 });
-              } else if (res.code == 1) {
+              } else if (res.data.code == 1) {
                 this.load_data = false;
                 this.$message({
-                  message: res.msg,
+                  message: res.data.msg,
                   type: 'success'
                 });
-                this.list = res.data;
+                this.list = res.data.data;
               }
             });
           }

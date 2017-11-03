@@ -49,6 +49,9 @@ import ordcart from '@/components/cart/ord-cart'
 import news from '@/components/content/news'
 import newdetail from '@/components/content/newsdetail'
 
+//  Dome
+import dome from '@/components/pages/dome'
+
 Vue.use(Router);
 
 let routes = [{
@@ -65,6 +68,14 @@ let routes = [{
   path: '/inside/dingzhi',
   name: 'dingzhi',
   component: dingzhi,
+  meta: {
+    header: true,
+    footer: true
+  },
+},{
+  path: '/pages/dome',
+  name: 'dome',
+  component: dome,
   meta: {
     header: true,
     footer: true

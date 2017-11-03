@@ -14,23 +14,22 @@
             <div class="select-title">{{ list.goods_name }}<span>{{ list.goods_remark }}</span></div>
             <div class="select-text">{{ list.good_desc }}</div>
             <div class="select-price">¥{{ list.shop_price }}</div>
-            <template v-for="(items, index) in myspecList">
-              <div class="select-color clear">
-                <div class="left fl">{{ items.spec }}：</div>
-                <ul style="width: 75%;float: right;" class="fl">
-                  <li v-for="(list,index) in items.item" class="fl" 
-                  :class="{'active': index == chooseIndex}" @click="changeGuige(index, list)">{{ list.item }}</li>
-                </ul>
-              </div>
-            </template>
-            <div class="select-size clear" style="display: none;">
-              <span class="left">尺寸：</span>
-              <ul class="right clearfix">
-                <li v-for="(list,index) in list.size"
-                    :class="{'active':index == currentIndex}"
-                    @click="currentGoIndex(index, list.one)">{{ list.one }}</li>
-              </ul>
-            </div>
+              <template v-for="(todo, index) in myspecList">
+                <div class="select-color clear">
+                  <div class="left fl">{{ todo.spec }}：</div>
+                  <ul style="width: 75%;float: right;" class="fl">
+                    <!--
+                    <dome v-for="(list,index) in todo.item" :values="list.id" :texts="list.item"  @click="changeGuige(index, list.id, list.item)"></dome>
+                    -->
+                    
+                    <template>
+                      <li v-for="(list,index) in todo.item" class="fl" 
+                      :class="{'active': list.id == chooseIndex }" @click="changeGuige(index, list.id, list.item)">{{ list.item }}</li>
+                    </template>
+                    
+                  </ul>
+                </div>
+              </template>
             <div class="select-num clear">
               <span class="left fl">数量：</span>
               <div class="item-amount ">
@@ -78,11 +77,16 @@
   import ElInputNumber from "../../../node_modules/element-ui/packages/input-number/src/input-number";
 
   import detailSwiper from '@/components/pages/swiper'
+  import dome from '@/components/pages/dome'
 
   export default {
     name: 'dingzhi',
     data() {
       return {
+        attributeName: [],   //存储了属性类型，就是['颜色','大小']
+        attrList: [],        //存储了每个属性类型下的值
+        chooseAttrList: [],        //存储当前选择的属性对象的linkto(属性对应的所有产品的skuId)
+        postSkuId: 0,    //最终选定的产品ID
         list: {},
         swiperList: [],
         data: {
@@ -91,23 +95,23 @@
           currSize: "",
         },
         choose:[],
-        // 用于保存每件商品的对象
-        shopItem: {},
         //  用于保存用户添加到购车的商品数组
-        buyLists: [],
-        currentIndex: 0,
         myspecList: {},
         chooseIndex: 0,
+        active: false,
+        guige: [],
+        guigeName: [],
       }
     },
     watch: {
 
     },
     created () {
-      
+      console.log(this.$parent);
     },
     mounted() {
-      this.$getData('/api/home/front/getgoods?id=' + this.$route.query.id).then((res) => {
+      this.getPostPrice();
+      this.$getData(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.query.id).then((res) => {
         let that = this;
         switch (true) {
           case res.code == 1:
@@ -117,9 +121,7 @@
             });
             this.list = res.data;
             this.swiperList = JSON.parse(res.data.photo);
-            for (let i in this.list.myspec) {
-              that.myspecList = this.list.myspec[i];
-            }
+            that.myspecList = this.list.myspec;
             return true;
           case res.data.code == 0:
             this.$message({
@@ -144,26 +146,51 @@
       ElButton,
       elenav,
       other,
+      dome,
       detailSwiper,
     },
     computed: {
       className() {
         let name = {};
-        
-        name['active'] = true;
+        name['active'] = this.actives;
         return name;
-      }
+      },
+      getGuigeName() {
+        if (this.guigeName <= 0) {
+          return '请选择商品规格和数量';
+        }
+        return '已选择"' + this.guigeName.join('-') + '"';
+      },
     },
     methods: {
-      changeGuige(index, item) {
-        console.log(index,item);
-        for (let i in this.myspecList) {
-
+      getPostPrice() {
+        //  GET_POST_PRICE
+      },
+      checkGuige() {
+        if (this.guige.length !== this.myspecList.length) {
+          return false;
+        } else {
+          for (let g in this.guige) {
+            if (typeof this.guige[g] === 'undefined' || this.guige[g] == '') {
+              return false;
+            }
+          }
+          return true;
         }
-        if (item.id) {
-
+      },
+      changeGuige(index, id, name) {
+        this.$set(this.guige, index, id);
+        this.$set(this.guigeName, index, name);
+        if (!this.checkGuige) {
+          return;
         }
-        this.chooseIndex = index;
+        this.$postData(this.$api.get_content.GET_POST_PRICE, {
+          spec: this.guige.join('-')
+        }).then((res) => {
+          // for (let i in res.data) {
+          //   this.list = res.data[i];
+          // }
+        });
       },
       currentGoIndex(index, item) {
         this.currentIndex = index;
@@ -198,21 +225,17 @@
           return false;
         }
         var option = {
-          id: this.list.cat_id,
-          desc: this.list.good_desc,
-          number: this.list.sales_sum,
+          uid: 7,
+          gid: this.list.cat_id,
+          num: this.list.sales_sum,
           price: this.list.shop_price,
           specdata: this.myspecList,
         };
-        this.$postData('/api/home/shopcar/add',option).then((res) => {
-          consoel.log(res);
+        this.$postData(this.$api.get_content.POST_CART_DATA,option).then((res) => {
+          console.log(res);
         });
         return;
-        this.$store.commit('SET_CART_OBJ',option);
-        this.$message({
-          message: '恭喜你，加入购物车成功！',
-          type: 'success'
-        });
+        // this.$store.commit('SET_CART_OBJ',option);
         setInterval(function() {
           that.$router.push({ path: '/cart/cart' });
           location.reload();
@@ -263,6 +286,7 @@
     width: 42%;
     text-align: center;
     border: 1px solid #fff;
+    cursor: pointer;
   }
 
   .right-select .select-size {

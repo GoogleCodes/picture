@@ -253,7 +253,6 @@
       currExpress(index, item) {
         this.currentExpress = index
         this.exporessText = item.exp_title
-        console.log(this.exporessText);
       },
       openAddress() {
           this.layer = true;

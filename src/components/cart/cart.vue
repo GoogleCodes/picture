@@ -105,6 +105,7 @@
           multipleSelection:[],
           delIndex: null,       //  删除的索引
           isChonseShop: 0,
+          userID: this.$storageGet('user_info').user.id
         }
     },
     components: {
@@ -119,6 +120,7 @@
     },
     mounted() {
      this.fetchData();
+    //  this.getByDataID();
     },
     computed: {
       setCart() {
@@ -142,9 +144,24 @@
     },
     methods: {
       fetchData() {
+        var options = {
+          uid: 7
+        };
+        this.$postData(this.$api.get_content.GET_CART_DATA,
+        {uid: this.userID}).then((res) => {
+          this.data.list = res.data;
+        });
+        return;
         this.setCart;
         this.data.list = this.$storageGet('cart_info');
         this.$store.commit('SET_CART_NUMBER', this.data.list);
+      },
+      getByDataID() {
+        this.$postData(this.$api.get_content.GET_CART_TODATA,{
+          id: 28, 
+          uid: this.userID}).then((res) => {
+          console.log(res);
+        });
       },
       //  取消全选
       toggleSelection() {
@@ -209,6 +226,12 @@
       },
       //  删除商品
       deleteShop(item) {
+        this.$postData(this.$api.get_content.DELETE_CART_DATA,{
+          id: 28, 
+          uid: this.userID}).then((res) => {
+          console.log(res);
+        });
+
         this.$confirm('确定要删除这件商品吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
