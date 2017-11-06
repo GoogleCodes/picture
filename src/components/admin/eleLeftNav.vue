@@ -62,7 +62,7 @@
     computed: {
         user_info() {
           try {
-            let arr = this.$storageGet('user_info');// JSON.parse(this.$store.state.user_info);
+            let arr = this.$storageGet('user_info');
             this.list = arr.user
           } catch(e) {}
           return this.$store.state.user_info;
@@ -72,7 +72,6 @@
       
     },
     mounted() {
-      console.log(this.user_info);
       this.isUserTrue();
     },
     methods: {
@@ -93,7 +92,8 @@
             type: 'success',
             message: '退出成功!'
           });
-          localStorage.removeItem('user_info');
+          this.$goFetch.storageRemove('user_info');
+          this.$goFetch.storageSet('user_info',undefined);
           //  跳回首页
           this.$router.push({ path: '/'});
           location.reload();

@@ -36,6 +36,10 @@ Vue.prototype.$storageSet = storageSet;
 Vue.prototype.$storageGet = storageGet;
 
 import * as fetch from './api/utils.js'
+
+import * as goFetchs from './router/utils.js'
+Vue.prototype.$goFetchs = goFetchs;
+
 import { tool_verify } from './api/tool'
 //  验证
 Vue.prototype.$toolVerify = tool_verify;

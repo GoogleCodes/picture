@@ -93,7 +93,7 @@
             return false;
           }
           that.load_data = true;
-          that.$goFetch.fetchPost(this.$api.port_user.get_login + '?tel='+ this.ruleForm.username + '&pwd=' + this.ruleForm.password + '').then((res) => {
+          that.$goFetchs.fetchPost(this.$api.port_user.get_login + '?tel='+ this.ruleForm.username + '&pwd=' + this.ruleForm.password + '').then((res) => {
               if(res.code == 0) {
                 that.load_data = false;
                 this.$message({

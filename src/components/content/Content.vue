@@ -74,7 +74,6 @@
         <router-link :to="{ path: 'content/news'}">
           <img src="../../../static/images/09.png" alt="" style="width: 100%;height: 100%;">
         </router-link>
-
       </div>
     </div>
     <!-- content end -->

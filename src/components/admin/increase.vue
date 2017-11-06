@@ -73,7 +73,7 @@
         }
       },
       created () {
-
+        
       },
       methods: {
         goDefault (event) {
@@ -84,7 +84,7 @@
             if (!valid) {
               return false;
             }
-            this.$goFetch.fetchPost(this.$api.get_address.url_address +
+            this.$goFetchs.fetchPost(this.$api.get_address.url_address +
               '?id=6&sname='+ this.ruleForm.name +
               '&tel='+ this.ruleForm.telphone +
               '&adr='+ this.selectedOptions + this.ruleForm.address).then((res) => {

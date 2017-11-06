@@ -50,22 +50,16 @@
     methods: {
       getNews() {
         this.load_data = true;
-        this.$http.get('http://192.168.0.32/public/api/portal/articles').then((res) => {
-          if (res.data.code == 0) {
+        this.$goFetchs.fetchGet(this.$api.get_content.GET_NEWS).then((res) => {
+          if (res.code == 1) {
             this.load_data = false;
             this.$message({
-              message: res.data.msg,
-              type: 'warning'
-            });
-          } else if (res.data.code == 1) {
-            this.load_data = false;
-            this.$message({
-              message: res.data.msg,
+              message: res.msg,
               type: 'success'
             });
-            for (let i in res.data.data) {
-              if (res.data.data[i].id == this.$route.query.newid) {
-                this.list = res.data.data[i];
+            for (let i in res.data) {
+              if (res.data[i].id == this.$route.query.newid) {
+                this.list = res.data[i];
               }
             }
           }

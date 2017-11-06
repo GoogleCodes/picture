@@ -81,8 +81,8 @@
         load_data: false, //  请求时的loading效果
       }
     },
-    created () {
-
+    mounted () {
+      console.log(this.$api.port_user.get_find_code);
     },
     methods: {
       getCode () {
@@ -95,7 +95,7 @@
           });
           return;
         }
-        this.$goFetch.fetchPost(this.$pubFetch.port_user.get_find_code + '?tel='+ this.ruleForm.phone +'').then((res) => {
+        this.$goFetchs.fetchGet(this.$api.port_user.get_find_code + '?tel='+ this.ruleForm.phone +'').then((res) => {
           if(res.code == 0) {
             this.$message({
               message: res.msg,
@@ -123,21 +123,21 @@
             });
             return;
           }
-          this.$pubFetch.fetchPost(this.$api.port_user.get_find_pwd +
+          this.$goFetchs.fetchGet(this.$api.port_user.get_find_pwd + 
             '&tel=' + this.ruleForm.phone +
             '&pwd=' + this.ruleForm.password +
             '&repwd=' + this.ruleForm.rePwd +
             '&code=' + this.ruleForm.code).then((res) => {
-            if(res.code == 0) {
+            if(res.data.code == 0) {
               this.$message({
                 showClose: true,
                 message: res.msg,
                 type: 'warning'
               });
               return false;
-            } else if (res.code == 1) {
+            } else if (res.data.code == 1) {
               this.$message({
-                message: res.msg,
+                message: res.data.msg,
                 type: 'success'
               });
               setTimeout(() => {
