@@ -7,6 +7,10 @@ export default {
     commit(mutations.SET_USER_INFO, userinfo)
   },
 
+  [actions.SET_USER_SESS]({commit}, userinfo){
+    commit(mutations.SET_USER_SESS, userinfo)
+  },
+
   //  初始化
   [actions.INIT]({commit}) {
     // $.ajax('../../../static/data/cart.json', function(res) {

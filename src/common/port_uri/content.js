@@ -25,3 +25,5 @@ exports.GET_CART_DATA = '/api/home/shopcar/getByUid'
 exports.DELETE_CART_DATA = '/api/home/shopcar/del'
 //  获取规格
 exports.GET_POST_PRICE = '/api/home/shopcar/price'
+//  更改购物车数据
+exports.UPDATE_CART = '/api/home/shopcar/edit'

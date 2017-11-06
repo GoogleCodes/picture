@@ -18,16 +18,20 @@
                 <div class="select-color clear">
                   <div class="left fl">{{ todo.spec }}：</div>
                   <ul style="width: 75%;float: right;" class="fl">
-                    <!--
-                    <dome :list="myspecList" :values="list.id" :texts="list.item" v-for="(list,index) in todo.item" 
-                          @click="changeGuige(index, list.id, list.item)"></dome>
-                    -->
                     
+                    <dome :list="myspecList" 
+                          :indexs="index"
+                          :values="list.id" 
+                          :texts="list.item" 
+                          :wrap="list"
+                          v-for="(list,index) in todo.item" ></dome>
+                    
+                    <!--
                     <template>
                       <li v-for="(list,index) in todo.item" class="fl" 
-                      :class="active" @click="changeGuige(index, list.id, list.item)">{{ list.item }}</li>
+                      :class="className" @click="changeGuige(index, list.id, list.item)">{{ list.item }}</li>
                     </template>
-                    
+                    -->
                   </ul>
                 </div>
               </template>
@@ -107,7 +111,7 @@
 
     },
     created () {
-      
+
     },
     mounted() {
       this.getPostPrice();
@@ -115,19 +119,11 @@
         let that = this;
         switch (true) {
           case res.code == 1:
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            });
             this.list = res.data;
-            this.swiperList = JSON.parse(res.data.photo);
+            this.swiperList = this.$goJson(res.data.photo);
             that.myspecList = this.list.myspec;
             return true;
           case res.data.code == 0:
-            this.$message({
-              message: res.msg,
-              type: 'warning'
-            });
             return false;
           default:
         }
@@ -174,17 +170,9 @@
         }
       },
       changeGuige(index, id, name) {
-        this.active = !this.active;
-        // if (!this.active) {
-        //   for (let i in this.myspecList) {
-        //     for () {
-
-        //     }
-        //   }
-        // }
+        // this.active = !this.active;
         this.$set(this.guige, index, id);
         this.$set(this.guigeName, index, name);
-        console.log(this.guige, "+++", this.guigeName);
         if (!this.checkGuige) {
           return;
         }
@@ -228,14 +216,14 @@
           });
           return false;
         }
-        var option = {
-          uid: 7,
+        this.$postData(this.$api.get_content.POST_CART_DATA,{
+          uid: this.$storageGet('user_info').user.id,
           gid: this.list.cat_id,
-          num: this.list.sales_sum,
+          sid: 68,
+          num: 1,
           price: this.list.shop_price,
-          specdata: this.myspecList,
-        };
-        this.$postData(this.$api.get_content.POST_CART_DATA,option).then((res) => {
+          specdata: 135+ '-' +140, //  this.myspecList
+        }).then((res) => {
           console.log(res);
         });
         return;
@@ -286,7 +274,7 @@
 
   .right-select .select-color ul li {
     border-radius: 5px;
-    margin: 0px 20px 0px 0px;
+    margin: 0px 20px 10px 0px;
     width: 42%;
     text-align: center;
     border: 1px solid #fff;

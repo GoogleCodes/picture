@@ -133,6 +133,12 @@ export const storageGet = (key) => {
   return key_Obj;
 };
 
+//  删除本地数据
 export const storageRemove = (key) => {
   return window.localStorage.removeItem(key);
 };
+
+
+export const goJson = (key) => {
+  return window.JSON.parse(key);
+}

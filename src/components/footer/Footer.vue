@@ -18,8 +18,8 @@
         <ul class="fl">
           <li>Character</li>
           <li class="list-desc">
-            客服热线一 ：13250144303 <br />
-            客服热线二 ：18923203209 <br />
+            客服热线一 ：<a href="tel:13250144303">13250144303</a> <br />
+            客服热线二 ：<a href="tel:18923203209">18923203209</a> <br />
             邮箱 ：jiang23 @jiangmuxin.com
         </li>
         </ul>

@@ -82,7 +82,7 @@
       }
     },
     mounted () {
-      console.log(this.$api.port_user.get_find_code);
+      
     },
     methods: {
       getCode () {

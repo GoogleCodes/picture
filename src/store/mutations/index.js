@@ -3,19 +3,32 @@ import * as type from '../../store/mutations/type'
 
 import { localStor } from '../../common/storage'
 
-import { storageSet, storageGet } from '../../api/utils.js'
+import { storageSet, storageGet, storageRemove } from '../../api/utils.js'
 
 import Vue from 'vue'
 
 export default {
-  // //设置用户信息和是否登录
+  // 设置用户信息和是否登录
   [type.SET_USER_INFO](state, userinfo){  //  userinfo
     state.count++;
     state.user_info = userinfo || {}
     if (userinfo === null) {
-      localStorage.remove('user_info')
+      storageRemove('user_info')
     } else {
       storageSet('user_info',userinfo);
+    }
+  },
+
+  //  用session存储信息
+  [type.SET_USER_SESS](state, userinfo) {
+    state.count++;
+    state.user_info = userinfo || {}
+    if (userinfo === null) {
+      // storageRemove('user_info')
+      window.sessionStorage.removeItem('user_info');
+    } else {
+      window.sessionStorage.setItem('user_info',JSON.stringify(userinfo));
+      // storageSet('user_info',userinfo);
     }
   },
 

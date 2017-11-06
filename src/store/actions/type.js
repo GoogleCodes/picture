@@ -1,6 +1,10 @@
 //action的类型管理
 //设置用户信息和登录
 export const SET_USER_INFO = 'set_user_info'
+
+//  SESSION
+export const SET_USER_SESS = 'set_user_sess'
+
 //  测试
 export const INIT = 'init'
 

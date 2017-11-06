@@ -48,7 +48,7 @@
             <router-link :to="{ path: '/pages/detail', query: {id: item.goods_id }}">
               <div class="shop-body">
                 <div class="pic-img">
-                  <img :src="item" alt="" class="w100 h100">
+                  <img :src="item.goods_thumb" alt="" class="w100 h100">
                 </div>
                 <div class="item-wrap">
                   <p class="ft-18">{{ item.goods_name }}</p>
@@ -194,6 +194,7 @@
         this.$getData(this.$api.get_content.GET_ORDER).then((res) => {
           this.load_data = false;
           this.data.list = res.data.data;
+          console.log(this.data.list.goods_thumb);
           this.data.listPages = res.data;
         });
       }

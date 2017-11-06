@@ -11,56 +11,43 @@
         </p>
       </div>
 
-      <ul style="display: none;">
-        <template v-for="(item, index) in setCart">
-          <li style="width: 100%;">
-            <div style="width: 100%;">
-              <br />
-              <el-input v-model="item.number"></el-input>
-              <el-button class="no-minus fl" @click="changeNumber(item, -1)" :class="{'disabled':item.number <= 1}">-</el-button>
-              <br />
-              <el-input type="text" class="fl" readonly v-model="item.number" placeholder="0"></el-input>
-              <br />
-              <el-button class="add-max fl" @click="changeNumber(item, 1)" :class="{'disabled':item.number >= 1}">+</el-button>
-            </div>
-          </li>
-        </template>
-      </ul>
-
       <div class="cart-content">
-        <el-table ref="multipleTable" :data="setCart" border tooltip-effect="dark" style="width: 100%" @selection-change="selected">
+        <el-table ref="multipleTable" :data="data.list" border tooltip-effect="dark" style="width: 100%" @selection-change="selected">
           <el-table-column type="selection" width="99"></el-table-column>
           <el-table-column label="商品名称" width="407">
             <template scope="scope">
               <router-link :to="{ path: '/pages/detail' , query:{ id:scope.row.id }}" class="block">
                 <div class="item-pic fl">
-                  <img :src="scope.row.goods.img" alt="" style="width: 100%;height: 100%;" />
+                  <!--
+                    <img :src="scope.row.goods.img" alt="" style="width: 100%;height: 100%;" />
+                  -->
+                  
                 </div>
-                <p class="ft-18 shoping-name fl">{{ scope.row.goods.descript }}</p>
+                <p class="ft-18 shoping-name fl">{{ scope.row.goods_remark }}</p>
                 <p class="ft-14 shoping-desc fl" style="color: #898989;">详情信息</p>
               </router-link>
             </template>
           </el-table-column>
           <el-table-column prop="price" label="单价" width="210">
             <template scope="scope">
-              <div class="ft-24" style="color: #b5b5b6">  {{ scope.row.price | changePrice }}</div>
+              <div class="ft-24" style="color: #b5b5b6">¥{{ scope.row.price }}</div>
             </template>
           </el-table-column>
           <el-table-column prop="address" label="数量" width="250">
             <template scope="scope">
               <div class="item-amount">
                 <el-button slot="prepend" class="no-minus fl" @click="changeNumber(scope.row, -1)"
-                           :class="{'disabled':scope.row.number <= 1}">-</el-button>
+                           :class="{'disabled':scope.row.num <= 1}">-</el-button>
                 <el-input type="text" class="fl" readonly
-                          v-model="scope.row.number" placeholder="0"></el-input>
+                          v-model="scope.row.num" placeholder="0"></el-input>
                 <el-button  slot="append" class="add-max fl" @click="changeNumber(scope.row, 1)"
-                           :class="{'disabled':scope.row.number >= 1}" style="margin-left: 20px;">+</el-button>
+                           :class="{'disabled':scope.row.num >= 1}" style="margin-left: 20px;">+</el-button>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="总价" width="143">
             <template scope="scope">
-              <p class="ft-24 totalprice">{{ scope.row.price * scope.row.number | changePrice }}</p>
+              <p class="ft-24 totalprice">{{ scope.row.price * scope.row.num }}</p>
               <el-button @click="goLoad()">上传图片</el-button>
             </template>
           </el-table-column>
@@ -131,30 +118,24 @@
       }
     },
     watch: {
-        $route() {
-            this.setCart;
-        }
+        
     },
     // 定义过滤方法
     filters:{
       // 传入原始value然后返回处理后数据
-      changePrice:function(value){
+      changePrice(value){
         return "￥" + value.toFixed(2);
       }
     },
     methods: {
       fetchData() {
-        var options = {
-          uid: 7
-        };
         this.$postData(this.$api.get_content.GET_CART_DATA,
         {uid: this.userID}).then((res) => {
           this.data.list = res.data;
+          console.log(this.data.list);
         });
-        return;
-        this.setCart;
-        this.data.list = this.$storageGet('cart_info');
-        this.$store.commit('SET_CART_NUMBER', this.data.list);
+        // this.data.list = this.$storageGet('cart_info');
+        // this.$store.commit('SET_CART_NUMBER', this.data.list);
       },
       getByDataID() {
         this.$postData(this.$api.get_content.GET_CART_TODATA,{
@@ -175,33 +156,33 @@
         this.data.totalMoney = 0;
         for(var i in selection) {
           //  判断返回的值是否是字符串
-          if(typeof selection[i].number == 'string') {
-            selection[i].number = parseInt(selection[i].number);
+          if(typeof selection[i].num == 'string') {
+            selection[i].num = parseInt(selection[i].num);
           }
-          this.data.totalMoney += selection[i].number * selection[i].price;
+          this.data.totalMoney += selection[i].num * selection[i].price;
         }
       },
       goLoad () {
           this.$router.push({ path : '../pages/onload'});
       },
       changeNumber(item,flag) {
-        let options = {};
+        console.log(item.id);
         if (flag > 0) {
-          item.number += 1;
-          options = {
-              id: item.id,
-              num: item.number,
-          };
-          this.$store.commit('INCRECARTNUMS', options);
+          item.num += 1;
+          this.$postData(this.$api.get_content.UPDATE_CART,{
+            id: item.id, 
+            uid: this.$storageGet('user_info').user.id,
+            gid: item.id,
+            num: item.num,
+            specdata: item.specdata,
+            price: item.price }).then((res) => {
+            console.log(res);
+          });
         } else {
-          item.number -= 1;
-          options = {
-            id: item.id,
-            num: item.number,
-          };
-          this.$store.commit('REDUCECARTNUMS', options);
-          if(item.number <= 1) {
-            item.number = 1;
+          item.num -= 1;
+          // this.$store.commit('REDUCECARTNUMS', options);
+          if(item.num <= 1) {
+            item.num = 1;
           }
         }
         this.selected(this.multipleSelection);

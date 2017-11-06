@@ -5,6 +5,7 @@ import { storageSet, storageGet } from '../../api/utils.js'
 export default {
   //  用户信息和是否登录
   user_info: localStorage.getItem('user_info'),
+  s_user_info: sessionStorage.getItem('user_info'),
   // remove_user_info: localStorage.removeItem('user_info'),
   list: [],
   count: 0,

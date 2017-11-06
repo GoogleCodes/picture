@@ -48,7 +48,7 @@
   import heads from '@/components/top/Top.vue'
   import foots from '@/components/footer/Footer.vue'
   import { mapActions } from 'vuex'
-  import { SET_USER_INFO } from '../../store/actions/type'
+  import { SET_USER_INFO, SET_USER_SESS } from '../../store/actions/type'
 
   import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
@@ -68,7 +68,7 @@
           username: [{required: true, message: '请输入账户名！', trigger: 'blur'}],
           password: [{required: true, message: '请输入账户密码！', trigger: 'blur'}]
         },
-        checked_login: false,
+        checked_login: true,
         //  请求时的loading效果
         load_data: false,
       }
@@ -76,14 +76,21 @@
     created () {
       //  调用Vuex action
       this.$store.commit('GET_CHECKED_LOGIN',this.checked_login);
-      this.$store.dispatch("set_user_info");
+      // this.$store.dispatch("set_user_info");
+      // this.goBackLogin();
     },
     methods: {
       ...mapActions({
-        set_user_info: SET_USER_INFO
+        set_user_info: SET_USER_INFO,
+        set_user_sess: SET_USER_SESS
       }),
+      goBackLogin() {
+        //  观察如果进入登录页面判断不等于undefined 直接返回后一页
+        if (localStorage.getItem('user_info') !== undefined) {
+          window.history.back();
+        }
+      },
       changeGo (event) {
-        // this.$storageGet('checked_login',event);
         event ? this.checked_login = event : this.checked_login = event;
       },
       logining (formName) {
@@ -96,18 +103,10 @@
           that.$goFetchs.fetchPost(this.$api.port_user.get_login + '?tel='+ this.ruleForm.username + '&pwd=' + this.ruleForm.password + '').then((res) => {
               if(res.code == 0) {
                 that.load_data = false;
-                this.$message({
-                  message: res.msg,
-                  type: 'warning',
-                });
                 return false;
               } else {
-                that.load_data = false;
-                that.$message({
-                  showClose: true,
-                  message: res.msg,
-                  type: 'warning'
-                });
+                this.checked_login = true;
+                this.$store.commit('GET_CHECKED_LOGIN',this.checked_login);
                 that.set_user_info({
                   user: {
                     id: res.data.id,
@@ -116,6 +115,7 @@
                   },
                   login: true
                 });
+                that.load_data = false;
                 setTimeout(() => {
                   this.$router.push({ path: '/' });
                   location.reload();
@@ -129,7 +129,7 @@
 
     },
     computed: {
-
+      
     },
     components: {
       ElCheckboxGroup, ElFormItem, ElForm, ElButton, ElInput, heads,

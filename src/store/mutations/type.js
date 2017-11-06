@@ -2,6 +2,8 @@
 
 //设置用户信息和是否登录
 export const SET_USER_INFO = 'SET_USER_INFO'
+//session
+export const SET_USER_SESS = 'SET_USER_SESS'
 
 export const INIT = 'INIT'
 

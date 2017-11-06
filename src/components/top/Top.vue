@@ -55,7 +55,7 @@
       computed: {
         user_info() {
           try {
-            let arr = JSON.parse(this.$store.state.user_info);
+            let arr = this.$goJson(this.$store.state.user_info);
             this.list = arr.user
           } catch(e) {}
           return this.$store.state.user_info;
