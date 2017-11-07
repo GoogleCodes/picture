@@ -11,17 +11,10 @@
             <div class="select-title">{{ list.goods_name }}<span>{{ list.goods_remark }}</span></div>
             <div class="select-text">{{ list.good_desc }}</div>
             <div class="select-price">¥{{ list.shop_price }}</div>
-            <!--
             <template v-for="(todo, index) in myspecList">
               <div class="select-color clear">
                 <div class="left fl">{{ todo.spec }}：</div>
                 <ul style="width: 75%;float: right;" class="fl">
-                  <dome :list="myspecList" 
-                          :indexs="index"
-                          :values="list.id" 
-                          :texts="list.item" 
-                          :wrap="list"
-                          v-for="(list,index) in todo.item" ></dome>
                   <template v-for="(list,index) in todo.item">
                     <li class="fl" :class="{'active': index == currentColor}" 
                     @click="changeGuige(index, list.id, list.item)">{{ list.item }}</li>
@@ -29,7 +22,7 @@
                 </ul>
               </div>
             </template>
-            -->
+            <!--
             <div class="select-color clear">
               <div class="left fl">{{ colorList.spec }}：</div>
               <ul style="width: 75%;float: right;" class="fl">
@@ -48,6 +41,7 @@
                 </template>
               </ul>
             </div>
+            -->
             <div class="select-num clear">
               <span class="left fl">数量：</span>
               <div class="item-amount ">
@@ -129,6 +123,7 @@
         colorList: {},
         charItem: '',
         charId: 0,
+        charSID: 0,
         //  用于保存用户添加到购车的商品数组
         myspecList: {},
         active: false,
@@ -221,8 +216,9 @@
           spec: this.guige.join('-')
         }).then((res) => {
           for (let i in res.data) {
+            this.charSID = res.data[i].sku_id;
             this.list.shop_price = res.data[i].price;
-            this.list.goods_id = res.data[i].goods_id
+            this.list.goods_id = res.data[i].goods_id;
           }
         });
       },
@@ -265,6 +261,7 @@
         var json = {
           uid: this.$storageGet('user_info').user.id,
           gid: this.$route.query.id,
+          sid: this.charSID,
           num: this.list.sales_sum,
           price: this.list.shop_price,
           specdata: this.guigeName.join('-'),

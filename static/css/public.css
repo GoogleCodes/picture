@@ -432,6 +432,7 @@
 .admin .admin-right .order-table table {
     border: 1px solid #c9caca;
     width: 100%;
+    margin-bottom: 20px;
 }
 
 .admin .admin-right .order-table table .thead-item {

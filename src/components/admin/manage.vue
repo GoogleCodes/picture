@@ -49,17 +49,26 @@
                     <p>订单详情</p>
                   </td>
                   <td style="width: 130px;">
-                    <a href="javascript:void(0);" class="nowpay privateBtn">立即付款</a>
-                    <a href="javascript:void(0);" class="cancel protected-Btn">取消订单</a>
-                    <a href="javascript:void(0);" class="select protected-Btn">查看物流</a>
-                    <a href="javascript:void(0);" class="delete protected-Btn">X</a>
+                    <a class="nowpay privateBtn" v-if="item.status == 0">立即付款</a>
+                    <a class="cancel protected-Btn" v-if="item.status == 1">已付款</a>
+                    <a class="select protected-Btn" v-if="item.status == 2">已发货</a>
+                    <a class="delete protected-Btn" v-if="item.status == 3">已收货</a>
                   </td>
                 </tr>
               </tbody>
             </template>
           </table>
         </template>
-        
+        <!-- pages start -->
+        <div class="clear goToPages">
+          <el-pagination @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="orderPages.current_page"
+            :page-size="orderPages.per_page" :total="orderPages.total"
+            layout="total, prev, pager, next">
+          </el-pagination>
+        </div>
+        <!-- pages start -->
       </div>
     </div>
   </div>
@@ -70,6 +79,7 @@
     data() {
       return {
         orderList: [],
+        orderPages: {},
       }
     },
     computed: {
@@ -91,12 +101,19 @@
       }
     },
     methods: {
+      handleSizeChange(val) {
+        console.log(val);
+      },
+      handleCurrentChange(val) {
+        console.log(`${val}`);
+      },
       getOrderAdmin() {
         this.$postData(this.$api.get_content.GET_ORDER_ADMIN,{
           uid:  + this.$storageGet('user_info').user.id
         }).then((res) => {
           this.orderList = res.data.data.data;
-          console.log(this.orderList);
+          this.orderPages = res.data.data;
+          console.log(this.orderPages, this.orderList);
         });
       }
     }

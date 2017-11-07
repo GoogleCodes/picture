@@ -52,19 +52,19 @@
             <div class="list-shoping clear">
               <div class="fl" style="margin: 35px 0px;">
                 <div class="shoping-pic fl">
-                  <img :src="item.goods.img" alt="" class="w100 h100" />
+                  <img :src="item.goods_thumb" alt="" class="w100 h100" />
                 </div>
                 <div class="shoping-title fl">
-                  <p class="ft-20">{{ item.goods.descript }}</p>
-                  <p class="ft-14" style="color: #898989;margin-top: 10px;">{{ item.desc }}</p>
+                  <p class="ft-20">{{ item.goods_name }}</p>
+                  <p class="ft-14" style="color: #898989;margin-top: 10px;">{{ item.goods_remark }}</p>
                 </div>
               </div>
               <div class="price ft-18">
-                <div class="fr" style="color: #b11e25;margin-left: 100px;">￥99.9</div>
+                <div class="fr" style="color: #b11e25;margin-left: 100px;">￥{{ item.price }}</div>
                 <div class="fr">
                   <span>￥{{ item.price }}</span>
                   <i>X</i>
-                  <span>{{ item.number }}</span>
+                  <span>{{ item.num }}</span>
                 </div>
               </div>
             </div>
@@ -234,20 +234,23 @@
           whatPay: this.goWhatpay,
           Exporess: this.exporessText
         };
+        let sku_id = 0, gid = 0, textSpecdata = null;
+        for (let i in this.shopmsg) {
+          sku_id = this.shopmsg[i].sku_id;
+          gid = this.shopmsg[i].id;
+          textSpecdata = this.shopmsg[i].specdata;
+        }
         this.$postData('/api/home/order/add',{
           uid: this.$storageGet('user_info').user.id,
-          goodsdata: [{
-            gid: 46,
-            sid: 213,
-            num: 1,
-            specdata: "16寸-黄色",
-          }],
+          goodsdata: [this.shopmsg],
+          num: 1,
+          specdata: textSpecdata,
           address: this.currAddJson,
           uname: this.currAddJson.sname
         }).then((res) => {
           console.log(res);
         });
-
+        
       },
       goInChonseAdd(index, item) {
         this.currAddress = index;

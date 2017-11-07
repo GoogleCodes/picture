@@ -95,7 +95,7 @@
       }
     },
     created() {
-
+      console.log(this.$route.query.id);
     },
     components: {
       ElButton
@@ -103,13 +103,19 @@
     },
     methods: {
       handleBeforeUpload(file) {
-        console.log(file);
+        // console.log(file);
       },
       handleAvatarSuccess(res, file) {
-        console.log(res);
+        this.file = res;
+        console.log(this.file, this.$router.query.id);
+        return;
+        this.$postData('/api/home/shopcar/upSave',{
+          id: this.$route.query.id,
+          img: res,
+        });
       },
       handlePreview(file, fileList) {
-        console.log(file, fileList)
+        // console.log(file, fileList)
       },
       uploadError (response, file, fileList) {
         console.log('上传失败，请重试！')

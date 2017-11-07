@@ -16,7 +16,7 @@
           <el-table-column type="selection" width="99"></el-table-column>
           <el-table-column label="商品名称" width="407">
             <template scope="scope">
-              <router-link :to="{ path: '/pages/detail' , query:{ id:scope.row.id }}" class="block">
+              <div class="block">
                 <div class="item-pic fl">
                   <!--
                     <img :src="scope.row.goods.img" alt="" style="width: 100%;height: 100%;" />
@@ -24,7 +24,7 @@
                 </div>
                 <p class="ft-18 shoping-name fl">{{ scope.row.goods_remark }}</p>
                 <p class="ft-14 shoping-desc fl" style="color: #898989;">详情信息</p>
-              </router-link>
+              </div>
             </template>
           </el-table-column>
           <el-table-column prop="price" label="单价" width="210">
@@ -47,7 +47,7 @@
           <el-table-column label="总价" width="143">
             <template scope="scope">
               <p class="ft-24 totalprice">{{ scope.row.price * scope.row.num }}</p>
-              <el-button @click="goLoad()">上传图片</el-button>
+              <el-button @click="goLoad(scope.row.id)">上传图片</el-button>
             </template>
           </el-table-column>
           <el-table-column prop="address" label="操作" show-overflow-tooltip width="88">
@@ -161,8 +161,8 @@
           this.data.totalMoney += selection[i].num * selection[i].price;
         }
       },
-      goLoad () {
-          this.$router.push({ path : '../pages/onload'});
+      goLoad (id) {
+        this.$router.push({ path : '../pages/onload', query: {id: id}});
       },
       changeNumber(item,flag) {
         if (flag > 0) {
@@ -185,7 +185,7 @@
       },
       //  去结算
       goPay () {
-        // this.$store.commit('SET_GO_PAY',this.multipleSelection);
+        console.log(this.multipleSelection);
         if (this.multipleSelection.length == 0) {
           this.$message({
             message: '请选择商品!',
@@ -193,6 +193,7 @@
           });
           return;
         }
+        this.$store.commit('SET_GO_PAY',this.multipleSelection);
         this.$router.push({ path: '/cart/submit' });
       },
       handleInput(value) {

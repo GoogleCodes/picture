@@ -29,3 +29,5 @@ exports.GET_POST_PRICE = '/api/home/shopcar/price'
 exports.UPDATE_CART = '/api/home/shopcar/edit'
 //  订单管理
 exports.GET_ORDER_ADMIN = '/api/home/order/orderList'
+//  上传图片
+exports.ON_LOAD_PIC = '/api/home/ceshi/imgupload'
