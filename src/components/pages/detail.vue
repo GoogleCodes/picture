@@ -5,36 +5,49 @@
         <img :src="list.shotcut" alt="" style="width: 100%;height: 100%;">
       </div>
       <div class="experience" style="margin: 0px auto;background: #fff">
-        <!-- banner start -->
         <detailSwiper :listpic="swiperList"></detailSwiper>
-        <!-- banner end -->
-
         <div class="tb-wrap fl">
           <div class="right-select fr">
             <div class="select-title">{{ list.goods_name }}<span>{{ list.goods_remark }}</span></div>
             <div class="select-text">{{ list.good_desc }}</div>
             <div class="select-price">¥{{ list.shop_price }}</div>
-              <template v-for="(todo, index) in myspecList">
-                <div class="select-color clear">
-                  <div class="left fl">{{ todo.spec }}：</div>
-                  <ul style="width: 75%;float: right;" class="fl">
-                    
-                    <dome :list="myspecList" 
+            <!--
+            <template v-for="(todo, index) in myspecList">
+              <div class="select-color clear">
+                <div class="left fl">{{ todo.spec }}：</div>
+                <ul style="width: 75%;float: right;" class="fl">
+                  <dome :list="myspecList" 
                           :indexs="index"
                           :values="list.id" 
                           :texts="list.item" 
                           :wrap="list"
                           v-for="(list,index) in todo.item" ></dome>
-                    
-                    <!--
-                    <template>
-                      <li v-for="(list,index) in todo.item" class="fl" 
-                      :class="className" @click="changeGuige(index, list.id, list.item)">{{ list.item }}</li>
-                    </template>
-                    -->
-                  </ul>
-                </div>
-              </template>
+                  <template v-for="(list,index) in todo.item">
+                    <li class="fl" :class="{'active': index == currentColor}" 
+                    @click="changeGuige(index, list.id, list.item)">{{ list.item }}</li>
+                  </template>
+                </ul>
+              </div>
+            </template>
+            -->
+            <div class="select-color clear">
+              <div class="left fl">{{ colorList.spec }}：</div>
+              <ul style="width: 75%;float: right;" class="fl">
+                <template v-for="(list,index) in colorList.item">
+                  <li class="fl" :class="{'active': index == currentSize}" 
+                  @click="choseSize(index, list)">{{ list.item }}</li>
+                </template>
+              </ul>
+            </div>
+            <div class="select-color clear">
+              <div class="left fl">{{ sizeList.spec }}：</div>
+              <ul style="width: 75%;float: right;" class="fl">
+                <template v-for="(list,index) in sizeList.item">
+                  <li class="fl" :class="{'active': index == currentColor}" 
+                  @click="changeGuige(index, list.id, list.item)">{{ list.item }}</li>
+                </template>
+              </ul>
+            </div>
             <div class="select-num clear">
               <span class="left fl">数量：</span>
               <div class="item-amount ">
@@ -58,12 +71,27 @@
           <div class="content-top clearfix" v-html="list.goods_content"></div>
         </div>
       </div>
-
-      <!--
-        <div class="w1200 mauto clear" style="overflow: hidden;">
-        <other :cid="list.id" :number="list.nums"></other>
+      <div class="w1200 mauto clear">
+        <div class="hunsha-product-else">
+          <div class="container clear">
+            <div class="product-title">PRESENTATION</div>
+            <span class="product-text">浏览其他</span>
+            <ul class="product-list clearfix">
+              <template v-for="(item, index) in randomList">
+                <li class="product-item">
+                  <router-link :to="{ path: '/', query:{pid: item.goods_id }}" class="block">
+                    <div class="pic">
+                      <img :src="item.goods_thumb" alt="">
+                    </div>
+                    <div class="item-title">{{ item.goods_name }}</div>
+                    <div class="item-text">{{ item.goods_remark }}</div>
+                  </router-link>
+                </li>
+              </template>
+            </ul>
+          </div>
+        </div>
       </div>
-      -->
       
     </div>
     <!-- content end -->
@@ -87,10 +115,6 @@
     name: 'dingzhi',
     data() {
       return {
-        attributeName: [],   //存储了属性类型，就是['颜色','大小']
-        attrList: [],        //存储了每个属性类型下的值
-        chooseAttrList: [],        //存储当前选择的属性对象的linkto(属性对应的所有产品的skuId)
-        postSkuId: 0,    //最终选定的产品ID
         list: {},
         swiperList: [],
         data: {
@@ -99,42 +123,26 @@
           currSize: "",
         },
         choose:[],
+        currentColor: 0,  //  颜色
+        currentSize: 0,   //  尺寸
+        sizeList: {},
+        colorList: {},
+        charItem: '',
+        charId: 0,
         //  用于保存用户添加到购车的商品数组
         myspecList: {},
-        chooseIndex: 0,
         active: false,
+        randomList: [],
         guige: [],
         guigeName: [],
       }
-    },
-    watch: {
-
     },
     created () {
 
     },
     mounted() {
       this.getPostPrice();
-      this.$getData(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.query.id).then((res) => {
-        let that = this;
-        switch (true) {
-          case res.code == 1:
-            this.list = res.data;
-            this.swiperList = this.$goJson(res.data.photo);
-            that.myspecList = this.list.myspec;
-            return true;
-          case res.data.code == 0:
-            return false;
-          default:
-        }
-        if (res.data.is_on_sale == 0) {
-          this.$message({
-            message: '商品已下架',
-            type: 'warning'
-          });
-          return false;
-        }
-      });
+      this.getDataShop();
     },
     components: {
       ElInputNumber,
@@ -157,6 +165,34 @@
       getPostPrice() {
         //  GET_POST_PRICE
       },
+      getDataShop() {
+        this.$getData(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.query.id).then((res) => {
+          let that = this;
+          switch (true) {
+            case res.code == 1:
+              this.list = res.data;
+              this.swiperList = this.$goJson(res.data.photo);
+              that.myspecList = this.list.myspec;
+              this.colorList = this.list.myspec['尺寸']
+              this.sizeList = this.list.myspec['颜色'];
+              //  获取随机商品
+              this.$getData(this.$api.get_other.GET_OTHER + '?cid=' + this.list.cat_id + '&num=' + 4 ).then((res) => {
+                this.randomList = res.data;
+              });
+              return true;
+            case res.data.code == 0:
+              return false;
+            default:
+          }
+          if (res.data.is_on_sale == 0) {
+            this.$message({
+              message: '商品已下架',
+              type: 'warning'
+            });
+            return false;
+          }
+        });
+      },
       checkGuige() {
         if (this.guige.length !== this.myspecList.length) {
           return false;
@@ -169,8 +205,13 @@
           return true;
         }
       },
+      choseSize(index, char) {
+        this.currentSize = index;
+        this.charItem = char.item;
+        this.charId = char.id;
+      },
       changeGuige(index, id, name) {
-        // this.active = !this.active;
+        this.currentColor = index;
         this.$set(this.guige, index, id);
         this.$set(this.guigeName, index, name);
         if (!this.checkGuige) {
@@ -179,14 +220,11 @@
         this.$postData(this.$api.get_content.GET_POST_PRICE, {
           spec: this.guige.join('-')
         }).then((res) => {
-          // for (let i in res.data) {
-          //   this.list = res.data[i];
-          // }
+          for (let i in res.data) {
+            this.list.shop_price = res.data[i].price;
+            this.list.goods_id = res.data[i].goods_id
+          }
         });
-      },
-      currentGoIndex(index, item) {
-        this.currentIndex = index;
-        this.data.currSize = item;
       },
       changeNumber(item,flag) {
         //  大于0为加
@@ -203,27 +241,35 @@
       },
       goCart() {
         let that = this;
-        if (localStorage.getItem('user_info') === 'undefined') {
-          this.$message('亲，请去登录一下');
-          setTimeout(() => {
-            this.$router.push({ path: '/user/login' });
-          }, 2000);
-          return false;
-        } else if (this.list.nums === 0) {
-          this.$message({
-            message: '请增加商品！谢谢啦！',
-            type: 'warning'
-          });
-          return false;
+        switch(true) {
+          case localStorage.getItem('user_info') === 'undefined':
+            this.$message('亲，请去登录一下');
+            setTimeout(() => {
+              this.$router.push({ path: '/user/login' });
+            }, 2000);
+            return false;
+          case this.list.sales_sum === 0:
+            this.$message({
+              message: '请增加商品！谢谢啦！',
+              type: 'warning'
+            });
+            return false;
+          case this.guigeName.length == 0:
+            this.$message({
+              message: '请选择规格！',
+              type: 'warning'
+            });
+            return false;
+          default:
         }
-        this.$postData(this.$api.get_content.POST_CART_DATA,{
+        var json = {
           uid: this.$storageGet('user_info').user.id,
-          gid: this.list.cat_id,
-          sid: 68,
-          num: 1,
+          gid: this.$route.query.id,
+          num: this.list.sales_sum,
           price: this.list.shop_price,
-          specdata: 135+ '-' +140, //  this.myspecList
-        }).then((res) => {
+          specdata: this.guigeName.join('-'),
+        };
+        this.$postData(this.$api.get_content.POST_CART_DATA,json).then((res) => {
           console.log(res);
         });
         return;
@@ -539,4 +585,89 @@
   .gallery-thumbs .swiper-slide-active {
     opacity: 1;
   }
+
+  /* 浏览其他 */
+  .hunsha-product-else {
+    text-align: center;
+    margin-top: 70px;
+    padding-bottom: 80px;
+    background: #f9f9f9;
+  }
+  .hunsha-product-else .product-title {
+    font-size: 30px;
+    color: #000;
+    text-align: center;
+    font-family: PingFangSC-Ultralight, sans-serif;
+  }
+  .hunsha-product-else .product-text {
+    position: relative;
+    font-size: 18px;
+    color: #333;
+    line-height: 50px;
+  }
+  .hunsha-product-else .product-text:before,
+  .hunsha-product-else .product-text:after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 0;
+    border-bottom: 1px solid #717171;
+    top: 50%;
+  }
+  .hunsha-product-else .product-text:before {
+    left: -45px;
+  }
+  .hunsha-product-else .product-text:after {
+    right: -45px;
+  }
+  .product-list{
+    width: 1250px;
+    margin-top: 30px;
+  }
+  .product-list .product-item {
+    float: left;
+    width: 285px;
+    height: 310px;
+    background: #fff;
+    margin: 20px 9px 0 0;
+    text-align: center;
+    border: 4px solid #fff;
+    transition: 0.5s;
+  }
+
+  .product-list .product-item:nth-child(4n) {
+    margin: 20px 0 0 0;
+  }
+
+  .product-list .product-item .pic {
+    width: 100%;
+    background: #fff;
+  }
+  .product-list .product-item .pic img{
+    width: 240px;
+    height: 180px;
+    margin: 16px;
+  }
+  .product-list .product-item .item-title {
+    font-size: 18px;
+    color: #000;
+    line-height: 50px;
+  }
+  .product-list .product-item .item-text {
+    font-size: 14px;
+    color: #333;
+  }
+  .product-list .product-item:hover {
+    border: 4px solid #b11e25;
+    background: #b11e25;
+    transition: 0.5s;
+  }
+
+  .product-list .product-item:hover .item-title {
+    color: #fff;
+  }
+  .product-list .product-item:hover .item-text {
+    color: #fff;
+  }
+
 </style>

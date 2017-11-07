@@ -11,7 +11,7 @@
         </p>
       </div>
 
-      <div class="cart-content">
+      <div class="cart-content" v-loading="load_data" element-loading-text="正在登陆中...">
         <el-table ref="multipleTable" :data="data.list" border tooltip-effect="dark" style="width: 100%" @selection-change="selected">
           <el-table-column type="selection" width="99"></el-table-column>
           <el-table-column label="商品名称" width="407">
@@ -21,7 +21,6 @@
                   <!--
                     <img :src="scope.row.goods.img" alt="" style="width: 100%;height: 100%;" />
                   -->
-                  
                 </div>
                 <p class="ft-18 shoping-name fl">{{ scope.row.goods_remark }}</p>
                 <p class="ft-14 shoping-desc fl" style="color: #898989;">详情信息</p>
@@ -92,7 +91,8 @@
           multipleSelection:[],
           delIndex: null,       //  删除的索引
           isChonseShop: 0,
-          userID: this.$storageGet('user_info').user.id
+          userID: this.$storageGet('user_info').user.id,
+          load_data: false,
         }
     },
     components: {
@@ -129,13 +129,12 @@
     },
     methods: {
       fetchData() {
+        this.load_data = true;
         this.$postData(this.$api.get_content.GET_CART_DATA,
         {uid: this.userID}).then((res) => {
+          this.load_data = false;
           this.data.list = res.data;
-          console.log(this.data.list);
         });
-        // this.data.list = this.$storageGet('cart_info');
-        // this.$store.commit('SET_CART_NUMBER', this.data.list);
       },
       getByDataID() {
         this.$postData(this.$api.get_content.GET_CART_TODATA,{
@@ -166,21 +165,18 @@
           this.$router.push({ path : '../pages/onload'});
       },
       changeNumber(item,flag) {
-        console.log(item.id);
         if (flag > 0) {
           item.num += 1;
           this.$postData(this.$api.get_content.UPDATE_CART,{
-            id: item.id, 
-            uid: this.$storageGet('user_info').user.id,
-            gid: item.id,
-            num: item.num,
-            specdata: item.specdata,
-            price: item.price }).then((res) => {
+            num: item.num, }).then((res) => {
             console.log(res);
           });
         } else {
           item.num -= 1;
-          // this.$store.commit('REDUCECARTNUMS', options);
+          this.$postData(this.$api.get_content.UPDATE_CART,{
+            num: item.num, }).then((res) => {
+            console.log(res);
+          });
           if(item.num <= 1) {
             item.num = 1;
           }
@@ -189,7 +185,6 @@
       },
       //  去结算
       goPay () {
-        console.log(this.multipleSelection);
         // this.$store.commit('SET_GO_PAY',this.multipleSelection);
         if (this.multipleSelection.length == 0) {
           this.$message({
@@ -212,7 +207,6 @@
           uid: this.userID}).then((res) => {
           console.log(res);
         });
-
         this.$confirm('确定要删除这件商品吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

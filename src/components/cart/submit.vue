@@ -183,16 +183,13 @@
       this.setAddress();
     },
     computed: {
-      amount () {
-        return this.shopmsg.length;
-      },
       lastPaySum () {
         let sum = 0;
-        if(this.amount > 0) {
-          for (let ll in this.shopmsg) {
-            sum += this.shopmsg[ll].price * this.shopmsg[ll].number
-          }
-        }
+        // if(this.amount > 0) {
+        //   for (let ll in this.shopmsg) {
+        //     sum += this.shopmsg[ll].price * this.shopmsg[ll].number
+        //   }
+        // }
         return sum.toFixed(2);
       },
     },
@@ -237,6 +234,20 @@
           whatPay: this.goWhatpay,
           Exporess: this.exporessText
         };
+        this.$postData('/api/home/order/add',{
+          uid: this.$storageGet('user_info').user.id,
+          goodsdata: [{
+            gid: 46,
+            sid: 213,
+            num: 1,
+            specdata: "16寸-黄色",
+          }],
+          address: this.currAddJson,
+          uname: this.currAddJson.sname
+        }).then((res) => {
+          console.log(res);
+        });
+
       },
       goInChonseAdd(index, item) {
         this.currAddress = index;
@@ -284,7 +295,7 @@
 
   .layer {
     position: fixed;
-    top: 0px;
+    top: 150px;
     left: 0px;
     right: 0px;
     width: 926px;
@@ -507,7 +518,7 @@
     height: 125px;
     line-height: 125px;
     width: 100%;
-    padding-bottom: 25px;
+    padding-bottom: 75px;
   }
 
   .cart-body .item-price .total {

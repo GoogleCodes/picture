@@ -1,5 +1,5 @@
 <template>
-    <li class="fl" :class="className" @click="changeGuige(indexs, values, texts)">{{ texts }}</li>
+    <li class="fl" :class="{'active': indexs == currentInedex}" @click="changeGuige(indexs,values,texts)">{{ texts }}</li>
 </template>
 <script type="text/javascript">
     export default {
@@ -29,6 +29,7 @@
             return {
                 guige: [],
                 guigeName: [],
+                currentInedex: 0,
             }
         },
         computed: {
@@ -52,7 +53,6 @@
                 } else {
                     for (let g in this.guige) {
                         if (typeof this.guige[g] == 'undefined' || this.guige[g] == '') {
-                            console.log(2);
                             return false;
                         }
                     }
@@ -60,25 +60,16 @@
                 }
             },
             changeGuige(index, id, name) {
-                for (let i in this.wrap) {
-                    console.log(this.wrap[i].id == id);
-                    if(this.wrap[i].id == id) {
-                        this.className.active = true;
-                    } else {
-                        this.className.active = false;
-                    }
-                }
-                return;
+                this.currentInedex = index;
                 this.$set(this.guige, index, id);
                 this.$set(this.guigeName, index, name);
                 if (!this.checkGuige()) {
                     return;
-                }   
-                console.log(this.guige, this.guigeName);
+                }
                 this.$postData(this.$api.get_content.GET_POST_PRICE, {
                     spec: this.guige.join('-')
                 }).then((res) => {
-                    
+                    console.log(res);
                 });
             }
         }

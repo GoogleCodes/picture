@@ -26,12 +26,12 @@
 
   export default {
     props: {
-      cid: {
-        type: [Number,String],
+      cider: {
+        type: [Number],
         required: true
       },
-      number: {
-        type: Number,
+      num: {
+        type: [Number],
         required: true
       }
     },
@@ -44,19 +44,13 @@
       }
     },
     mounted() {
+      console.log(this.cider, this.num);
       this.getOther();
     },
     methods: {
       getOther() {
-        this.$http.get('http://yuyin.ittun.com/public/api/home/front/randGoods?cid=' + 31 + '&num=' + 4 ).then((res) => {
-          console.log(res.data.data);
-          if (res.data.code == 0) {
-            // this.$message({
-            //   message: res.data.msg,
-            //   type: 'warning'
-            // })
-          }
-          this.list = res.data.data;
+        this.$getData(this.$api.get_other.GET_OTHER + '?cid=' + this.cider + '&num=' + 4 ).then((res) => {
+          this.list = res.data;
         });
       }
     },

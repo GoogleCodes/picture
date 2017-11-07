@@ -27,3 +27,5 @@ exports.DELETE_CART_DATA = '/api/home/shopcar/del'
 exports.GET_POST_PRICE = '/api/home/shopcar/price'
 //  更改购物车数据
 exports.UPDATE_CART = '/api/home/shopcar/edit'
+//  订单管理
+exports.GET_ORDER_ADMIN = '/api/home/order/orderList'
