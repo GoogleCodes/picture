@@ -36,9 +36,11 @@
                     <template v-for="(y,n) in x.gthumb">
                       <img :src="y.url" alt="" class="J_ItemImg fl" />
                     </template>
-                    <a href="javascript:void(0);" class="item-title fl">{{ x.gname }}</a>
+                    <router-link :to="{ path: '/admin/shoping', query: {id: item.id}}">
+                      <span class="item-title fl">{{ x.gname }}</span>
+                    </router-link>
                   </td>
-                  <td class="itme-money">¥{{ x.price }}</td>
+                  <td class="itme-money" style="width:131px;">¥{{ x.price }}</td>
                   <td class="itme-number">{{ x.num }}</td>
                   <td class="itme-all" style="width: 135px;">
                     <p style="color: #b11e25;">¥{{ x.allprice }}</p>
@@ -119,3 +121,9 @@
     }
   }  
 </script>
+
+<style type="text/css">
+  .tbody-item {
+    border-bottom: 1px solid #c9caca;
+  }
+</style>

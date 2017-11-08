@@ -490,6 +490,16 @@
     display: block;
     text-align: left;
     color: #898989;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 45px;
+    line-height: 22px;
+}
+.tr-item .itme-pic .item-title .item-description {
+    height: 45px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 22px;
 }
 
 .tbody-item .tr-item .privateBtn, .protected-Btn {
@@ -501,6 +511,7 @@
     border: 1px solid #b11e25;
     border-radius: 5px;
     color: #fff;
+    cursor: pointer;
 }
 
 .tbody-item .tr-item .nowpay:hover {

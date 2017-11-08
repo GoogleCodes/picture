@@ -234,15 +234,17 @@
           whatPay: this.goWhatpay,
           Exporess: this.exporessText
         };
-        let sku_id = 0, gid = 0, textSpecdata = null;
+        let sku_id = 0, gid = [], textSpecdata = null;
+        
         for (let i in this.shopmsg) {
           sku_id = this.shopmsg[i].sku_id;
-          gid = this.shopmsg[i].id;
+          gid.push(this.shopmsg[i].id);
           textSpecdata = this.shopmsg[i].specdata;
         }
+        console.log(gid);
         this.$postData('/api/home/order/add',{
           uid: this.$storageGet('user_info').user.id,
-          goodsdata: [this.shopmsg],
+          goodsdata: gid,
           num: 1,
           specdata: textSpecdata,
           address: this.currAddJson,

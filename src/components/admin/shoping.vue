@@ -27,15 +27,15 @@
             <ul>
               <li>
                 <span>客户：</span>
-                <span>恩小猫</span>
+                <span>{{ addressData.sname }}</span>
               </li>
               <li>
                 <span>客户：</span>
-                <span>13672964196</span>
+                <span>{{ addressData.tel }}</span>
               </li>
               <li>
                 <span>地址：</span>
-                <span>广东省佛山市顺德区佛山市顺德区大良街道家电城41号</span>
+                <span>{{ addressData.adr }}</span>
               </li>
             </ul>
           </div>
@@ -44,15 +44,20 @@
           <div class="trade-detail">
             <dl>
               <dt class="ft-18 trade-title">
-                <span style="color: #3e3a39;">订单状态:  快递中，等待买家确认</span>
+                <span style="color: #3e3a39;" v-if="orderData.status == 0">订单状态:  未付款</span>
+                <span style="color: #3e3a39;" v-if="orderData.status == 1">订单状态:  已付款</span>
+                <span style="color: #3e3a39;" v-if="orderData.status == 2">订单状态:  已发货</span>
+                <span style="color: #3e3a39;" v-if="orderData.status == 3">订单状态:  查看物流</span>
               </dt>
               <dd class="imfor-title">确认收货,超时订单自动确认收货</dd>
-              <dd class="imfor-title">物流：中通快递运单号:450733789022</dd>
-              <dd class="imfor-title">2017-08-24 04:19:33</dd>
+              <dd class="imfor-title">物流：中通快递运单号:{{ orderData.orderid }}</dd>
+              <dd class="imfor-title">{{ orderData.time | time }}</dd>
               <dd class="imfor-title" style="margin-top: 10px;">
                 <span class="fl">您可以</span>
-                <a href="javascript:void(0);" class="ui-btn block fl confirm">确认订单</a>
-                <a href="javascript:void(0);" class="ui-btn block fl select">查看物流</a>
+                <a class="ui-btn block fl confirm NotShipped" v-if="orderData.status == 0">去付款</a>
+                <a class="ui-btn block fl confirm" v-if="orderData.status == 1">已付款</a>
+                <a class="ui-btn block fl confirm" v-if="orderData.status == 2">已发货</a>
+                <a class="ui-btn block fl select" v-if="orderData.status == 3">查看物流</a>
               </dd>
             </dl>
           </div>
@@ -71,36 +76,45 @@
             <td>操作</td>
           </tr>
           </thead>
-          <tbody class="tbody-item">
-          <tr class="tr-item ordertime">
-            <td colspan="6">
-              <span class="fl">2017-9-25 15:20:38</span>
-              <span class="orderNumber fl">订单号 ：50681150656</span>
-            </td>
-          </tr>
-          <tr class="tr-item">
-            <td class="itme-pic" style="width: 316px;">
-              <img src="../../assets/images/18.png" alt="" class="J_ItemImg fl" />
-              <a href="javascript:void(0);" class="item-title fl">金色古典MP14533-2B 高雅复古风</a>
-            </td>
-            <td class="itme-money">¥360.00</td>
-            <td class="itme-number">1</td>
-            <td class="itme-all">
-              <p style="color: #b11e25;">¥360.00</p>
-              <p>包邮</p>
-            </td>
-            <td class="itme-pic">
-              <p>待付款</p>
-              <p>订单详情</p>
-            </td>
-            <td style="width: 130px;">
-              <a href="javascript:void(0);" class="nowpay privateBtn">立即付款</a>
-              <a href="javascript:void(0);" class="cancel protected-Btn">取消订单</a>
-              <a href="javascript:void(0);" class="select protected-Btn">查看物流</a>
-              <a href="javascript:void(0);" class="delete protected-Btn">X</a>
-            </td>
-          </tr>
-          </tbody>
+          <template> <!--   -->
+            <tbody class="tbody-item">
+              <tr class="tr-item ordertime">
+                <td colspan="6">
+                  <span class="fl">{{ orderData.time | time }}</span>
+                  <span class="orderNumber fl">订单号 ：{{ orderData.orderid }}</span>
+                </td>
+              </tr>
+              <template v-for="(item, index) in orderData.goodsdata">
+                <tr class="tr-item">
+                  <td class="itme-pic" style="width: 316px;">
+                    <template v-for="(x, i) in item.gthumb">
+                      <img :src="x.url" alt="" class="J_ItemImg fl" />
+                    </template>
+                    <a href="javascript:void(0);" class="item-title fl">{{ item.gname }}</a>
+                    <div class="fl item-description">{{ item.gremark }}</div>
+                  </td>
+                  <td class="itme-money">¥{{ item.price }}</td>
+                  <td class="itme-number">{{ item.num }}</td>
+                  <td class="itme-all">
+                    <p style="color: #b11e25;">¥{{ item.allprice }}</p>
+                    <p>包邮</p>
+                  </td>
+                  <td class="itme-pic">
+                    <p v-if="orderData.status == 0">待付款</p>
+                    <p>订单详情</p>
+                  </td>
+                  <td style="width: 130px;">
+                    <a class="nowpay privateBtn" v-if="orderData.status == 0">立即付款</a>
+                    <a class="cancel protected-Btn">取消订单</a>
+                    <a class="select protected-Btn" v-if="orderData.status == 2">查看物流</a>
+                    <a class="delete protected-Btn">X</a>
+                  </td>
+                </tr>
+              </template>
+              
+            </tbody>
+          </template>
+          
         </table>
       </div>
 
@@ -113,3 +127,62 @@
     </div>
   </div>
 </template>
+
+<script type="text/javascript">
+  export default {
+    data() {
+      return {
+        addressData: {},
+        orderData: {},
+        orderTable: {},
+      }
+    },
+    computed: {
+
+    },
+    filters: {
+      time: function (value) {
+        let d = new Date(parseInt(value) * 1000);
+        var years = d.getFullYear();
+        var month = d.getMonth() + 1;
+        var days = d.getDate();
+        var hours = d.getHours();
+        var minutes = d.getMinutes();
+        var seconds = d.getSeconds();
+        return years + "-" + month + "-" + days + " " + (hours > 9 ? hours : '0' + hours) + ':' + (minutes > 9 ? minutes : '0' + minutes);
+      }
+    },
+    mounted() {
+      this.getToOrder();
+    },
+    methods: {
+      getToOrder() {
+        this.$postData('/api/home/order/oneorder',{
+          id: this.$route.query.id,
+          uid: this.$storageGet('user_info').user.id
+        }).then((res) => {
+          this.addressData = this.$goJson(res.data.address);
+          this.orderData = res.data;
+          this.orderTable = res.data;
+          console.log(this.orderTable);
+        });
+      }
+    }
+  }
+</script>
+
+<style>
+  .admin-right .trade-detail dl .imfor-title .NotShipped {
+    background: #fff;
+    color: #b11e25;
+  }
+  .admin-right .trade-detail dl .imfor-title .NotShipped:hover {
+    background: #b11e25;
+    color: #fff;
+  }
+
+  .order-table table .tbody-item .tr-item {
+    border-bottom: 1px solid #c9caca; 
+  }
+  
+</style>

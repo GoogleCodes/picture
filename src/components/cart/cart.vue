@@ -165,15 +165,20 @@
         this.$router.push({ path : '../pages/onload', query: {id: id}});
       },
       changeNumber(item,flag) {
+        let userid = this.$storageGet('user_info').user.id;
         if (flag > 0) {
           item.num += 1;
           this.$postData(this.$api.get_content.UPDATE_CART,{
+            id: item.id,
+            uid: userid,
             num: item.num, }).then((res) => {
             console.log(res);
           });
         } else {
           item.num -= 1;
           this.$postData(this.$api.get_content.UPDATE_CART,{
+            id: item.id,
+            uid: userid,
             num: item.num, }).then((res) => {
             console.log(res);
           });
@@ -203,24 +208,23 @@
       },
       //  删除商品
       deleteShop(item) {
-        this.$postData(this.$api.get_content.DELETE_CART_DATA,{
-          id: 28, 
-          uid: this.userID}).then((res) => {
-          console.log(res);
-        });
         this.$confirm('确定要删除这件商品吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$store.commit('DEL_CART_OBJ',item.id);
-          setTimeout(() => {
-            location.reload();
-          }, 500);
+          this.$postData(this.$api.get_content.DELETE_CART_DATA,{
+            id: item.id,
+            uid: this.userID}).then((res) => {
+            console.log(res);
+          });
           this.$message({
             type: 'success',
             message: '删除成功!'
           });
+          setTimeout(() => {
+            location.reload();
+          }, 500);
         }).catch(() => {
           this.$message({
             type: 'info',

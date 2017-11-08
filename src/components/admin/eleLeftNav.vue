@@ -13,9 +13,11 @@
             <span>订单管理</span>
           </router-link>
         </dt>
+        <!--
         <dd class="admin-dt tIndex">
           <router-link :to="{ path: '/admin/shoping'}" style="color: #b11e25">我购买过的记录</router-link>
         </dd>
+        -->
       </dl>
       <div class="line"></div>
       <dl class="admin-dl">
