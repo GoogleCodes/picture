@@ -26,8 +26,7 @@
           </div>
         </template>
         <div class="fr search">
-          <!-- :on-icon-click="handleIconClick" -->
-          <el-input placeholder="输入产品名称进行搜索" icon="search" class="fl" ></el-input>
+          <el-input placeholder="输入产品名称进行搜索" v-model="searchText" icon="search" class="fl" :on-icon-click="handleIconClick"></el-input>
           <!--
             <el-button class="gosearch fl">搜索</el-button>
           -->
@@ -127,10 +126,12 @@
           list: [],
           listPages: {},
         },
+        randomList: [],
         //  规格
         specif: [],
         currentPage: 5,
-        load_data: false
+        load_data: false,
+        searchText: '',
       }
     },
     mounted() {
@@ -151,11 +152,13 @@
       }
     },
     methods: {
+      handleIconClick(ev) {
+        console.log(ev);
+      },
       handleCommand(command) {
         this.load_data = true;
         this.$getData(this.$api.get_content.GET_ORDER + '?cid=' + this.$route.query.id + '&spec' + command).then((res) => {
-          this.data.list = res.data.data;
-          this.data.listPages = res.data;
+          this.data.list = res.data;
           if (this.data.list.length == 0) {
             this.$message({
               message: '暂时还没有产品',
@@ -176,7 +179,6 @@
         this.$getData(this.$api.get_content.GET_ORDER).then((res) => {
           this.load_data = false;
           this.data.list = res.data;
-          console.log(this.data.list, "--");
           this.data.listPages = res.data;
         });
       }

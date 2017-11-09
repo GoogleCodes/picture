@@ -122,8 +122,8 @@
           file: {},
         },
         current: {
-          cuSizeIndex: 0,
-          cuColorIndex: 0,
+          cuSizeIndex: -1,
+          cuColorIndex: -1,
         },
         chSize: [],
         guiges: [],
@@ -144,15 +144,20 @@
         }).then((res) => {
           this.typeList = res.data;
           this.SizeList = res.data.myspec['尺寸'];
+          console.log(this.SizeList);
           this.ColorList = res.data.myspec['颜色'];
         });
       },
       chonseSize(index, id) {
+        console.log(id);
+        this.current.cuSizeIndex = index;
         let arr = [];
         arr.push(id);
         this.chSize = arr;
       },
-      chonseSpec(index, id, name) {
+      chonseSpec(index, id) {
+        console.log(id);
+        this.current.cuColorIndex = index;
         let arr = [];
         arr.push(id);
         this.guiges = this.chSize.concat(arr);
@@ -169,8 +174,6 @@
       _gopop() {
         this.pops = false;
       },
-
-
 
       handleBeforeUpload(file) {
         console.log(file);
@@ -197,8 +200,10 @@
 <style type="text/css">
   /* load-con start */
   .load-con {
-    margin: 48px auto 180px;
+    margin: 0px auto 180px;
     overflow: hidden;
+    position: relative;
+    top: 50px;
   }
 
   .load-con .load-prc {

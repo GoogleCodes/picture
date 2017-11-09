@@ -127,7 +127,7 @@ let routes = [{
   component: onloadtwo,
   meta: {
     header: true,
-    footer: false,
+    footer: true,
   }
 },{
   path: '/pages/frame',

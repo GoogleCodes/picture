@@ -47,23 +47,25 @@
             </div>
             <div style="margin-top: 50px;">
               <template v-for="item in data.arr">
-                <div class="card-tuijian fl" @click="goDetail(item)">
-                  <div class="card-tuijian-pic fl">
-                    <template v-for="(x, i) in item.goods_thumb">
-                      <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
-                    </template>
-                  </div>
-                  <div class="card-tuijian-desc fl">
-                    <div class="desc-title">{{ item.goods_name }}</div>
-                    <span class="desc-msg blocks">{{ item.goods_remark }}</span>
-                    <div class="desc-pic">
+                <router-link :to="{ path: '/inside/orderlist', query: {id: item.goods_id}}">
+                  <div class="card-tuijian fl">
+                    <div class="card-tuijian-pic fl">
                       <template v-for="(x, i) in item.goods_thumb">
                         <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
                       </template>
                     </div>
+                    <div class="card-tuijian-desc fl">
+                      <div class="desc-title">{{ item.goods_name }}</div>
+                      <span class="desc-msg blocks">{{ item.goods_remark }}</span>
+                      <div class="desc-pic">
+                        <template v-for="(x, i) in item.goods_thumb">
+                          <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
+                        </template>
+                      </div>
+                    </div>
+                    <!--</router-link>-->
                   </div>
-                  <!--</router-link>-->
-                </div>
+                </router-link>
               </template>
             </div>
           </div>
@@ -113,28 +115,6 @@
         this.$getData(this.$api.get_content.GET_ORDER + '?is_hot=1').then((res) => {
           this.data.arr = res.data
         });
-      },
-      goDetail (item) {
-        var options = {
-          title: item.title,
-          desc: item.desc,
-          id: item.id,
-          pic: item.pic,
-          price: item.price,
-          small: item.small,
-          size: item.size,
-          nums: item.nums,
-          guige: item.guige,
-        };
-        this.$storageSet('detail',  options);
-        this.$router.push({
-          path : '/pages/detail',
-          query:{ id:item.id }
-        });
-        setTimeout(() => {
-            location.reload();
-        },100)
-        window.scrollTo(0,0);
       },
       getAlbum () {
 //        this.$getData(this.$api.get_content.album).then((res) => {

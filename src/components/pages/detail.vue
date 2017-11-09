@@ -62,7 +62,9 @@
                 <li class="product-item">
                   <router-link :to="{ path: '/', query:{pid: item.goods_id }}" class="block">
                     <div class="pic">
-                      <img :src="item.goods_thumb" alt="">
+                      <template v-for="(x,i) in item.goods_thumb">
+                        <img :src="x.url" alt="">
+                      </template>
                     </div>
                     <div class="item-title">{{ item.goods_name }}</div>
                     <div class="item-text">{{ item.goods_remark }}</div>
@@ -159,7 +161,7 @@
               this.colorList = this.list.myspec['尺寸']
               this.sizeList = this.list.myspec['颜色'];
               //  获取随机商品
-              this.$getData(this.$api.get_other.GET_OTHER + '?cid=' + this.list.cat_id + '&num=' + 4 ).then((res) => {
+              this.$getData(this.$api.get_other.GET_OTHER + '?cid=' + this.list.cat_id + '&num=' + 3 ).then((res) => {
                 this.randomList = res.data;
               });
               return true;
@@ -189,6 +191,7 @@
         }
       },
       choseSize(index, char) {
+        this.currentSize = index;
         let arr = [];
         arr.push(char.id);
         this.chSize = arr;
