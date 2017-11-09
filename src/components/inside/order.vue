@@ -48,7 +48,9 @@
             <router-link :to="{ path: '/pages/detail', query: {id: item.goods_id }}">
               <div class="shop-body">
                 <div class="pic-img">
-                  <img :src="item.goods_thumb" alt="" class="w100 h100">
+                  <template v-for="(x,i) in item.goods_thumb">
+                    <img :src="x.url" alt="" class="w100 h100">
+                  </template>
                 </div>
                 <div class="item-wrap">
                   <p class="ft-18">{{ item.goods_name }}</p>
@@ -63,25 +65,11 @@
           </li>
         </template>
       </ul>
-
-      <!--
-        <a href="javascript:void(0);" class="block clear shoping-move">
-          <span class="block" style="position: relative;top: 5px;">展开全部</span>
-          <i class="block el-icon-arrow-down" style="position: relative;top: -1px;"></i>
-        </a>
-      -->
+      <a href="javascript:void(0);" class="block clear shoping-move">
+        <span class="block" style="position: relative;top: 5px;">展开全部</span>
+        <i class="block el-icon-arrow-down" style="position: relative;top: -1px;"></i>
+      </a>
     </div>
-
-    <!-- pages start -->
-    <div class="clear goToPages" v-show="showPages">
-      <el-pagination @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="data.listPages.current_page"
-        :page-size="data.listPages.per_page" :total="data.listPages.total"
-        layout="total, prev, pager, next">
-      </el-pagination>
-    </div>
-    <!-- pages start -->
 
     <div class="utils-con">
       <div class="util-bg">
@@ -163,12 +151,6 @@
       }
     },
     methods: {
-      handleSizeChange(val) {
-        console.log(val);
-      },
-      handleCurrentChange(val) {
-        console.log(`${val}`);
-      },
       handleCommand(command) {
         this.load_data = true;
         this.$getData(this.$api.get_content.GET_ORDER + '?cid=' + this.$route.query.id + '&spec' + command).then((res) => {
@@ -193,8 +175,8 @@
         this.load_data = true;
         this.$getData(this.$api.get_content.GET_ORDER).then((res) => {
           this.load_data = false;
-          this.data.list = res.data.data;
-          console.log(this.data.list.goods_thumb);
+          this.data.list = res.data;
+          console.log(this.data.list, "--");
           this.data.listPages = res.data;
         });
       }

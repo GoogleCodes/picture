@@ -4,52 +4,72 @@
       <div class="fl">
         <div class="load-prc">
           <div class="bottom-tip">
-            <div class="upload-btn">
-              <i class="iconfont icon-shangchuan"></i>
-              <span>上传照片</span>
-            </div>
+
+            <el-upload action="http://yuyin.ittun.com/public/api/home/front/imgupload"
+                        name="img" class="image-uploader-warp"
+                        :drag="false" :on-preview="handlePreview"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="handleBeforeUpload"
+                        :onError="uploadError" :on-remove="handleRemove">
+                <el-button  type="primary" class="upload-btn">
+                <i class="el-icon-upload el-icon--right"></i>
+                <i>上传</i>
+              </el-button>
+            </el-upload>
             <span class="tog">
               仅支持上传png/jpg格式图片分辨率300dpi以上
             </span>
           </div>
           <div class="item-pic">
-            <div class="picture"></div>
+            <template v-for="(k,i) in specList">
+              <div class="picture" :style="{background: 'url('+ k.data +')'}">
+                <img :src="goFile.file.data" alt="" class="onloadPicture">
+              </div>
+            </template>
           </div>
           <el-button @click="_openpop()">预览</el-button>
         </div>
       </div>
       <div class="fr">
-        <div class="load-desc">
-          <h1 class="ft-30 desc-title">复古木纹</h1>
-          <div class="line"></div>
-          <p class="ft-14" style="color: #898989;margin-left: 30px;">质感卓越，进口画芯高清质感图</p>
+        <template>
+          <div class="load-desc">
+            <h1 class="ft-30 desc-title">{{ typeList.photo_name }}</h1>
+            <div class="line"></div>
+            <p class="ft-14" style="color: #898989;margin-left: 30px;">{{ typeList.photo_remark }}</p>
+            <template>
+              <div class="guige clear">
+                <h1 class="ft-18 guige-title">{{ SizeList.spec }}</h1>
+                <ul>
+                  <template v-for="(x,c) in SizeList.item">
+                    <li class="fl block" :class="{'active': c == current.cuSizeIndex}" @click="chonseSize(c,x.id)">{{ x.item }}</li>
+                  </template>
+                </ul>
+              </div>
+            </template>
 
-          <div class="guige">
-            <h1 class="ft-18 guige-title">款色</h1>
-            <ul>
-              <li v-for="item in 2" class="fl block">仿木纹银色</li>
-            </ul>
-          </div>
+            <template>
+              <div class="guige clear">
+                <h1 class="ft-18 guige-title">{{ ColorList.spec }}</h1>
+                <ul>
+                  <template v-for="(x,c) in ColorList.item">
+                    <li class="fl block" :class="{'active': c == current.cuColorIndex}" @click="chonseSpec(c,x.id,x.item)">{{ x.item }}</li>
+                  </template>
+                </ul>
+              </div>
+            </template>
+            <div class="nothing clear" style="display: none;">
+              <div class="">
+                <img src="../../../static/images/34.png" alt="" class="fl" >
+                <span>暂无图片</span>
+              </div>
+            </div>
 
-          <div class="guige size">
-            <h1 class="ft-18 guige-title">尺寸</h1>
-            <ul>
-              <li v-for="item in 4" class="fl block">仿木纹银色</li>
-            </ul>
-          </div>
-
-          <div class="nothing clear" style="display: none;">
-            <div class="">
-              <img src="../../../static/images/34.png" alt="" class="fl" >
-              <span>暂无图片</span>
+            <div class="have-pic clear">
+              <img :src="goFile.file.data" alt="" class="w100 h100">
             </div>
           </div>
-
-          <div class="have-pic clear">
-            <img src="../../../static/images/30.png" alt="" class="w100 h100" />
-          </div>
-
-        </div>
+        </template>
+        
       </div>
     </div>
 
@@ -61,28 +81,15 @@
           <li>
             <img src="../../../static/images/30.png" alt="" class="w100 h100">
           </li>
-          <li>
-            <img src="../../../static/images/30.png" alt="" class="w100 h100">
-          </li>
-          <li>
-            <img src="../../../static/images/30.png" alt="" class="w100 h100">
-          </li>
-          <li>
-            <img src="../../../static/images/30.png" alt="" class="w100 h100">
-          </li>
-          <li>
-            <img src="../../../static/images/30.png" alt="" class="w100 h100">
-          </li>
-          <li>
-            <img src="../../../static/images/30.png" alt="" class="w100 h100">
-          </li>
         </ul>
       </div>
       <div class="fr">
         <div class="show-picture">
-          <div class="wrap-pic">
-
-          </div>
+          <template v-for="(k,i) in specList">
+            <div class="wrap-pic" :style="{background: 'url('+ k.data +')'}">
+              <img :src="goFile.file.data" alt="" class="onloadPicture">
+            </div>
+          </template>
           <div class="show-util">
             <span class="block iconfont icon-fangda fl"></span>
             <span class="block iconfont icon-suoxiao fl"></span>
@@ -107,22 +114,81 @@
     },
     data() {
       return {
-        pops: false
+        pops: false,
+        typeList: [],
+        SizeList: [],
+        ColorList: [],
+        goFile: {
+          file: {},
+        },
+        current: {
+          cuSizeIndex: 0,
+          cuColorIndex: 0,
+        },
+        chSize: [],
+        guiges: [],
+        guigeNames: [],
+        specList: [],
       }
     },
     created() {
 
     },
     mounted () {
-
+      this.getTypeList();
     },
     methods: {
+      getTypeList() {
+        this.$postData('/api/home/photo/photoById',{
+          id: this.$route.query.id
+        }).then((res) => {
+          this.typeList = res.data;
+          this.SizeList = res.data.myspec['尺寸'];
+          this.ColorList = res.data.myspec['颜色'];
+        });
+      },
+      chonseSize(index, id) {
+        let arr = [];
+        arr.push(id);
+        this.chSize = arr;
+      },
+      chonseSpec(index, id, name) {
+        let arr = [];
+        arr.push(id);
+        this.guiges = this.chSize.concat(arr);
+        this.$postData('/api/home/photo/sku',{
+          pid: this.$route.query.id,
+          spec: this.guiges.join("-")
+        }).then((res) => {
+          this.specList = res.data;
+        });
+      },
       _openpop() {
         this.pops = true;
       },
       _gopop() {
         this.pops = false;
       },
+
+
+
+      handleBeforeUpload(file) {
+        console.log(file);
+      },
+      handleAvatarSuccess(res, file) {
+        this.goFile.file = res;
+        console.log(res);
+      },
+      handlePreview(file, fileList) {
+        console.log(file, fileList)
+      },
+      uploadError (response, file, fileList) {
+        console.log('上传失败，请重试！')
+      },
+      handleRemove(file) {
+        
+      }
+
     }
   }
 
@@ -160,11 +226,12 @@
     width: 320px;
     height: 85px;
     margin: 40px auto 0;
+    border: 1px solid #b11e25;
     background: #b11e25;
     border-radius: 100px;
     text-align: center;
     cursor: pointer;
-    line-height: 85px;
+    line-height: 65px;
     font-size: 25px;
     color: #fff;
   }
@@ -179,6 +246,12 @@
     height: 414px;
     margin: 50px auto 78px;
     background: url('../../../static/images/38.png') no-repeat;
+  }
+
+  .load-prc .item-pic .picture .onloadPicture {
+    width: 85%;
+    height: 80%;
+    margin: 39px 53px;
   }
 
   .load-prc .el-button{
@@ -235,6 +308,12 @@
 
   .load-desc .guige ul li:last-child {
     margin: 10px 0px 20px 0px;
+  }
+
+  .load-desc .guige ul .active {
+    background: #b11e25;
+    border: 1px solid #b11e25;
+    color: #fff;
   }
 
   .load-desc .size ul li:nth-child(2n) {
@@ -378,6 +457,12 @@
     position: relative;
     top: 25px;
     background: url('../../../static/images/38.png') no-repeat;
+  }
+
+  .el-upload--text {
+    width: 320px;
+    margin: 0px auto;
+    display: block;
   }
 
   /* pop end */

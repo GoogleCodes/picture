@@ -1,0 +1,35 @@
+[{
+    "skuId": 1,
+    "skuName": "颜色",
+    "salePrice": 122.33,
+    "attribute": [{
+        "id": 49,
+        "skuId": 1,
+        "value": "蓝色"
+    },{
+        "id": 50,
+        "skuId": 2,
+        "value": "绿色"
+    },{
+        "id": 51,
+        "skuId": 3,
+        "value": "红色"
+    }]
+},{
+    "skuId": 1,
+    "skuName": "尺寸",
+    "salePrice": 45.33,
+    "attribute": [{
+        "id": 12,
+        "skuId": 1,
+        "value": "43"
+    },{
+        "id": 13,
+        "skuId": 1,
+        "value": "44"
+    },{
+        "id": 14,
+        "skuId": 1,
+        "value": "45"
+    }]
+}]

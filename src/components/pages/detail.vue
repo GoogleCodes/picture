@@ -11,18 +11,6 @@
             <div class="select-title">{{ list.goods_name }}<span>{{ list.goods_remark }}</span></div>
             <div class="select-text">{{ list.good_desc }}</div>
             <div class="select-price">¥{{ list.shop_price }}</div>
-            <template v-for="(todo, index) in myspecList">
-              <div class="select-color clear">
-                <div class="left fl">{{ todo.spec }}：</div>
-                <ul style="width: 75%;float: right;" class="fl">
-                  <template v-for="(list,index) in todo.item">
-                    <li class="fl" :class="{'active': index == currentColor}" 
-                    @click="changeGuige(index, list.id, list.item)">{{ list.item }}</li>
-                  </template>
-                </ul>
-              </div>
-            </template>
-            <!--
             <div class="select-color clear">
               <div class="left fl">{{ colorList.spec }}：</div>
               <ul style="width: 75%;float: right;" class="fl">
@@ -41,7 +29,6 @@
                 </template>
               </ul>
             </div>
-            -->
             <div class="select-num clear">
               <span class="left fl">数量：</span>
               <div class="item-amount ">
@@ -130,6 +117,7 @@
         randomList: [],
         guige: [],
         guigeName: [],
+        chSize: [],
       }
     },
     created () {
@@ -193,7 +181,7 @@
           return false;
         } else {
           for (let g in this.guige) {
-            if (typeof this.guige[g] === 'undefined' || this.guige[g] == '') {
+            if (typeof this.guige[g] == 'undefined' || this.guige[g] == '') {
               return false;
             }
           }
@@ -201,18 +189,20 @@
         }
       },
       choseSize(index, char) {
-        this.currentSize = index;
-        this.charItem = char.item;
-        this.charId = char.id;
+        let arr = [];
+        arr.push(char.id);
+        this.chSize = arr;
       },
       changeGuige(index, id, name) {
         this.currentColor = index;
-        this.$set(this.guige, index, id);
-        this.$set(this.guigeName, index, name);
+        let arr = [];
+        arr.push(id);
+        this.guige = this.chSize.concat(arr);
         if (!this.checkGuige) {
           return;
         }
         this.$postData(this.$api.get_content.GET_POST_PRICE, {
+          gid: this.list.goods_id,
           spec: this.guige.join('-')
         }).then((res) => {
           for (let i in res.data) {
@@ -238,19 +228,19 @@
       goCart() {
         let that = this;
         switch(true) {
-          case localStorage.getItem('user_info') === 'undefined':
+          case localStorage.getItem('user_info') == 'undefined':
             this.$message('亲，请去登录一下');
             setTimeout(() => {
               this.$router.push({ path: '/user/login' });
             }, 2000);
             return false;
-          case this.list.sales_sum === 0:
+          case this.list.sales_sum == 0:
             this.$message({
               message: '请增加商品！谢谢啦！',
               type: 'warning'
             });
             return false;
-          case this.guigeName.length == 0:
+          case this.guige.length == 0:
             this.$message({
               message: '请选择规格！',
               type: 'warning'
@@ -269,8 +259,6 @@
         this.$postData(this.$api.get_content.POST_CART_DATA,json).then((res) => {
           console.log(res);
         });
-        return;
-        // this.$store.commit('SET_CART_OBJ',option);
         setInterval(function() {
           that.$router.push({ path: '/cart/cart' });
           location.reload();

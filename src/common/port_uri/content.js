@@ -17,7 +17,7 @@ exports.GET_STOP_MSG = '/api/home/front/getgoods'
 exports.GET_SPECIF = '/api/home/front/speclist'
 //  增加商品到购物车
 exports.POST_CART_DATA = '/api/home/shopcar/add'
-//  获取数据
+//  获取数据   a
 exports.GET_CART_TODATA = '/api/home/shopcar/getById'
 //  获取购物车数据
 exports.GET_CART_DATA = '/api/home/shopcar/getByUid'

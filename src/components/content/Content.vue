@@ -43,20 +43,23 @@
             <div class="tuijian-header">
               <h1 class="tuijian-h1">热门推荐</h1>
               <div class="line"></div>
-              <span class="tuijian-span">{{ data.desc }}</span>
+              <span class="tuijian-span">时光印记，定格美好的回忆</span>
             </div>
             <div style="margin-top: 50px;">
               <template v-for="item in data.arr">
                 <div class="card-tuijian fl" @click="goDetail(item)">
-                  <!--<router-link :to="{ path: '/pages/detail', query:{ id:item.id }}" class="block w100 h100" >-->
                   <div class="card-tuijian-pic fl">
-                    <img :src="item.pic" alt="" style="width: 100%;height: 100%;"/>
+                    <template v-for="(x, i) in item.goods_thumb">
+                      <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
+                    </template>
                   </div>
                   <div class="card-tuijian-desc fl">
-                    <div class="desc-title">{{ item.title }}</div>
-                    <span class="desc-msg blocks">{{ item.desc }}</span>
+                    <div class="desc-title">{{ item.goods_name }}</div>
+                    <span class="desc-msg blocks">{{ item.goods_remark }}</span>
                     <div class="desc-pic">
-                      <img :src="item.small" alt="" style="width: 100%;height: 100%;" />
+                      <template v-for="(x, i) in item.goods_thumb">
+                        <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
+                      </template>
                     </div>
                   </div>
                   <!--</router-link>-->
@@ -107,9 +110,8 @@
     },
     methods: {
       getIndex () {
-        this.$http.get(this.$api.get_content.index_def).then((res) => {
-          this.data.desc = res.data.description;
-          this.data.arr = res.data.tuijian;
+        this.$getData(this.$api.get_content.GET_ORDER + '?is_hot=1').then((res) => {
+          this.data.arr = res.data
         });
       },
       goDetail (item) {

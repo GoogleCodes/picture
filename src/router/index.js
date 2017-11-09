@@ -51,6 +51,7 @@ import newdetail from '@/components/content/newsdetail'
 
 //  Dome
 import dome from '@/components/pages/dome'
+import details from '@/components/admin/details'
 
 Vue.use(Router);
 
@@ -261,6 +262,14 @@ let routes = [{
   path: '/content/newsdetail',
   name: 'newdetail',
   component: newdetail,
+  meta: {
+    header: true,
+    footer: true,
+  },
+},{
+  path: '/admin/details',
+  name: 'details',
+  component: details,
   meta: {
     header: true,
     footer: true,

@@ -10,7 +10,6 @@
           <span class="line block fr"></span>
         </p>
       </div>
-
       <div class="cart-content" v-loading="load_data" element-loading-text="正在登陆中...">
         <el-table ref="multipleTable" :data="data.list" border tooltip-effect="dark" style="width: 100%" @selection-change="selected">
           <el-table-column type="selection" width="99"></el-table-column>
@@ -18,9 +17,9 @@
             <template scope="scope">
               <div class="block">
                 <div class="item-pic fl">
-                  <!--
-                    <img :src="scope.row.goods.img" alt="" style="width: 100%;height: 100%;" />
-                  -->
+                  <template v-for="(x,i) in scope.row.goods_thumb">
+                    <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
+                  </template>
                 </div>
                 <p class="ft-18 shoping-name fl">{{ scope.row.goods_remark }}</p>
                 <p class="ft-14 shoping-desc fl" style="color: #898989;">详情信息</p>
@@ -58,7 +57,7 @@
         </el-table>
       </div>
       <div class="bar-wrapper w100">
-        <p class="shoping-desc ft-18 fl">继续购物 共{{ count }}件商品，已选择{{ isChonseShop }}件</p>
+        <p class="shoping-desc ft-18 fl">继续购物 共{{ cart_number }}件商品，已选择{{ isChonseShop }}件</p>
         <div class="fr">
           <el-button class="fr" @click="goPay()">去结算</el-button>
           <p class="ft-20 fr selectedItem">合计(不含运费)：{{ data.totalMoney | changePrice }}元</p>
@@ -66,7 +65,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 
@@ -93,6 +91,7 @@
           isChonseShop: 0,
           userID: this.$storageGet('user_info').user.id,
           load_data: false,
+          cart_number: 0,
         }
     },
     components: {
@@ -110,6 +109,14 @@
     //  this.getByDataID();
     },
     computed: {
+      cart_count() { //  购物车总数
+        if (localStorage.getItem('cart_info') == undefined) {
+          this.$store.state.cart_count = 0;
+        } else {
+          this.$store.commit('SET_CART_NUMBER', this.cart_number);
+        }
+        return this.$store.state.cart_count;
+      },
       setCart() {
           return this.$store.state.setCart;
       },
@@ -132,6 +139,9 @@
         this.load_data = true;
         this.$postData(this.$api.get_content.GET_CART_DATA,
         {uid: this.userID}).then((res) => {
+          console.log(res.data.length);
+          this.cart_number = res.data.length;
+          this.$store.commit('SET_CART_NUMBER',res.data.length);
           this.load_data = false;
           this.data.list = res.data;
         });
@@ -171,17 +181,13 @@
           this.$postData(this.$api.get_content.UPDATE_CART,{
             id: item.id,
             uid: userid,
-            num: item.num, }).then((res) => {
-            console.log(res);
-          });
+            num: item.num, }).then((res) => {});
         } else {
           item.num -= 1;
           this.$postData(this.$api.get_content.UPDATE_CART,{
             id: item.id,
             uid: userid,
-            num: item.num, }).then((res) => {
-            console.log(res);
-          });
+            num: item.num, }).then((res) => {});
           if(item.num <= 1) {
             item.num = 1;
           }
@@ -190,7 +196,6 @@
       },
       //  去结算
       goPay () {
-        console.log(this.multipleSelection);
         if (this.multipleSelection.length == 0) {
           this.$message({
             message: '请选择商品!',
@@ -215,9 +220,7 @@
         }).then(() => {
           this.$postData(this.$api.get_content.DELETE_CART_DATA,{
             id: item.id,
-            uid: this.userID}).then((res) => {
-            console.log(res);
-          });
+            uid: this.userID}).then((res) => {});
           this.$message({
             type: 'success',
             message: '删除成功!'

@@ -241,7 +241,6 @@
           gid.push(this.shopmsg[i].id);
           textSpecdata = this.shopmsg[i].specdata;
         }
-        console.log(gid);
         this.$postData('/api/home/order/add',{
           uid: this.$storageGet('user_info').user.id,
           goodsdata: gid,

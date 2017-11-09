@@ -13,25 +13,18 @@
                   <div class="product-text">高雅复古风</div>
                 </div>
                 <div class="right-upload">
-                  <el-upload action="http://yuyin.ittun.com/public/api/home/ceshi/imgupload"
-                             name="img"
-                             class="image-uploader-warp"
-                             :drag="false"
-                             :on-preview="handlePreview"
+                  <el-upload action="http://yuyin.ittun.com/public/api/home/front/imgupload"
+                             name="img" class="image-uploader-warp"
+                             :drag="false" :on-preview="handlePreview"
                              :on-success="handleAvatarSuccess"
                              :before-upload="handleBeforeUpload"
-                             :onError="uploadError"
-                             :on-remove="handleRemove">
+                             :onError="uploadError" :on-remove="handleRemove">
                     <slot></slot>
                     <el-button  type="primary" class="upload-btn">
                       <i class="el-icon-upload el-icon--right"></i>
                       <i>上传</i>
                     </el-button>
                   </el-upload>
-                  <!--<div class="upload-btn" @click="goUpLoading">-->
-                  <!--<i class="iconfont icon-shangchuan"></i>-->
-                  <!--<span>上传照片</span>-->
-                  <!--</div>-->
                   <p>仅支持上传png/jpg格式图片分辨率300dpi以上</p>
                 </div>
               </div>
@@ -42,14 +35,14 @@
               </div>
             </div>
             <!-- 图片展示 -->
-            <div class="show-pic">
+            <div class="show-pic" v-show="picVisi">
               <div class="no-pic">
                 <img src="../../../static/images/34.png" alt="">
                 <span>暂无图片</span>
               </div>
-              <ul class="pic-list clearfix" style="display: none;">
+              <ul class="pic-list clearfix" v-show="!picVisi">
                 <li class="pic-item">
-                  <img class="pic" src="../../assets/images/30.jpg" alt="">
+                  <img class="pic" :src="file" alt="">
                   <div class="time">
                     <img src="../../../static/images/36.png" alt="">
                     <span>2017-08-18</span>
@@ -83,19 +76,13 @@
   export default {
     data() {
       return {
-        fileList: [
-          {
-            name: 'food.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'},
-          {
-            name: 'food2.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-          }],
+        fileList: [],
         file: null,
+        picVisi: true,
       }
     },
     created() {
-      console.log(this.$route.query.id);
+
     },
     components: {
       ElButton
@@ -107,8 +94,6 @@
       },
       handleAvatarSuccess(res, file) {
         this.file = res;
-        console.log(this.file, this.$router.query.id);
-        return;
         this.$postData('/api/home/shopcar/upSave',{
           id: this.$route.query.id,
           img: res,
@@ -121,7 +106,7 @@
         console.log('上传失败，请重试！')
       },
       handleRemove(file) {
-        console.log(file);
+        
       }
     }
   }
