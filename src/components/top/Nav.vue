@@ -3,6 +3,9 @@
     <!-- nav start -->
     <div class="nav clear">
       <ul class="fl">
+        <li>
+          <router-link :to="{ path: '/'}" class="blocks nav-href">首页</router-link>
+        </li>
         <li v-for="(item, index) in data.list">
           <router-link :to="{ path: '/inside/orderlist', query: {id: item.id}}" class="blocks nav-href">
             <span>{{ item.title }}</span>
@@ -43,8 +46,8 @@
     },
     methods: {
       getNav() {
-        console.log(this.$api.get_content.GET_NAV);
-        this.$getData(this.$api.get_content.GET_NAV).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_NAV)
+        .then((res) => {
             this.data.list = res.data;
         });
       }

@@ -33,7 +33,7 @@
                 <span>客户：</span>
                 <span>{{ addressData.tel }}</span>
               </li>
-              <li>
+              <li class="info-address">
                 <span>地址：</span>
                 <span>{{ addressData.adr }}</span>
               </li>
@@ -120,7 +120,7 @@
 
       <div class="BarHolder">
         <div class="fr bar-picre">
-          <p>商品总价：￥<i>360.00</i></p>
+          <p>商品总价：￥<i>{{ orderData.fee }}</i></p>
           <p>实际付款：￥<i>360.00</i></p>
         </div>
       </div>
@@ -134,21 +134,20 @@
       return {
         addressData: {},
         orderData: {},
-        orderTable: {},
       }
     },
     computed: {
 
     },
     filters: {
-      time: function (value) {
+      time(value) {
         let d = new Date(parseInt(value) * 1000);
-        var years = d.getFullYear();
-        var month = d.getMonth() + 1;
-        var days = d.getDate();
-        var hours = d.getHours();
-        var minutes = d.getMinutes();
-        var seconds = d.getSeconds();
+        let years = d.getFullYear(), 
+            month = d.getMonth() + 1, 
+            days = d.getDate(), 
+            hours = d.getHours(),
+            minutes = d.getMinutes(),
+            seconds = d.getSeconds();
         return years + "-" + month + "-" + days + " " + (hours > 9 ? hours : '0' + hours) + ':' + (minutes > 9 ? minutes : '0' + minutes);
       }
     },
@@ -159,12 +158,10 @@
       getToOrder() {
         this.$postData('/api/home/order/oneorder',{
           id: this.$route.query.id,
-          uid: this.$storageGet('user_info').user.id
+          uid: this.$goFetch.storageGet('user_info').user.id
         }).then((res) => {
-          this.addressData = this.$goJson(res.data.address);
+          this.addressData = this.$goFetch.goJson(res.data.address);
           this.orderData = res.data;
-          this.orderTable = res.data;
-          console.log(this.orderTable);
         });
       }
     }
@@ -183,6 +180,13 @@
 
   .order-table table .tbody-item .tr-item {
     border-bottom: 1px solid #c9caca; 
+  }
+
+  .admin-right .infoBlock .table-list .info-address {
+    height: 60px;
+    line-height: 27px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
 </style>

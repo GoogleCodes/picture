@@ -119,7 +119,7 @@ let routes = [{
   component: onloadpic,
   meta: {
     header: true,
-    footer: false,
+    footer: true,
   }
 },{
   path: '/pages/onloadtwo',

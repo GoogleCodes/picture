@@ -18,8 +18,8 @@
         <ul class="fl">
           <li>Character</li>
           <li class="list-desc">
-            客服热线一 ：<a href="tel:13250144303">13250144303</a> <br />
-            客服热线二 ：<a href="tel:18923203209">18923203209</a> <br />
+            客服热线一 ：<a class="telphone" href="tel:13250144303">13250144303</a> <br />
+            客服热线二 ：<a class="telphone" href="tel:18923203209">18923203209</a> <br />
             邮箱 ：jiang23 @jiangmuxin.com
         </li>
         </ul>
@@ -85,5 +85,8 @@
   .footer .footer-quality ul .bz {
     background: url('../../assets/images/13.png') no-repeat;
     margin: 26px 0 0 0;
+  }
+  .footer-list ul .list-desc .telphone {
+    color: #595757; 
   }
 </style>

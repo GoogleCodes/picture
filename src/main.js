@@ -26,15 +26,12 @@ import {
   fetchPost,
   fetchPut,
   fetchDelete,
-  storageSet,
-  storageGet, goJson } from './api/utils.js'
+  storageSet } from './api/utils.js'
 Vue.prototype.$getData = fetchGet;
 Vue.prototype.$postData = fetchPost;
 Vue.prototype.$putData = fetchPut;
 Vue.prototype.$deleteData = fetchDelete;
 Vue.prototype.$storageSet = storageSet;
-Vue.prototype.$storageGet = storageGet;
-Vue.prototype.$goJson = goJson;
 
 import * as fetch from './api/utils.js'
 Vue.prototype.$goFetch = fetch;
@@ -43,8 +40,9 @@ import * as goFetchs from './router/utils.js'
 Vue.prototype.$goFetchs = goFetchs;
 
 //  验证
-import { tool_verify } from './api/tool'
-Vue.prototype.$toolVerify = tool_verify;
+import { tool_verify, tools_axios } from './api/tool'
+Vue.prototype.$tool = tool_verify;
+Vue.prototype.$ajax = tools_axios;
 //  导入API
 import api from './common/port_uri'
 Vue.prototype.$api = api;

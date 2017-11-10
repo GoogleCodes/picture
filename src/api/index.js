@@ -1,25 +1,7 @@
 //api请求索引
 //导入模块
-import * as api_user from './user'
 
-const apiObj = {
-  api_user
-}
+import Vue from 'vue'
+import { tools_axios } from './tool'
 
-const install = function (Vue) {
-  if (install.installed) return
-  install.installed = true
-
-  //定义属性到Vue原型中
-  Object.defineProperties(Vue.prototype, {
-    $fetch: {
-      get() {
-        return apiObj
-      }
-    }
-  })
-}
-
-export default {
-  install
-}
+Vue.prototype.$Ajax = tools_axios;

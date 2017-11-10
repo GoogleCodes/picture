@@ -106,27 +106,23 @@
           currSize: "",
         },
         choose:[],
-        currentColor: 0,  //  颜色
-        currentSize: 0,   //  尺寸
+        currentColor: -1,  //  颜色
+        currentSize: -1,   //  尺寸
         sizeList: {},
         colorList: {},
         charItem: '',
         charId: 0,
         charSID: 0,
-        //  用于保存用户添加到购车的商品数组
-        myspecList: {},
+        myspecList: {}, //  用于保存用户添加到购车的商品数组
         active: false,
         randomList: [],
         guige: [],
         guigeName: [],
         chSize: [],
+        chName: [],
       }
     },
-    created () {
-
-    },
     mounted() {
-      this.getPostPrice();
       this.getDataShop();
     },
     components: {
@@ -147,21 +143,18 @@
       },
     },
     methods: {
-      getPostPrice() {
-        //  GET_POST_PRICE
-      },
       getDataShop() {
         this.$getData(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.query.id).then((res) => {
           let that = this;
           switch (true) {
             case res.code == 1:
               this.list = res.data;
-              this.swiperList = this.$goJson(res.data.photo);
+              this.swiperList = this.$goFetch.goJson(res.data.photo);
               that.myspecList = this.list.myspec;
               this.colorList = this.list.myspec['尺寸']
               this.sizeList = this.list.myspec['颜色'];
               //  获取随机商品
-              this.$getData(this.$api.get_other.GET_OTHER + '?cid=' + this.list.cat_id + '&num=' + 3 ).then((res) => {
+              this.$getData(this.$api.get_other.GET_OTHER + '?cid=' + this.list.cat_id + '&num=' + 3).then((res) => {
                 this.randomList = res.data;
               });
               return true;
@@ -192,15 +185,19 @@
       },
       choseSize(index, char) {
         this.currentSize = index;
-        let arr = [];
+        let arr = [], brr = [];
         arr.push(char.id);
+        brr.push(char.item);
         this.chSize = arr;
+        this.chName = brr;
       },
       changeGuige(index, id, name) {
         this.currentColor = index;
-        let arr = [];
+        let arr = [], brr = [];
         arr.push(id);
+        brr.push(name);
         this.guige = this.chSize.concat(arr);
+        this.guigeName = this.chName.concat(brr);
         if (!this.checkGuige) {
           return;
         }
@@ -237,22 +234,22 @@
               this.$router.push({ path: '/user/login' });
             }, 2000);
             return false;
-          case this.list.sales_sum == 0:
-            this.$message({
-              message: '请增加商品！谢谢啦！',
-              type: 'warning'
-            });
-            return false;
           case this.guige.length == 0:
             this.$message({
               message: '请选择规格！',
               type: 'warning'
             });
             return false;
+          case this.list.sales_sum == 0:
+            this.$message({
+              message: '请增加商品！谢谢啦！',
+              type: 'warning'
+            });
+            return false;
           default:
         }
         var json = {
-          uid: this.$storageGet('user_info').user.id,
+          uid: this.$goFetch.storageGet('user_info').user.id,
           gid: this.$route.query.id,
           sid: this.charSID,
           num: this.list.sales_sum,
@@ -260,12 +257,12 @@
           specdata: this.guigeName.join('-'),
         };
         this.$postData(this.$api.get_content.POST_CART_DATA,json).then((res) => {
-          console.log(res);
+          setInterval(() => {
+            that.$router.push({ path: '/cart/cart' });
+            location.reload();
+          }, 500);
         });
-        setInterval(function() {
-          that.$router.push({ path: '/cart/cart' });
-          location.reload();
-        },500);
+        
       }
     }
   }
@@ -311,7 +308,7 @@
     margin: 0px 20px 10px 0px;
     width: 42%;
     text-align: center;
-    border: 1px solid #fff;
+    border: 1px solid #f2f2f2;
     cursor: pointer;
   }
 

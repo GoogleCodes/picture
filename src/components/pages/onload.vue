@@ -18,8 +18,8 @@
                              :drag="false" :on-preview="handlePreview"
                              :on-success="handleAvatarSuccess"
                              :before-upload="handleBeforeUpload"
+                             :file-list="fileList"
                              :onError="uploadError" :on-remove="handleRemove">
-                    <slot></slot>
                     <el-button  type="primary" class="upload-btn">
                       <i class="el-icon-upload el-icon--right"></i>
                       <i>上传</i>
@@ -40,17 +40,19 @@
                 <img src="../../../static/images/34.png" alt="">
                 <span>暂无图片</span>
               </div>
-              <ul class="pic-list clearfix" v-show="!picVisi">
-                <li class="pic-item">
-                  <img class="pic" :src="file" alt="">
-                  <div class="time">
-                    <img src="../../../static/images/36.png" alt="">
-                    <span>2017-08-18</span>
-                  </div>
-                  <div class="cancel">
-                    <img src="../../../static/images/35.png" alt="">
-                  </div>
-                </li>
+              <ul class="pic-list clearfix" >
+                <template v-for="(k,i) in fileList">
+                  <li class="pic-item">
+                    <img class="pic" :src="k.response.data" alt="">
+                    <div class="time">
+                      <img :src="k.response.data" alt="">
+                      <span>2017-08-18</span>
+                    </div>
+                    <div class="cancel">
+                      <img src="../../../static/images/35.png" alt="">
+                    </div>
+                  </li>
+                </template>
               </ul>
             </div>
             <!-- 功能按钮 -->
@@ -85,28 +87,33 @@
 
     },
     components: {
-      ElButton
-
+      ElButton,
     },
     methods: {
       handleBeforeUpload(file) {
-        // console.log(file);
+        console.log(file, "+-+-+-");
       },
-      handleAvatarSuccess(res, file) {
-        this.file = res;
+      handleAvatarSuccess(res, file, fileList) {
+        this.file = res.data;
+        console.log(fileList);
+        this.fileList = fileList;
         this.$postData('/api/home/shopcar/upSave',{
           id: this.$route.query.id,
           img: res,
         });
       },
       handlePreview(file, fileList) {
-        // console.log(file, fileList)
+        console.log(file,fileList, "+-+-+-");
       },
       uploadError (response, file, fileList) {
         console.log('上传失败，请重试！')
       },
-      handleRemove(file) {
-        
+      handleRemove(file, fileList) {
+        for (let i in fileList) {
+          console.log(fileList[i]);
+          this.fileList = fileList[i];
+        }
+        console.log(fileList);
       }
     }
   }
@@ -115,7 +122,9 @@
 <style>
   /* 购物车上传照片 */
   .cart-upload-pic {
-    margin: 32px auto 130px;
+    margin: 0px auto 130px;
+    position: relative;
+    top: 50px;
   }
   .cart-upload-pic .container {
     padding: 0 55px;

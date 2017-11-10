@@ -111,7 +111,7 @@
       },
       getOrderAdmin() {
         this.$postData(this.$api.get_content.GET_ORDER_ADMIN,{
-          uid:  + this.$storageGet('user_info').user.id
+          uid:  + this.$goFetch.storageGet('user_info').user.id
         }).then((res) => {
           this.orderList = res.data.data.data;
           this.orderPages = res.data.data;

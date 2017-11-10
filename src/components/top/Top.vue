@@ -55,17 +55,12 @@
       computed: {
         user_info() {
           try {
-            let arr = this.$goJson(this.$store.state.user_info);
+            let arr = this.$goFetch.goJson(this.$store.state.user_info);
             this.list = arr.user
           } catch(e) {}
           return this.$store.state.user_info;
         },
         cart_count() { //  购物车总数
-          if (localStorage.getItem('cart_info') == undefined) {
-            this.$store.state.cart_count = 0;
-          } else {
-            this.$store.commit('SET_CART_NUMBER', this.$storageGet('cart_info'));
-          }
           return this.$store.state.cart_count;
         }
       },
@@ -79,7 +74,7 @@
         isUser() {
           //  调用user_info
           this.user_info;
-          let that = this, userJson = this.$storageGet('user_info');
+          let that = this, userJson = this.$goFetch.storageGet('user_info');
           if (userJson !== null) {
             that.closeuser = true;
             that.uname = userJson.uname;

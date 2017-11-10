@@ -89,7 +89,7 @@
           multipleSelection:[],
           delIndex: null,       //  删除的索引
           isChonseShop: 0,
-          userID: this.$storageGet('user_info').user.id,
+          userID: this.$goFetch.storageGet('user_info').user.id,
           load_data: false,
           cart_number: 0,
         }
@@ -109,17 +109,6 @@
     //  this.getByDataID();
     },
     computed: {
-      cart_count() { //  购物车总数
-        if (localStorage.getItem('cart_info') == undefined) {
-          this.$store.state.cart_count = 0;
-        } else {
-          this.$store.commit('SET_CART_NUMBER', this.cart_number);
-        }
-        return this.$store.state.cart_count;
-      },
-      setCart() {
-          return this.$store.state.setCart;
-      },
       count() { //  购物车总数
         return this.$store.state.cart_count;
       }
@@ -139,9 +128,8 @@
         this.load_data = true;
         this.$postData(this.$api.get_content.GET_CART_DATA,
         {uid: this.userID}).then((res) => {
-          console.log(res.data.length);
           this.cart_number = res.data.length;
-          this.$store.commit('SET_CART_NUMBER',res.data.length);
+          this.$store.commit('SET_CART_NUMBER', this.cart_number);
           this.load_data = false;
           this.data.list = res.data;
         });
@@ -150,7 +138,7 @@
         this.$postData(this.$api.get_content.GET_CART_TODATA,{
           id: 28, 
           uid: this.userID}).then((res) => {
-          console.log(res);
+            
         });
       },
       //  取消全选
@@ -175,7 +163,7 @@
         this.$router.push({ path : '../pages/onload', query: {id: id}});
       },
       changeNumber(item,flag) {
-        let userid = this.$storageGet('user_info').user.id;
+        let userid = this.$goFetch.storageGet('user_info').user.id;
         if (flag > 0) {
           item.num += 1;
           this.$postData(this.$api.get_content.UPDATE_CART,{
@@ -228,12 +216,7 @@
           setTimeout(() => {
             location.reload();
           }, 500);
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
+        })
       },
     }
   };

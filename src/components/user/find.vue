@@ -86,7 +86,7 @@
     },
     methods: {
       getCode () {
-        if (!this.$toolVerify.isTel(this.ruleForm.phone)) {
+        if (!this.$tool.isTel(this.ruleForm.phone)) {
           this.$notify({
             title: '手机号码格式错误',
             message: '请输入正确的手机号码格式！谢谢!',
@@ -96,17 +96,7 @@
           return;
         }
         this.$goFetchs.fetchGet(this.$api.port_user.get_find_code + '?tel='+ this.ruleForm.phone +'').then((res) => {
-          if(res.code == 0) {
-            this.$message({
-              message: res.msg,
-              type: 'warning'
-            });
-          } else if (res.code == 1) {
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            });
-          }
+          
         })
       },
       goFind (formName) {
@@ -114,7 +104,7 @@
           if (!valid) {
               return false;
           }
-          if (!this.$toolVerify.isTel(this.ruleForm.phone)) {
+          if (!this.$tool.isTel(this.ruleForm.phone)) {
             this.$notify({
                 title: '手机号码格式错误',
                 message: '请输入正确的手机号码格式！谢谢!',

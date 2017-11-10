@@ -47,25 +47,24 @@
             </div>
             <div style="margin-top: 50px;">
               <template v-for="item in data.arr">
-                <router-link :to="{ path: '/inside/orderlist', query: {id: item.goods_id}}">
-                  <div class="card-tuijian fl">
-                    <div class="card-tuijian-pic fl">
-                      <template v-for="(x, i) in item.goods_thumb">
-                        <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
-                      </template>
-                    </div>
-                    <div class="card-tuijian-desc fl">
-                      <div class="desc-title">{{ item.goods_name }}</div>
-                      <span class="desc-msg blocks">{{ item.goods_remark }}</span>
-                      <div class="desc-pic">
+                <div class="card-tuijian fl">
+                    <router-link class="fl block" :to="{ path: '/inside/orderlist', query: {id: item.goods_id}}">
+                      <div class="card-tuijian-pic fl">
                         <template v-for="(x, i) in item.goods_thumb">
                           <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
                         </template>
                       </div>
-                    </div>
-                    <!--</router-link>-->
+                      <div class="card-tuijian-desc fl">
+                        <div class="desc-title">{{ item.goods_name }}</div>
+                        <span class="desc-msg blocks">{{ item.goods_remark }}</span>
+                        <div class="desc-pic">
+                          <template v-for="(x, i) in item.goods_thumb">
+                            <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
+                          </template>
+                        </div>
+                      </div>
+                    </router-link>
                   </div>
-                </router-link>
               </template>
             </div>
           </div>
@@ -112,7 +111,9 @@
     },
     methods: {
       getIndex () {
-        this.$getData(this.$api.get_content.GET_ORDER + '?is_hot=1').then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER,{
+          is_hot: 1
+        }).then((res) => {
           this.data.arr = res.data
         });
       },
@@ -269,10 +270,11 @@
   }
 
   .card-tuijian-desc .desc-title {
-    font-size: 25px;
-    margin-top: 35px;
+    font-size: 23px;
+    margin-top: 10px;
     line-height: 35px;
     color: #231815;
+    padding: 0px 10px;
   }
 
   .card-tuijian-desc .desc-msg {
@@ -283,7 +285,7 @@
   .card-tuijian-desc .desc-pic {
     width: 85%;
     height: 170px;
-    margin: 10px 17px;
+    margin: 0 10px 0 17px;
   }
 
 

@@ -52,10 +52,10 @@
                   </template>
                 </div>
                 <div class="item-wrap">
-                  <p class="ft-18">{{ item.goods_name }}</p>
+                  <p class="ft-16 wrap-title">{{ item.goods_name }}</p>
                   <span class="block item-desc">{{ item.desc }}</span>
                   <p class="item-money ft-18">
-                    <i>￥</i>
+                    <i>¥</i>
                     <span>{{ item.shop_price }}</span>
                   </p>
                 </div>
@@ -64,7 +64,7 @@
           </li>
         </template>
       </ul>
-      <a href="javascript:void(0);" class="block clear shoping-move">
+      <a class="block clear shoping-move">
         <span class="block" style="position: relative;top: 5px;">展开全部</span>
         <i class="block el-icon-arrow-down" style="position: relative;top: -1px;"></i>
       </a>
@@ -157,7 +157,10 @@
       },
       handleCommand(command) {
         this.load_data = true;
-        this.$getData(this.$api.get_content.GET_ORDER + '?cid=' + this.$route.query.id + '&spec' + command).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER, {
+          cid: this.$route.query.id,
+          spec: command
+        }).then((res) => {
           this.data.list = res.data;
           if (this.data.list.length == 0) {
             this.$message({
@@ -170,13 +173,13 @@
       },
       //  获取规格
       getSpecif() {
-        this.$getData(this.$api.get_content.GET_SPECIF).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_SPECIF).then((res) => {
           this.specif = res.data;
         });
       },
       getOrder() {
         this.load_data = true;
-        this.$getData(this.$api.get_content.GET_ORDER).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER).then((res) => {
           this.load_data = false;
           this.data.list = res.data;
           this.data.listPages = res.data;
@@ -259,10 +262,15 @@
     text-align: center;
     background: #fff;
     transition: 0.5s;
+    border: 1px solid #f2f2f2;
   }
 
   .shoping-list ul li {
-    margin: 0px 30px 30px 0px;
+    margin: 0px 37px 30px 0px;
+  }
+
+  .shoping-list ul li:nth-child(4n) {
+    margin: 0 0 30px 0;
   }
 
   shoping-list ul li:nth-of-type(4n) {
@@ -279,6 +287,10 @@
     width: 200px;
     height: 200px;
     padding: 22px 35px 10px;
+  }
+
+  .shop-body .item-wrap .wrap-title {
+    padding: 0px 14px;
   }
 
   .shop-body .item-wrap .item-desc {

@@ -48,13 +48,11 @@ export default {
 
   //  获取购物车商品数量
   [type.SET_CART_NUMBER](state, obj) {
-    state.cart_count = obj.length;
+    state.cart_count = obj;
   },
-
 
   //  增加购物车单个商品数量
   [type.INCRECARTNUMS](state, obj) {
-    console.log(state, obj);
     for(let plist = 0; plist < state.cart.length; plist++) {
       if(typeof state.cart[plist] === 'object' && state.cart[plist].id === obj.id) {
         state.cart[plist].number = obj.num;

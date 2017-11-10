@@ -70,7 +70,7 @@
             radio: '1'
           }
       },
-      created() {
+      mounted() {
         this.setAddress();
       },
       components: {
@@ -95,7 +95,6 @@
             set_id = this.data.list[i];
           }
           set_id.id == id ? set_id.select = 1 : set_id.select = 0;
-          //  this.$storageGet('user_info').user.id
           this.$goFetchs.fetchGet(this.$api.get_address.set_add_default + '?id='+ id 
           +'&uid='+ 6 +'')
           .then((res) => {
@@ -117,12 +116,7 @@
             type: 'warning'
           }).then(() => {
             this.$goFetchs.fetchGet(this.$api.get_address.del_address + '?id='+ this.currentId +'').then((res) => {
-              if (res.code == 0) {
-                this.$message({
-                  message: res.msg,
-                  type: 'warning'
-                });
-              } else if (res.code == 1) {
+              if (res.code == 1) {
                 this.$message({
                   message: res.msg,
                   type: 'success'
@@ -131,11 +125,6 @@
                   location.reload();
                 }, 400);
               }
-            });
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消删除'
             });
           });
         }

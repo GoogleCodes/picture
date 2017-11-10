@@ -96,7 +96,7 @@
           if (!valid) {
             return false;
           }
-          if (!this.$toolVerify.isTel(this.ruleForm.phone)) {
+          if (!this.$tool.isTel(this.ruleForm.phone)) {
             this.$notify({
               title: '手机号码格式错误',
               message: '请输入正确的手机号码格式！谢谢!',

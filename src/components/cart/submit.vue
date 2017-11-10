@@ -155,7 +155,7 @@
             receiver: [{required: true, message: '请输入收货人的姓名！', trigger: 'blur'}],
             phone: [{required: true, message: '请输入联系人电话号码！', trigger: 'blur'}]
           },
-          shopmsg: this.$storageGet('gopayData_info'),
+          shopmsg: this.$goFetch.storageGet('gopayData_info'),
           list: [],
           layer: false,
           address: chinaData,
