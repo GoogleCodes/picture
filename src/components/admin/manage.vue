@@ -24,7 +24,7 @@
             <thead class="thead-item">
             <tr class="tr-item">
               <td colspan="6" style="padding-left: 18px;">
-                <span class="fl">{{ item.time | time }}</span>
+                <span class="fl">{{ item.time | gotimes }}</span>
                 <span class="orderNumber" style="padding-left: 25px;">订单号 ：{{ item.orderid }}</span>
               </td>
             </tr>
@@ -61,16 +61,6 @@
             </template>
           </table>
         </template>
-        <!-- pages start -->
-        <div class="clear goToPages">
-          <el-pagination @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page.sync="orderPages.current_page"
-            :page-size="orderPages.per_page" :total="orderPages.total"
-            layout="total, prev, pager, next">
-          </el-pagination>
-        </div>
-        <!-- pages start -->
       </div>
     </div>
   </div>
@@ -90,32 +80,13 @@
     mounted() {
       this.getOrderAdmin();
     },
-    filters: {
-      time: function (value) {
-        let d = new Date(parseInt(value) * 1000);
-        var years = d.getFullYear();
-        var month = d.getMonth() + 1;
-        var days = d.getDate();
-        var hours = d.getHours();
-        var minutes = d.getMinutes();
-        var seconds = d.getSeconds();
-        return years + "-" + month + "-" + days + " " + (hours > 9 ? hours : '0' + hours) + ':' + (minutes > 9 ? minutes : '0' + minutes);
-      }
-    },
     methods: {
-      handleSizeChange(val) {
-        console.log(val);
-      },
-      handleCurrentChange(val) {
-        console.log(`${val}`);
-      },
       getOrderAdmin() {
-        this.$postData(this.$api.get_content.GET_ORDER_ADMIN,{
+        this.$ajax.HttpPost(this.$api.get_content.GET_ORDER_ADMIN,{
           uid:  + this.$goFetch.storageGet('user_info').user.id
         }).then((res) => {
           this.orderList = res.data.data.data;
           this.orderPages = res.data.data;
-          console.log(this.orderPages, this.orderList);
         });
       }
     }

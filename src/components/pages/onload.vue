@@ -95,9 +95,8 @@
       },
       handleAvatarSuccess(res, file, fileList) {
         this.file = res.data;
-        console.log(fileList);
         this.fileList = fileList;
-        this.$postData('/api/home/shopcar/upSave',{
+        this.$ajax.HttpPost('/api/home/shopcar/upSave',{
           id: this.$route.query.id,
           img: res,
         });

@@ -51,6 +51,7 @@
       },
       mounted() {
         this.isUser();
+        this.fetchData();
       },
       computed: {
         user_info() {
@@ -65,12 +66,20 @@
         }
       },
       created() {
-
+        console.log(this.$store.state.cart_count);
       },
       watch: {
 
       },
       methods: {
+        fetchData() {
+          //  this.$postData this.$ajax.HttpPost
+          this.load_data = true;
+          this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
+          {uid: this.$goFetch.storageGet('user_info').user.id}).then((res) => {
+            this.$store.commit('SET_CART_NUMBER', res.data.length);
+          });
+        },
         isUser() {
           //  调用user_info
           this.user_info;

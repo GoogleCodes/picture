@@ -185,17 +185,15 @@
     computed: {
       lastPaySum () {
         let sum = 0;
-        // if(this.amount > 0) {
-        //   for (let ll in this.shopmsg) {
-        //     sum += this.shopmsg[ll].price * this.shopmsg[ll].number
-        //   }
-        // }
+        for (let ll in this.shopmsg) {
+          sum += this.shopmsg[ll].price * this.shopmsg[ll].num
+        }
         return sum.toFixed(2);
       },
     },
     methods: {
       setAddress() {
-        this.$goFetch.fetchGet(this.$api.get_address.get_address + '?id=6').then((res) => {
+        this.$ajax.HttpGet(this.$api.get_address.get_address + '?id=6').then((res) => {
           this.list = res.data;
           for (let i in this.list) {
             if (this.list[i].select == 1) {
@@ -209,21 +207,14 @@
           if (!valid) {
             return false;
           }
-          let json = {
-            waddress : this.ruleForm.whereAddress,
-            address : this.ruleForm.address,
-            zip : this.ruleForm.zip,
-            receiver : this.ruleForm.receiver,
-            phone : this.ruleForm.phone,
-          }
-          this.$goFetch.fetchPost(this.$api.get_address.url_address +
+          this.$ajax.HttpPost(this.$api.get_address.url_address +
             '?id=6&sname='+ this.ruleForm.receiver +
             '&tel='+ this.ruleForm.phone +
             '&adr='+ this.waddress + this.ruleForm.address).then((res) => {
-              console.log(res);
-            setTimeout((res) => {
               this.layer = false;
-            }, 500);
+              setTimeout((res) => {
+                location.reload();
+              }, 500);
           })
         });
       },
@@ -235,13 +226,12 @@
           Exporess: this.exporessText
         };
         let sku_id = 0, gid = [], textSpecdata = null;
-        
         for (let i in this.shopmsg) {
           sku_id = this.shopmsg[i].sku_id;
           gid.push(this.shopmsg[i].id);
           textSpecdata = this.shopmsg[i].specdata;
         }
-        this.$postData('/api/home/order/add',{
+        this.$ajax.Httppost('/api/home/order/add',{
           uid: this.$storageGet('user_info').user.id,
           goodsdata: gid,
           num: 1,
@@ -251,7 +241,6 @@
         }).then((res) => {
           console.log(res);
         });
-        
       },
       goInChonseAdd(index, item) {
         this.currAddress = index;

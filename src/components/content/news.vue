@@ -39,18 +39,6 @@
         created() {
           this.getNews();
         },
-        filters: {
-          time: function (value) {
-            let d = new Date(parseInt(value) * 1000);
-            var years = d.getFullYear();
-            var month = d.getMonth() + 1;
-            var days = d.getDate();
-            var hours = d.getHours();
-            var minutes = d.getMinutes();
-            var seconds = d.getSeconds();
-            return years + "-" + month + "-" + days + " " + (hours > 9 ? hours : '0' + hours) + ':' + (minutes > 9 ? minutes : '0' + minutes);
-          }
-        },
         methods: {
           getNews() {
             this.load_data = true;
@@ -58,16 +46,8 @@
             .then((res) => {
               if (res.code == 0) {
                 this.load_data = false;
-                this.$message({
-                  message: res.msg,
-                  type: 'warning'
-                });
               } else if (res.code == 1) {
                 this.load_data = false;
-                this.$message({
-                  message: res.msg,
-                  type: 'success'
-                });
                 this.list = res.data;
               }
             });

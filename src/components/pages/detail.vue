@@ -79,9 +79,7 @@
     </div>
     <!-- content end -->
   </div>
-
 </template>
-
 
 <script type="text/javascript">
 
@@ -92,7 +90,6 @@
   import ElInputNumber from "../../../node_modules/element-ui/packages/input-number/src/input-number";
 
   import detailSwiper from '@/components/pages/swiper'
-  import dome from '@/components/pages/dome'
 
   export default {
     name: 'dingzhi',
@@ -131,7 +128,6 @@
       ElButton,
       elenav,
       other,
-      dome,
       detailSwiper,
     },
     computed: {

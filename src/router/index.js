@@ -43,14 +43,10 @@ import register from '@/components/user/register'
 import orderlist from '@/components/inside/order'
 //  皮革相册
 import picdetail from '@/components/pages/pic-detail'
-//  测试
-import ordcart from '@/components/cart/ord-cart'
-
+//  文章
 import news from '@/components/content/news'
 import newdetail from '@/components/content/newsdetail'
 
-//  Dome
-import dome from '@/components/pages/dome'
 import details from '@/components/admin/details'
 
 Vue.use(Router);
@@ -69,14 +65,6 @@ let routes = [{
   path: '/inside/dingzhi',
   name: 'dingzhi',
   component: dingzhi,
-  meta: {
-    header: true,
-    footer: true
-  },
-},{
-  path: '/pages/dome',
-  name: 'dome',
-  component: dome,
   meta: {
     header: true,
     footer: true
@@ -227,14 +215,6 @@ let routes = [{
     footer: true,
   },
 },{
-  path: '/cart/ord-cart',
-  name: 'ordcart',
-  component: ordcart,
-  meta: {
-    header: true,
-    footer: true,
-  },
-},{
   path: '/cart/add-cart',
   name: 'addCart',
   component: addcart,
@@ -282,7 +262,6 @@ const router = new Router({
   mode: 'hash', //default: hash ,history
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
-      console.log(savedPosition)
       return savedPosition
     } else {
       return {x: 0, y: 0}

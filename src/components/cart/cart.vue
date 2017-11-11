@@ -10,7 +10,7 @@
           <span class="line block fr"></span>
         </p>
       </div>
-      <div class="cart-content" v-loading="load_data" element-loading-text="正在登陆中...">
+      <div class="cart-content" v-loading="load_data" element-loading-text="正在加载中...">
         <el-table ref="multipleTable" :data="data.list" border tooltip-effect="dark" style="width: 100%" @selection-change="selected">
           <el-table-column type="selection" width="99"></el-table-column>
           <el-table-column label="商品名称" width="407">
@@ -125,8 +125,9 @@
     },
     methods: {
       fetchData() {
+        //  this.$postData this.$ajax.HttpPost
         this.load_data = true;
-        this.$postData(this.$api.get_content.GET_CART_DATA,
+        this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
         {uid: this.userID}).then((res) => {
           this.cart_number = res.data.length;
           this.$store.commit('SET_CART_NUMBER', this.cart_number);
@@ -166,13 +167,13 @@
         let userid = this.$goFetch.storageGet('user_info').user.id;
         if (flag > 0) {
           item.num += 1;
-          this.$postData(this.$api.get_content.UPDATE_CART,{
+          this.$ajax.HttpPost(this.$api.get_content.UPDATE_CART,{
             id: item.id,
             uid: userid,
             num: item.num, }).then((res) => {});
         } else {
           item.num -= 1;
-          this.$postData(this.$api.get_content.UPDATE_CART,{
+          this.$ajax.HttpPost(this.$api.get_content.UPDATE_CART,{
             id: item.id,
             uid: userid,
             num: item.num, }).then((res) => {});

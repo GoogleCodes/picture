@@ -270,9 +270,9 @@
   }
 
   .card-tuijian-desc .desc-title {
-    font-size: 23px;
+    font-size: 20px;
     margin-top: 10px;
-    line-height: 35px;
+    line-height: 28px;
     color: #231815;
     padding: 0px 10px;
   }

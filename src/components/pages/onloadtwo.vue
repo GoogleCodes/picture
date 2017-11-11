@@ -97,7 +97,7 @@
         </div>
         <el-button>重新上传</el-button>
       </div>
-      <div class="iconfont icon-zengjia close-pop"></div>
+      <div class="iconfont icon-zengjia close-pop" @click="pops = false"></div>
     </div>
     <!-- pop end -->
 
@@ -139,24 +139,21 @@
     },
     methods: {
       getTypeList() {
-        this.$postData('/api/home/photo/photoById',{
+        this.$ajax.HttpPost('/api/home/photo/photoById',{
           id: this.$route.query.id
         }).then((res) => {
           this.typeList = res.data;
           this.SizeList = res.data.myspec['尺寸'];
-          console.log(this.SizeList);
           this.ColorList = res.data.myspec['颜色'];
         });
       },
       chonseSize(index, id) {
-        console.log(id);
         this.current.cuSizeIndex = index;
         let arr = [];
         arr.push(id);
         this.chSize = arr;
       },
       chonseSpec(index, id) {
-        console.log(id);
         this.current.cuColorIndex = index;
         let arr = [];
         arr.push(id);

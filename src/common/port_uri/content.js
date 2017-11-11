@@ -1,6 +1,8 @@
 /**
  * Created by SamHong on 2017/10/12.
  */
+//  主图
+exports.GET_BANNER = '/api/home/front/banner'
 //  主页商品
 exports.index_def = '../../../static/data/index.json'
 //  获取导航栏

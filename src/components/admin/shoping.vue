@@ -80,7 +80,7 @@
             <tbody class="tbody-item">
               <tr class="tr-item ordertime">
                 <td colspan="6">
-                  <span class="fl">{{ orderData.time | time }}</span>
+                  <span class="fl">{{ orderData.time | gotimes }}</span>
                   <span class="orderNumber fl">订单号 ：{{ orderData.orderid }}</span>
                 </td>
               </tr>
@@ -138,18 +138,6 @@
     },
     computed: {
 
-    },
-    filters: {
-      time(value) {
-        let d = new Date(parseInt(value) * 1000);
-        let years = d.getFullYear(), 
-            month = d.getMonth() + 1, 
-            days = d.getDate(), 
-            hours = d.getHours(),
-            minutes = d.getMinutes(),
-            seconds = d.getSeconds();
-        return years + "-" + month + "-" + days + " " + (hours > 9 ? hours : '0' + hours) + ':' + (minutes > 9 ? minutes : '0' + minutes);
-      }
     },
     mounted() {
       this.getToOrder();

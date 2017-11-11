@@ -53,10 +53,6 @@
         this.$goFetchs.fetchGet(this.$api.get_content.GET_NEWS).then((res) => {
           if (res.code == 1) {
             this.load_data = false;
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            });
             for (let i in res.data) {
               if (res.data[i].id == this.$route.query.newid) {
                 this.list = res.data[i];

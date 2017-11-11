@@ -39,10 +39,14 @@ Vue.prototype.$goFetch = fetch;
 import * as goFetchs from './router/utils.js'
 Vue.prototype.$goFetchs = goFetchs;
 
-//  验证
-import { tool_verify, tools_axios } from './api/tool'
+//  导入工具类
+import { tool_verify, tools_axios, tools_filter } from './api/tool'
 Vue.prototype.$tool = tool_verify;
 Vue.prototype.$ajax = tools_axios;
+
+//  加载过滤器
+Vue.filter('gotimes', tools_filter.goTime);
+
 //  导入API
 import api from './common/port_uri'
 Vue.prototype.$api = api;

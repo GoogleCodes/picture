@@ -533,7 +533,7 @@
 }
 
 .tbody-item .tr-item .delete {
-    display: none;
+    cursor: pointer;
 }
 
     /* order start */
