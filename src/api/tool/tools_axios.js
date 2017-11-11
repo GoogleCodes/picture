@@ -91,7 +91,8 @@ export default new class GoAxios {
           resolve(response.data)
         }
       }).catch(function (error) {
-        that._error(error);
+        reject()
+        that._error(error)
       })
     })
   }

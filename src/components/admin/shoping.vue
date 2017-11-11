@@ -51,7 +51,7 @@
               </dt>
               <dd class="imfor-title">确认收货,超时订单自动确认收货</dd>
               <dd class="imfor-title">物流：中通快递运单号:{{ orderData.orderid }}</dd>
-              <dd class="imfor-title">{{ orderData.time | time }}</dd>
+              <dd class="imfor-title">{{ orderData.time | gotimes }}</dd>
               <dd class="imfor-title" style="margin-top: 10px;">
                 <span class="fl">您可以</span>
                 <a class="ui-btn block fl confirm NotShipped" v-if="orderData.status == 0">去付款</a>
@@ -107,7 +107,7 @@
                     <a class="nowpay privateBtn" v-if="orderData.status == 0">立即付款</a>
                     <a class="cancel protected-Btn">取消订单</a>
                     <a class="select protected-Btn" v-if="orderData.status == 2">查看物流</a>
-                    <a class="delete protected-Btn">X</a>
+                    <a class="delete protected-Btn" v-if="orderData.status == 3">X</a>
                   </td>
                 </tr>
               </template>
@@ -144,7 +144,7 @@
     },
     methods: {
       getToOrder() {
-        this.$postData('/api/home/order/oneorder',{
+        this.$ajax.HttpPost('/api/home/order/oneorder',{
           id: this.$route.query.id,
           uid: this.$goFetch.storageGet('user_info').user.id
         }).then((res) => {

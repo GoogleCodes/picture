@@ -66,8 +66,11 @@
                         <img :src="x.url" alt="">
                       </template>
                     </div>
-                    <div class="item-title">{{ item.goods_name }}</div>
-                    <div class="item-text">{{ item.goods_remark }}</div>
+                    <div class="item-m-desc">
+                      <div class="item-price ft-22 c_e64147">{{ item.shop_price }}</div>
+                      <div class="item-title">{{ item.goods_name }}</div>
+                      <div class="item-text">{{ item.goods_remark }}</div>
+                    </div>
                   </router-link>
                 </li>
               </template>
@@ -140,7 +143,7 @@
     },
     methods: {
       getDataShop() {
-        this.$getData(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.query.id).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.query.id).then((res) => {
           let that = this;
           switch (true) {
             case res.code == 1:
@@ -150,7 +153,7 @@
               this.colorList = this.list.myspec['尺寸']
               this.sizeList = this.list.myspec['颜色'];
               //  获取随机商品
-              this.$getData(this.$api.get_other.GET_OTHER + '?cid=' + this.list.cat_id + '&num=' + 3).then((res) => {
+              this.$ajax.HttpGet(this.$api.get_other.GET_OTHER + '?cid=' + this.list.cat_id + '&num=' + 3).then((res) => {
                 this.randomList = res.data;
               });
               return true;
@@ -197,7 +200,7 @@
         if (!this.checkGuige) {
           return;
         }
-        this.$postData(this.$api.get_content.GET_POST_PRICE, {
+        this.$ajax.HttpPost(this.$api.get_content.GET_POST_PRICE, {
           gid: this.list.goods_id,
           spec: this.guige.join('-')
         }).then((res) => {
@@ -252,7 +255,7 @@
           price: this.list.shop_price,
           specdata: this.guigeName.join('-'),
         };
-        this.$postData(this.$api.get_content.POST_CART_DATA,json).then((res) => {
+        this.$ajax.HttpPost(this.$api.get_content.POST_CART_DATA,json).then((res) => {
           setInterval(() => {
             that.$router.push({ path: '/cart/cart' });
             location.reload();
@@ -272,6 +275,7 @@
   }
   .right-select .select-title {
     font-size: 26px;
+    line-height: 35px;
     color: #000;
     margin-bottom: 15px;
   }
@@ -608,7 +612,7 @@
   .product-list .product-item {
     float: left;
     width: 285px;
-    height: 310px;
+    height: 330px;
     background: #fff;
     margin: 20px 9px 0 0;
     text-align: center;
@@ -630,18 +634,38 @@
     margin: 16px;
   }
   .product-list .product-item .item-title {
-    font-size: 18px;
+    font-size: 16px;
     color: #000;
-    line-height: 50px;
+    line-height: 25px;
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+  .product-list .product-item .item-price {
+    margin-top: 10px;
+  }
+
+  .item-m-desc {
+    text-align: left;
+    padding: 0px 20px;
+  }
+
   .product-list .product-item .item-text {
     font-size: 14px;
     color: #333;
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 30px;
   }
   .product-list .product-item:hover {
     border: 4px solid #b11e25;
     background: #b11e25;
     transition: 0.5s;
+  }
+
+  .product-list .product-item:hover .item-price {
+    color: #fff;
   }
 
   .product-list .product-item:hover .item-title {

@@ -272,7 +272,10 @@
   .card-tuijian-desc .desc-title {
     font-size: 20px;
     margin-top: 10px;
-    line-height: 28px;
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 25px;
     color: #231815;
     padding: 0px 10px;
   }
@@ -280,6 +283,10 @@
   .card-tuijian-desc .desc-msg {
     margin-top: 10px;
     color: #9d9e9e;
+    height: 50px;
+    padding: 0px 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .card-tuijian-desc .desc-pic {

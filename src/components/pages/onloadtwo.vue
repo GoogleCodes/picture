@@ -4,17 +4,17 @@
       <div class="fl">
         <div class="load-prc">
           <div class="bottom-tip">
-
             <el-upload action="http://yuyin.ittun.com/public/api/home/front/imgupload"
                         name="img" class="image-uploader-warp"
                         :drag="false" :on-preview="handlePreview"
                         :on-success="handleAvatarSuccess"
                         :before-upload="handleBeforeUpload"
-                        :onError="uploadError" :on-remove="handleRemove">
+                        :onError="uploadError" :on-remove="handleRemove" 
+                        :file-list="goFile.fileList">
                 <el-button  type="primary" class="upload-btn">
-                <i class="el-icon-upload el-icon--right"></i>
-                <i>上传</i>
-              </el-button>
+                  <i class="el-icon-upload el-icon--right"></i>
+                  <i>上传</i>
+                </el-button>
             </el-upload>
             <span class="tog">
               仅支持上传png/jpg格式图片分辨率300dpi以上
@@ -78,16 +78,18 @@
     <div class="pop-layer" id="layer" v-show="pops">
       <div class="fl layer-pic">
         <ul>
-          <li>
-            <img src="../../../static/images/30.png" alt="" class="w100 h100">
-          </li>
+          <template v-for="(k,i) in goFile.fileList">
+            <li @click="onChonsePic(k.response,i)">
+              <img :src="k.response.data" alt="" class="w100 h100">
+            </li>
+          </template>
         </ul>
       </div>
       <div class="fr">
         <div class="show-picture">
           <template v-for="(k,i) in specList">
             <div class="wrap-pic" :style="{background: 'url('+ k.data +')'}">
-              <img :src="goFile.file.data" alt="" class="onloadPicture">
+              <img :src="goFile.cpic" alt="" class="onloadPicture w100 h100">
             </div>
           </template>
           <div class="show-util">
@@ -100,7 +102,6 @@
       <div class="iconfont icon-zengjia close-pop" @click="pops = false"></div>
     </div>
     <!-- pop end -->
-
   </div>
 </template>
 
@@ -119,7 +120,9 @@
         SizeList: [],
         ColorList: [],
         goFile: {
+          fileList: [],
           file: {},
+          cpic: '',
         },
         current: {
           cuSizeIndex: -1,
@@ -171,13 +174,16 @@
       _gopop() {
         this.pops = false;
       },
-
-      handleBeforeUpload(file) {
-        console.log(file);
+      onChonsePic(key, index) {
+        this.goFile.cpic = key.data;
       },
-      handleAvatarSuccess(res, file) {
+      handleBeforeUpload(file) {
+
+      },
+      handleAvatarSuccess(res, file,fileList) {
         this.goFile.file = res;
-        console.log(res);
+        this.goFile.fileList = fileList;
+        console.log(this.goFile.fileList, "-+-+-+-");
       },
       handlePreview(file, fileList) {
         console.log(file, fileList)
@@ -381,7 +387,10 @@
   }
 
   .pop-layer .layer-pic ul li {
-    margin: 25px 39px;
+    margin: 25px;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
   }
 
   .pop-layer .fr {
@@ -453,11 +462,11 @@
   }
 
   .pop-layer .wrap-pic {
-    width: 621px;
-    height: 414px;
+    width: 735px;
+    height: 432px;
     margin: 0px auto;
     position: relative;
-    top: 25px;
+    top: 20px;
     background: url('../../../static/images/38.png') no-repeat;
   }
 

@@ -60,7 +60,7 @@
         <p class="shoping-desc ft-18 fl">继续购物 共{{ cart_number }}件商品，已选择{{ isChonseShop }}件</p>
         <div class="fr">
           <el-button class="fr" @click="goPay()">去结算</el-button>
-          <p class="ft-20 fr selectedItem">合计(不含运费)：{{ data.totalMoney | changePrice }}元</p>
+          <p class="ft-20 fr selectedItem">合计(不含运费)：{{ data.totalMoney | goPrice }}元</p>
         </div>
       </div>
     </div>
@@ -116,13 +116,6 @@
     watch: {
         
     },
-    // 定义过滤方法
-    filters:{
-      // 传入原始value然后返回处理后数据
-      changePrice(value){
-        return "￥" + value.toFixed(2);
-      }
-    },
     methods: {
       fetchData() {
         //  this.$postData this.$ajax.HttpPost
@@ -133,10 +126,12 @@
           this.$store.commit('SET_CART_NUMBER', this.cart_number);
           this.load_data = false;
           this.data.list = res.data;
+        }).catch((error) => {
+          this.load_data = false;
         });
       },
       getByDataID() {
-        this.$postData(this.$api.get_content.GET_CART_TODATA,{
+        this.$ajax.HttpPost(this.$api.get_content.GET_CART_TODATA,{
           id: 28, 
           uid: this.userID}).then((res) => {
             
@@ -194,11 +189,6 @@
         }
         this.$store.commit('SET_GO_PAY',this.multipleSelection);
         this.$router.push({ path: '/cart/submit' });
-      },
-      handleInput(value) {
-        value.price * value.nums
-        //  增加商品数量也需要重新计算商品总价
-        this.selected(this.multipleSelection);
       },
       //  删除商品
       deleteShop(item) {

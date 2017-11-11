@@ -50,9 +50,11 @@
           </div>
           <template v-for="(item, index) in shopmsg">
             <div class="list-shoping clear">
-              <div class="fl" style="margin: 35px 0px;">
+              <div class="fl">
                 <div class="shoping-pic fl">
-                  <img :src="item.goods_thumb" alt="" class="w100 h100" />
+                  <template v-for="(k,i) in item.goods_thumb">
+                    <img :src="k.url" alt="" class="w100 h100" />
+                  </template>
                 </div>
                 <div class="shoping-title fl">
                   <p class="ft-20">{{ item.goods_name }}</p>
@@ -231,8 +233,8 @@
           gid.push(this.shopmsg[i].id);
           textSpecdata = this.shopmsg[i].specdata;
         }
-        this.$ajax.Httppost('/api/home/order/add',{
-          uid: this.$storageGet('user_info').user.id,
+        this.$ajax.HttpPost('/api/home/order/add',{
+          uid: this.$goFetch.storageGet('user_info').user.id,
           goodsdata: gid,
           num: 1,
           specdata: textSpecdata,
@@ -495,12 +497,18 @@
     border-bottom: 1px solid #c9caca;
   }
 
+  .list-goods .list-shoping .shoping-pic {
+    width: 140px;
+    height: 140px;
+    margin: 12px 0px;
+  }
+
   .list-goods .list-shoping:last-child {
     border: none;
   }
 
   .list-goods .list-shoping .shoping-title {
-    margin: 24px 65px;
+    margin: 53px 45px;
   }
 
   .list-goods .list-shoping .price {

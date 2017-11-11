@@ -64,8 +64,9 @@
     computed: {
         user_info() {
           try {
-            let arr = this.$storageGet('user_info');
+            let arr = this.$goFetch.storageGet('user_info')
             this.list = arr.user
+            console.log(this.list)
           } catch(e) {}
           return this.$store.state.user_info;
         }
@@ -78,6 +79,7 @@
     },
     methods: {
       isUserTrue() {
+        this.user_info;
         if (this.$goFetch.storageGet('user_info') === 'undefined') {
           setTimeout(() => {
             this.$router.push({ path: '/user/login'}, 200)

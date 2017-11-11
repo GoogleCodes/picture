@@ -8,7 +8,7 @@
         <span>找回密码</span>
       </div>
       <div class="login-form formWindow"
-           style="top: 130px;" v-loading="load_data" element-loading-text="正在登陆中...">
+           style="top: 130px;" v-loading="load_data" element-loading-text="正在进行中...">
         <div class="tab">
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
             <div class="form-input">

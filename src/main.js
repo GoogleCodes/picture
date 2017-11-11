@@ -45,6 +45,7 @@ Vue.prototype.$tool = tool_verify;
 Vue.prototype.$ajax = tools_axios;
 
 //  加载过滤器
+Vue.filter('goPrice', tools_filter.changePrice);
 Vue.filter('gotimes', tools_filter.goTime);
 
 //  导入API

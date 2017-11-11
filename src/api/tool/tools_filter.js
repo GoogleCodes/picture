@@ -1,5 +1,8 @@
 //  创建goToFilter类
 export default new class goToFilter {
+    changePrice(value) {
+        return "￥" + value.toFixed(2);
+    }
     //  过滤时间戳
     goTime(value) {
         let d = new Date(parseInt(value) * 1000);

@@ -291,6 +291,9 @@
 
   .shop-body .item-wrap .wrap-title {
     padding: 0px 14px;
+    height: 45px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .shop-body .item-wrap .item-desc {
@@ -299,6 +302,7 @@
 
   .shop-body .item-wrap .item-money {
     color: #b11e25;
+    margin-top: 5px;
     font-weight: bold;
   }
 
