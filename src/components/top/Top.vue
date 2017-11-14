@@ -66,7 +66,7 @@
         }
       },
       created() {
-        console.log(this.$store.state.cart_count);
+        
       },
       watch: {
 

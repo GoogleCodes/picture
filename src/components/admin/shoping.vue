@@ -87,10 +87,12 @@
               <template v-for="(item, index) in orderData.goodsdata">
                 <tr class="tr-item">
                   <td class="itme-pic" style="width: 316px;">
-                    <template v-for="(x, i) in item.gthumb">
-                      <img :src="x.url" alt="" class="J_ItemImg fl" />
-                    </template>
-                    <a href="javascript:void(0);" class="item-title fl">{{ item.gname }}</a>
+                    <div style="width: 123px;height: 109px;margin: 0px 15px;" class="fl">
+                      <template v-for="(x, i) in item.gthumb">
+                        <img :src="x.url" alt="" class="J_ItemImg fl w100 h100" />
+                      </template>
+                    </div>
+                    <a class="item-title fl">{{ item.gname }}</a>
                     <div class="fl item-description">{{ item.gremark }}</div>
                   </td>
                   <td class="itme-money">¥{{ item.price }}</td>

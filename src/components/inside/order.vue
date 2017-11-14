@@ -2,7 +2,9 @@
   <div>
     <elenav></elenav>
     <div class="con-pro" style="height: 360px;">
-      <img src="../../assets/images/19.png" alt="" style="width: 100%;height: 100%;">
+      <template v-for="(k,i) in data.shotcut">
+        <img :src="k.shotcut" alt="" style="width: 100%;height: 100%;">
+      </template>
     </div>
     <div class="advertising">
       <img src="../../../static/images/32.png" class="w100 h100" alt="">
@@ -26,7 +28,8 @@
           </div>
         </template>
         <div class="fr search">
-          <el-input placeholder="输入产品名称进行搜索" v-model="searchText" icon="search" class="fl" :on-icon-click="handleIconClick"></el-input>
+          <el-input placeholder="输入产品名称进行搜索" v-model="searchText" 
+          icon="search" class="fl" :on-icon-click="handleIconClick" @keyup.enter.native="handleIconClick"></el-input>
           <!--
             <el-button class="gosearch fl">搜索</el-button>
           -->
@@ -35,12 +38,6 @@
     </div>
 
     <div class="shoping-list" v-loading="load_data" element-loading-text="正在加载中...">
-      <!--
-      <div class="nothing-shop" v-show="!showPages" style="display: none;">
-        <div class="iconfont icon-kong"></div>
-        <div>暂时没有商品</div>
-      </div>
-      -->
       <ul>
         <template v-for="item in data.list">
           <li class="fl">
@@ -64,7 +61,7 @@
           </li>
         </template>
       </ul>
-      <a class="block clear shoping-move">
+      <a class="block clear shoping-move" @click="AllShowShop()">
         <span class="block" style="position: relative;top: 5px;">展开全部</span>
         <i class="block el-icon-arrow-down" style="position: relative;top: -1px;"></i>
       </a>
@@ -89,27 +86,33 @@
       </div>
     </div>
 
-    <div class="gift-con clear">
+    <template v-if="randomList == 0"></template>
+    <div class="gift-con clear" v-else>
       <h1 class="ft-34 gift-title">相册礼盒</h1>
       <p class="gift-desc ft-14">一个精美的相册礼盒，能让产品更有价值感，提升档次和客户的满意度</p>
       <ul>
-        <router-link :to="{ path: '/', query: {id: 1} }" class="w100 h100 block">
-          <li class="fl" v-for="list in 3">
-            <div class="gift-sp-pic">
-              <img src="../../../static/images/30.png" alt="" class="w100 h100" />
-            </div>
-            <div class="gift-sp-desc ft-18">相册礼盒名称</div>
+        <template v-for="(k,x) in randomList">
+          <li class="fl">
+            <router-link :to="{ path: '/', query: {id: 1} }" class="w100 h100 block">
+              <div class="gift-sp-pic">
+                <template v-for="(a,b) in k.goods_thumb">
+                  <img :src="a.url" alt="" class="w100 h100" />
+                </template>
+              </div>
+              <div class="gift-sp-desc ft-18">{{ k.goods_name }}</div>
+            </router-link>
           </li>
-        </router-link>
+        </template>
       </ul>
     </div>
 
-    
+    <!--
     <div class="dingzhi clear">
       <router-link :to="{ path: ''}">
         <img src="../../../static/images/31.png" class="w100 h100" alt="">
       </router-link>
     </div>
+    -->
 
   </div>
 </template>
@@ -125,6 +128,7 @@
         data: {
           list: [],
           listPages: {},
+          shotcut: [],
         },
         randomList: [],
         //  规格
@@ -136,7 +140,6 @@
     },
     mounted() {
       this.getOrder();
-      this.getSpecif();
     },
     components: {
       ElButton,
@@ -152,8 +155,12 @@
       }
     },
     methods: {
-      handleIconClick(ev) {
-        console.log(ev);
+      handleIconClick() {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + 
+        "?keyword=" + this.searchText).then((res) => {
+          this.data.list = res.data;
+          this.load_data = false;
+        });
       },
       handleCommand(command) {
         this.load_data = true;
@@ -179,10 +186,25 @@
       },
       getOrder() {
         this.load_data = true;
-        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?limit=" + 4).then((res) => {
           this.load_data = false;
           this.data.list = res.data;
           this.data.listPages = res.data;
+          this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.$route.query.id).then((res) => {
+            this.data.shotcut = res.data;
+          });
+          this.getRadomList(this.$route.query.id, 4);
+          this.getSpecif();
+        });
+      },
+      getRadomList(id, number) {
+        this.$ajax.HttpGet(this.$api.get_other.GET_OTHER + "?cid=" + id + "&limit=" + number).then((res) => {
+          this.randomList = res.data;
+        });
+      },
+      AllShowShop() { 
+        this.$ajax.HttpGet(this.$api.get_other.GET_OTHER + "?cid=" + this.$route.query.id).then((res) => {
+          this.randomList = res.data;
         });
       }
     }
@@ -241,19 +263,6 @@
     width: 1200px;
     height: 100%;
     margin: 47px auto;
-  }
-
-  .shoping-list .nothing-shop {
-    text-align: center;
-    line-height: 90px;
-    font-size: 26px;
-  }
-
-  .shoping-list .icon-kong {
-    font-size: 250px;
-    line-height: 150px;
-    width: 305px;
-    margin: 110px auto 30px;
   }
 
   .shoping-list ul li .shop-body {
@@ -318,6 +327,7 @@
     background: #fff;
     margin: 30px auto;
     color: #727171;
+    cursor: pointer;
   }
   /* shoping-move end */
 
@@ -388,7 +398,7 @@
 
   .gift-con ul li {
     width: 376px;
-    height: 300px;
+    height: 100%;
     text-align: center;
     margin: 56px 24px 0px 0;
   }
@@ -399,10 +409,12 @@
   }
 
   .gift-con ul li .gift-sp-desc {
-    width: 130px;
-    height: 35px;
-    margin: 35px auto;
+    height: 55px;
+    line-height: 25px;
+    margin: 15px 0px 0px;
     border-bottom: 1px solid #c9caca;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .gift-con ul li:last-child {
@@ -425,5 +437,4 @@
     margin: 0px auto;
   }
   /* goToPages end */
-
 </style>

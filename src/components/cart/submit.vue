@@ -241,7 +241,12 @@
           address: this.currAddJson,
           uname: this.currAddJson.sname
         }).then((res) => {
-          console.log(res);
+          this.$goFetch.storageRemove('gopayData_info');
+          this.$message({
+            type: 'info',
+            message: res.msg,
+            duration: 3000,
+          });
         });
       },
       goInChonseAdd(index, item) {

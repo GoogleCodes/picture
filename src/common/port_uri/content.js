@@ -8,7 +8,7 @@ exports.index_def = '../../../static/data/index.json'
 //  获取导航栏
 exports.GET_NAV = '/api/home/front/getPrdClassify'
 //  相册系列
-exports.album = '/api/home/index/index'
+exports.album = '/api/home/front/getPrdClassify'
 //  获取新闻信息
 exports.GET_NEWS = '/api/portal/articles'
 //  订单列表

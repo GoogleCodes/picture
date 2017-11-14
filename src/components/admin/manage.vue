@@ -33,10 +33,12 @@
               <tbody class="tbody-item">
                 <tr class="tr-item">
                   <td class="itme-pic" style="width: 316px;">
-                    <template v-for="(y,n) in x.gthumb">
-                      <img :src="y.url" alt="" class="J_ItemImg fl" />
-                    </template>
-                    <router-link :to="{ path: '/admin/shoping', query: {id: item.id}}">
+                    <div style="width: 123px;height: 109px;margin: 0px 15px;" class="fl">
+                      <template v-for="(y,n) in x.gthumb">
+                        <img :src="y.url" alt="" class="J_ItemImg fl w100 h100" />
+                      </template>
+                    </div>
+                    <router-link :to="{ path: '/admin/shoping', query: {id: item.id}}" class="fl">
                       <span class="item-title fl">{{ x.gname }}</span>
                     </router-link>
                   </td>

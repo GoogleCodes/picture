@@ -1,7 +1,7 @@
 <template>
   <div style="height: 103px;">
     <!-- nav start -->
-    <div class="nav clear">
+    <div class="nav clear" v-loading="load_data" element-loading-text="正在加载中...">
       <ul class="fl">
         <li>
           <router-link :to="{ path: '/'}" class="blocks nav-href">首页</router-link>
@@ -35,6 +35,7 @@
         dropDowm: false,
         data: {
           list: [],
+          load_data: false,
         },
       }
     },
@@ -46,9 +47,11 @@
     },
     methods: {
       getNav() {
+        this.load_data = true;
         this.$ajax.HttpGet(this.$api.get_content.GET_NAV)
         .then((res) => {
-            this.data.list = res.data;
+          this.load_data = false;
+          this.data.list = res.data;
         });
       }
     },

@@ -183,13 +183,10 @@
       handleAvatarSuccess(res, file,fileList) {
         this.goFile.file = res;
         this.goFile.fileList = fileList;
-        console.log(this.goFile.fileList, "-+-+-+-");
       },
       handlePreview(file, fileList) {
-        console.log(file, fileList)
       },
       uploadError (response, file, fileList) {
-        console.log('上传失败，请重试！')
       },
       handleRemove(file) {
         
@@ -439,9 +436,9 @@
   .pop-layer .close-pop {
     float: right;
     position: absolute;
-    top: 15px;
+    top: 10px;
     right: 10px;
-    font-size: 36px;
+    font-size: 20px;
     color: #c9caca;
     transition: 0.2s;
     transform: rotate(0deg);
