@@ -61,7 +61,7 @@
     data () {
       return {
         ruleForm: {
-          username: '13232800159',
+          username: '18520908682',
           password: '',
         },
         rules: {
@@ -100,7 +100,9 @@
             return false;
           }
           that.load_data = true;
-          that.$goFetchs.fetchPost(this.$api.port_user.get_login + '?tel='+ this.ruleForm.username + '&pwd=' + this.ruleForm.password + '').then((res) => {
+          that.$ajax.HttpPost(this.$api.port_user.get_login + 
+          '?tel='+ this.ruleForm.username + 
+          '&pwd=' + this.ruleForm.password).then((res) => {
               if(res.code == 0) {
                 that.load_data = false;
                 return false;

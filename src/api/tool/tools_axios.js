@@ -26,15 +26,15 @@ export default new class GoAxios {
    * @param {*提示错误} data 
    */
   _error(data) {
-    Message.error('网络错误')
+    // Message.error('网络错误')
   }
 
   _isStatus(data) {
     if (data.code == get_api.get_code.error) {
-      Message.warning(response.data.msg)
+      // Message.warning(response.data.msg)
       return false;
     } else if (data.code == get_api.get_code.success) {
-      Message.success(data.msg)
+      // Message.success(data.msg)
       return true;
     }
   }

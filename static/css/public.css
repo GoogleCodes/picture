@@ -54,7 +54,7 @@
     line-height: 45px;
     margin-top: 7px;
     color: #9fa0a0;
-    width: 325px;
+    /*width: 325px;*/
     position: relative;
 }
 
@@ -79,7 +79,7 @@
 
 .header .header-main .quguo-user .cart-round {
     position: relative;
-    width: 120px;
+    width: 95px;
     height: 47px;
 }
 

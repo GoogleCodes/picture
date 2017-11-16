@@ -35,12 +35,12 @@
               </div>
             </div>
             <!-- 图片展示 -->
-            <div class="show-pic" v-show="picVisi">
-              <div class="no-pic">
+            <div class="show-pic">
+              <div class="no-pic" v-if="fileList.length == 0">
                 <img src="../../../static/images/34.png" alt="">
                 <span>暂无图片</span>
               </div>
-              <ul class="pic-list clearfix" >
+              <ul class="pic-list clearfix" v-else>
                 <template v-for="(k,i) in fileList">
                   <li class="pic-item">
                     <img class="pic" :src="k.response.data" alt="">
@@ -91,11 +91,12 @@
     },
     methods: {
       handleBeforeUpload(file) {
-        console.log(file, "+-+-+-");
+        // console.log(file, "+-+-+-");
       },
       handleAvatarSuccess(res, file, fileList) {
         this.file = res.data;
         this.fileList = fileList;
+        console.log(this.fileList, "+-+------------------------------");
         this.$ajax.HttpPost('/api/home/shopcar/upSave',{
           id: this.$route.query.id,
           img: res,
@@ -108,11 +109,14 @@
         console.log('上传失败，请重试！')
       },
       handleRemove(file, fileList) {
-        for (let i in fileList) {
-          console.log(fileList[i]);
-          this.fileList = fileList[i];
+        try {
+          for (let i in fileList) {
+            this.fileList = fileList[i];
+            console.log(fileList[i]);
+          }
+        } catch (e){ 
+
         }
-        console.log(fileList);
       }
     }
   }

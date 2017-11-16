@@ -22,8 +22,8 @@
           </div>
           <div class="item-pic">
             <template v-for="(k,i) in specList">
-              <div class="picture" :style="{background: 'url('+ k.data +')'}">
-                <img :src="goFile.file.data" alt="" class="onloadPicture">
+              <div class="picture" :style="{background: 'url('+ k.img +')'}">
+                 <img :src="goFile.file.data" alt="" class="onloadPicture">
               </div>
             </template>
           </div>
@@ -74,6 +74,7 @@
     </div>
 
     <!-- pop start -->
+    <div></div>
     <div class="pop" @click="_gopop()" v-show="pops"></div>
     <div class="pop-layer" id="layer" v-show="pops">
       <div class="fl layer-pic">
@@ -188,8 +189,8 @@
       },
       uploadError (response, file, fileList) {
       },
-      handleRemove(file) {
-        
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
       }
 
     }
@@ -275,6 +276,7 @@
 
   .load-desc .desc-title {
     margin: 40px 30px 10px;
+    font-size: 17px;
   }
 
   .load-desc .line {

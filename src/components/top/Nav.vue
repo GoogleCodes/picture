@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 103px;">
+  <div style="height: 103px;" v-show="$route.meta.nav">
     <!-- nav start -->
     <div class="nav clear" v-loading="load_data" element-loading-text="正在加载中...">
       <ul class="fl">

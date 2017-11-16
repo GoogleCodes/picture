@@ -59,7 +59,8 @@ let routes = [{
   children: [],
   meta: {
     header: true,
-    footer: true
+    footer: true,
+    nav: true,
   },
 },{
   path: '/inside/dingzhi',
@@ -67,7 +68,8 @@ let routes = [{
   component: dingzhi,
   meta: {
     header: true,
-    footer: true
+    footer: true,
+    nav: false,
   },
 },{
   path: '/inside/orderlist',
@@ -75,7 +77,8 @@ let routes = [{
   component: orderlist,
   meta: {
     header: true,
-    footer: true
+    footer: true,
+    nav: false,
   },
 },{
   path: '/pages/detail',
@@ -83,7 +86,8 @@ let routes = [{
   component: detail,
   meta: {
     header: true,
-    footer: true
+    footer: true,
+    nav: false,
   },
 },{
   path: '/pages/swiper',
@@ -91,7 +95,8 @@ let routes = [{
   component: deSwiper,
   meta: {
     header: true,
-    footer: false
+    footer: false,
+    nav: false,
   }
 },{
   path: '/pages/pic-detail',
@@ -100,6 +105,7 @@ let routes = [{
   meta: {
     header: true,
     footer: false,
+    nav: false,
   }
 },{
   path: '/pages/onload',
@@ -108,6 +114,7 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
+    nav: false
   }
 },{
   path: '/pages/onloadtwo',
@@ -116,6 +123,7 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
+    nav: false
   }
 },{
   path: '/pages/frame',
@@ -124,6 +132,7 @@ let routes = [{
   meta: {
     header: true,
     footer: false,
+    nav: false
   }
 },{
   path: '/user/login',
@@ -132,6 +141,7 @@ let routes = [{
   meta: {
     header: true,
     footer: false,
+    nav: false
   }
 },{
   path: '/user/register',
@@ -140,6 +150,7 @@ let routes = [{
   meta: {
     header: true,
     footer: false,
+    nav: false
   }
 },{
   path: '/user/find',
@@ -148,6 +159,7 @@ let routes = [{
   meta: {
     header: true,
     footer: false,
+    nav: false
   }
 },{
   path: '/admin/admin',
@@ -156,6 +168,7 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
+    nav: false
   },
   children: [{
     path: '/admin/vip',
@@ -164,6 +177,7 @@ let routes = [{
     meta: {
       header: true,
       footer: true,
+      nav: false
     },
   },{
     path: '/admin/changepwd',
@@ -172,6 +186,7 @@ let routes = [{
     meta: {
       header: true,
       footer: true,
+      nav: false
     },
   },{
     path: '/admin/shoping',
@@ -180,6 +195,7 @@ let routes = [{
     meta: {
       header: true,
       footer: true,
+      nav: false
     },
   },{
     path: '/admin/manage',
@@ -188,6 +204,7 @@ let routes = [{
     meta: {
       header: true,
       footer: true,
+      nav: false
     },
   },{
     path: '/admin/address',
@@ -196,6 +213,7 @@ let routes = [{
     meta: {
       header: true,
       footer: true,
+      nav: false
     },
   },{
     path: '/admin/increase',
@@ -204,6 +222,7 @@ let routes = [{
     meta: {
       header: true,
       footer: true,
+      nav: false
     },
   }],
 },{
@@ -213,6 +232,7 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
+    nav: false
   },
 },{
   path: '/cart/add-cart',
@@ -220,7 +240,8 @@ let routes = [{
   component: addcart,
   meta: {
     header: true,
-    footer: true
+    footer: true,
+    nav: false
   },
 },{
   path: '/cart/submit',
@@ -229,6 +250,7 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
+    nav: false
   },
 },{
   path: '/content/news',
@@ -237,6 +259,7 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
+    nav: false
   },
 },{
   path: '/content/newsdetail',
@@ -245,6 +268,7 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
+    nav: false
   },
 },{
   path: '/admin/details',
@@ -253,6 +277,7 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
+    nav: false 
   },
 }];
 

@@ -14,7 +14,6 @@ var webpack = require('webpack')
 var config = require('../config')
 //  生产环境下的webpack配置
 var webpackConfig = require('./webpack.prod.conf')
-
 //  在终端显示ora库的loading效果
 var spinner = ora('building for production...')
 spinner.start()

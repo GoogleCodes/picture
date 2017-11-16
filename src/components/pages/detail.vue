@@ -1,12 +1,12 @@
 <template>
   <div class="bgcolor">
     <div class="content clear" style="margin: 0px auto 25px;">
-      <div class="con-pro" style="height: 360px;">
+      <div class="con-pro" style="height: 360px;" v-loading="load.load_shotcut" element-loading-text="正在加载中...">
         <img :src="list.shotcut" alt="" style="width: 100%;height: 100%;">
       </div>
       <div class="experience" style="margin: 0px auto;background: #fff">
         <detailSwiper :listpic="swiperList"></detailSwiper>
-        <div class="tb-wrap fl">
+        <div class="tb-wrap fl" v-loading="load.load_goods" element-loading-text="正在加载中...">
           <div class="right-select fr">
             <div class="select-title">{{ list.goods_name }}<span>{{ list.goods_remark }}</span></div>
             <div class="select-text">{{ list.good_desc }}</div>
@@ -60,14 +60,14 @@
             <ul class="product-list clearfix">
               <template v-for="(item, index) in randomList">
                 <li class="product-item">
-                  <router-link :to="{ path: '/', query:{pid: item.goods_id }}" class="block">
+                  <router-link :to="{ path: '/pages/detail', query:{pid: item.goods_id }}" class="block">
                     <div class="pic">
                       <template v-for="(x,i) in item.goods_thumb">
                         <img :src="x.url" alt="">
                       </template>
                     </div>
                     <div class="item-m-desc">
-                      <div class="item-price ft-22 c_e64147">{{ item.shop_price }}</div>
+                      <div class="item-price ft-22 c_e64147">¥{{ item.shop_price }}</div>
                       <div class="item-title">{{ item.goods_name }}</div>
                       <div class="item-text">{{ item.goods_remark }}</div>
                     </div>
@@ -104,6 +104,10 @@
           dtype: 1,
           currGuiGe: "",
           currSize: "",
+        },
+        load: {
+          load_goods: false,
+          load_shotcut: false,
         },
         choose:[],
         currentColor: -1,  //  颜色
@@ -143,8 +147,12 @@
     },
     methods: {
       getDataShop() {
+        this.load.load_goods = true;
+        this.load_shotcut = true;
         this.$ajax.HttpGet(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.query.id).then((res) => {
           let that = this;
+          this.load.load_goods = false;
+          this.load_shotcut = false;
           switch (true) {
             case res.code == 1:
               this.list = res.data;

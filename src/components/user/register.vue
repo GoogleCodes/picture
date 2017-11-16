@@ -13,15 +13,6 @@
           </div>
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
             <div class="form-input" style="margin-top: 20px;">
-              <div class="form-h2 lineHeight50 fl">验证码：</div>
-              <el-form-item prop="code">
-                <el-input class="inputInfo input fl" placeholder="输入验证码" style="width:57%"
-                          v-model="ruleForm.code"></el-input>
-                <el-button @click="getCode()" class="code fr"
-                           style="width: 97px;margin-top: 5px;height: 42px;background: #595757">{{ codeText }}</el-button>
-              </el-form-item>
-            </div>
-            <div class="form-input">
               <div class="form-h2 lineHeight50 fl">姓名：</div>
               <el-form-item prop="name">
                 <el-input class="inputInfo input fl" placeholder="您的姓名" v-model="ruleForm.name" ></el-input>
@@ -30,7 +21,15 @@
             <div class="form-input">
               <div class="form-h2 lineHeight50 fl">手机号：</div>
               <el-form-item prop="phone">
-                <el-input class="inputInfo input fl" placeholder="您的手机号" v-model="ruleForm.phone" ></el-input>
+                <el-input class="inputInfo input fl" placeholder="输入验证码" style="width:57%" v-model="ruleForm.phone"></el-input>
+                <el-button @click="getCode()" class="code fr"
+                           style="width: 97px;margin-top: 5px;height: 42px;background: #595757">{{ codeText }}</el-button>
+              </el-form-item>
+            </div>
+            <div class="form-input">
+              <div class="form-h2 lineHeight50 fl">验证码：</div>
+              <el-form-item prop="code">
+                <el-input class="inputInfo input fl" placeholder="您的验证码" v-model="ruleForm.code" ></el-input>
               </el-form-item>
             </div>
             <div class="form-input">
@@ -71,10 +70,10 @@
         codeText: "获取验证码",
         ruleForm: {
           code: null,       //  验证码
-          name: null,           //  名称
-          phone: null, //  手机号码
-          password: null,       //  密码
-          repwd: null,          //  确认密码
+          name: null,       //  名称
+          phone: null,      //  手机号码
+          password: null,   //  密码
+          repwd: null,      //  确认密码
         },
         rules: {
           code: [{required: true, message: '请输入验证码！', trigger: 'blur'}],
@@ -106,7 +105,7 @@
             return;
           }
           this.load_data = true;
-          this.$goFetch.fetchPost(this.$api.port_user.set_reg +
+          this.$ajax.HttpPost(this.$api.port_user.set_reg +
             '?uname=' + this.ruleForm.name +
             '&tel=' + this.ruleForm.phone +
             '&pwd=' + this.ruleForm.password +
@@ -142,7 +141,7 @@
             this.codeText = "获取验证码"
           }
         },1000);
-        this.$pubFetch.fetchPost(this.$api.port_user.get_reg_code + '?tel=13232800159').then((res) => {
+        this.$ajax.HttpPost(this.$api.port_user.get_reg_code + '?tel=' + this.ruleForm.phone).then((res) => {
           clearInterval(times);
           this.codeText = "获取验证码";
           if(res.code == 0) {

@@ -95,9 +95,8 @@
           });
           return;
         }
-        this.$goFetchs.fetchGet(this.$api.port_user.get_find_code + '?tel='+ this.ruleForm.phone +'').then((res) => {
-          
-        })
+        this.$ajax.HttpGet(this.$api.port_user.get_find_code + 
+        '?tel='+ this.ruleForm.phone).then((res) => {})
       },
       goFind (formName) {
         this.$refs[formName].validate((valid) => {
@@ -113,7 +112,7 @@
             });
             return;
           }
-          this.$goFetchs.fetchGet(this.$api.port_user.get_find_pwd + 
+          this.$ajax.HttpGet(this.$api.port_user.get_find_pwd + 
             '&tel=' + this.ruleForm.phone +
             '&pwd=' + this.ruleForm.password +
             '&repwd=' + this.ruleForm.rePwd +
@@ -145,7 +144,6 @@
   };
 
 </script>
-
 
 <style>
 

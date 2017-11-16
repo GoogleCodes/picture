@@ -1,14 +1,16 @@
 <template>
   <div>
     <elenav></elenav>
-    <div class="con-pro" style="height: 360px;">
+    <div class="con-pro" style="height: 360px;" v-loading="load_data" element-loading-text="正在加载中...">
       <template v-for="(k,i) in data.shotcut">
         <img :src="k.shotcut" alt="" style="width: 100%;height: 100%;">
       </template>
     </div>
+    <!--
     <div class="advertising">
       <img src="../../../static/images/32.png" class="w100 h100" alt="">
     </div>
+    -->
     <div class="filter-con">
       <div class="filter-nav">
         <span class="fl">筛选条件 ：</span>
@@ -29,10 +31,7 @@
         </template>
         <div class="fr search">
           <el-input placeholder="输入产品名称进行搜索" v-model="searchText" 
-          icon="search" class="fl" :on-icon-click="handleIconClick" @keyup.enter.native="handleIconClick"></el-input>
-          <!--
-            <el-button class="gosearch fl">搜索</el-button>
-          -->
+          icon="search" class="fl" :on-icon-click="handleIconClick" @keyup.enter.native="handleIconClick"></el-input> 
         </div>
       </div>
     </div>
@@ -93,7 +92,7 @@
       <ul>
         <template v-for="(k,x) in randomList">
           <li class="fl">
-            <router-link :to="{ path: '/', query: {id: 1} }" class="w100 h100 block">
+            <router-link :to="{ path: '/inside/orderlist', query: {id: k.goods_id} }" class="w100 h100 block">
               <div class="gift-sp-pic">
                 <template v-for="(a,b) in k.goods_thumb">
                   <img :src="a.url" alt="" class="w100 h100" />

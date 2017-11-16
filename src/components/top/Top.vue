@@ -133,8 +133,6 @@
   }
 
   .quguo-user .goback {
-    position: absolute;
-    right: 25px;
     cursor: pointer;
   }
 

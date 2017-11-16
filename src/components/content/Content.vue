@@ -73,12 +73,12 @@
           </div>
         </div>
       </div>
-      <!--
-      <div class="con-pro clear pro-moves">
-        <img src="../../../static/images/08.png" alt="" style="width: 100%;height: 100%;">
-        <a href="javascript:void(0);" class="block move"></a>
-      </div>
-      -->
+      <router-link :to="{ path: '/inside/orderlist', query: {id: 34}}">
+        <div class="con-pro clear pro-moves">
+          <img src="../../../static/images/08.png" alt="" style="width: 100%;height: 100%;">
+          <a class="block move"></a>
+        </div>
+      </router-link>
       <div class="con-pro clear pro-moves">
         <router-link :to="{ path: 'content/news'}">
           <img src="../../../static/images/09.png" alt="" style="width: 100%;height: 100%;">
@@ -108,12 +108,9 @@
       this.getAlbum();
     },
     created() {
-
-    },
-    watch: {
-      $route (to) {
-
-      }
+      this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1).then((res) => {
+        console.log(res);
+      });
     },
     methods: {
       getIndex () {
@@ -211,13 +208,13 @@
   }
 
   .content .wrap .wrap-li {
-    width: 310px;
-    height: 310px;
+    width: 280px;
+    height: 280px;
     background: url('../../assets/images/05.png') no-repeat ;
     /*filter: blur(1px);*/
     border-radius: 100%;
     text-align: center;
-    margin: 0px 125px 85px 10px;
+    margin: 0 170px 85px 10px;
   }
   .content .wrap .wrap-li p, .wrap-more {
     line-height: 45px;
@@ -231,7 +228,7 @@
   .content .wrap .wrap-li p {
     font-size: 36px;
     font-family: "Arial Black";
-    padding-top: 125px;
+    padding-top: 110px;
   }
 
   .tuijian-header {

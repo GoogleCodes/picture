@@ -24,7 +24,9 @@
       }
     },
     created() {
-
+      this.$ajax.HttpPost('/api/home/pay/ss').then((res) => {
+        console.log(res);
+      });
     },
     computed: {
       user_info() {
