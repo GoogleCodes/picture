@@ -476,7 +476,6 @@
   }
 
   .view .arrow-left {
-    background: url('../../../static/images/detail/index_tab_l.png') no-repeat left top;
     position: absolute;
     left: 10px;
     top: 50%;
@@ -487,7 +486,6 @@
   }
 
   .view .arrow-right {
-    background: url('../../../static/images/detail/index_tab_r.png') no-repeat left bottom;
     position: absolute;
     right: 10px;
     top: 50%;
@@ -519,7 +517,6 @@
   }
 
   .preview .arrow-left {
-    background: url('../../../static/images/detail/feel3.png') no-repeat left top;
     position: absolute;
     left: 10px;
     top: 50%;
@@ -530,7 +527,6 @@
   }
 
   .preview .arrow-right {
-    background: url('../../../static/images/detail/feel4.png') no-repeat left bottom;
     position: absolute;
     right: 10px;
     top: 50%;

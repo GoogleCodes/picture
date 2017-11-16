@@ -50,7 +50,7 @@
     methods: {
       getNews() {
         this.load_data = true;
-        this.$goFetchs.fetchGet(this.$api.get_content.GET_NEWS).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_NEWS).then((res) => {
           if (res.code == 1) {
             this.load_data = false;
             for (let i in res.data) {

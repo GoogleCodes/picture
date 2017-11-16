@@ -1,7 +1,7 @@
 
 import * as type from '../../store/mutations/type'
 
-import { localStor } from '../../common/storage'
+import { cookieStorage } from '../../common/storage'
 
 import { storageSet, storageGet, storageRemove } from '../../api/utils.js'
 
@@ -13,9 +13,11 @@ export default {
     state.count++;
     state.user_info = userinfo || {}
     if (userinfo === null) {
-      storageRemove('user_info')
+      cookieStorage.remove(user_info)
+      // storageRemove('user_info')
     } else {
-      storageSet('user_info',userinfo);
+      cookieStorage.set('user_info',userinfo)
+      // storageSet('user_info',userinfo);
     }
   },
 

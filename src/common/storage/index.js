@@ -3,8 +3,9 @@
  */
 
 import { localStorage } from './storage'
-// import cookieStorage from '../../cookie'
+import { cookieStorage } from './cookie'
 
 export {
   localStorage,
+  cookieStorage
 }

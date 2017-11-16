@@ -42,7 +42,7 @@
         methods: {
           getNews() {
             this.load_data = true;
-            this.$goFetchs.fetchGet(this.$api.get_content.GET_NEWS)
+            this.$ajax.HttpGet(this.$api.get_content.GET_NEWS)
             .then((res) => {
               if (res.code == 0) {
                 this.load_data = false;

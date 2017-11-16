@@ -5,7 +5,6 @@
 import axios from 'axios'
 import qs from 'qs'
 import get_api from '../../common/port_uri'
-import { Message } from 'element-ui'
 
 export default new class GoAxios {
   /**
@@ -26,15 +25,13 @@ export default new class GoAxios {
    * @param {*提示错误} data 
    */
   _error(data) {
-    // Message.error('网络错误')
+    
   }
 
   _isStatus(data) {
     if (data.code == get_api.get_code.error) {
-      // Message.warning(response.data.msg)
       return false;
     } else if (data.code == get_api.get_code.success) {
-      // Message.success(data.msg)
       return true;
     }
   }
@@ -67,6 +64,7 @@ export default new class GoAxios {
           resolve(response.data)
         }
       }).catch(function (error) {
+        reject()
         that._error(error);
       })
     })

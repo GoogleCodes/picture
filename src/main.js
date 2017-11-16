@@ -22,14 +22,8 @@ require('swiper/dist/css/swiper.css')
 //  导入路由
 import VueRouter from 'vue-router'
 import {
-  fetchGet,
-  fetchPost,
-  fetchPut,
   fetchDelete,
   storageSet } from './api/utils.js'
-Vue.prototype.$getData = fetchGet;
-Vue.prototype.$postData = fetchPost;
-Vue.prototype.$putData = fetchPut;
 Vue.prototype.$deleteData = fetchDelete;
 Vue.prototype.$storageSet = storageSet;
 

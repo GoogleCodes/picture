@@ -108,9 +108,7 @@
       this.getAlbum();
     },
     created() {
-      this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1).then((res) => {
-        console.log(res);
-      });
+      this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1).then((res) => {});
     },
     methods: {
       getIndex () {
@@ -121,7 +119,7 @@
         });
       },
       getAlbum () {
-       this.$getData(this.$api.get_content.album).then((res) => {
+       this.$ajax.HttpGet(this.$api.get_content.album).then((res) => {
          this.data.albumList = res.data;
        });
       },
@@ -158,6 +156,7 @@
 
   .content .wrap {
     width: 1200px;
+    overflow: hidden;
     height: 100%;
     margin: 100px auto 0px;
   }
@@ -208,13 +207,13 @@
   }
 
   .content .wrap .wrap-li {
-    width: 280px;
-    height: 280px;
+    width: 260px;
+    height: 260px;
     background: url('../../assets/images/05.png') no-repeat ;
     /*filter: blur(1px);*/
     border-radius: 100%;
     text-align: center;
-    margin: 0 170px 85px 10px;
+    margin: 0 150px 85px 38px;
   }
   .content .wrap .wrap-li p, .wrap-more {
     line-height: 45px;

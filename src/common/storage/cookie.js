@@ -1,17 +1,13 @@
-/**
- * Created by SamHong on 2017/10/9.
- */
-
 //cookie存储类
 //存储前缀
-import {storage_prefix} from '../../common/config'
-
-import {tools_verify, tools_uri} from 'common/tools'
+import { storage_prefix } from '../../common/config'
+import { tool_verify } from '../../api/tool'
+import { tools_uri } from '../../api/tool'
 
 /**
  * cookies操作类
  */
-export default new class Cookie {
+class Tools_Cookies {
 
   /**
    * 构造函数
@@ -55,7 +51,7 @@ export default new class Cookie {
    * @returns {Cookie}
    */
   set(key, value, options) {
-    options = tools_verify.isObject(options) ? options : {expires: options}
+    options = tool_verify.isObject(options) ? options : {expires: options}
     // 如果expires为空的话那么就设置为session.
     let expires = options.expires !== undefined ? options.expires : (this.defaults.expires || ''),
       expiresType = typeof(expires)
@@ -87,7 +83,7 @@ export default new class Cookie {
    * @returns {Cookie}
    */
   remove(keys) {
-    keys = tools_verify.isArray(keys) ? keys : [keys]
+    keys = tool_verify.isArray(keys) ? keys : [keys]
     for (let i = 0, l = keys.length; i < l; i++) {
       this.set(keys[i], '', -1);
     }
@@ -113,3 +109,5 @@ export default new class Cookie {
     return result
   }
 }
+
+export const cookieStorage = new Tools_Cookies()
