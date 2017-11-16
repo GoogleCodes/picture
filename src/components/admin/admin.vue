@@ -7,12 +7,14 @@
   </div>
 </template>
 
-
 <script type="text/javascript">
 
   import heads from '@/components/top/Top.vue'
   import eleLeft from '@/components/admin/eleleftNav.vue'
   import foots from '@/components/footer/Footer.vue'
+
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
 
   export default {
       name: 'admin',
@@ -24,19 +26,24 @@
       created () {
           this.isUserTrue();
       },
+      computed: {
+        ...mapGetters({
+            get_user_info: GET_USER_INFO
+        }),
+      },
       components: {
           heads,
           foots,
           eleLeft
       },
       methods: {
-          isUserTrue() {
-              if (localStorage.getItem('user_info') === 'undefined') {
-                  setTimeout(() => {
-                      this.$router.push({ path: '/user/login'}, 200)
-                  });
-              }
-          }
+        isUserTrue() {
+            if (this.get_user_info == 'null') {
+                setTimeout(() => {
+                    this.$router.push({ path: '/user/login'}, 200)
+                });
+            }
+        }
       },
   };
 </script>

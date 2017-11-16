@@ -6,7 +6,6 @@
         <div class="line"></div>
         <h5 class="order-h5">历史订单</h5>
       </div>
-
       <div class="order-title">
         <ul>
           <li class="fl">商品信息</li>
@@ -17,7 +16,6 @@
           <li class="fl">操作</li>
         </ul>
       </div>
-
       <div class="order-table">
         <template v-for="(item, index) in orderList">
           <table>
@@ -69,6 +67,10 @@
 </template>
 
 <script type="text/javascript">
+
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+
   export default {
     data() {
       return {
@@ -77,7 +79,9 @@
       }
     },
     computed: {
-      
+      ...mapGetters({
+        get_user_info: GET_USER_INFO
+      }),
     },
     mounted() {
       this.getOrderAdmin();
@@ -85,7 +89,7 @@
     methods: {
       getOrderAdmin() {
         this.$ajax.HttpPost(this.$api.get_content.GET_ORDER_ADMIN,{
-          uid:  + this.$goFetch.storageGet('user_info').user.id
+          uid: + this.get_user_info.user.id
         }).then((res) => {
           this.orderList = res.data.data.data;
           this.orderPages = res.data.data;

@@ -131,6 +131,10 @@
 </template>
 
 <script type="text/javascript">
+
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+
   export default {
     data() {
       return {
@@ -139,7 +143,9 @@
       }
     },
     computed: {
-
+      ...mapGetters({
+        get_user_info: GET_USER_INFO
+      }),
     },
     mounted() {
       this.getToOrder();
@@ -148,7 +154,7 @@
       getToOrder() {
         this.$ajax.HttpPost('/api/home/order/oneorder',{
           id: this.$route.query.id,
-          uid: this.$goFetch.storageGet('user_info').user.id
+          uid: this.get_user_info.user.id
         }).then((res) => {
           this.addressData = this.$goFetch.goJson(res.data.address);
           this.orderData = res.data;

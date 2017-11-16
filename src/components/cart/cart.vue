@@ -76,6 +76,9 @@
   import ElCheckbox from "../../../node_modules/element-ui/packages/checkbox/src/checkbox";
   import ElCheckboxGroup from "../../../node_modules/element-ui/packages/checkbox/src/checkbox-group";
 
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+
   export default {
     name: 'cart',
     data () {
@@ -89,7 +92,6 @@
           multipleSelection:[],
           delIndex: null,       //  删除的索引
           isChonseShop: 0,
-          userID: this.$goFetch.storageGet('user_info').user.id,
           load_data: false,
           cart_number: 0,
         }
@@ -109,8 +111,14 @@
     //  this.getByDataID();
     },
     computed: {
+      ...mapGetters({
+        get_user_info: GET_USER_INFO
+      }),
       count() { //  购物车总数
         return this.$store.state.cart_count;
+      },
+      userID() {
+        return this.get_user_info.user.id;
       }
     },
     watch: {
@@ -118,7 +126,6 @@
     },
     methods: {
       fetchData() {
-        //  this.$postData this.$ajax.HttpPost
         this.load_data = true;
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
         {uid: this.userID}).then((res) => {

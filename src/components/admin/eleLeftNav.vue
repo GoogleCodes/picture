@@ -2,7 +2,7 @@
   <div class="admin-left fl">
     <div class="admin-pic">
       <img src="../../assets/images/16.png" alt="" style="width: 100%;height: 100%;">
-      <h2 class="admin-uname ft-16">{{ list.name }}</h2>
+      <h2 class="admin-uname ft-16">{{ get_user_info.user.name }}</h2>
       <p class="admin-vip"></p>
     </div>
     <div class="admin-nav">
@@ -54,38 +54,29 @@
 </template>
 
 <script type="text/javascript">
+
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+
   export default {
     data() {
       return {
-        list: {},
-        vipname: '',
+        
       }
     },
     computed: {
-        user_info() {
-          try {
-            let arr = this.$goFetch.storageGet('user_info')
-            this.list = arr.user
-            console.log(this.list)
-          } catch(e) {}
-          return this.$store.state.user_info;
-        }
+      ...mapGetters({
+        get_user_info: GET_USER_INFO
+      }),
     },
     watch: {
       
     },
     mounted() {
-      this.isUserTrue();
+      
     },
     methods: {
-      isUserTrue() {
-        this.user_info;
-        if (this.$goFetch.storageGet('user_info') === 'undefined') {
-          setTimeout(() => {
-            this.$router.push({ path: '/user/login'}, 200)
-          });
-        }
-      },
+      
       goBack() {
         this.$confirm('确定要退出吗?, 是否继续?', '提示', {
           confirmButtonText: '确定',

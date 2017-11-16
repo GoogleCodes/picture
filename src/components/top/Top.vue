@@ -42,6 +42,7 @@
 
   import {mapGetters, mapActions} from 'vuex'
   import { GET_USER_INFO } from '../../store/getters/type'
+  import { SET_USER_INFO } from '../../store/actions/type'
 
   export default {
       name: 'top',
@@ -60,20 +61,17 @@
         ...mapGetters({
           get_user_info: GET_USER_INFO
         }),
-        user_info() {
-
-        },
         cart_count() { //  购物车总数
           return this.$store.state.cart_count;
         }
-      },
-      created() {
-        // console.log(this.$cookie.get('Webstorm-9fa4f3aa'));
       },
       watch: {
 
       },
       methods: {
+        ...mapActions({
+          set_user_info: SET_USER_INFO
+        }),
         fetchData() {
           this.load_data = true;
           this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
@@ -98,22 +96,11 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$message({
-              type: 'success',
-              message: '退出成功!'
-            });
             this.closeuser = false;
-            // this.$goFetch.storageRemove('user_info');
-            // this.$goFetch.storageSet('user_info',undefined);
-            //  跳回首页
-            setTimeout(() => {
-              this.$router.push({ path: '/'});
-            }, 1500);
+            this.set_user_info(null);
+            setTimeout(this.$router.replace({ path: '/'}), 500);
           }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消退出'
-            });
+            
           });
         }
       },

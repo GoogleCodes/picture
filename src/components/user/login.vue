@@ -74,10 +74,7 @@
       }
     },
     created () {
-      //  调用Vuex action
       this.$store.commit('GET_CHECKED_LOGIN',this.checked_login);
-      // this.$store.dispatch("set_user_info");
-      // this.goBackLogin();
     },
     methods: {
       ...mapActions({
