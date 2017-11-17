@@ -7,17 +7,11 @@ import qs from 'qs'
 import get_api from '../../common/port_uri'
 
 export default new class GoAxios {
+
   /**
    * 构造函数
    */
   constructor() {
-  }
-
-  /**
-   * 初始化
-   */
-  init() {
-    axios.defaults.baseURL = get_api.get_http_ip.GET_YUYIN_HTTP
   }
 
   /**
@@ -91,6 +85,35 @@ export default new class GoAxios {
       }).catch(function (error) {
         reject()
         that._error(error)
+      })
+    })
+  }
+
+  /**
+   * 
+   * @param {* url信息} target 
+   * @param {* 发送的数据} data 
+   */
+  HttpDelete(target, data) {
+    if (data) {
+      var params = [];
+      for (var i in data) {
+        params.push(i);
+        params.push(data[i])
+      }
+      target = target + '/' + params.join('/')
+    }
+    return new Promise((resolve, reject) => {
+      axios({
+        url: get_api.get_http_ip.GET_YUYIN_HTTP + 'public' + target,
+        method: 'delete',
+        withCredentials: false
+      }).then(function (response) {
+        if (that._isStatus(response.data)) {
+          resolve(response.data)
+        }
+      }).catch(function (error) {
+        reject(error)
       })
     })
   }

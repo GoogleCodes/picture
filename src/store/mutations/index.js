@@ -21,6 +21,11 @@ export default {
     }
   },
 
+  //  删除cookies
+  [type.REMOVE_USER_INFO](state, userinfo) {
+    cookieStorage.remove(userinfo)
+  },
+
   //  用session存储信息
   [type.SET_USER_SESS](state, userinfo) {
     state.count++;

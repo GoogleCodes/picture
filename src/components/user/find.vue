@@ -14,9 +14,8 @@
             <div class="form-input">
               <div class="form-h2 lineHeight50 fl">手机号码：</div>
               <el-form-item prop="phone">
-                <el-input v-model="ruleForm.phone"
-                          class="inputInfo input fl"
-                          placeholder="手机号码" style="width: 60%;" ></el-input>
+                <el-input v-model="ruleForm.phone" class="inputInfo input fl"
+                          placeholder="手机号码" style="width: 60%;"></el-input>
                 <button class="getCode fl" @click="getCode" style="margin-top: 5px;">{{ num }}</button>
               </el-form-item>
             </div>
@@ -43,7 +42,8 @@
             <el-button class="comfirm" style="width: 207px;margin-left: 88px;" @click="goFind('ruleForm')">提交</el-button>
           </div>
           <div class="clear form-desc-service">
-            若您无法使用上述方法找回，请联系客服 <a href="tel:0757-800600">0757-800600</a>
+            <span>若您无法使用上述方法找回，请联系客服</span>
+            <a href="tel:0757-800600">0757-800600</a>
           </div>
         </div>
       </div>

@@ -31,7 +31,7 @@
           <template v-for="(item, index) in data.albumList">
             <div class="wrap-li fl" :style="{background: 'url('+ item.shotcut +') no-repeat 100%'}">
               <div class="wrap-li-pic"></div>
-              <div v-if="item.title !== ''" style="background: rgba(0,0,0,0.3);width: 100%;height: 100%;border-radius: 100%;">
+              <div v-if="item.title !== ''" style="width: 100%;height: 100%;border-radius: 100%;">
                 <router-link :to="{ path: '/inside/orderlist', query: {id: item.id }}" class="wrap-more block">
                   <p class="ft-16">{{ item.title }}</p>
                   <span>{{ item.title }}</span>
@@ -40,39 +40,41 @@
               <div v-else="" style="background: rgba(255,255,255,0.1);width: 100%;height: 100%;border-radius: 100%;"></div>
             </div>
           </template>
-          <div class="wrap-tujian clear">
-            <div class="tuijian-header">
-              <h1 class="tuijian-h1">热门推荐</h1>
-              <div class="line"></div>
-              <span class="tuijian-span">时光印记，定格美好的回忆</span>
-            </div>
-            <div  v-loading="load_data" element-loading-text="正在加载中...">
-              <div style="margin-top: 50px;">
-                <template v-for="item in data.arr">
-                  <div class="card-tuijian fl">
-                      <router-link class="fl block" :to="{ path: '/inside/orderlist', query: {id: item.goods_id}}">
-                        <div class="card-tuijian-pic fl">
-                          <template v-for="(x, i) in item.goods_thumb">
-                            <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
-                          </template>
-                        </div>
-                        <div class="card-tuijian-desc fl">
-                          <div class="desc-title">{{ item.goods_name }}</div>
-                          <span class="desc-msg blocks">{{ item.goods_remark }}</span>
-                          <div class="desc-pic">
-                            <template v-for="(x, i) in item.goods_thumb">
-                              <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
-                            </template>
-                          </div>
-                        </div>
-                      </router-link>
+        </div>
+      </div>
+
+      <div class="wrap-tujian clear">
+        <div class="tuijian-header">
+          <h1 class="tuijian-h1">热门推荐</h1>
+          <div class="line"></div>
+          <span class="tuijian-span">时光印记，定格美好的回忆</span>
+        </div>
+        <div>
+          <div style="margin-top: 50px;">
+            <template v-for="item in data.arr">
+              <div class="card-tuijian fl">
+                  <router-link class="fl block" :to="{ path: '/inside/orderlist', query: {id: item.goods_id}}">
+                    <div class="card-tuijian-pic fl">
+                      <template v-for="(x, i) in item.goods_thumb">
+                        <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
+                      </template>
                     </div>
-                </template>
-              </div>
-            </div>
+                    <div class="card-tuijian-desc fl">
+                      <div class="desc-title">{{ item.goods_name }}</div>
+                      <span class="desc-msg blocks">{{ item.goods_remark }}</span>
+                      <div class="desc-pic">
+                        <template v-for="(x, i) in item.goods_thumb">
+                          <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
+                        </template>
+                      </div>
+                    </div>
+                  </router-link>
+                </div>
+            </template>
           </div>
         </div>
       </div>
+
       <router-link :to="{ path: '/inside/orderlist', query: {id: 34}}">
         <div class="con-pro clear pro-moves">
           <img src="../../../static/images/08.png" alt="" style="width: 100%;height: 100%;">
@@ -95,7 +97,6 @@
     data() {
       return {
         albumVisi: false,
-        load_data: false,
         data: {
           arr: [],
           desc: '',
@@ -108,20 +109,25 @@
       this.getAlbum();
     },
     created() {
-      this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1).then((res) => {});
+      this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1)
+      .then((res) => {
+
+      });
     },
     methods: {
       getIndex () {
-        this.load_data = true;
         this.$ajax.HttpGet(this.$api.get_content.GET_ORDER +"?is_hot=1" + "&limit=" + 4).then((res) => {
-          this.load_data = false;
           this.data.arr = res.data;
         });
       },
       getAlbum () {
-       this.$ajax.HttpGet(this.$api.get_content.album).then((res) => {
-         this.data.albumList = res.data;
-       });
+        this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1)
+        .then((res) => {
+          this.data.albumList = res.data;
+        });
+      //  this.$ajax.HttpGet(this.$api.get_content.album).then((res) => {
+      //    this.data.albumList = res.data;
+      //  });
       },
     }
   }
@@ -155,7 +161,7 @@
   }
 
   .content .wrap {
-    width: 1200px;
+    width: 1050px;
     overflow: hidden;
     height: 100%;
     margin: 100px auto 0px;
@@ -165,7 +171,7 @@
     width: 320px;
     height: 250px;
     position: relative;
-    margin: 0 120px 0 0;
+    margin: 0 45px 0 0;
   }
 
   .content .wrap .wrap-card .wrap-card-icon {
@@ -213,7 +219,7 @@
     /*filter: blur(1px);*/
     border-radius: 100%;
     text-align: center;
-    margin: 0 150px 85px 38px;
+    margin: 0 68px 85px 38px;
   }
   .content .wrap .wrap-li p, .wrap-more {
     line-height: 45px;
@@ -247,6 +253,11 @@
     height: 1px;
     background: #333;
     margin: 20px auto 10px;
+  }
+
+  .wrap-tujian {
+    width: 1200px;
+    margin: 0px auto;
   }
 
   .wrap-tujian .card-tuijian {

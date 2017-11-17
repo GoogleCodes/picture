@@ -136,6 +136,7 @@
         }).catch((error) => {
           this.load_data = false;
         });
+        this.load_data = false;
       },
       getByDataID() {
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_TODATA,{
@@ -166,18 +167,17 @@
         this.$router.push({ path : '../pages/onload', query: {id: id}});
       },
       changeNumber(item,flag) {
-        let userid = this.$goFetch.storageGet('user_info').user.id;
         if (flag > 0) {
           item.num += 1;
           this.$ajax.HttpPost(this.$api.get_content.UPDATE_CART,{
             id: item.id,
-            uid: userid,
+            uid: this.userID,
             num: item.num, }).then((res) => {});
         } else {
           item.num -= 1;
           this.$ajax.HttpPost(this.$api.get_content.UPDATE_CART,{
             id: item.id,
-            uid: userid,
+            uid: this.userID,
             num: item.num, }).then((res) => {});
           if(item.num <= 1) {
             item.num = 1;
@@ -204,7 +204,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$postData(this.$api.get_content.DELETE_CART_DATA,{
+          this.$ajax.HttpPost(this.$api.get_content.DELETE_CART_DATA,{
             id: item.id,
             uid: this.userID}).then((res) => {});
           this.$message({

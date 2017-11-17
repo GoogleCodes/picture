@@ -214,9 +214,7 @@
             '&tel='+ this.ruleForm.phone +
             '&adr='+ this.waddress + this.ruleForm.address).then((res) => {
               this.layer = false;
-              setTimeout((res) => {
-                location.reload();
-              }, 500);
+              setTimeout(location.reload(), 500);
           })
         });
       },

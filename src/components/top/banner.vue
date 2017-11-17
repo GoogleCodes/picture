@@ -1,16 +1,20 @@
 <template>
   <!-- banner start -->
-  <div v-loading="load_data" element-loading-text="正在加载中...">
+  <div>
     <el-carousel height="500px">
-      <template v-for="(item, index) in list">
       <el-carousel-item>
         <div class="banner clear">
+        <!--
           <router-link :to="{ path: item.url, query: {id: item.id}}">
             <img :src="item.img" :alt="item.name" >
           </router-link>
+        -->
+          <div class="banner-title">杺 叶</div>
+          <div class="banner-text">
+            以 “匠杺”代表着一木一心，尽在人心。我们用心制造每一件印品的高质量，尽心做到每个客户满意。用心制造别具匠心的美好，这是我们对产品服务理念的定义。
+          </div>
         </div>
       </el-carousel-item>
-      </template>
     </el-carousel>
   </div>
   <!-- banner end -->
@@ -38,9 +42,7 @@
     methods: {
       //  获取主图
       getBanner() {
-        this.load_data = true;
         this.$ajax.HttpGet(this.$api.get_content.GET_BANNER).then((res) => {
-          this.load_data = false;
           this.list = res.data;
         });
       }

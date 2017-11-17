@@ -53,7 +53,7 @@
           }
           this.load_data = true;
           this.uid = this.$goFetch.storageGet('user_info').user.id;
-          this.$goFetch.fetchPost(this.$api.port_user.get_chapwd +
+          this.$ajax.HttpPost(this.$api.port_user.get_chapwd +
             '?id= '+ this.uid +
             '&opwd='+ this.ruleForm.nowpwd +
             '&npwd='+ this.ruleForm.newpwd +

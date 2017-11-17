@@ -1,7 +1,7 @@
 <template>
   <div style="height: 103px;" v-show="$route.meta.nav">
     <!-- nav start -->
-    <div class="nav clear" v-loading="load_data" element-loading-text="正在加载中...">
+    <div class="nav clear">
       <ul class="fl">
         <li>
           <router-link :to="{ path: '/'}" class="blocks nav-href">首页</router-link>
@@ -47,10 +47,8 @@
     },
     methods: {
       getNav() {
-        this.load_data = true;
         this.$ajax.HttpGet(this.$api.get_content.GET_NAV)
         .then((res) => {
-          this.load_data = false;
           this.data.list = res.data;
         });
       }

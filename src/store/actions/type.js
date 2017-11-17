@@ -2,6 +2,9 @@
 //设置用户信息和登录
 export const SET_USER_INFO = 'set_user_info'
 
+//  删除cookie登录信息
+export const REMOVE_USER_INFO = 'remove_user_info'
+
 //  SESSION
 export const SET_USER_SESS = 'set_user_sess'
 

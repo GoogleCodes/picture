@@ -5,6 +5,9 @@ export const SET_USER_INFO = 'SET_USER_INFO'
 //session
 export const SET_USER_SESS = 'SET_USER_SESS'
 
+//  删除cookie登录信息
+export const REMOVE_USER_INFO = 'REMOVE_USER_INFO'
+
 export const INIT = 'INIT'
 
 //  修改购物车单个商品

@@ -12,7 +12,7 @@
               <div class="iconfont icon-yonghu fl" > <!-- :style="{background:'url('+ author +')'}" -->
                 <img :src="list.author" alt="" class="w11 h100" >
               </div>
-              <div class="icon-username fl">{{ get_user_info.user.name }}</div>
+              <div class="icon-username fl">{{ user_name }}</div>
             </router-link>
           </div>
           <div class="fl marLeft">|</div>
@@ -42,26 +42,28 @@
 
   import {mapGetters, mapActions} from 'vuex'
   import { GET_USER_INFO } from '../../store/getters/type'
-  import { SET_USER_INFO } from '../../store/actions/type'
+  import { SET_USER_INFO, REMOVE_USER_INFO } from '../../store/actions/type'
+
+  import { cookieStorage } from '../../common/storage'
 
   export default {
       name: 'top',
       data () {
           return {
-            closeuser: true,
+            closeuser: false,
             author: '',
             list: {},
+            user_name: ''
           };
       },
       mounted() {
-        this.isUser();
         this.fetchData();
       },
       computed: {
         ...mapGetters({
           get_user_info: GET_USER_INFO
         }),
-        cart_count() { //  购物车总数
+        cart_count() {
           return this.$store.state.cart_count;
         }
       },
@@ -70,22 +72,20 @@
       },
       methods: {
         ...mapActions({
-          set_user_info: SET_USER_INFO
+          set_user_info: SET_USER_INFO,
+          remove_user_info: REMOVE_USER_INFO,
         }),
         fetchData() {
-          this.load_data = true;
-          this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
-          {uid: this.get_user_info.user.id}).then((res) => {
-            this.$store.commit('SET_CART_NUMBER', res.data.length);
-          });
-        },
-        isUser() {
-          let that = this, userJson = this.get_user_info;
-          if (this.get_user_info !== null) {
-            that.closeuser = true;
-          } else {
-            that.closeuser = false;
-          }
+          let that = this;
+          this.get_user_info.user !== undefined ? this.closeuser = true : this.closeuser = false;
+          try {
+            this.user_name = this.get_user_info.user.name;
+            this.load_data = true;
+            this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
+            {uid: this.get_user_info.user.id}).then((res) => {
+              this.$store.commit('SET_CART_NUMBER', res.data.length);
+            });
+          } catch(e) {}
         },
         goCart() {
           this.$router.push({ path: '/cart/cart' });
@@ -97,10 +97,11 @@
             type: 'warning'
           }).then(() => {
             this.closeuser = false;
-            this.set_user_info(null);
+            let cookie_user = this.get_user_info;
+            this.remove_user_info(cookie_user);
             setTimeout(this.$router.replace({ path: '/'}), 500);
           }).catch(() => {
-            
+
           });
         }
       },

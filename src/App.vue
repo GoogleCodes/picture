@@ -13,17 +13,6 @@
 
 export default {
   name: 'app',
-  data() {
-      return {
-
-      };
-  },
-  crated() {
-
-  },
-  methods: {
-
-  },
   components: {
     heads,
     vfoot

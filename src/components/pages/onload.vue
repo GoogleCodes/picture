@@ -96,7 +96,6 @@
       handleAvatarSuccess(res, file, fileList) {
         this.file = res.data;
         this.fileList = fileList;
-        console.log(this.fileList, "+-+------------------------------");
         this.$ajax.HttpPost('/api/home/shopcar/upSave',{
           id: this.$route.query.id,
           img: res,
@@ -114,7 +113,7 @@
             this.fileList = fileList[i];
             console.log(fileList[i]);
           }
-        } catch (e){ 
+        } catch (e){
 
         }
       }

@@ -7,8 +7,8 @@ export default {
     commit(mutations.SET_USER_INFO, userinfo)
   },
 
-  [actions.SET_USER_SESS]({commit}, userinfo){
-    commit(mutations.SET_USER_SESS, userinfo)
+  [actions.REMOVE_USER_INFO]({commit}, userinfo){
+    commit(mutations.REMOVE_USER_INFO, userinfo)
   },
 
   //  初始化
