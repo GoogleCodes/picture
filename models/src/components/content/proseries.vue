@@ -24,18 +24,35 @@
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
 
   export default {
-    components: {ElButton}, data() {
-          return {
-
-          }
-      },
+    components: {ElButton},
+    data() {
+      return {
+        load_data: false,
+        data: {
+          list: [],
+          shotcut: [],
+          listPages: [],
+        },
+      }
+    },
     created() {
 
     },
     mounder () {
-
+      this.getOrder();
     },
     methods: {
+      getOrder() {
+        this.load_data = true;
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?limit=" + 4).then((res) => {
+          this.load_data = false;
+          this.data.list = res.data;
+          this.data.listPages = res.data;
+          this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.$route.query.id).then((res) => {
+            this.data.shotcut = res.data;
+          });
+        });
+      },
       goInfo(id) {
         this.$router.push({ path: '/pages/detail', query: {id:id}});
       }

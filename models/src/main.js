@@ -33,10 +33,17 @@ Vue.prototype.$storageSet = storageSet;
 Vue.prototype.$storageGet = storageGet;
 
 import * as fetch from './api/utils.js'
-import { tool_verify } from './api/tool'
+import { tool_verify, tools_axios,tools_filter } from './api/tool'
 //  验证
 Vue.prototype.$toolVerify = tool_verify;
+Vue.prototype.$ajax = tools_axios;
 Vue.prototype.$goFetch = fetch;
+
+//  加载过滤器
+Vue.filter('goPrice', tools_filter.changePrice);
+Vue.filter('gotimes', tools_filter.goTime);
+Vue.filter('goTest', tools_filter.texts);
+
 //  导入API
 import api from './common/port_uri'
 Vue.prototype.$api = api;

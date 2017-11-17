@@ -3,7 +3,11 @@
  */
 
 import tool_verify from './tools_verify'
+import tools_axios from './tools_axios'
+import tools_filter from './tools_filter'
 
 export {
-  tool_verify
+  tool_verify,
+  tools_axios,
+  tools_filter
 }

@@ -11,7 +11,7 @@
             <!--</div>-->
             <div class="add-desc">
               <p style="margin-left: 16px;">
-                <span class="add-desc-name">邓某某</span>
+                <span class="add-desc-name">某某某</span>
                 <span class="add-desc-phone">13232800159</span>
               </p>
               <p class="add-desc-msg"><i class="iconfont icon-dizhi"></i>广东省佛山市顺德区杏坛镇光华村</p>
@@ -19,49 +19,78 @@
             <div class="border-line-vertical" style="right: 0px;"></div>
             <div class="border-line"></div>
         </div>
-        <div class="balance-list">
-            <div class="balan-pic fl">
-              <img src="../../../static/images/30.png" alt="" class="w100 h100">
+        <template v-for="(item, index) in listStop">
+            <div class="balance-list">
+                <div class="balan-pic fl">
+                    <img src="../../../static/images/30.png" alt="" class="w100 h100">
+                </div>
+                <div class="balan-text fl">
+                    <div class="bal-title ft-16">{{ item.shopName }}</div>
+                    <p>单价 : <i class="c_b11e25">0.60元</i></p>
+                    <p>数量 : {{ item.number }}</p>
+                </div>
+                <ul class="clear">
+                    <li>
+                        <span>商品合计 : </span>
+                        <span class="fr">¥ {{ lastPaySum }}</span>
+                    </li>
+                    <li>
+                        <span>实收金额 : </span>
+                        <span class="fr c_e64147" style="font-weight: bold">¥ 0.60</span>
+                    </li>
+                    <li class="c_b11e25">
+                        <span>注 : 快递费用自付</span>
+                    </li>
+                </ul>
             </div>
-            <div class="balan-text fl">
-                <div class="bal-title ft-16">照片冲印、手机上传打印照片</div>
-                <p>单价 : <i class="c_b11e25">0.60元</i></p>
-                <p>数量 : 1</p>
-            </div>
-            <ul class="clear">
-                <li>
-                    <span>商品合计 : </span>
-                    <span class="fr">¥ 0.60</span>
-                </li>
-                <li>
-                    <span>实收金额 : </span>
-                    <span class="fr c_e64147" style="font-weight: bold">¥ 0.60</span>
-                </li>
-                <li class="c_b11e25">
-                    <span>注 : 快递费用自付</span>
-                </li>
-            </ul>
-        </div>
-        <el-button class="nowGoPay">立即支付</el-button>
+        </template>
+
+        <el-button class="nowGoPay" @click="goToPay()">立即支付</el-button>
     </div>
 </template>
 
 <script type="text/javascript">
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
     export default {
-      components: {ElButton}, data() {
-            return {
-
-            }
-        },
-        created() {
-
-        },
-        methods: {
-            goSize() {
-
-            }
+      components: {ElButton},
+      data() {
+        return {
+          listStop: [{
+            shopName: '照片冲印、手机上传打印照片',
+            price: 50.5,
+            number: 1,
+          }],
         }
+      },
+      created() {
+
+      },
+      computed: {
+        amount () {
+          return this.listStop.length;
+        },
+        lastPaySum() {
+          let sum = 0;
+          if (this.amount > 0) {
+            for(let i in this.listStop) {
+              sum += this.listStop[i].price * this.listStop[i].number;
+            }
+          }
+          return sum.toFixed(2)
+        },
+      },
+      methods: {
+        goSize() {
+
+        },
+        goToPay() {
+          let options = {
+
+          };
+          //  跳转页面
+          this.$router.push({ path: '/pages/gopay' });
+        }
+      }
     }
 </script>
 
@@ -90,7 +119,7 @@
     clear: both;
     overflow: hidden;
     background: #fff;
-    padding: 10px 10px;
+    padding: 10px 10px 0;
   }
   .balance-list .balan-pic {
     width: 35%;

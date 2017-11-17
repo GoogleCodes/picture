@@ -9,11 +9,14 @@ const get_other = require('./other');
 const get_http_ip = require('./httpip');
 //  收货地址
 const get_address = require('./address');
+//  状态
+const get_code = require('./code');
 
 module.exports = {
   port_user,
   get_content,
   get_other,
   get_address,
-  get_http_ip
+  get_http_ip,
+  get_code
 }

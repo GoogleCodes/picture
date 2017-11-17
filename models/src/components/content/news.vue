@@ -1,9 +1,6 @@
 <template>
   <div class="bgColor">
       <div class="news">
-        <!--
-           v-loading="load_data" element-loading-text="加载中..."
-        -->
           <ul>
               <template v-for="(item, index) in list">
                   <li class="fl">
@@ -12,10 +9,8 @@
                               <img :src="item.more.thumbnail" alt="" class="w100 h100">
                           </div>
                           <div class="news-text">
-                              <router-link :to="{ path: '/'}" class="block w100 h100">
-                                  <div class="title ft-16">{{ item.post_title }}</div>
-                                  <div class="date">{{ item.published_time | texts }}</div>
-                              </router-link>
+                                <div class="title ft-16">{{ item.post_title }}</div>
+                                <div class="date">{{ item.published_time | goTest }}</div>
                           </div>
                       </router-link>
                       <div class="more clear ft-16">
@@ -40,37 +35,14 @@
         created() {
           this.getNews();
         },
-        filters: {
-          texts (value) {
-            return value.substring(0,10);
-          },
-          time: function (value) {
-            let d = new Date(parseInt(value) * 1000);
-            var years = d.getFullYear();
-            var month = d.getMonth() + 1;
-            var days = d.getDate();
-            var hours = d.getHours();
-            var minutes = d.getMinutes();
-            var seconds = d.getSeconds();
-            return years + "-" + month + "-" + days + " " + (hours > 9 ? hours : '0' + hours) + ':' + (minutes > 9 ? minutes : '0' + minutes);
-          }
-        },
         methods: {
           getNews() {
             this.load_data = true;
-            this.$goFetch.fetchGet(this.$api.get_content.GET_NEWS).then((res) => {
+            this.$ajax.HttpGet(this.$api.get_content.GET_NEWS).then((res) => {
               if (res.code == 0) {
                 this.load_data = false;
-                this.$message({
-                  message: res.msg,
-                  type: 'warning'
-                });
               } else if (res.code == 1) {
                 this.load_data = false;
-                this.$message({
-                  message: res.msg,
-                  type: 'success'
-                });
                 this.list = res.data;
               }
             });

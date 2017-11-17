@@ -57,7 +57,7 @@
     methods: {
       getNews() {
         this.load_data = true;
-        this.$goFetch.fetchGet(this.$api.get_content.GET_NEWS).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_NEWS).then((res) => {
           if (res.code == 0) {
             this.load_data = false;
             this.$message({
@@ -70,7 +70,6 @@
               message: res.msg,
               type: 'success'
             });
-            console.log(this.$route.query.newid);
             for (let i in res.data) {
               if (res.data[i].id == this.$route.query.newid) {
                 this.list = res.data[i];

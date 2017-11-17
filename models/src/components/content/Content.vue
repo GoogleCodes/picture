@@ -8,32 +8,24 @@
       </div>
 
       <div class="series">
-        <div class="shop-series fl">
-          <router-link :to="{ path: '/content/proseries'}" class="block">
-            <div class="shop-series-pic">
-              <img src="../../../static/images/30.png" class="w100 h100" alt="">
-            </div>
-            <div class="shop-series-text">
-              <p class="ft-18">相册系列</p>
-              <p class="ft-14">了解更多 &gt;</p>
-            </div>
-          </router-link>
-        </div>
-        <div class="shop-series fl">
-          <router-link :to="{ path: '/content/proseries'}" class="block">
-            <div class="shop-series-pic">
-              <img src="../../../static/images/30.png" class="w100 h100" alt="">
-            </div>
-            <div class="shop-series-text">
-              <p class="ft-18">相册系列</p>
-              <p class="ft-14">了解更多 &gt;</p>
-            </div>
-          </router-link>
-        </div>
+        <template v-for="(k,i) in data.arr">
+          <div class="shop-series fl">
+            <router-link :to="{ path: '/content/proseries'}" class="block">
+              <div class="shop-series-pic">
+                <template v-for="y in k.goods_thumb">
+                  <img :src="y.url" class="w100 h100" alt="">
+                </template>
+              </div>
+              <div class="shop-series-text">
+                <p class="ft-18">{{ k.goods_name }}</p>
+                <p class="ft-14">了解更多 &gt;</p>
+              </div>
+            </router-link>
+          </div>
+        </template>
         <div>
           <el-button>更多产品&gt;</el-button>
         </div>
-
       </div>
     </div>
 
@@ -45,20 +37,22 @@
       </div>
       <div class="re-wrap-shop clear">
         <el-carousel height="180px" style="padding: 0px;">
-          <el-carousel-item>
-            <div class="card-tuijian fl" @click="goDetail(item)">
-              <div class="card-tuijian-pic fl">
-                <img src="../../../static/images/06.png" alt="" style="width: 100%;height: 100%;"/>
-              </div>
-              <div class="card-tuijian-desc fl">
-                <div class="desc-title ft-16">儿童款相册</div>
-                <span class="desc-msg blocks ft-14">记录成长，留下时光</span>
-                <div class="desc-pic">
-                  <img src="../../../static/images/07.png" alt="" style="width: 100%;height: 100%;" />
+          <template v-for="(k,i) in data.albumList">
+            <el-carousel-item>
+                <div class="card-tuijian fl" @click="goDetail(item)">
+                  <div class="card-tuijian-pic fl">
+                    <img :src="k.shotcut" alt="" style="width: 100%;height: 100%;"/>
+                  </div>
+                  <div class="card-tuijian-desc fl">
+                    <div class="desc-title ft-16">{{ k.title }}</div>
+                    <span class="desc-msg blocks ft-14">{{ k.description }}</span>
+                    <div class="desc-pic">
+                      <img :src="k.shotcut" alt="" style="width: 100%;height: 100%;" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </el-carousel-item>
+            </el-carousel-item>
+          </template>
         </el-carousel>
       </div>
     </div>
@@ -126,9 +120,14 @@
     },
     methods: {
       getIndex () {
-        this.$http.get(this.$api.get_content.index_def).then((res) => {
-          this.data.desc = res.data.description;
-          this.data.arr = res.data.tuijian;
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?is_hot=1" + "&limit=" + 2).then((res) => {
+          this.data.arr = res.data;
+        })
+      },
+      getAlbum () {
+        this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1)
+        .then((res) => {
+          this.data.albumList = res.data;
         });
       },
       goDetail (item) {
@@ -152,11 +151,6 @@
             location.reload();
         },100);
         window.scrollTo(0,0);
-      },
-      getAlbum () {
-//        this.$getData(this.$api.get_content.album).then((res) => {
-//          console.log(res);
-//        });
       },
     }
   }
@@ -277,14 +271,22 @@
     width: 145px;
     height: 145px;
     border-radius: 100%;
-    background: #b11e25;
   }
 
   .shop-series .shop-series-text {
     color: #666;
     margin-top: 20px;
   }
-  /* series end */
+
+  .shop-series .shop-series-text p:first-child {
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+    /* series end */
 
   /* recommend start */
   .recommend {
