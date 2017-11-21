@@ -199,13 +199,12 @@
       changeGuige(index, id, name) {
         this.$set(this.guige, index, id);
         this.$set(this.guigeName, index, name);
-        console.log(this.guige);
         if (!this.checkGuige) {
           return;
         }
         this.$ajax.HttpPost(this.$api.get_content.GET_POST_PRICE, {
           gid: this.list.goods_id,
-          spec: this.guige.join('-')
+          spec: this.guige.join('-').match(/\d+/g).toString().replace(',','-')
         }).then((res) => {
           for (let i in res.data) {
             this.charSID = res.data[i].sku_id;
