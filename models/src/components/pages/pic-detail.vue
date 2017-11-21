@@ -15,7 +15,6 @@
           <i class="iconfont icon-yifahuo fr"></i>
         </div>
       </div>
-
       <div class="info-express">
         <div class="exp-content">
           <div class="iconfont icon-dizhi fl c_4d4d4d"></div>
@@ -32,7 +31,6 @@
           </div>
         </div>
       </div>
-
       <div class="info-body">
         <router-link :to="{ path: '/pages/pic-detail'}" class="block">
           <div class="order-msg fl">
@@ -83,15 +81,41 @@
 <script type="text/javascript">
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
 
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+  import { REMOVE_USER_INFO } from '../../store/actions/type'
+  import { cookieStorage } from '../../common/storage'
+
   export default {
     data() {
       return {}
     },
     created() {
-
+      this.getOrderMsg();
+    },
+    computed: {
+      ...mapGetters({
+        get_user_info: GET_USER_INFO
+      }),
+      getID () {
+        let json = JSON.parse(this.get_user_info)
+        return json.user.id;
+      },
     },
     components: {ElButton},
-    methods: {},
+    methods: {
+      getOrderMsg() {
+        this.$ajax.HttpPost('/api/home/order/oneorder',{
+          id: this.$route.query.id,
+          uid: this.getID
+        }).then((res) => {
+            console.log(res);
+
+//          this.addressData = this.$goFetch.goJson(res.data.address);
+//          this.orderData = res.data;
+        });
+      }
+    },
   }
 
 </script>

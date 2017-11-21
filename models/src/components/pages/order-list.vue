@@ -1,27 +1,33 @@
 <template>
   <div style="padding-bottom: 53px;margin-top: 56px;">
-    <template v-for="item in 3">
+    <template v-for="(item, i) in list">
       <div class="order-list">
-        <div class="order-number fl w100">订单号 ：50681150656</div>
-        <router-link :to="{ path: '/pages/pic-detail'}" class="block">
-          <div class="order-msg fl">
-            <div class="order-pic fl">
-              <img src="../../../static/images/23.png" alt="" class="w100 h100">
+        <div class="order-number fl w100">订单号 ：{{ item.orderid }}</div>
+        <template v-for="(k, a) in item.goodsdata">
+          <router-link :to="{ path: '/pages/pic-detail', query: {id: k.gid }}" class="block w100 h100">
+            <div class="order-msg fl">
+              <div class="order-pic fl">
+                <img src="../../../static/images/23.png" alt="" class="w100 h100">
+              </div>
+                <div class="wrap fl">
+                  <div class="wrap-title ft-16">{{ k.gname }}</div>
+                  <div class="wrap-desc clear c_898989">{{ k.gremark }}</div>
+                  <div class="wrap-money">￥{{ k.price }}</div>
+                </div>
+              <div class="status fr">
+                <span v-if="item.status == 0">待付款</span>
+                <span v-else-if="item.status == 1">已付款</span>
+                <span v-else-if="item.status == 2">已发货</span>
+                <span v-else-if="item.status == 3">已收货</span>
+              </div>
             </div>
-            <div class="wrap fl">
-                <div class="wrap-title ft-16">#北欧风格装饰画 高格调 </div>
-                <div class="wrap-desc clear c_898989">装饰你的新房子 </div>
-                <div class="wrap-money">￥99.80</div>
-            </div>
-            <div class="status fr">
-              <span>待付款</span>
-            </div>
-          </div>
-        </router-link>
+          </router-link>
+        </template>
         <div class="warp-input clear">
-          <el-button class="fr" @click="goToPay(1)">立即付款</el-button>
-          <el-button class="fr" @click="cancelOrd(1)">取消订单</el-button>
-          <el-button class="fr" @click="confirmOrd(1)">确认收货</el-button>
+          <el-button class="fr" @click="goToPay(1)" v-if="item.status == 0">去付款</el-button>
+          <el-button class="fr" @click="confirmOrd(1)" v-else-if="item.status == 2">已付款</el-button>
+          <el-button class="fr" @click="cancelOrd(1)" v-else-if="item.status == 3">已发货</el-button>
+          <el-button class="fr" @click="cancelOrd(1)" v-else-if="item.status == 4">已收货</el-button>
         </div>
       </div>
     </template>
@@ -30,6 +36,12 @@
 
 <script type="text/javascript">
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
+
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+  import { REMOVE_USER_INFO } from '../../store/actions/type'
+  import { cookieStorage } from '../../common/storage'
+
   export default {
       components: {
         ElButton
@@ -37,26 +49,34 @@
       },
       data() {
           return {
-            data: {
-                list: []
-            }
+            list: [],
           }
       },
       created() {
 
       },
+      computed: {
+        ...mapGetters({
+          get_user_info: GET_USER_INFO
+        }),
+        getID () {
+          let json = JSON.parse(this.get_user_info)
+          return json.user.id;
+        },
+      },
       mounted() {
-//        this.getOrder();
+        this.getOrder();
       },
       methods: {
           getOrder() {
             this.$ajax.HttpPost(this.$api.get_content.GET_ORDER_ADMIN,{
-              uid: + this.get_user_info.user.id
+              uid: + this.getID
             }).then((res) => {
               this.list = res.data.data.data;
+              console.log(this.list,'-----------');
             });
           },
-          confirmOrd(id) {
+          confirmOrd() {
             this.$confirm('确定要收货?, 是否继续?', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -138,8 +158,9 @@
   }
 
   .order-list .order-msg .wrap .wrap-desc {
-    /*height: 30px;*/
-    /*line-height: 30px;*/
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .order-list .order-msg .order-pic {

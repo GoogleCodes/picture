@@ -16,7 +16,9 @@
       <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="dark">
         <el-menu-item index="1">主页</el-menu-item>
         <el-submenu :index="index | TextToString" v-for="(item, index) in navList">
-          <template slot="title">{{ item.title }}</template>
+            <template slot="title">
+              <router-link :to="{ path: '/content/proseries', query: {id: item.id}}">{{ item.title }}</router-link>
+            </template>
           <!--<el-menu-item-group title="分组一">-->
             <!--<el-menu-item index="2-1">时尚对裱册12寸竖</el-menu-item>-->
           <!--</el-menu-item-group>-->

@@ -35,7 +35,7 @@ export default {
   },
 
   [type.SET_CART_NUMBER](state, obj) {
-    state.count = obj.length;
+    state.cart_count = obj;
   },
 
   //  修改购物车单个商品

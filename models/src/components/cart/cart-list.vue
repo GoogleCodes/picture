@@ -33,6 +33,10 @@
 <script type="text/javascript">
   export default {
       props: {
+          uid: {
+            type: [Number,String],
+            required: true,
+          },
           pid: {
               type: [Number,String],
               required: true,
@@ -77,7 +81,7 @@
           }
       },
       created() {
-
+        console.log(this.list);
       },
       watch: {
           chosen() {
@@ -128,25 +132,25 @@
               }
           },
           deleteShop(id) {
-              this.$confirm('确定要删除这件商品吗?', '提示', {
-                  confirmButtonText: '确定',
-                  cancelButtonText: '取消',
-                  type: 'warning'
-              }).then(() => {
-                  this.$store.commit('DELCARTOBJ',id);
-                  setTimeout(() => {
-                      location.reload();
-                  }, 500);
-                  this.$message({
-                      type: 'success',
-                      message: '删除成功!'
-                  });
-              }).catch(() => {
-                  this.$message({
-                      type: 'info',
-                      message: '已取消删除'
-                  });
+            this.$confirm('确定要删除这件商品吗?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.$ajax.HttpPost(this.$api.get_content.DELETE_CART_DATA,{
+                id: this.list.id,
+                uid: this.uid}).then((res) => {});
+              this.$message({
+                type: 'success',
+                message: res.msg
               });
+              setTimeout(location.reload(),500);
+            }).catch(() => {
+              this.$message({
+                  type: 'info',
+                  message: '已取消删除'
+              });
+            });
           },
       },
   }

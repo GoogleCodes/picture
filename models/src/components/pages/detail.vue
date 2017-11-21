@@ -110,6 +110,8 @@
         charSID: 0,
         guige: [],
         guigeName: [],
+        chSize: [],
+        chName: [],
       }
     },
     watch: {
@@ -141,9 +143,13 @@
       changeGuige(index, id, name) {
         this.$set(this.guige, index, id);
         this.$set(this.guigeName, index, name);
+        if (!this.checkGuige) {
+          return;
+        }
+        console.log(this.guige.join('-').match(/\d+/g).toString().replace(',','-'));
         this.$ajax.HttpPost(this.$api.get_content.GET_POST_PRICE, {
           gid: this.list.goods_id,
-          spec: this.guige.join('-')
+          spec: this.guige.join('-').match(/\d+/g).toString().replace(',','-')
         }).then((res) => {
           for (let i in res.data) {
             this.charSID = res.data[i].sku_id;

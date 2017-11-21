@@ -13,7 +13,7 @@
         </div>
         <div class="ft-16 cart-desc">暂无商品，去逛逛吧</div>
       </div>
-      <cart-list :chosen.sync="choseAll" v-for="(item, index) in data.cartShoplist" :pid="item.id" :img="item.goods_thumb"
+      <cart-list :chosen.sync="choseAll" :uid="userID" v-for="(item, index) in data.cartShoplist" :pid="item.id" :img="item.goods_thumb"
                  :pName="item.goods_name" :pprice="item.price" :pformat="item.goods_remark"
                  :mode="editMode" :list="item" :pnums="item.num"></cart-list>
       <div class="bar-wrapper w100 clear">

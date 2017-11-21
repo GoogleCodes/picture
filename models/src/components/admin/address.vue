@@ -14,7 +14,6 @@
               </p>
               <p class="address-msg">{{ item.adr }}</p>
               <div class="def">
-
                 <!--<el-radio-group v-model="item.select" @click="setDefault(item.id)">-->
                   <!--<el-radio :label="0"  v-if="item.select == 0">设置默认</el-radio>-->
                   <!--<el-radio :label="1"  v-else-if="item.select == 1">默认地址</el-radio>-->
@@ -43,6 +42,11 @@
   import ElRadioGroup from "../../../node_modules/element-ui/packages/radio/src/radio-group";
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
 
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+  import { REMOVE_USER_INFO } from '../../store/actions/type'
+  import { cookieStorage } from '../../common/storage'
+
   export default {
       name: 'address',
       components: {
@@ -63,12 +67,20 @@
           }
       },
       created() {
+          console.log(this.getID);
           this.setAddress();
       },
       computed: {
-          list () {
-              return this.setAddress();
-          },
+        ...mapGetters({
+          get_user_info: GET_USER_INFO
+        }),
+        getID () {
+          let json = JSON.parse(this.get_user_info)
+          return json.user.id;
+        },
+        list () {
+            return this.setAddress();
+        },
       },
       watch: {
 
@@ -81,7 +93,7 @@
             type: 'warning'
           }).then(() => {
             this.load_data = true;
-            this.$goFetch.fetchGet(this.$api.get_address.del_address + '?id='+ id +'').then((res) => {
+            this.$ajax.HttpGet(this.$api.get_address.del_address + '?id='+ id +'').then((res) => {
               this.load_data = false;
               if (res.code == 0) {
                 this.$message({
@@ -115,7 +127,7 @@
           } else {
             set_id.select = 0;
           }
-          this.$goFetch.fetchGet(this.$api.get_address.set_add_default + '?id='+ id +'&uid='+ 6 +'').then((res) => {
+          this.$ajax.HttpGet(this.$api.get_address.set_add_default + '?id='+ id +'&uid='+ this.getID +'').then((res) => {
             if (res.code == 0) {
               this.$message({
                 message: res.msg,

@@ -38,10 +38,10 @@
 
           <el-upload ref="upload" :drag="false" name="img"
             action="https://xinye-art.com/public/api/home/front/imgupload"
-                     :on-preview="handlePreview"
-                     :on-remove="handleRemove"
-                     :on-success="handleAvatarSuccess"
-                     :file-list="fileList" :auto-upload="false">
+             :on-preview="handlePreview"
+             :on-remove="handleRemove"
+             :on-success="handleAvatarSuccess"
+             :file-list="fileList" :auto-upload="false">
             <el-button slot="trigger" size="small" type="primary" class="fl">选取文件</el-button>
             <el-button style="margin-left: 10px;" size="small" type="success" class="fr" @click="submitUpload">上传到服务器</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -69,9 +69,11 @@
     created() {
 
     },
+    computed: {
+
+    },
     components: {
       ElButton
-
     },
     methods: {
       changeNumber(item,flag) {
