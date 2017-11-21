@@ -133,7 +133,7 @@
           });
         },
         setAddress() {
-          this.$goFetch.fetchGet(this.$api.get_address.get_address + '?id=6').then((res) => {
+          this.$ajax.HttpGet(this.$api.get_address.get_address + '?id=6').then((res) => {
             this.data.list = res.data;
           });
         },

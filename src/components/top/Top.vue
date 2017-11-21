@@ -97,7 +97,7 @@
             type: 'warning'
           }).then(() => {
             this.closeuser = false;
-            let cookie_user = this.get_user_info;
+            let cookie_user = cookieStorage.remove('');
             this.remove_user_info(cookie_user);
             setTimeout(this.$router.replace({ path: '/'}), 500);
           }).catch(() => {

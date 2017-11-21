@@ -1,5 +1,4 @@
 <template>
-
   <div>
     <!-- content start -->
     <!--<el-carousel style="margin-top: 46px;">-->
@@ -9,27 +8,25 @@
         <!--</el-carousel-item>-->
       <!--</template>-->
     <!--</el-carousel>-->
-
     <ele-swipers></ele-swipers>
-
     <div class="experience clear">
       <div class="tb-wrap">
         <div class="right-select">
           <div class="select-title">
-            <span class="c_5d6060">照片冲印、手机上传打印照片</span>
+            <span class="c_5d6060">{{ list.goods_name }}</span>
           </div>
           <div class="select-text">
-            <span>定格记忆 冲印美好</span>
+            <span>{{ list.goods_remark }}</span>
           </div>
           <div class="select-price">
-            <span>¥58.5</span>
+            <span>¥{{ list.shop_price }}</span>
           </div>
           <el-button class="fr" @click="showLayer()">开始冲印</el-button>
         </div>
       </div>
     </div>
-    <div class="detailpage" style="padding-bottom: 100px;">
-      <img src="../../../static/images/45.png" alt="" class="w100 h100">
+    <div class="detailpage" style="padding-bottom: 100px;" v-html="list.goods_content">
+      <!--<img src="../../../static/images/45.png" alt="" class="w100 h100">-->
     </div>
 
     <div class="thislayer" v-show="layer" @click="goLayer()"></div>
@@ -42,19 +39,14 @@
         </div>
         <div class="iconfont fr icon-guanbi c_5d6060" @click="goLayer()"></div>
       </div>
-      <div class="select-color clear">
-        <span class="left fl">相纸：</span>
+
+      <div class="select-color clear" v-for="(fmt,pindex) in list.myspec">
+        <span class="left fl">{{ fmt.spec }}：</span>
         <ul class="right clearfix fl">
-          <li class="right" v-for="(item, index) in 2" :class="{'active':index == guigeIndex}"
-              @click="currentGuiGeIndex(index, item.a)">123</li>
-        </ul>
-      </div>
-      <div class="select-size clear">
-        <span class="left fl">尺寸：</span>
-        <ul class="right clearfix fl">
-          <li v-for="(list,index) in 2"
-              :class="{'active':index == currentIndex}"
-              @click="currentGoIndex(index, list.one)">11</li>
+          <guige :value="val.id" :text="val.item" v-for="val in fmt.item"
+                 @changeGuige="changeGuige(pindex,val.id,val.item)"></guige>
+          <!--<li class="right" v-for="(item, index) in 2" :class="{'active':index == guigeIndex}"-->
+              <!--@click="currentGuiGeIndex(index, item.a)">123</li>-->
         </ul>
       </div>
       <!--<div class="select-num clear">-->
@@ -90,11 +82,13 @@
 
   import eleSwipers from '@/components/pages/swiper'
 
+  import guige from '@/components/pages/guige'
+
   export default {
     name: 'dingzhi',
     data() {
       return {
-        list: this.$storageGet('detail'),//JSON.parse(localStorage.getItem('detail')),
+        list: [],
         data: {
           pic: [{
             "src" : 'https://img.alicdn.com/simba/img/TB1OsO5cnZRMeJjSsppSutrEpXa.jpg',
@@ -113,15 +107,51 @@
         currentIndex: 0,
         layer: false,
         price: 0,
+        charSID: 0,
+        guige: [],
+        guigeName: [],
       }
     },
     watch: {
 
     },
     created () {
-
+      this.getDataShop();
     },
     methods: {
+      getDataShop() {
+        this.$ajax.HttpGet(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.query.id).then((res) => {
+          this.list = res.data;
+          console.log(this.list.shop_price);
+
+        });
+      },
+      checkGuige() {
+        if (this.guige.length !== this.list.myspec) {
+          return false;
+        } else {
+          for (let gg = 0; gg < this.guige.length; gg++) {
+            if (typeof this.guige[gg] === 'undefined' || this.guige[gg] == '') {
+              return false;
+            }
+          }
+          return true;
+        }
+      },
+      changeGuige(index, id, name) {
+        this.$set(this.guige, index, id);
+        this.$set(this.guigeName, index, name);
+        this.$ajax.HttpPost(this.$api.get_content.GET_POST_PRICE, {
+          gid: this.list.goods_id,
+          spec: this.guige.join('-')
+        }).then((res) => {
+          for (let i in res.data) {
+            this.charSID = res.data[i].sku_id;
+            this.list.shop_price = res.data[i].price;
+            this.list.goods_id = res.data[i].goods_id;
+          }
+        });
+      },
       goLayer() {
         this.layer = false;
       },
@@ -189,6 +219,7 @@
       elenav,
       foots,
       other,
+      guige,
       eleSwipers
     }
   }
@@ -402,15 +433,21 @@
   .right-select {
     font-size: 18px;
     color: #717171;
-    padding: 0px 0px 15px;
+    padding: 10px 0px 15px;
     position: relative;
     border-bottom: 1px solid #dcdddd;
+  }
+  .right-select .select-title {
+    height: 45px;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .right-select .el-button {
     position: absolute;
     right: 0px;
-    top: 32px;
+    top: 80px;
     color: #fff;
     padding: 10px 30px;
     background: #b11e25;
@@ -418,19 +455,25 @@
   }
 
   .right-select .select-title span {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .right-select .select-text {
     font-size: 15px;
     line-height: 25px;
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-
 
   .right-select .select-price {
     font-size: 1.3rem;
     color: #e64147;
     font-weight: bold;
+  }
+
+  .detailpage p img {
+    width: 100%;
   }
 
 </style>

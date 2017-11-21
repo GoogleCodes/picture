@@ -1,6 +1,6 @@
 
 import * as type from '../../store/mutations/type'
-
+import { cookieStorage } from '../../common/storage'
 import { localStor } from '../../common/storage'
 
 import { storageSet, storageGet } from '../../api/utils.js'
@@ -22,6 +22,11 @@ export default {
   //  测试
   [type.INIT](state, list) {
     state.list = list
+  },
+
+  //  删除cookies
+  [type.REMOVE_USER_INFO](state, userinfo) {
+    cookieStorage.remove(userinfo)
   },
 
   [type.GET_CHECKED_LOGIN](state, checked_login) {

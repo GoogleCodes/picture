@@ -26,12 +26,12 @@
                   <el-dropdown-item :command="warp.item">{{ warp.item }}</el-dropdown-item>
                 </template>
               </el-dropdown-menu>
-            </el-dropdown>    
+            </el-dropdown>
           </div>
         </template>
         <div class="fr search">
-          <el-input placeholder="输入产品名称进行搜索" v-model="searchText" 
-          icon="search" class="fl" :on-icon-click="handleIconClick" @keyup.enter.native="handleIconClick"></el-input> 
+          <el-input placeholder="输入产品名称进行搜索" v-model="searchText"
+          icon="search" class="fl" :on-icon-click="handleIconClick" @keyup.enter.native="handleIconClick"></el-input>
         </div>
       </div>
     </div>
@@ -155,7 +155,7 @@
     },
     methods: {
       handleIconClick() {
-        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + 
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER +
         "?keyword=" + this.searchText).then((res) => {
           this.data.list = res.data;
           this.load_data = false;
@@ -201,7 +201,7 @@
           this.randomList = res.data;
         });
       },
-      AllShowShop() { 
+      AllShowShop() {
         this.$ajax.HttpGet(this.$api.get_other.GET_OTHER + "?cid=" + this.$route.query.id).then((res) => {
           this.randomList = res.data;
         });
@@ -242,7 +242,7 @@
   }
 
   .search .el-input .el-input__inner {
-    // border-right: none;  
+    // border-right: none;
     // border-radius: 5px 0px 0px 5px;
   }
 

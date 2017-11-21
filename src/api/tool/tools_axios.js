@@ -15,11 +15,11 @@ export default new class GoAxios {
   }
 
   /**
-   * 
-   * @param {*提示错误} data 
+   *
+   * @param {*提示错误} data
    */
   _error(data) {
-    
+
   }
 
   _isStatus(data) {
@@ -31,9 +31,9 @@ export default new class GoAxios {
   }
 
   /**
-   * 
-   * @param {*url 连接地址} target 
-   * @param {* 发送的数据} data 
+   *
+   * @param {*url 连接地址} target
+   * @param {* 发送的数据} data
    */
   HttpGet(target, data){
     let that = this;
@@ -65,9 +65,9 @@ export default new class GoAxios {
   }
 
   /**
-   * 
-   * @param {* url信息} target 
-   * @param {* 发送的数据} data 
+   *
+   * @param {* url信息} target
+   * @param {* 发送的数据} data
    */
   HttpPost(target, data) {
     let that = this;
@@ -90,9 +90,9 @@ export default new class GoAxios {
   }
 
   /**
-   * 
-   * @param {* url信息} target 
-   * @param {* 发送的数据} data 
+   *
+   * @param {* url信息} target
+   * @param {* 发送的数据} data
    */
   HttpDelete(target, data) {
     if (data) {

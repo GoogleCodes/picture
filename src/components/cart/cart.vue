@@ -104,7 +104,7 @@
       ElRadio,
     },
     created() {
-      
+
     },
     mounted() {
      this.fetchData();
@@ -122,7 +122,7 @@
       }
     },
     watch: {
-        
+
     },
     methods: {
       fetchData() {
@@ -140,9 +140,9 @@
       },
       getByDataID() {
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_TODATA,{
-          id: 28, 
+          id: 28,
           uid: this.userID}).then((res) => {
-            
+
         });
       },
       //  取消全选

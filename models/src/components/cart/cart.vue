@@ -13,9 +13,9 @@
         </div>
         <div class="ft-16 cart-desc">暂无商品，去逛逛吧</div>
       </div>
-      <cart-list :chosen.sync="choseAll" v-for="(item, index) in data.cartShoplist" :pid="item.id" :img="item.shotcut"
-                 :pName="item.name" :pprice="item.price" :pformat="item.format"
-                 :mode="editMode" :list="item" :pnums="item.nums"></cart-list>
+      <cart-list :chosen.sync="choseAll" v-for="(item, index) in data.cartShoplist" :pid="item.id" :img="item.goods_thumb"
+                 :pName="item.goods_name" :pprice="item.price" :pformat="item.goods_remark"
+                 :mode="editMode" :list="item" :pnums="item.num"></cart-list>
       <div class="bar-wrapper w100 clear">
       <span class="iconfont icon-checked-fill c_b11e25" @click="changAll(0)" v-show="allsel">
         <i class="ft-16">全选</i>
@@ -51,6 +51,9 @@
   import ElCheckbox from "../../../node_modules/element-ui/packages/checkbox/src/checkbox";
   import ElCheckboxGroup from "../../../node_modules/element-ui/packages/checkbox/src/checkbox-group";
 
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+
   export default {
     name: 'cart',
     data () {
@@ -59,7 +62,7 @@
           choseAll: [],
           data: {
             modeText: '编辑',
-            cartShoplist: this.$storageGet('cart_info'),
+            cartShoplist: [],
             btnText: '删除',
             number: 0,
             total: 0, //  总价
@@ -77,8 +80,16 @@
     },
     created() {
       this.$store.dispatch("init");
+      this.fetchData();
     },
     computed: {
+      ...mapGetters({
+        get_user_info: GET_USER_INFO
+      }),
+      userID() {
+        let id = JSON.parse(this.get_user_info)
+        return id.user.id;
+      },
       allsel() {
         if(this.data.cartShoplist.length === this.choseAll.length) {
           return true;
@@ -93,7 +104,7 @@
         for (let ch in this.choseAll) {
           for (let pl in this.data.cartShoplist) {
             if (this.choseAll[ch] === this.data.cartShoplist[pl].id) {
-              sum += this.data.cartShoplist[pl].price * this.data.cartShoplist[pl].nums;
+              sum += this.data.cartShoplist[pl].price * this.data.cartShoplist[pl].num;
               break;
             }
           }
@@ -112,6 +123,18 @@
       }
     },
     methods: {
+      fetchData() {
+        this.load_data = true;
+        this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,{uid: this.userID}).then((res) => {
+          this.cart_number = res.data.length;
+          this.$store.commit('SET_CART_NUMBER', this.cart_number);
+          this.load_data = false;
+          this.data.cartShoplist = res.data;
+        }).catch((error) => {
+          this.load_data = false;
+        });
+        this.load_data = false;
+      },
       changAll(type) {
         if(this.choseAll.length > 0) {
           this.choseAll.splice(0,this.choseAll.length);

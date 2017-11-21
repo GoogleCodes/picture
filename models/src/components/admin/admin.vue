@@ -97,6 +97,11 @@
   import eleLeft from '@/components/admin/eleleftNav.vue'
   import foots from '@/components/footer/Footer.vue'
 
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+  import { REMOVE_USER_INFO } from '../../store/actions/type'
+  import { cookieStorage } from '../../common/storage'
+
   export default {
       name: 'admin',
       data () {
@@ -106,13 +111,24 @@
       },
       created () {
           this.isUserTrue();
+          let a = JSON.parse(this.get_user_info);
+          a.user
+          console.log(a.user.id);
       },
       components: {
           heads,
           foots,
           eleLeft
       },
+      computed: {
+        ...mapGetters({
+          get_user_info: GET_USER_INFO
+        }),
+      },
       methods: {
+          ...mapActions({
+              remove_user_info: REMOVE_USER_INFO,
+          }),
           isUserTrue() {
               if (localStorage.getItem('user_info') === 'undefined') {
                   setTimeout(() => {
@@ -123,26 +139,17 @@
               }
           },
           goBack() {
-              this.$confirm('确定要退出登录??', '提示', {
-                  confirmButtonText: '确定',
-                  cancelButtonText: '取消',
-                  type: 'warning'
-              }).then(() => {
-                  this.$message({
-                    type: 'success',
-                    message: '退出成功!'
-                  });
-                  localStorage.removeItem('user_info');
-                  this.$storageSet('user_info',undefined);
-                  //  跳回首页
-                  this.$router.push({ path: '/'});
-                  location.reload();
-              }).catch(() => {
-                  this.$message({
-                    type: 'info',
-                    message: '已取消退出'
-                  });
-              });
+            this.$confirm('确定要退出吗?, 是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              let str = 'zzm_admin_storage_user_info'
+              this.remove_user_info(str);
+              setTimeout(this.$router.replace({ path: '/'}), 500);
+            }).catch(() => {
+
+            });
           }
       },
   };

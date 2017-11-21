@@ -85,7 +85,7 @@
           this.currentId = id;
         },
         setAddress() {
-          this.$goFetchs.fetchGet(this.$api.get_address.get_address + '?id=6').then((res) => {
+          this.$ajax.HttpGet(this.$api.get_address.get_address + '?id=6').then((res) => {
             this.data.list = res.data;
           });
         },
@@ -95,7 +95,7 @@
             set_id = this.data.list[i];
           }
           set_id.id == id ? set_id.select = 1 : set_id.select = 0;
-          this.$goFetchs.fetchGet(this.$api.get_address.set_add_default + '?id='+ id 
+          this.$ajax.HttpGet(this.$api.get_address.set_add_default + '?id='+ id
           +'&uid='+ 6 +'')
           .then((res) => {
             if (res.code == 1) {
@@ -115,7 +115,7 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$goFetchs.fetchGet(this.$api.get_address.del_address + '?id='+ this.currentId +'').then((res) => {
+            this.$ajax.HttpGet(this.$api.get_address.del_address + '?id='+ this.currentId +'').then((res) => {
               if (res.code == 1) {
                 this.$message({
                   message: res.msg,

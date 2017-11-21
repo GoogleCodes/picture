@@ -13,7 +13,7 @@
                   <div class="product-text">高雅复古风</div>
                 </div>
                 <div class="right-upload">
-                  <el-upload action="http://yuyin.ittun.com/public/api/home/front/imgupload"
+                  <el-upload action="https://xinye-art.com/public/api/home/front/imgupload"
                              name="img" class="image-uploader-warp"
                              :drag="false" :on-preview="handlePreview"
                              :on-success="handleAvatarSuccess"
@@ -60,9 +60,7 @@
               <div class="left-back">
                 <router-link :to="{ path: '/cart/cart'}">返回购物车</router-link>
               </div>
-              <div class="right-ok">
-                <router-link :to="{ path: ''}">确认提交</router-link>
-              </div>
+              <div class="right-ok" @click="conSubmit()">确认提交</div>
               <span class="right-tip">您已经传了3张照片</span>
             </div>
           </div>
@@ -99,6 +97,8 @@
         this.$ajax.HttpPost('/api/home/shopcar/upSave',{
           id: this.$route.query.id,
           img: res,
+        }).then((res) => {
+            console.log(res);
         });
       },
       handlePreview(file, fileList) {
@@ -318,15 +318,12 @@
   }
   .cart-upload-pic .container .bottom-btn .right-ok {
     float: right;
-    margin-right: 40px;
-    margin-left: 16px;
-    background: #b01e26;
-  }
-  .cart-upload-pic .container .bottom-btn .right-ok a{
+    color: #fff;
     display: block;
     width: 120px;
     height: 44px;
-    color: #fff;
+    margin: 0px 40px 0px 16px;
+    background: #b01e26;
   }
   .cart-upload-pic .container .bottom-btn .right-tip {
     float: right;

@@ -35,7 +35,6 @@
         dropDowm: false,
         data: {
           list: [],
-          load_data: false,
         },
       }
     },
@@ -50,6 +49,7 @@
         this.$ajax.HttpGet(this.$api.get_content.GET_NAV)
         .then((res) => {
           this.data.list = res.data;
+          console.log(this.data.list);
         });
       }
     },

@@ -57,63 +57,62 @@
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
   export default {
-      data() {
-          return {
-              data: {
-                  pic: [{
-                      "src" : '../../static/images/23.png',
-                  },{
-                      "src": '../../static/images/23.png'
-                  },{
-                      "src": '../../static/images/23.png'
-                  },{
-                      "src": '../../static/images/23.png'
-                  },{
-                      "src": '../../static/images/23.png'
-                  }],
-              },
-              swiperOption: {
-                  // swiper options 所有的配置同swiper官方api配置
-                  autoplay: 3000,
-                  notNextTick: true,
-                  direction: 'horizontal',
-                  grabCursor: true,
-                  pagination: '.swiper-pagination',
-                  observeParents: true,
-                  spaceBetween: 10,
-                  debugger: true,
+    props: {
 
-              },
-              swiperOptionThumbs: {
-                  notNextTick: true,
-                  spaceBetween: 10,
-                  centeredSlides: true,
-                  slidesPerView: 'auto',
-                  touchRatio: 0.2,
-                  slideToClickedSlide: true
-              }
-          }
-      },
-      mounted() {
-          const mySwiper = this.$refs.mySwiper.swiper
-          const swiperThumbs = this.$refs.swiperThumbs.swiper
-          mySwiper.params.control = swiperThumbs
-          swiperThumbs.params.control = mySwiper
-      },
-      components: {
-          swiper,
-          swiperSlide
-      },
-      computed: {
-//        swiper() {
-//            return this.$refs.mySwiper.swiper
-//        }
-      },
-      methods: {
-        onTransitionStart (swiper) {
-          console.log(swiper, '-----------')
+    },
+    data() {
+      return {
+        data: {
+          pic: [{
+              "src" : '../../static/images/23.png',
+          },{
+              "src": '../../static/images/23.png'
+          },{
+              "src": '../../static/images/23.png'
+          },{
+              "src": '../../static/images/23.png'
+          },{
+              "src": '../../static/images/23.png'
+          }],
+        },
+        swiperOption: {
+          // swiper options 所有的配置同swiper官方api配置
+          autoplay: 3000,
+          notNextTick: true,
+          direction: 'horizontal',
+          grabCursor: true,
+          pagination: '.swiper-pagination',
+          observeParents: true,
+          spaceBetween: 10,
+          debugger: true,
+        },
+        swiperOptionThumbs: {
+          notNextTick: true,
+          spaceBetween: 10,
+          centeredSlides: true,
+          slidesPerView: 'auto',
+          touchRatio: 0.2,
+          slideToClickedSlide: true
         }
-      },
+      }
+    },
+    mounted() {
+        console.log(this.list, '+-+-');
+        const mySwiper = this.$refs.mySwiper.swiper
+        const swiperThumbs = this.$refs.swiperThumbs.swiper
+        mySwiper.params.control = swiperThumbs
+        swiperThumbs.params.control = mySwiper
+    },
+    components: {
+        swiper,
+        swiperSlide
+    },
+    computed: {
+
+    },
+    methods: {
+
+    },
   }
 </script>
 

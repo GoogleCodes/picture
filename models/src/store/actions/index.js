@@ -7,6 +7,10 @@ export default {
   [actions.SET_USER_INFO]({commit}, userinfo){
     commit(mutations.SET_USER_INFO, userinfo)
   },
+  //  删除cookie
+  [actions.REMOVE_USER_INFO]({commit}, userinfo){
+    commit(mutations.REMOVE_USER_INFO, userinfo)
+  },
 
   //  初始化
   [actions.INIT]({commit}) {

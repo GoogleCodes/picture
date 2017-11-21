@@ -10,7 +10,9 @@
       <router-link :to="{ path: '/pages/detail', query:{pid: pid}}" class="block w100 h100">
         <div class="maininfo fl">
           <div class="img fl">
-            <img :src="img" alt="" class="w100 h100">
+            <template v-for="(k,i) in img">
+              <img :src="k.url" alt="" class="w100 h100">
+            </template>
           </div>
           <div class="msg fl">
             <p class="name ft-16">{{ pName }}</p>
@@ -36,7 +38,7 @@
               required: true,
           },
           img: {
-              type: String,
+              type: [Array],
               required: true,
           },
           pName: {
@@ -202,7 +204,7 @@
   }
 
   .cart-box .addition {
-    margin: 24px 12px 0px 0px;
+    margin: 24px 0px 0px 0px;
   }
 
   .cart-box .addition .iconfont {
@@ -211,7 +213,7 @@
 
   .cart-box .maininfo {
     width: 72%;
-    height: 72px;
+    /*height: 82px;*/
   }
 
   .cart-box .maininfo .img {
@@ -238,10 +240,10 @@
   }
 
   .cart-box .money {
-    width: 3rem;
+    width: 3.5rem;
     font-weight: bold;
     text-align: center;
-    margin: 10px 0px 0px 0px;
+    margin: 21px 0px 0px 0px;
   }
   .cart-box .icon-shanchu {
     font-size: 26px;

@@ -60,6 +60,9 @@
             price: 50.5,
             number: 1,
           }],
+          data: {
+            list: []
+          }
         }
       },
       created() {
@@ -79,7 +82,11 @@
           return sum.toFixed(2)
         },
       },
+      mounted() {
+        this.getOrder();
+      },
       methods: {
+
         goSize() {
 
         },

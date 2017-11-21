@@ -17,9 +17,9 @@
         <el-menu-item index="1">主页</el-menu-item>
         <el-submenu :index="index | TextToString" v-for="(item, index) in navList">
           <template slot="title">{{ item.title }}</template>
-          <el-menu-item-group title="分组一">
-            <el-menu-item index="2-1">时尚对裱册12寸竖</el-menu-item>
-          </el-menu-item-group>
+          <!--<el-menu-item-group title="分组一">-->
+            <!--<el-menu-item index="2-1">时尚对裱册12寸竖</el-menu-item>-->
+          <!--</el-menu-item-group>-->
         </el-submenu>
       </el-menu>
     </div>
@@ -81,15 +81,13 @@
               this.doubleul = false;
             }
           }
-//          this.$router.push({ path: '/'});
         },
         getNav() {
-          this.$http.get('http://yuyin.ittun.com/public/api/home/front/getPrdClassify').then((res) => {
-            this.navList = res.data.data;
+          this.$ajax.HttpGet('/api/home/front/getPrdClassify').then((res) => {
+            this.navList = res.data;
           });
         },
         goLayer(e) {
-
           this.visiLayer = true;
         },
         showLayer() {

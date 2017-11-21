@@ -37,16 +37,25 @@
       },
       data() {
           return {
-
+            data: {
+                list: []
+            }
           }
       },
       created() {
 
       },
       mounted() {
-
+//        this.getOrder();
       },
       methods: {
+          getOrder() {
+            this.$ajax.HttpPost(this.$api.get_content.GET_ORDER_ADMIN,{
+              uid: + this.get_user_info.user.id
+            }).then((res) => {
+              this.list = res.data.data.data;
+            });
+          },
           confirmOrd(id) {
             this.$confirm('确定要收货?, 是否继续?', '提示', {
               confirmButtonText: '确定',

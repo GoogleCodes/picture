@@ -33,11 +33,11 @@
         <div class="upload-pic clear">
           <div class="top-upload clearfix">
             <!--<a href="javascript:void(0);" class="fl block href-btn add-pic">增加照片</a>-->
-            <a href="javascript:void(0);" class="block href-btn">增加购物车</a>
+            <a class="block href-btn">增加购物车</a>
           </div>
 
           <el-upload ref="upload" :drag="false" name="img"
-            action="http://yuyin.ittun.com/public/api/home/front/imgupload"
+            action="https://xinye-art.com/public/api/home/front/imgupload"
                      :on-preview="handlePreview"
                      :on-remove="handleRemove"
                      :on-success="handleAvatarSuccess"
@@ -46,16 +46,6 @@
             <el-button style="margin-left: 10px;" size="small" type="success" class="fr" @click="submitUpload">上传到服务器</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
-
-          <!--<el-upload action="https://jsonplaceholder.typicode.com/posts/"-->
-                     <!--:on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList"-->
-                     <!--list-type="picture">-->
-            <!--<el-button class="onload" size="small" type="primary">-->
-              <!--<i class="el-icon-upload el-icon&#45;&#45;right"></i>-->
-              <!--<i>点击上传</i>-->
-            <!--</el-button>-->
-            <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
-          <!--</el-upload>-->
         </div>
         <div class="c_9fa0a0 toast">点击照片可以删除</div>
       </div>
@@ -69,18 +59,7 @@
   export default {
     data() {
       return {
-        fileList: [{
-            id: 1,
-            name: 'food.jpeg',
-            num: 1,
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-          },{
-          id: 2,
-          name: 'food.jpeg',
-          num: 1,
-          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-        }
-        ],
+        fileList: [],
         chonseIndex: 0,
         chonseok: false,
         piclist: [],

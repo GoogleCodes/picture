@@ -1,34 +1,30 @@
 <template>
   <div class="bgcolor">
     <div class="content clear" style="margin: 0px auto 25px;">
-      <div class="con-pro" style="height: 360px;" v-loading="load.load_shotcut" element-loading-text="正在加载中...">
+      <div class="con-pro" style="height: 360px;" v-loading="load.load_data" element-loading-text="正在加载中...">
         <img :src="list.shotcut" alt="" style="width: 100%;height: 100%;">
       </div>
-      <div class="experience" style="margin: 0px auto;background: #fff">
+      <div class="experience" style="margin: 50px auto;background: #fff">
         <detailSwiper :listpic="swiperList"></detailSwiper>
-        <div class="tb-wrap fl" v-loading="load.load_goods" element-loading-text="正在加载中...">
+        <div class="tb-wrap fl" v-loading="load.load_data" element-loading-text="正在加载中...">
           <div class="right-select fr">
             <div class="select-title">{{ list.goods_name }}<span>{{ list.goods_remark }}</span></div>
             <div class="select-text">{{ list.good_desc }}</div>
             <div class="select-price">¥{{ list.shop_price }}</div>
-            <div class="select-color clear">
-              <div class="left fl">{{ colorList.spec }}：</div>
+
+
+            <div class="select-color clear" v-for="(fmt,pindex) in list.myspec">
+              <div class="left fl">{{ fmt.spec }}：</div>
               <ul style="width: 75%;float: right;" class="fl">
-                <template v-for="(list,index) in colorList.item">
-                  <li class="fl" :class="{'active': index == currentSize}" 
-                  @click="choseSize(index, list)">{{ list.item }}</li>
-                </template>
+                <guige :value="val.id" :text="val.item" v-for="val in fmt.item"
+                       @changeGuige="changeGuige(pindex,val.id,val.item)"></guige>
+                <!--<template v-for="(list,index) in colorList.item">-->
+                  <!--<li class="fl" :class="{'active': index == currentSize}"-->
+                  <!--@click="choseSize(index, list)">{{ list.item }}</li>-->
+                <!--</template>-->
               </ul>
             </div>
-            <div class="select-color clear">
-              <div class="left fl">{{ sizeList.spec }}：</div>
-              <ul style="width: 75%;float: right;" class="fl">
-                <template v-for="(list,index) in sizeList.item">
-                  <li class="fl" :class="{'active': index == currentColor}" 
-                  @click="changeGuige(index, list.id, list.item)">{{ list.item }}</li>
-                </template>
-              </ul>
-            </div>
+
             <div class="select-num clear">
               <span class="left fl">数量：</span>
               <div class="item-amount ">
@@ -78,7 +74,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
     <!-- content end -->
   </div>
@@ -94,6 +90,10 @@
 
   import detailSwiper from '@/components/pages/swiper'
 
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+  import guige from '@/components/pages/guige'
+
   export default {
     name: 'dingzhi',
     data() {
@@ -106,14 +106,9 @@
           currSize: "",
         },
         load: {
-          load_goods: false,
-          load_shotcut: false,
+          load_data: false,
         },
         choose:[],
-        currentColor: -1,  //  颜色
-        currentSize: -1,   //  尺寸
-        sizeList: {},
-        colorList: {},
         charItem: '',
         charId: 0,
         charSID: 0,
@@ -135,9 +130,13 @@
       ElButton,
       elenav,
       other,
+      guige,
       detailSwiper,
     },
     computed: {
+      ...mapGetters({
+        get_user_info: GET_USER_INFO
+      }),
       getGuigeName() {
         if (this.guigeName <= 0) {
           return '请选择商品规格和数量';
@@ -147,12 +146,11 @@
     },
     methods: {
       getDataShop() {
-        this.load.load_goods = true;
+        this.load.load_data = true;
         this.load_shotcut = true;
         this.$ajax.HttpGet(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.query.id).then((res) => {
           let that = this;
-          this.load.load_goods = false;
-          this.load_shotcut = false;
+          this.load.load_data = false;
           switch (true) {
             case res.code == 1:
               this.list = res.data;
@@ -199,12 +197,9 @@
         this.chName = brr;
       },
       changeGuige(index, id, name) {
-        this.currentColor = index;
-        let arr = [], brr = [];
-        arr.push(id);
-        brr.push(name);
-        this.guige = this.chSize.concat(arr);
-        this.guigeName = this.chName.concat(brr);
+        this.$set(this.guige, index, id);
+        this.$set(this.guigeName, index, name);
+        console.log(this.guige);
         if (!this.checkGuige) {
           return;
         }
@@ -235,7 +230,7 @@
       goCart() {
         let that = this;
         switch(true) {
-          case localStorage.getItem('user_info') == 'undefined':
+          case this.get_user_info.user == 'undefined':
             this.$message('亲，请去登录一下');
             setTimeout(() => {
               this.$router.push({ path: '/user/login' });
@@ -256,11 +251,12 @@
           default:
         }
         var json = {
-          uid: this.$goFetch.storageGet('user_info').user.id,
+          uid: this.get_user_info.user.id,
           gid: this.$route.query.id,
           sid: this.charSID,
           num: this.list.sales_sum,
           price: this.list.shop_price,
+          upimg: 'a',
           specdata: this.guigeName.join('-'),
         };
         this.$ajax.HttpPost(this.$api.get_content.POST_CART_DATA,json).then((res) => {
@@ -269,7 +265,7 @@
             location.reload();
           }, 500);
         });
-        
+
       }
     }
   }

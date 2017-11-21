@@ -62,7 +62,7 @@
       goModify (formName) {
         let that = this;
         this.load_data = true;
-        that.$goFetch.fetchPost(this.$api.port_user.get_chapwd +
+        that.$ajax.HttpPost(this.$api.port_user.get_chapwd +
           '&id=' + "6" +
           '&opwd=' + this.ruleForm.opwd +
           '&npwd=' + this.ruleForm.npwd +

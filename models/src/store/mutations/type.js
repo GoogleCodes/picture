@@ -3,6 +3,9 @@
 //设置用户信息和是否登录
 export const SET_USER_INFO = 'SET_USER_INFO'
 
+//  删除cookie登录信息
+export const REMOVE_USER_INFO = 'REMOVE_USER_INFO'
+
 export const INIT = 'INIT'
 
 //  修改购物车单个商品

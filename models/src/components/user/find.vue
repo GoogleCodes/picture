@@ -25,7 +25,7 @@
             </div>
           </el-form>
           <div class="form-input clear matop_10">
-            <el-button class="comfirm" style="margin-top: 20px" @click="goFind('ruleForm')">提交</el-button>
+            <el-button class="comfirm" style="margin-top: 20px" @click="goFind()">提交</el-button>
           </div>
           <div class="form-input desc-wrap">
             <router-link :to="{ path: '/user/login'}" class="fl" style="color: #9e9e9f;line-height: 45px;">返回登录</router-link>
@@ -51,7 +51,7 @@
     data () {
       return {
         ruleForm: {
-          phone: null,
+          phone: '13232800159',
           code: null,
           password: null,
           rePwd: null
@@ -71,25 +71,25 @@
     },
     methods: {
       getCode () {
-//        let count = 10;
-//        let times = setInterval(() => {
-//          --count;
-//          this.num = count;
-//          if (count == 0) {
-//            this.num = "获取验证码"
-//            clearTimeout(times);
-//          }
-//        },1000);
-//        if (!this.$toolVerify.isTel(this.ruleForm.phone)) {
-//          this.$message({
-//            showClose: true,
-//            message: '请输入正确的手机号码格式！谢谢!',
-//            type: 'warning',
-//            duration: 2000,
-//          });
-//          return;
-//        }
-        this.$goFetch.fetchPost(this.$api.port_user.get_find_code + '?tel='+ this.ruleForm.phone +'').then((res) => {
+        let count = 10;
+        let times = setInterval(() => {
+          --count;
+          this.num = count;
+          if (count == 0) {
+            this.num = "获取验证码"
+            clearTimeout(times);
+          }
+        },1000);
+        if (!this.$toolVerify.isTel(this.ruleForm.phone)) {
+          this.$message({
+            showClose: true,
+            message: '请输入正确的手机号码格式！谢谢!',
+            type: 'warning',
+            duration: 2000,
+          });
+          return;
+        }
+        this.$ajax.HttpPost(this.$api.port_user.get_find_code + '?tel='+ this.ruleForm.phone +'').then((res) => {
           if(res.code == 0) {
             this.$message({
               message: res.msg,
@@ -103,10 +103,10 @@
           }
         })
       },
-      goFind (formName) {
+      goFind () {
         let that = this;
         this.load_data = true;
-        that.$goFetch.fetchPost(this.$api.port_user.get_find_pwd +
+        that.$ajax.HttpPost(this.$api.port_user.get_find_pwd +
           '&tel=' + this.ruleForm.phone +
           '&pwd=' + this.ruleForm.password +
           '&repwd=' + this.ruleForm.rePwd +

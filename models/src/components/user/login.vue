@@ -47,8 +47,8 @@
     data () {
       return {
         ruleForm: {
-          username: '',
-          password: '',
+          username: '13232800159',
+          password: '123123',
         },
         rules: {
           username: [{required: true, message: '请输入账户名！', trigger: 'blur'}],
@@ -67,37 +67,33 @@
       ...mapActions({
         set_user_info: SET_USER_INFO
       }),
-      logining (formName) {
+      logining () {
         let that = this;
         that.load_data = true;
-        that.$goFetch.fetchPost(this.$api.port_user.get_login + '?tel='+ this.ruleForm.username + '&pwd=' + this.ruleForm.password + '').then((res) => {
-          if(res.code == 0) {
-            that.load_data = false;
-            this.$message({
-              message: res.msg,
-              type: 'warning',
-            });
-            return false;
-          } else {
-            that.load_data = false;
-            that.$message({
-              showClose: true,
-              message: res.msg,
-              type: 'warning'
-            });
-            that.set_user_info({
-              user: {
-                id: res.data.id,
-                name: res.data.uname,
-                tel: this.ruleForm.username,
-              },
-              login: true
-            });
-            setTimeout(() => {
-              this.$router.push({ path: '/' });
-              location.reload();
-            }, 500);
-          }
+        this.$ajax.HttpPost(this.$api.port_user.get_login,{
+            tel: this.ruleForm.username,
+            pwd: this.ruleForm.password
+          }).then((res) => {
+            if(res.code == 0) {
+              that.load_data = false;
+              return false;
+            } else {
+              this.checked_login = true;
+              this.$store.commit('GET_CHECKED_LOGIN',this.checked_login);
+              that.set_user_info({
+                user: {
+                  id: res.data.id,
+                  name: res.data.uname,
+                  tel: this.ruleForm.username,
+                },
+                login: true
+              });
+              that.load_data = false;
+              setTimeout(() => {
+                this.$router.push({ path: '/' });
+                location.reload();
+              }, 500);
+            }
         });
       }
     },

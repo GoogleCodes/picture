@@ -125,9 +125,6 @@
         .then((res) => {
           this.data.albumList = res.data;
         });
-      //  this.$ajax.HttpGet(this.$api.get_content.album).then((res) => {
-      //    this.data.albumList = res.data;
-      //  });
       },
     }
   }

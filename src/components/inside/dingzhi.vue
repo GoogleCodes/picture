@@ -62,18 +62,18 @@
             </div>
           </div>
           <!-- pages start -->
-          <div class="clear goToPages" v-show="nullShop">
-            <el-pagination @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page.sync="shopPages.current_page"
-              :page-size="shopPages.per_page" :total="shopPages.total"
-              layout="total, prev, pager, next">
-            </el-pagination>
-          </div>
+          <!--<div class="clear goToPages" v-show="nullShop">-->
+            <!--<el-pagination @size-change="handleSizeChange"-->
+              <!--@current-change="handleCurrentChange"-->
+              <!--:current-page.sync="shopPages.current_page"-->
+              <!--:page-size="shopPages.per_page" :total="shopPages.total"-->
+              <!--layout="total, prev, pager, next">-->
+            <!--</el-pagination>-->
+          <!--</div>-->
           <!-- pages start -->
         </div>
       </div>
-      
+
     </div>
     <!-- content end -->
   </div>
@@ -127,16 +127,16 @@
         this.data.dType = type;
       },
       getTypeList() {
-        this.$getData('/api/home/photo/typeList').then((res) => {
+        this.$ajax.HttpGet('/api/home/photo/typeList').then((res) => {
           this.typeList = res.data;
         });
       },
       getPhotoList() {
-        
+
       },
       chonseTab(id) {
         this.load_data = true;
-        this.$getData('/api/home/photo/photoList?cid=' + id).then((res) => {
+        this.$ajax.HttpGet('/api/home/photo/photoList?cid=' + id).then((res) => {
           this.load_data = false;
           this.photoList = res.data.data;
           this.shopPages = res.data;

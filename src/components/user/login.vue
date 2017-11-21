@@ -97,29 +97,29 @@
             return false;
           }
           that.load_data = true;
-          that.$ajax.HttpPost(this.$api.port_user.get_login + 
-          '?tel='+ this.ruleForm.username + 
+          that.$ajax.HttpPost(this.$api.port_user.get_login +
+          '?tel='+ this.ruleForm.username +
           '&pwd=' + this.ruleForm.password).then((res) => {
-              if(res.code == 0) {
-                that.load_data = false;
-                return false;
-              } else {
-                this.checked_login = true;
-                this.$store.commit('GET_CHECKED_LOGIN',this.checked_login);
-                that.set_user_info({
-                  user: {
-                    id: res.data.id,
-                    name: res.data.uname,
-                    tel: this.ruleForm.username,
-                  },
-                  login: true
-                });
-                that.load_data = false;
-                setTimeout(() => {
-                  this.$router.push({ path: '/' });
-                  location.reload();
-                }, 500);
-              }
+            if(res.code == 0) {
+              that.load_data = false;
+              return false;
+            } else {
+              this.checked_login = true;
+              this.$store.commit('GET_CHECKED_LOGIN',this.checked_login);
+              that.set_user_info({
+                user: {
+                  id: res.data.id,
+                  name: res.data.uname,
+                  tel: this.ruleForm.username,
+                },
+                login: true
+              });
+              that.load_data = false;
+              setTimeout(() => {
+                this.$router.push({ path: '/' });
+                location.reload();
+              }, 500);
+            }
           });
         });
       }
@@ -128,7 +128,7 @@
 
     },
     computed: {
-      
+
     },
     components: {
       ElCheckboxGroup, ElFormItem, ElForm, ElButton, ElInput, heads,

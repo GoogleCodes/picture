@@ -1,17 +1,21 @@
 <template>
   <div class="proseries">
-    <template v-for="(item, index) in 5">
+    <template v-for="(item, index) in data.list">
       <div class="matop_10" style="height: 100%;overflow: hidden;">
-        <div class="pro-pic">
-          <img src="../../../static/images/43.png" alt="" class="w100 h100" >
+        <div class="pro-pic fl">
+          <template v-for="(k,i) in item.goods_thumb">
+            <img :src="k.url" alt="" class="w100 h100">
+          </template>
         </div>
         <div class="pro-con">
           <div class="pro-desc fl">
-            <p class="ft-16 pro-desc-title">金色古典MP14533-2B</p>
-            <span class="ft-14 c_b3b3b3">高雅复古风格</span>
-            <h1 class="moeny ft-18 c_e64147">￥39.80</h1>
+            <p class="ft-16 pro-desc-title">{{ item.goods_name }}</p>
+            <span class="ft-14 c_b3b3b3 fl desc-h2">{{ item.goods_remark }}</span>
+            <h1 class="moeny ft-18 c_e64147 fl">￥39.80</h1>
+            <router-link :to="{ path: '/pages/detail', query: {id: item.goods_id }}">
+              <el-button class="fr">查看详情</el-button>
+            </router-link>
           </div>
-          <el-button class="fr" @click="goInfo(index)">查看详情</el-button>
         </div>
       </div>
     </template>
@@ -36,10 +40,10 @@
       }
     },
     created() {
-
+      this.getOrder();
     },
     mounder () {
-      this.getOrder();
+
     },
     methods: {
       getOrder() {
@@ -74,9 +78,19 @@
     display: block;
   }
 
+  .pro-con .pro-desc {
+    width: 100%;
+  }
+
   .proseries .pro-pic img {
     border-radius: 10px;
     margin-bottom: 10px;
+  }
+
+  .proseries .pro-pic {
+    width: 100%;
+    height: 150px;
+    margin: 0px 0px 15px;
   }
 
   .proseries .pro-con {
@@ -86,14 +100,24 @@
   .pro-desc .pro-desc-title {
     background: #f2f2f2;
     padding: 0px 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 50px;
+    line-height: 24px;
+  }
+
+  .pro-desc .desc-h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
   }
 
   .pro-desc .moeny {
     font-weight: bold;
+    line-height: 40px;
   }
 
   .proseries .pro-con .el-button {
-    margin-top: 20px;
     width: 95px;
     border: 1px solid #b11e25;
     color :#b11e25;

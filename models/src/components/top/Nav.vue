@@ -27,6 +27,7 @@
       },
       getNav() {
         this.$http.get(this.$api.get_content.nav).then((res) => {
+          console.log(res);
           this.data.list = res.data.nav;
         });
       },

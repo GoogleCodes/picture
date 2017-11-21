@@ -1,6 +1,8 @@
 //action的类型管理
 //设置用户信息和登录
 export const SET_USER_INFO = 'set_user_info'
+//  删除cookie登录信息
+export const REMOVE_USER_INFO = 'REMOVE_USER_INFO'
 //  测试
 export const INIT = 'init'
 

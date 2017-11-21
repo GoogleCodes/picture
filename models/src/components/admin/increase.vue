@@ -26,7 +26,7 @@
               <el-radio label="设置为默认收货地址"></el-radio>
             </el-checkbox-group>
           </div>
-          <el-button class="save-btn" @click="gosave('ruleForm')">确认保存</el-button>
+          <el-button class="save-btn" @click="gosave()">确认保存</el-button>
         </div>
       </div>
     </div>
@@ -76,28 +76,16 @@
         goDefault (event) {
 
         },
-        gosave (formName) {
-          this.$goFetch.fetchPost(this.$api.get_address.url_address +
+        gosave () {
+          this.$ajax.HttpPost(this.$api.get_address.url_address +
             '?id=6&sname='+ this.ruleForm.name +
             '&tel='+ this.ruleForm.telphone +
             '&adr='+ this.selectedOptions + this.ruleForm.address).then((res) => {
-            if (res.code == 0) {
-              this.$message({
-                message: res.msg,
-                type: 'warning'
+            setTimeout((res) => {
+              this.$router.push({
+                path: '/admin/address'
               });
-            } else if (res.code == 1) {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
-              setTimeout((res) => {
-                this.$router.push({
-                  path: '/admin/address'
-                });
-              }, 500);
-            }
-
+            }, 500);
           })
         }
       }
