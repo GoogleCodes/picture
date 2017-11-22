@@ -2,7 +2,7 @@
   <div style="width: 100%;height: 100%;position: relative;background: #f8f8f8;">
     <!-- login start -->
     <div class="administrator"></div>
-    <div class="login" v-loading="load_data" element-loading-text="正在登陆中...">
+    <div class="login" v-loading="load_data" element-loading-text="正在登陆中..." @keyup.enter="logining">
       <div class="login-form">
         <div class="tab">
           <div style="height: 40px;border-bottom: 1px solid #ccc;">

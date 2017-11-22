@@ -43,7 +43,7 @@
       </dt>
       </dl>
       <div class="line"></div>
-      <dl class="admin-dl">
+      <dl class="admin-dl" style="cursor: pointer">
         <dt class="admin-dt ft-18" @click="goBack()">
           <i class="iconfont icon-tuichu"></i>
           <span>退出登录</span>
@@ -57,11 +57,12 @@
 
   import {mapGetters, mapActions} from 'vuex'
   import { GET_USER_INFO } from '../../store/getters/type'
+  import { REMOVE_USER_INFO } from '../../store/actions/type'
 
   export default {
     data() {
       return {
-        
+
       }
     },
     computed: {
@@ -70,13 +71,15 @@
       }),
     },
     watch: {
-      
+
     },
     mounted() {
-      
+
     },
     methods: {
-      
+      ...mapActions({
+        remove_user_info: REMOVE_USER_INFO,
+      }),
       goBack() {
         this.$confirm('确定要退出吗?, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -87,16 +90,11 @@
             type: 'success',
             message: '退出成功!'
           });
-          this.$goFetch.storageRemove('user_info');
-          this.$goFetch.storageSet('user_info',undefined);
-          //  跳回首页
+          this.remove_user_info('user_info');
           this.$router.push({ path: '/'});
           location.reload();
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消退出'
-          });
+
         });
       }
     },

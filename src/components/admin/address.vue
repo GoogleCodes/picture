@@ -6,7 +6,6 @@
         <div class="line"></div>
         <h5 class="order-h5">收货地址</h5>
       </div>
-
       <div class="trade_status" style="width: 99%;">
         <template v-for="(item, index) in data.list">
           <div class="infoBlock fl" :class="{'infoactive':index == currentIndex}" @click="goCurrent(index, item.id)">
@@ -56,8 +55,12 @@
 
   import ElRadioGroup from "../../../node_modules/element-ui/packages/radio/src/radio-group";
 
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+
   export default {
-    components: {ElRadioGroup}, name: 'address',
+    components: {ElRadioGroup},
+    name: 'address',
       data () {
           return {
             deReadio: '0',
@@ -73,8 +76,10 @@
       mounted() {
         this.setAddress();
       },
-      components: {
-
+      computed: {
+        ...mapGetters({
+          get_user_info: GET_USER_INFO
+        }),
       },
       watch: {
 
@@ -85,7 +90,7 @@
           this.currentId = id;
         },
         setAddress() {
-          this.$ajax.HttpGet(this.$api.get_address.get_address + '?id=6').then((res) => {
+          this.$ajax.HttpGet(this.$api.get_address.get_address + '?id=' + this.get_user_info.user.id).then((res) => {
             this.data.list = res.data;
           });
         },
@@ -95,18 +100,10 @@
             set_id = this.data.list[i];
           }
           set_id.id == id ? set_id.select = 1 : set_id.select = 0;
-          this.$ajax.HttpGet(this.$api.get_address.set_add_default + '?id='+ id
-          +'&uid='+ 6 +'')
+          this.$ajax.HttpGet(this.$api.get_address.set_add_default +
+            '?id='+ id +'&uid='+ this.get_user_info.user.id +'')
           .then((res) => {
-            if (res.code == 1) {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
-              setTimeout(() => {
-                location.reload();
-              }, 500);
-            }
+            setTimeout(location.reload(), 500);
           });
         },
         delAddress() {
@@ -121,9 +118,7 @@
                   message: res.msg,
                   type: 'success'
                 });
-                setTimeout(() => {
-                  location.reload();
-                }, 400);
+                setTimeout(location.reload(), 500);
               }
             });
           });

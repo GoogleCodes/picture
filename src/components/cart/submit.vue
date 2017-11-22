@@ -71,7 +71,7 @@
               </div>
             </div>
           </template>
-          
+
         </div>
       </div>
 
@@ -140,6 +140,9 @@
   import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
   import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item";
 
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+
   export default {
     name: 'submit',
     data() {
@@ -183,8 +186,12 @@
     },
     mounted () {
       this.setAddress();
+      console.log(this.get_user_info.user);
     },
     computed: {
+      ...mapGetters({
+        get_user_info: GET_USER_INFO
+      }),
       lastPaySum () {
         let sum = 0;
         for (let ll in this.shopmsg) {
@@ -195,7 +202,8 @@
     },
     methods: {
       setAddress() {
-        this.$ajax.HttpGet(this.$api.get_address.get_address + '?id=6').then((res) => {
+        this.$ajax.HttpGet(this.$api.get_address.get_address + '?id=' +
+          this.get_user_info.user.id).then((res) => {
           this.list = res.data;
           for (let i in this.list) {
             if (this.list[i].select == 1) {
@@ -210,7 +218,7 @@
             return false;
           }
           this.$ajax.HttpPost(this.$api.get_address.url_address +
-            '?id=6&sname='+ this.ruleForm.receiver +
+            '?id='+ this.get_user_info.user.id +'&sname='+ this.ruleForm.receiver +
             '&tel='+ this.ruleForm.phone +
             '&adr='+ this.waddress + this.ruleForm.address).then((res) => {
               this.layer = false;
@@ -225,14 +233,14 @@
           whatPay: this.goWhatpay,
           Exporess: this.exporessText
         };
-        let sku_id = 0, gid = [], textSpecdata = null;
+        var sku_id = 0, gid = [], textSpecdata = null;
         for (let i in this.shopmsg) {
           sku_id = this.shopmsg[i].sku_id;
           gid.push(this.shopmsg[i].id);
           textSpecdata = this.shopmsg[i].specdata;
         }
         this.$ajax.HttpPost('/api/home/order/add',{
-          uid: this.$goFetch.storageGet('user_info').user.id,
+          uid: this.get_user_info.user.id,
           goodsdata: gid,
           num: 1,
           specdata: textSpecdata,
@@ -250,7 +258,7 @@
       goInChonseAdd(index, item) {
         this.currAddress = index;
         this.currAddJson = item;
-      },  
+      },
       chonsePay(index, item) {
         this.payindex = index;
         if (index == 0) {
@@ -281,7 +289,6 @@
 
   @import "../../../static/css/cart.css";
   /* layer start */
-
   .popup {
     width: 100%;
     height: 100%;

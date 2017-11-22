@@ -77,13 +77,13 @@
 
       <router-link :to="{ path: '/inside/orderlist', query: {id: 34}}">
         <div class="con-pro clear pro-moves">
-          <img src="../../../static/images/08.png" alt="" style="width: 100%;height: 100%;">
+          <img src="../../../static/images/08.jpg" alt="" style="width: 100%;height: 100%;">
           <a class="block move"></a>
         </div>
       </router-link>
       <div class="con-pro clear pro-moves">
         <router-link :to="{ path: 'content/news'}">
-          <img src="../../../static/images/09.png" alt="" style="width: 100%;height: 100%;">
+          <img src="../../../static/images/09.jpg" alt="" style="width: 100%;height: 100%;">
         </router-link>
       </div>
     </div>

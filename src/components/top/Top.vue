@@ -76,7 +76,6 @@
           remove_user_info: REMOVE_USER_INFO,
         }),
         fetchData() {
-          let that = this;
           this.get_user_info.user !== undefined ? this.closeuser = true : this.closeuser = false;
           try {
             this.user_name = this.get_user_info.user.name;
@@ -97,8 +96,7 @@
             type: 'warning'
           }).then(() => {
             this.closeuser = false;
-            let cookie_user = cookieStorage.remove('');
-            this.remove_user_info(cookie_user);
+            this.remove_user_info('user_info');
             setTimeout(this.$router.replace({ path: '/'}), 500);
           }).catch(() => {
 

@@ -47,6 +47,9 @@
   import ElCheckbox from "../../../node_modules/element-ui/packages/checkbox/src/checkbox";
   import ElCheckboxGroup from "../../../node_modules/element-ui/packages/checkbox/src/checkbox-group";
 
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+
   export default {
     components: {ElCheckboxGroup, ElCheckbox, ElCarousel, ElButton, ElFormItem, ElForm}, data () {
         return {
@@ -73,7 +76,12 @@
         }
       },
       created () {
-        
+
+      },
+      computed: {
+        ...mapGetters({
+          get_user_info: GET_USER_INFO
+        }),
       },
       methods: {
         goDefault (event) {
@@ -84,27 +92,33 @@
             if (!valid) {
               return false;
             }
-            this.$goFetchs.fetchPost(this.$api.get_address.url_address +
-              '?id=6&sname='+ this.ruleForm.name +
-              '&tel='+ this.ruleForm.telphone +
-              '&adr='+ this.selectedOptions + this.ruleForm.address).then((res) => {
-              if (res.code == 0) {
-                this.$message({
-                  message: res.msg,
-                  type: 'warning'
-                });
-              } else if (res.code == 1) {
-                this.$message({
-                  message: res.msg,
-                  type: 'success'
-                });
-                setTimeout((res) => {
-                  this.$router.push({
-                    path: '/admin/address'
+            if (!this.$tool.isTel(this.ruleForm.telphone)) {
+              this.$notify({
+                title: '手机号码格式错误',
+                message: '请输入正确的手机号码格式！谢谢!',
+                duration: 2000,
+                type: 'warning'
+              });
+              return;
+            } else {
+              this.$ajax.HttpPost(this.$api.get_address.url_address +
+                '?id='+ this.get_user_info.user.id +' + &sname='+ this.ruleForm.name +
+                '&tel='+ this.ruleForm.telphone +
+                '&adr='+ this.selectedOptions + this.ruleForm.address).then((res) => {
+                if (res.code == 1) {
+                  this.$message({
+                    message: res.msg,
+                    type: 'success'
                   });
-                }, 500);
-              }
-            })
+                  setTimeout((res) => {
+                    this.$router.push({
+                      path: '/admin/address'
+                    });
+                  }, 500);
+                }
+              })
+            }
+
           });
         }
       }

@@ -202,6 +202,7 @@
         if (!this.checkGuige) {
           return;
         }
+        console.log(123);
         this.$ajax.HttpPost(this.$api.get_content.GET_POST_PRICE, {
           gid: this.list.goods_id,
           spec: this.guige.join('-').match(/\d+/g).toString().replace(',','-')
@@ -228,43 +229,46 @@
       },
       goCart() {
         let that = this;
-        switch(true) {
-          case this.get_user_info.user == 'undefined':
-            this.$message('亲，请去登录一下');
-            setTimeout(() => {
-              this.$router.push({ path: '/user/login' });
-            }, 2000);
-            return false;
-          case this.guige.length == 0:
-            this.$message({
-              message: '请选择规格！',
-              type: 'warning'
-            });
-            return false;
-          case this.list.sales_sum == 0:
-            this.$message({
-              message: '请增加商品！谢谢啦！',
-              type: 'warning'
-            });
-            return false;
-          default:
-        }
-        var json = {
-          uid: this.get_user_info.user.id,
-          gid: this.$route.query.id,
-          sid: this.charSID,
-          num: this.list.sales_sum,
-          price: this.list.shop_price,
-          upimg: 'a',
-          specdata: this.guigeName.join('-'),
-        };
-        this.$ajax.HttpPost(this.$api.get_content.POST_CART_DATA,json).then((res) => {
-          setInterval(() => {
-            that.$router.push({ path: '/cart/cart' });
-            location.reload();
-          }, 500);
-        });
+        console.log(this.get_user_info.user == undefined);
+        try {
+          switch(true) {
+            case this.get_user_info.user == undefined:
+              this.$message('亲，请去登录一下');
+              setTimeout(() => {
+                this.$router.push({ path: '/user/login' });
+              }, 2000);
+              return false;
+            case this.guige.length == 0:
+              this.$message({
+                message: '请选择规格！',
+                type: 'warning'
+              });
+              return false;
+            case this.list.sales_sum == 0:
+              this.$message({
+                message: '请增加商品！谢谢啦！',
+                type: 'warning'
+              });
+              return false;
+            default:
+          }
+          var json = {
+            uid: this.get_user_info.user.id,
+            gid: this.$route.query.id,
+            sid: this.charSID,
+            num: this.list.sales_sum,
+            price: this.list.shop_price,
+            upimg: 'a',
+            specdata: this.guigeName.join('-'),
+          };
+          this.$ajax.HttpPost(this.$api.get_content.POST_CART_DATA,json).then((res) => {
+            setInterval(() => {
+              that.$router.push({ path: '/cart/cart' });
+              location.reload();
+            }, 500);
+          });
 
+        } catch(e) {}
       }
     }
   }

@@ -49,6 +49,9 @@ import newdetail from '@/components/content/newsdetail'
 
 import details from '@/components/admin/details'
 
+//  Dome 支付测试
+import domepay from '@/components/dome/domepay'
+
 Vue.use(Router);
 
 let routes = [{
@@ -61,6 +64,7 @@ let routes = [{
     header: true,
     footer: true,
     nav: true,
+    requiresAuth: true
   },
 },{
   path: '/inside/dingzhi',
@@ -70,6 +74,7 @@ let routes = [{
     header: true,
     footer: true,
     nav: false,
+    requiresAuth: true
   },
 },{
   path: '/inside/orderlist',
@@ -79,6 +84,7 @@ let routes = [{
     header: true,
     footer: true,
     nav: false,
+    requiresAuth: true
   },
 },{
   path: '/pages/detail',
@@ -88,6 +94,7 @@ let routes = [{
     header: true,
     footer: true,
     nav: false,
+    requiresAuth: true
   },
 },{
   path: '/pages/swiper',
@@ -97,6 +104,7 @@ let routes = [{
     header: true,
     footer: false,
     nav: false,
+    requiresAuth: true
   }
 },{
   path: '/pages/pic-detail',
@@ -106,6 +114,7 @@ let routes = [{
     header: true,
     footer: false,
     nav: false,
+    requiresAuth: true
   }
 },{
   path: '/pages/onload',
@@ -114,7 +123,8 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
-    nav: false
+    nav: false,
+    requiresAuth: true
   }
 },{
   path: '/pages/onloadtwo',
@@ -123,7 +133,8 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
-    nav: false
+    nav: false,
+    requiresAuth: true
   }
 },{
   path: '/pages/frame',
@@ -132,7 +143,8 @@ let routes = [{
   meta: {
     header: true,
     footer: false,
-    nav: false
+    nav: false,
+    requiresAuth: true
   }
 },{
   path: '/user/login',
@@ -141,7 +153,8 @@ let routes = [{
   meta: {
     header: true,
     footer: false,
-    nav: false
+    nav: false,
+    requiresAuth: true
   }
 },{
   path: '/user/register',
@@ -150,7 +163,8 @@ let routes = [{
   meta: {
     header: true,
     footer: false,
-    nav: false
+    nav: false,
+    requiresAuth: true
   }
 },{
   path: '/user/find',
@@ -159,7 +173,8 @@ let routes = [{
   meta: {
     header: true,
     footer: false,
-    nav: false
+    nav: false,
+    requiresAuth: true
   }
 },{
   path: '/admin/admin',
@@ -168,7 +183,8 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
-    nav: false
+    nav: false,
+    requiresAuth: true
   },
   children: [{
     path: '/admin/vip',
@@ -177,7 +193,8 @@ let routes = [{
     meta: {
       header: true,
       footer: true,
-      nav: false
+      nav: false,
+      requiresAuth: true
     },
   },{
     path: '/admin/changepwd',
@@ -186,7 +203,8 @@ let routes = [{
     meta: {
       header: true,
       footer: true,
-      nav: false
+      nav: false,
+      requiresAuth: true
     },
   },{
     path: '/admin/shoping',
@@ -195,7 +213,8 @@ let routes = [{
     meta: {
       header: true,
       footer: true,
-      nav: false
+      nav: false,
+      requiresAuth: true
     },
   },{
     path: '/admin/manage',
@@ -204,7 +223,8 @@ let routes = [{
     meta: {
       header: true,
       footer: true,
-      nav: false
+      nav: false,
+      requiresAuth: true
     },
   },{
     path: '/admin/address',
@@ -213,7 +233,8 @@ let routes = [{
     meta: {
       header: true,
       footer: true,
-      nav: false
+      nav: false,
+      requiresAuth: true
     },
   },{
     path: '/admin/increase',
@@ -222,7 +243,8 @@ let routes = [{
     meta: {
       header: true,
       footer: true,
-      nav: false
+      nav: false,
+      requiresAuth: true
     },
   }],
 },{
@@ -232,7 +254,8 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
-    nav: false
+    nav: false,
+    requiresAuth: true
   },
 },{
   path: '/cart/add-cart',
@@ -241,7 +264,8 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
-    nav: false
+    nav: false,
+    requiresAuth: true
   },
 },{
   path: '/cart/submit',
@@ -250,7 +274,8 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
-    nav: false
+    nav: false,
+    requiresAuth: true
   },
 },{
   path: '/content/news',
@@ -259,7 +284,8 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
-    nav: false
+    nav: false,
+    requiresAuth: true
   },
 },{
   path: '/content/newsdetail',
@@ -268,7 +294,8 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
-    nav: false
+    nav: false,
+    requiresAuth: true
   },
 },{
   path: '/admin/details',
@@ -277,7 +304,18 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
-    nav: false 
+    nav: false,
+    requiresAuth: true
+  },
+},{
+  path: '/dome/domepay',
+  name: 'domepay',
+  component: domepay,
+  meta: {
+    header: true,
+    footer: true,
+    nav: false,
+    requiresAuth: true
   },
 }];
 

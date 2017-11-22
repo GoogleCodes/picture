@@ -55,8 +55,9 @@ export default new class GoAxios {
         withCredentials: false
       }).then(function (response) {
         if (that._isStatus(response.data)) {
-          resolve(response.data)
+
         }
+        resolve(response.data)
       }).catch(function (error) {
         reject()
         that._error(error);
@@ -80,8 +81,9 @@ export default new class GoAxios {
         withCredentials: false
       }).then(function (response) {
         if (that._isStatus(response.data)) {
-          resolve(response.data)
+
         }
+        resolve(response.data)
       }).catch(function (error) {
         reject()
         that._error(error)

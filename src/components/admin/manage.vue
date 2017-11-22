@@ -51,7 +51,7 @@
                     <p>订单详情</p>
                   </td>
                   <td style="width: 130px;">
-                    <a class="nowpay privateBtn" v-if="item.status == 0">立即付款</a>
+                    <a class="nowpay privateBtn" v-if="item.status == 0">未付款</a>
                     <a class="cancel protected-Btn" v-if="item.status == 1">已付款</a>
                     <a class="select protected-Btn" v-if="item.status == 2">已发货</a>
                     <a class="delete protected-Btn" v-if="item.status == 3">已收货</a>
@@ -96,7 +96,7 @@
         });
       }
     }
-  }  
+  }
 </script>
 
 <style type="text/css">

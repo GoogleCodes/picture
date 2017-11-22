@@ -8,6 +8,8 @@ import Vue from 'vue'
 import App from './App'
 //  导入路由
 import VueResource from 'vue-resource'
+//  导入微信SDK
+var wx = require('weixin-js-sdk');
 //导入状态管理器
 import store from './store'
 //  导入组件

@@ -108,7 +108,6 @@
     },
     mounted() {
      this.fetchData();
-    //  this.getByDataID();
     },
     computed: {
       ...mapGetters({
@@ -141,9 +140,7 @@
       getByDataID() {
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_TODATA,{
           id: 28,
-          uid: this.userID}).then((res) => {
-
-        });
+          uid: this.userID}).then((res) => {});
       },
       //  取消全选
       toggleSelection() {
