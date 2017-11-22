@@ -126,20 +126,21 @@
     },
     methods: {
       fetchData() {
-        if (this.get_user_info == null) {
-          setTimeout(this.$router.replace({ path: '/user/login'}), 1500);
-        } else {
-          this.load_data = true;
-          this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,{uid: this.userID}).then((res) => {
-            this.cart_number = res.data.length;
-            this.$store.commit('SET_CART_NUMBER', this.cart_number);
-            this.load_data = false;
-            this.data.cartShoplist = res.data;
-            this.load_data = false;
-          }).catch((error) => {
-            this.load_data = false;
-          });
-        }
+//        if (this.get_user_info == null) {
+//          setTimeout(this.$router.replace({ path: '/user/login'}), 1500);
+//        } else {
+//
+//        }
+        this.load_data = true;
+        this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,{uid: this.userID}).then((res) => {
+          this.cart_number = res.data.length;
+          this.$store.commit('SET_CART_NUMBER', this.cart_number);
+          this.load_data = false;
+          this.data.cartShoplist = res.data;
+          this.load_data = false;
+        }).catch((error) => {
+          this.load_data = false;
+        });
       },
       changAll(type) {
         if(this.choseAll.length > 0) {

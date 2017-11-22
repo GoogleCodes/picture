@@ -71,15 +71,11 @@
       },
       methods: {
           getOrder() {
-            if (this.get_user_info == null) {
-                setTimeout(this.$router.replace({ path: '/user/login'}), 500);
-            } else {
-              this.$ajax.HttpPost(this.$api.get_content.GET_ORDER_ADMIN,{
-                uid: + this.getID
-              }).then((res) => {
-                this.list = res.data.data.data;
-              });
-            }
+            this.$ajax.HttpPost(this.$api.get_content.GET_ORDER_ADMIN,{
+              uid: + this.getID
+            }).then((res) => {
+              this.list = res.data.data.data;
+            });
           },
           confirmOrd() {
             this.$confirm('确定要收货?, 是否继续?', '提示', {

@@ -76,6 +76,7 @@ let routes = [{
     header: true,
     position: 1,
     footer: true,
+     requiresAuth: true
   },
   children: [],
 },{
@@ -85,6 +86,7 @@ let routes = [{
   meta: {
     header: false,
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/content/news',
@@ -95,6 +97,7 @@ let routes = [{
     title: '新闻列表',
     goback: true,
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/content/newsdetail',
@@ -105,6 +108,7 @@ let routes = [{
     title: '新闻内容',
     goback: true,
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/inside/orderlist',
@@ -115,6 +119,7 @@ let routes = [{
     title: '产品系列',
     goback: true,
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/pages/order',
@@ -126,6 +131,7 @@ let routes = [{
     title: '商品列表',
     goback: true,
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/content/proseries',
@@ -137,6 +143,7 @@ let routes = [{
     goback: true,
     title: '婚纱装裱',
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/pages/detail',
@@ -146,6 +153,7 @@ let routes = [{
     goback: true,
     title: '产品详情',
     footer: true,
+     requiresAuth: true
   },
 },{
   path: '/pages/pic-detail',
@@ -156,6 +164,7 @@ let routes = [{
     title: '订单详情',
     goback: true,
     footer: false,
+     requiresAuth: true
   }
 },{
   path: '/pages/other-detail',
@@ -166,6 +175,7 @@ let routes = [{
     title: '产品详情',
     goback: true,
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/pages/onload',
@@ -176,6 +186,7 @@ let routes = [{
     goback: true,
     title: '照片上传',
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/pages/other',
@@ -186,6 +197,7 @@ let routes = [{
     goback: true,
     title: '购物车',
     footer: false,
+     requiresAuth: true
   }
 },{
   path: '/pages/gopay',
@@ -196,6 +208,7 @@ let routes = [{
     goback: true,
     title: '订单支付',
     footer: false,
+     requiresAuth: true
   }
 },{
   path: '/pages/onloadtwo',
@@ -204,6 +217,7 @@ let routes = [{
   meta: {
     header: false,
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/pages/frame',
@@ -214,6 +228,7 @@ let routes = [{
     goback: true,
     title: '体验区',
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/pages/frame-detail',
@@ -224,6 +239,7 @@ let routes = [{
     goback: true,
     title: '体验区',
     footer: false,
+     requiresAuth: true
   }
 },{
   path: '/user/login',
@@ -234,6 +250,7 @@ let routes = [{
     footer: false,
     title: '登录帐号',
     goback: true,
+     requiresAuth: false,
   }
 },{
   path: '/user/register',
@@ -244,6 +261,7 @@ let routes = [{
     footer: true,
     title: '注册帐号',
     goback: true,
+     requiresAuth: true
   }
 },{
   path: '/user/find',
@@ -254,6 +272,7 @@ let routes = [{
     footer: true,
     title: '修改密码',
     goback: true,
+     requiresAuth: true
   }
 },{
   path: '/user/modify',
@@ -264,6 +283,7 @@ let routes = [{
     footer: true,
     title: '找回密码',
     goback: true,
+     requiresAuth: true
   }
 },{
   path: '/pages/ord-detail',
@@ -274,6 +294,7 @@ let routes = [{
     footer: false,
     title: '订单确认',
     goback: true,
+     requiresAuth: true
   }
 },{
   path: '/admin/admin',
@@ -285,6 +306,7 @@ let routes = [{
     footer: true,
     title: '会员中心',
     goback: true,
+     requiresAuth: true
   },
 },{
   path: '/admin/vip',
@@ -296,6 +318,7 @@ let routes = [{
     position: 4,
     title: '会员中心',
     goback: true,
+     requiresAuth: true
   }
 },{
   path: '/admin/changepwd',
@@ -304,6 +327,7 @@ let routes = [{
   meta: {
     header: false,
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/admin/shoping',
@@ -312,6 +336,7 @@ let routes = [{
   meta: {
     header: false,
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/admin/manage',
@@ -320,6 +345,7 @@ let routes = [{
   meta: {
     header: false,
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/admin/address',
@@ -330,6 +356,7 @@ let routes = [{
     title: '收货地址',
     footer: true,
     goback: true,
+     requiresAuth: true
   }
 },{
   path: '/admin/increase',
@@ -340,6 +367,7 @@ let routes = [{
     title: '增加地址',
     footer: true,
     goback: true,
+     requiresAuth: true
   }
 },{
   path: '/cart/cart',
@@ -351,6 +379,7 @@ let routes = [{
     footer: true,
     title: '购物车',
     goback: true,
+     requiresAuth: true
   }
 },{
   path: '/cart/ord-cart',
@@ -359,6 +388,7 @@ let routes = [{
   meta: {
     header: false,
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/cart/add-cart',
@@ -368,6 +398,7 @@ let routes = [{
   meta: {
     header: false,
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/cart/submit',
@@ -376,6 +407,7 @@ let routes = [{
   meta: {
     header: false,
     footer: true,
+     requiresAuth: true
   }
 },{
   path: '/pages/paintings',
@@ -386,6 +418,7 @@ let routes = [{
     goback: true,
     title: '装饰画',
     footer: true,
+     requiresAuth: true
   }
 }];
 
@@ -405,7 +438,18 @@ const router = new Router({
 // 全局路由配置
 // 路由开始之前的操作
 router.beforeEach((to, from, next) => {
-  next();
+  let is_login = store.state.user_info.user
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (is_login == undefined) {
+      next({
+        name: 'login'
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 });
 
 export default router;

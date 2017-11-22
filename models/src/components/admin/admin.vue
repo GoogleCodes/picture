@@ -110,8 +110,8 @@
           }
       },
       created () {
-          console.log(this.get_user_info);
-          this.isUserTrue();
+//          console.log(this.get_user_info);
+//          this.isUserTrue();
       },
       components: {
           heads,
