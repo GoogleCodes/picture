@@ -68,7 +68,7 @@
             <span class="fl money">应付：</span>
             <span class="fl c_b11e25">￥39.80</span>
           </div>
-          <div class="gopay fr util-btn">立即支付</div>
+          <div class="gopay fr util-btn" @click="pay">立即支付</div>
           <!--<div class="cancel fl util-btn">取消订单</div>-->
           <!--<div class="confirm fr util-btn">确认订单</div>-->
         </div>
@@ -98,19 +98,52 @@
         get_user_info: GET_USER_INFO
       }),
       getID () {
-        let json = JSON.parse(this.get_user_info)
+        let json = this.get_user_info
         return json.user.id;
       },
     },
     components: {ElButton},
     methods: {
+      jsApiCall () {
+        var self = this
+        var config = JSON.parse(this.payConfig.wx)
+        WeixinJSBridge.invoke(
+          'getBrandWCPayRequest',
+          config,
+          function (res) {
+            if (res.err_msg === 'get_brand_wcpay_request:ok') {
+//              window.localStorage.removeItem('youcaiCartInfo')
+//              if (self.payInfo.alone === 0) {
+//                self.$router.push({name: "groupDetail", params: {id: self.payInfo.ordernum}})
+//              } else {
+//                self.$router.push({name: "orderDetails", params: {id: self.payInfo.id}})
+//              }
+            } else {
+            }
+          }
+        )
+      },
+      pay(){
+        this.weixincallpay()
+      },
+      weixincallpay() {
+        if (typeof WeixinJSBridge == "undefined") {
+          if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', this.jsApiCall(), false)
+          } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', this.jsApiCall());
+            document.attachEvent('onWeixinJSBridgeReady', this.jsApiCall())
+          }
+        } else {
+          this.jsApiCall()
+        }
+      },
       getOrderMsg() {
         this.$ajax.HttpPost('/api/home/order/oneorder',{
           id: this.$route.query.id,
           uid: this.getID
         }).then((res) => {
             console.log(res);
-
 //          this.addressData = this.$goFetch.goJson(res.data.address);
 //          this.orderData = res.data;
         });

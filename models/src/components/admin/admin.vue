@@ -73,7 +73,7 @@
             </div>
           </router-link>
         </li>
-        <li @click="goBack()">
+        <li @click="user_out()">
           <div class="block">
             <div class="fl">
               <i class="iconfont icon-tuichu c_b3b3b3"></i>
@@ -99,7 +99,7 @@
 
   import {mapGetters, mapActions} from 'vuex'
   import { GET_USER_INFO } from '../../store/getters/type'
-  import { REMOVE_USER_INFO } from '../../store/actions/type'
+  import { REMOVE_USER_INFO, SET_USER_INFO } from '../../store/actions/type'
   import { cookieStorage } from '../../common/storage'
 
   export default {
@@ -110,10 +110,8 @@
           }
       },
       created () {
+          console.log(this.get_user_info);
           this.isUserTrue();
-          let a = JSON.parse(this.get_user_info);
-          a.user
-          console.log(a.user.id);
       },
       components: {
           heads,
@@ -124,33 +122,32 @@
         ...mapGetters({
           get_user_info: GET_USER_INFO
         }),
+        getUserInfo() {
+
+        }
       },
       methods: {
-          ...mapActions({
-              remove_user_info: REMOVE_USER_INFO,
-          }),
-          isUserTrue() {
-              if (localStorage.getItem('user_info') === 'undefined') {
-                  setTimeout(() => {
-                      this.$router.push({ path: '/user/login'})
-                  }, 1);
-              } else {
-                this.userList = this.$storageGet('user_info');
-              }
-          },
-          goBack() {
-            this.$confirm('确定要退出吗?, 是否继续?', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {
-              let str = 'zzm_admin_storage_user_info'
-              this.remove_user_info(str);
-              setTimeout(this.$router.replace({ path: '/'}), 500);
-            }).catch(() => {
-
-            });
+        ...mapActions({
+            remove_user_info: REMOVE_USER_INFO,
+            set_user_info: SET_USER_INFO,
+        }),
+        isUserTrue() {
+          if (this.get_user_info === null) {
+            setTimeout(this.$router.replace({ path: '/user/login'}), 1);
           }
+        },
+        user_out() {
+          this.$confirm('确定要退出吗?, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.remove_user_info('user_info');
+            setTimeout(this.$router.replace({ path: '/'}), 500);
+          }).catch(() => {
+
+          });
+        }
       },
   };
 </script>

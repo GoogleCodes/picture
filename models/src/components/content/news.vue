@@ -15,7 +15,7 @@
                       </router-link>
                       <div class="more clear ft-16">
                           <router-link :to="{ path: '/'}" class="more-text">查看更多&gt;</router-link>
-                          <span class="fr zan">👍<i>{{ item.post_like }}</i></span>
+                          <span class="fr zan" style="display: none;">👍<i>{{ item.post_like }}</i></span>
                       </div>
                   </li>
               </template>

@@ -60,8 +60,10 @@
           get_user_info: GET_USER_INFO
         }),
         getID () {
-          let json = JSON.parse(this.get_user_info)
-          return json.user.id;
+          try {
+            let json = this.get_user_info
+            return json.user.id;
+          } catch(e) {}
         },
       },
       mounted() {
@@ -69,12 +71,15 @@
       },
       methods: {
           getOrder() {
-            this.$ajax.HttpPost(this.$api.get_content.GET_ORDER_ADMIN,{
-              uid: + this.getID
-            }).then((res) => {
-              this.list = res.data.data.data;
-              console.log(this.list,'-----------');
-            });
+            if (this.get_user_info == null) {
+                setTimeout(this.$router.replace({ path: '/user/login'}), 500);
+            } else {
+              this.$ajax.HttpPost(this.$api.get_content.GET_ORDER_ADMIN,{
+                uid: + this.getID
+              }).then((res) => {
+                this.list = res.data.data.data;
+              });
+            }
           },
           confirmOrd() {
             this.$confirm('确定要收货?, 是否继续?', '提示', {
@@ -161,6 +166,7 @@
     height: 30px;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: left;
   }
 
   .order-list .order-msg .order-pic {

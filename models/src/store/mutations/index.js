@@ -8,16 +8,16 @@ import { storageSet, storageGet } from '../../api/utils.js'
 import Vue from 'vue'
 
 export default {
-  // //设置用户信息和是否登录
+  // 设置用户信息和是否登录
   [type.SET_USER_INFO](state, userinfo){  //  userinfo
-    state.count++;
-    state.user_info = userinfo || {}
-    if (userinfo === null) {
-      localStorage.remove('user_info')
-    } else {
-      storageSet('user_info',userinfo);
-    }
-  },
+  state.count++;
+  state.user_info = userinfo || {}
+  if (userinfo === null) {
+    cookieStorage.remove(user_info)
+  } else {
+    cookieStorage.set('user_info',userinfo)
+  }
+},
 
   //  测试
   [type.INIT](state, list) {

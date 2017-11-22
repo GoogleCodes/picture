@@ -19,7 +19,7 @@
         </div>
       </div>
     </template>
-    <el-button class="el-more">加载更多......</el-button>
+    <el-button class="el-more" style="display: none;">加载更多......</el-button>
   </div>
 </template>
 
@@ -67,8 +67,8 @@
 <style type="text/css">
   /* proseries start */
   .proseries {
-    margin: 48px 0px;
-    padding: 8px 15px 5px;
+    margin: 48px 0;
+    padding: 8px 15px 25px;
     background: #fff;
   }
 

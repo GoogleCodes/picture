@@ -6,8 +6,10 @@ import 'element-ui/lib/theme-default/index.css'
 import Vue from 'vue'
 //  导入主视图文件
 import App from './App'
-
+//  导入组件
 import VueResource from 'vue-resource'
+//  导入微信SDK
+var wx = require('weixin-js-sdk');
 //导入状态管理器
 import store from './store'
 //  导入组件
@@ -21,22 +23,18 @@ import VueRouter from 'vue-router'
 import {
   storageSet,
   storageGet } from './api/utils.js'
-
 Vue.prototype.$storageSet = storageSet;
 Vue.prototype.$storageGet = storageGet;
-
 import * as fetch from './api/utils.js'
 import { tool_verify, tools_axios,tools_filter } from './api/tool'
 //  验证
 Vue.prototype.$toolVerify = tool_verify;
 Vue.prototype.$ajax = tools_axios;
 Vue.prototype.$goFetch = fetch;
-
 //  加载过滤器
 Vue.filter('goPrice', tools_filter.changePrice);
 Vue.filter('gotimes', tools_filter.goTime);
 Vue.filter('goTest', tools_filter.texts);
-
 //  导入API
 import api from './common/port_uri'
 Vue.prototype.$api = api;

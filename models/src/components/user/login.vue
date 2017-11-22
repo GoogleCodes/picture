@@ -61,7 +61,7 @@
     created () {
       //  调用Vuex action
       this.$store.commit('GET_CHECKED_LOGIN',this.checked_login);
-      this.$store.dispatch("set_user_info");
+//      this.$store.dispatch("set_user_info");
     },
     methods: {
       ...mapActions({
@@ -77,7 +77,7 @@
             if(res.code == 0) {
               that.load_data = false;
               return false;
-            } else {
+            } else if(res.code == 1) {
               this.checked_login = true;
               this.$store.commit('GET_CHECKED_LOGIN',this.checked_login);
               that.set_user_info({
@@ -86,13 +86,9 @@
                   name: res.data.uname,
                   tel: this.ruleForm.username,
                 },
-                login: true
               });
               that.load_data = false;
-              setTimeout(() => {
-                this.$router.push({ path: '/' });
-                location.reload();
-              }, 500);
+              setTimeout(this.$router.replace({ path: '/' }),500);
             }
         });
       }

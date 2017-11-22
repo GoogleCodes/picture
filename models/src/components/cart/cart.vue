@@ -87,8 +87,10 @@
         get_user_info: GET_USER_INFO
       }),
       userID() {
-        let id = JSON.parse(this.get_user_info)
-        return id.user.id;
+        try {
+          let json = this.get_user_info
+          return json.user.id;
+        } catch(e) {}
       },
       allsel() {
         if(this.data.cartShoplist.length === this.choseAll.length) {
@@ -124,16 +126,20 @@
     },
     methods: {
       fetchData() {
-        this.load_data = true;
-        this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,{uid: this.userID}).then((res) => {
-          this.cart_number = res.data.length;
-          this.$store.commit('SET_CART_NUMBER', this.cart_number);
-          this.load_data = false;
-          this.data.cartShoplist = res.data;
-        }).catch((error) => {
-          this.load_data = false;
-        });
-        this.load_data = false;
+        if (this.get_user_info == null) {
+          setTimeout(this.$router.replace({ path: '/user/login'}), 1500);
+        } else {
+          this.load_data = true;
+          this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,{uid: this.userID}).then((res) => {
+            this.cart_number = res.data.length;
+            this.$store.commit('SET_CART_NUMBER', this.cart_number);
+            this.load_data = false;
+            this.data.cartShoplist = res.data;
+            this.load_data = false;
+          }).catch((error) => {
+            this.load_data = false;
+          });
+        }
       },
       changAll(type) {
         if(this.choseAll.length > 0) {
@@ -246,7 +252,7 @@
 
   .msg-head .iconCart {
     margin: 0px 30px;
-    padding: 150px 35px;
+    padding: 170px 67px;
     text-align: center;
     color: #8c8c8c;
     line-height: 35px;

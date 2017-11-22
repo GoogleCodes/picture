@@ -75,7 +75,7 @@
           get_user_info: GET_USER_INFO
         }),
         getID () {
-          let json = JSON.parse(this.get_user_info)
+          let json = this.get_user_info
           return json.user.id;
         },
         list () {
