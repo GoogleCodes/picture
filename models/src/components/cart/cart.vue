@@ -16,19 +16,21 @@
       <cart-list :chosen.sync="choseAll" :uid="userID" v-for="(item, index) in data.cartShoplist" :pid="item.id" :img="item.goods_thumb"
                  :pName="item.goods_name" :pprice="item.price" :pformat="item.goods_remark"
                  :mode="editMode" :list="item" :pnums="item.num"></cart-list>
+
       <div class="bar-wrapper w100 clear">
-      <span class="iconfont icon-checked-fill c_b11e25" @click="changAll(0)" v-show="allsel">
-        <i class="ft-16">全选</i>
-      </span>
-      <span class="iconfont icon-quxiaoquanxuan c_9e9d9d" @click="changAll(1)" v-show="!allsel">
-        <i class="ft-16">全选</i>
-      </span>
-        <el-button class="fr gopay" @click="goPay()">去结算</el-button>
-        <p class="ft-14 fr total-price">
-          <span class="c_898989">合计</span>
-          <span class="c_e64147 ft-18 ft-we">{{ chosePrice }}</span>
-        </p>
+        <span class="iconfont icon-checked-fill c_b11e25" @click="changAll(0)" v-show="allsel">
+          <i class="ft-16">全选</i>
+        </span>
+        <span class="iconfont icon-quxiaoquanxuan c_9e9d9d" @click="changAll(1)" v-show="!allsel">
+          <i class="ft-16">全选</i>
+        </span>
+          <el-button class="fr gopay" @click="goPay()">去结算</el-button>
+          <p class="ft-14 fr total-price">
+            <span class="c_898989">合计</span>
+            <span class="c_e64147 ft-18 ft-we">{{ chosePrice }}</span>
+          </p>
       </div>
+
     </div>
     <div class="msg-head" v-else>
         <div class="iconCart">
@@ -126,11 +128,6 @@
     },
     methods: {
       fetchData() {
-//        if (this.get_user_info == null) {
-//          setTimeout(this.$router.replace({ path: '/user/login'}), 1500);
-//        } else {
-//
-//        }
         this.load_data = true;
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,{uid: this.userID}).then((res) => {
           this.cart_number = res.data.length;
@@ -192,15 +189,21 @@
   /* col-wrapper end */
 
   /* cart-box start */
-  .bar-wrapper .gopay {
-    padding: 14px 28px;
-    background: #b11e25;
-    border: 1px solid #b11e25;
-    color: #fff;
+
+  .bar-wrapper .gopay, .bar-wrapper .delete-shop  {
     -webkit-box-sizing: border-box;
+    border: 1px solid #b11e25;
     box-sizing: border-box;
+    background: #b11e25;
+    padding: 14px 28px;
     margin-right: 10px;
-    border-radius: 0px;
+    color: #fff;
+  }
+
+  .bar-wrapper .delete-shop {
+    border: 2px solid #b11e25;
+    background: #fff;
+    color: #b11e25;
   }
 
   .bar-wrapper {
@@ -259,6 +262,7 @@
     line-height: 35px;
     font-family: 'microsoft yahei';
   }
+
 
   /* cart-nothing end */
 

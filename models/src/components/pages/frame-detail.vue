@@ -191,6 +191,9 @@
     height: 100%;
     padding: 23px 0px;
     overflow: inherit;
+    display: block;
+    clear: both;
+    overflow: hidden;
   }
   .frame-bg .btn-util {
     position: fixed;

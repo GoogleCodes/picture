@@ -54,20 +54,18 @@
           ElRadioGroup
       },
       data () {
-          return {
-            deReadio: '0',
-            currentIndex: 0,
-            data: {
-                list: [],
-                isRadio: false,
-            },
-            userid: this.$storageGet('user_info').user,
-            radio: '1',
-            load_data: false,
-          }
+        return {
+          deReadio: '0',
+          currentIndex: 0,
+          data: {
+            list: [],
+            isRadio: false,
+          },
+          radio: '1',
+          load_data: false,
+        }
       },
       created() {
-          console.log(this.getID);
           this.setAddress();
       },
       computed: {
@@ -75,8 +73,10 @@
           get_user_info: GET_USER_INFO
         }),
         getID () {
-          let json = this.get_user_info
-          return json.user.id;
+          try {
+            let json = this.get_user_info
+            return json.user.id;
+          } catch(e) {}
         },
         list () {
             return this.setAddress();
@@ -92,9 +92,7 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.load_data = true;
             this.$ajax.HttpGet(this.$api.get_address.del_address + '?id='+ id +'').then((res) => {
-              this.load_data = false;
               if (res.code == 0) {
                 this.$message({
                   message: res.msg,
@@ -145,7 +143,7 @@
           });
         },
         setAddress() {
-          this.$ajax.HttpGet(this.$api.get_address.get_address + '?id=6').then((res) => {
+          this.$ajax.HttpGet(this.$api.get_address.get_address + '?id=' + 6).then((res) => {
             this.data.list = res.data;
           });
         },

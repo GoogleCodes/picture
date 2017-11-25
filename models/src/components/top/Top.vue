@@ -11,13 +11,13 @@
     </div>
     <!-- header end -->
     <!-- nav start -->
-    <div class="layer" @click="showLayer" v-show="visiLayer" ></div>
+    <div class="layer" @click="showLayer" v-show="visiLayer"></div>
     <div class="nav clear" v-show="visiLayer" @touchmove.prevent>
       <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="dark">
         <el-menu-item index="1">主页</el-menu-item>
         <el-submenu :index="index | TextToString" v-for="(item, index) in navList">
             <template slot="title">
-              <router-link :to="{ path: '/content/proseries', query: {id: item.id}}">{{ item.title }}</router-link>
+              <router-link :to="{ path: '/inside/orderlist', query: {id: item.id}}" class="block w100 h100">{{ item.title }}</router-link>
             </template>
           <!--<el-menu-item-group title="分组一">-->
             <!--<el-menu-item index="2-1">时尚对裱册12寸竖</el-menu-item>-->
@@ -51,6 +51,12 @@
         this.isUser();
         this.getNav();
       },
+      watch: {
+        '$route'() {
+          this.getNav();
+          this.visiLayer = false;
+        }
+      },
       filters: {
           TextToString (value) {
             return value.toString();
@@ -65,13 +71,10 @@
           return this.list;
         },
         count() { //  购物车总数
-            return this.$store.state.count;
+          return this.$store.state.count;
         }
       },
       created() {
-
-      },
-      watch: {
 
       },
       methods: {

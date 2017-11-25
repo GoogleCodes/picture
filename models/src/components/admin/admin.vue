@@ -110,7 +110,7 @@
           }
       },
       created () {
-//          console.log(this.get_user_info);
+          console.log(this.get_user_info);
 //          this.isUserTrue();
       },
       components: {

@@ -1,14 +1,18 @@
 <template>
-  <div>
-    <!-- content start -->
-    <!--<el-carousel style="margin-top: 46px;">-->
-      <!--<template>-->
-        <!--<el-carousel-item>-->
-          <!--<img src="../../../static/images/banner_xiadan.png" alt="" class="w100 h100">-->
-        <!--</el-carousel-item>-->
-      <!--</template>-->
-    <!--</el-carousel>-->
-    <ele-swipers></ele-swipers>
+  <div v-cloak>
+    <div class="fl">
+      <div style="margin-top: 46px;">
+        <swiper :options="swiperOption" ref="mySwiper">
+          <template v-for="(item, index) in data.picture">
+            <swiper-slide :style="{background: 'url('+ item.url +') no-repeat',
+            backgroundSize: 'cover',height: '300px'}">
+            </swiper-slide>
+          </template>
+          <div class="swiper-pagination" slot="pagination"></div>
+        </swiper>
+      </div>
+    </div>
+    <!--<ele-swipers :list="list"></ele-swipers>-->
     <div class="experience clear">
       <div class="tb-wrap">
         <div class="right-select">
@@ -32,39 +36,34 @@
     <div class="thislayer" v-show="layer" @click="goLayer()"></div>
     <div class="item-layer" v-show="layer">
       <div class="item-shop-msg">
-        <div class="shop-pic fl"></div>
+        <div class="shop-pic fl" :style="{background: 'url('+ list.shotcut +') no-repeat'}"></div>
         <div class="shop-desc fl">
-          <p class="ft-16 c_5d6060">照片冲印、手机上传打印照片</p>
-          <span class="ft-14">单价 : <i class="money">0.60元</i></span>
+          <p class="ft-16 c_5d6060">{{ list.goods_name }}</p>
+          <span class="ft-14">单价 : <i class="money">{{ list.shop_price }}元</i></span>
         </div>
         <div class="iconfont fr icon-guanbi c_5d6060" @click="goLayer()"></div>
       </div>
-
       <div class="select-color clear" v-for="(fmt,pindex) in list.myspec">
         <span class="left fl">{{ fmt.spec }}：</span>
         <ul class="right clearfix fl">
           <guige :value="val.id" :text="val.item" v-for="val in fmt.item"
                  @changeGuige="changeGuige(pindex,val.id,val.item)"></guige>
-          <!--<li class="right" v-for="(item, index) in 2" :class="{'active':index == guigeIndex}"-->
-              <!--@click="currentGuiGeIndex(index, item.a)">123</li>-->
         </ul>
       </div>
-      <!--<div class="select-num clear">-->
-        <!--<span class="left fl">数量：</span>-->
-        <!--<div class="item-amount ">-->
-          <!--<el-button class="no-minus fl" @click="changeNumber(list, -1)" :class="{'disabled':list.nums <= 1}">-</el-button>-->
-          <!--<el-input type="text" class="fl" placeholder="0" v-model="list.nums" readonly></el-input>-->
-          <!--<el-button class="add-max fl" @click="changeNumber(list, 1)" :class="{'disabled': list.nums >= 1}">+</el-button>-->
-        <!--</div>-->
-      <!--</div>-->
+      <div class="select-num clear">
+        <span class="left fl">数量：</span>
+        <div class="item-amount ">
+          <el-button class="no-minus fl" @click="changeNumber(list, -1)" :class="{'disabled':list.nums <= 1}">-</el-button>
+          <el-input type="text" class="fl" placeholder="0" v-model="list.nums" readonly></el-input>
+          <el-button class="add-max fl" @click="changeNumber(list, 1)" :class="{'disabled': list.nums >= 1}">+</el-button>
+        </div>
+      </div>
       <div class="select-btn clear">
         <router-link :to="{ path: '/pages/onload', query:{id: 1}}" class="w100 h100 block">
           <el-button class="ft-16">去上传照片</el-button>
         </router-link>
       </div>
-
     </div>
-
   </div>
     <!-- content end -->
 </template>
@@ -83,6 +82,7 @@
   import eleSwipers from '@/components/pages/swiper'
 
   import guige from '@/components/pages/guige'
+  import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
   export default {
     name: 'dingzhi',
@@ -90,11 +90,7 @@
       return {
         list: [],
         data: {
-          pic: [{
-            "src" : 'https://img.alicdn.com/simba/img/TB1OsO5cnZRMeJjSsppSutrEpXa.jpg',
-          },{
-            "src": 'https://img.alicdn.com/simba/img/TB1hwrqeMoQMeJjy0FoSuwShVXa.jpg'
-          }],
+          picture: [],
           dtype: 1,
           currGuiGe: "",
           currSize: "",
@@ -110,22 +106,26 @@
         charSID: 0,
         guige: [],
         guigeName: [],
-        chSize: [],
-        chName: [],
+        swiperOption: {
+          autoplay: 30000,
+          pagination: '.swiper-pagination',
+          paginationClickable: true,
+        },
       }
     },
-    watch: {
-
-    },
-    created () {
+    mounted () {
       this.getDataShop();
+    },
+    watch: {
+      '$route'() {
+        this.getDataShop();
+      }
     },
     methods: {
       getDataShop() {
         this.$ajax.HttpGet(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.query.id).then((res) => {
-          this.list = res.data;
-          console.log(this.list.shop_price);
-
+          this.list = res.data
+          this.data.picture = JSON.parse(this.list.photo)
         });
       },
       checkGuige() {
@@ -146,7 +146,6 @@
         if (!this.checkGuige) {
           return;
         }
-        console.log(this.guige.join('-').match(/\d+/g).toString().replace(',','-'));
         this.$ajax.HttpPost(this.$api.get_content.GET_POST_PRICE, {
           gid: this.list.goods_id,
           spec: this.guige.join('-').match(/\d+/g).toString().replace(',','-')
@@ -226,7 +225,9 @@
       foots,
       other,
       guige,
-      eleSwipers
+      eleSwipers,
+      swiper,
+      swiperSlide
     }
   }
 </script>
@@ -443,9 +444,20 @@
     position: relative;
     border-bottom: 1px solid #dcdddd;
   }
-  .right-select .select-title {
-    height: 45px;
+  .right-select .select-title, .right-select .select-text  {
     line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .right-select .select-text {
+    font-size: 15px;
+    -webkit-line-clamp: 1;
+    line-height: 25px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -453,7 +465,7 @@
   .right-select .el-button {
     position: absolute;
     right: 0px;
-    top: 80px;
+    top: 58px;
     color: #fff;
     padding: 10px 30px;
     background: #b11e25;
@@ -464,22 +476,49 @@
     font-size: 16px;
   }
 
-  .right-select .select-text {
-    font-size: 15px;
-    line-height: 25px;
-    height: 30px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+
 
   .right-select .select-price {
     font-size: 1.3rem;
     color: #e64147;
     font-weight: bold;
+    line-height: 40px;
   }
 
   .detailpage p img {
     width: 100%;
   }
 
+</style>
+
+<style type="text/css">
+  @media screen and (max-device-width: 414px) {
+    .swiper-container-horizontal {
+      width: 414px;
+    }
+  }
+
+  @media screen and (max-device-width: 412px) {
+    .swiper-container-horizontal {
+      width: 412px;
+    }
+  }
+
+  @media screen and (max-device-width: 375px) {
+    .swiper-container-horizontal {
+      width: 375px;
+    }
+  }
+
+  @media screen and (max-device-width: 360px) {
+    .swiper-container-horizontal {
+      width: 360px;
+    }
+  }
+
+  @media screen and (max-device-width: 320px) {
+    .swiper-container-horizontal {
+      width: 320px;
+    }
+  }
 </style>

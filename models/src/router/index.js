@@ -66,6 +66,8 @@ import gopay from '@/components/pages/gopay'
 //  新闻
 import news from '@/components/content/news'
 import newsdetail from '@/components/content/newsdetail'
+//  个人资料
+import personal from '@/components/user/personal'
 Vue.use(Router);
 
 let routes = [{
@@ -76,7 +78,7 @@ let routes = [{
     header: true,
     position: 1,
     footer: true,
-     requiresAuth: true
+    requiresAuth: true,
   },
   children: [],
 },{
@@ -115,11 +117,12 @@ let routes = [{
   name: 'orderlist',
   component: orderlist,
   meta: {
+    position: 1,
     header: false,
     title: '产品系列',
     goback: true,
     footer: true,
-     requiresAuth: true
+    requiresAuth: true
   }
 },{
   path: '/pages/order',
@@ -273,6 +276,17 @@ let routes = [{
     title: '修改密码',
     goback: true,
      requiresAuth: true
+  }
+},{
+  path: '/user/personal',
+  name: 'personal',
+  component: personal,
+  meta: {
+    header: false,
+    footer: true,
+    title: '个人资料',
+    goback: true,
+    requiresAuth: true
   }
 },{
   path: '/user/modify',

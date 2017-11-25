@@ -1,11 +1,13 @@
 <template>
-  <div class="proseries">
+  <div class="proseries" v-cloak>
     <template v-for="(item, index) in data.list">
       <div class="matop_10" style="height: 100%;overflow: hidden;">
         <div class="pro-pic fl">
-          <template v-for="(k,i) in item.goods_thumb">
-            <img :src="k.url" alt="" class="w100 h100">
-          </template>
+          <router-link :to="{ path: '/pages/detail', query: {id: item.goods_id }}">
+            <template v-for="(k,i) in item.goods_thumb">
+              <img :src="k.url" alt="" class="w100 h100">
+            </template>
+          </router-link>
         </div>
         <div class="pro-con">
           <div class="pro-desc fl">
@@ -97,19 +99,23 @@
     line-height: 25px;
   }
 
-  .pro-desc .pro-desc-title {
+  .pro-desc .pro-desc-title, .pro-desc .desc-h2 {
     background: #f2f2f2;
-    padding: 0px 10px;
+    padding: 5px 10px;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 50px;
     line-height: 24px;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .pro-desc .desc-h2 {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
+    width: 95%;
+    padding: 5px 0px;
+    background: #fff;
+    line-height: 24px;
   }
 
   .pro-desc .moeny {

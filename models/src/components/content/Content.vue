@@ -1,34 +1,32 @@
 <template>
   <div>
-
     <div class="wrap-desc clear">
-      <div class="wrap-desc-title ft-32">杺 叶</div>
+      <div class="wrap-desc-title ft-32">LOGO</div>
       <div class="wrap-desc-text">
-        以 “匠杺”代表着一木一心，尽在人心。我们用心制造每一件印品的高质量，尽心做到每个客户满意。用心制造别具匠心的美好，这是我们对产品服务理念的定义。
+        顺德第一家获  ”Fint Art”  公会认证的国际装裱师资质的公司。
+        用心、简单、重复，是杺叶的企业文化，也是 ”工匠精神” 的体现
+        “凝神屏气无言语，两手一心付案牍”
+        <div style="text-align: right;">——致杺叶</div>
       </div>
-
       <div class="series">
-        <template v-for="(k,i) in data.arr">
+        <template v-for="(k,i) in data.albumList">
           <div class="shop-series fl">
-            <router-link :to="{ path: '/content/proseries'}" class="block">
+            <router-link :to="{ path: '/inside/orderlist', query: {id: k.id}}" class="block">
               <div class="shop-series-pic">
-                <template v-for="y in k.goods_thumb">
-                  <img :src="y.url" class="w100 h100" alt="">
-                </template>
+                <img :src="k.shotcut" class="w100 h100" alt="">
               </div>
               <div class="shop-series-text">
-                <p class="ft-18">{{ k.goods_name }}</p>
-                <p class="ft-14">了解更多 &gt;</p>
+                <p class="ft-18">{{ k.title }}</p>
+                <p class="ft-12">了解更多 &gt;</p>
               </div>
             </router-link>
           </div>
         </template>
-        <div>
-          <el-button>更多产品&gt;</el-button>
+        <div style="display: none">
+          <el-button @click="knowMore()">更多产品&gt;</el-button>
         </div>
       </div>
     </div>
-
     <div class="recommend">
       <div class="re-title ft-18">
         <h1 class="fl">热门推荐</h1>
@@ -36,55 +34,61 @@
         <span class="ft-14">时光印记，定格美好的回忆</span>
       </div>
       <div class="re-wrap-shop clear">
-        <el-carousel height="180px" style="padding: 0px;">
-          <template v-for="(k,i) in data.albumList">
-            <el-carousel-item>
-                <div class="card-tuijian fl" @click="goDetail(item)">
-                  <div class="card-tuijian-pic fl">
-                    <img :src="k.shotcut" alt="" style="width: 100%;height: 100%;"/>
-                  </div>
-                  <div class="card-tuijian-desc fl">
-                    <div class="desc-title ft-16">{{ k.title }}</div>
-                    <span class="desc-msg blocks ft-14">{{ k.description }}</span>
-                    <div class="desc-pic">
-                      <img :src="k.shotcut" alt="" style="width: 100%;height: 100%;" />
-                    </div>
+        <swiper :options="swiperOption">
+          <template v-for="(k,i) in data.arr">
+            <swiper-slide>
+              <div class="card-tuijian fl" @click="goDetail(k)">
+                <div class="card-tuijian-pic fl">
+                  <template v-for="n in k.goods_thumb">
+                    <img :src="n.url" alt="" style="width: 100%;height: 100%;"/>
+                  </template>
+                </div>
+                <div class="card-tuijian-desc fl">
+                  <div class="desc-title ft-18">{{ k.goods_name }}</div>
+                  <div class="desc-msg blocks ft-14">{{ k.goods_remark }}</div>
+                  <div class="desc-pic">
+                    <template v-for="n in k.goods_thumb">
+                      <img :src="n.url" alt="" style="width: 100%;height: 100%;"/>
+                    </template>
                   </div>
                 </div>
-            </el-carousel-item>
+              </div>
+            </swiper-slide>
           </template>
-        </el-carousel>
+          <div class="swiper-pagination" slot="pagination"></div>
+        </swiper>
       </div>
     </div>
-
     <div>
-      <!--<div class="" style="margin: 15px 10px;">-->
-        <!--<img src="../../../static/images/41.png" class="w100 h100" alt="">-->
-      <!--</div>-->
+      <router-link :to="{ path: '/inside/orderlist',query: {id: 34}}" class="block w100 h100">
+        <div style="margin: 0px 10px 10px;">
+          <img src="../../../static/images/41.png" class="w100 h100" alt="">
+        </div>
+      </router-link>
       <router-link :to="{ path: '/content/news'}" class="block w100 h100">
-        <div class="" style="margin: 15px 10px;">
+        <div style="margin: 0px 10px 10px;">
           <img src="../../../static/images/42.png" class="w100 h100" alt="">
         </div>
       </router-link>
     </div>
-
     <!-- content start -->
     <div class="content clear">
       <div class="wrap clear">
         <div class="wrap-card fl">
           <div class="wrap-card-icon box-icon"></div>
-          <div class="wrap-card-text ft-24">纯手工装裱</div>
-          <div class="wrap-card-desc">质感卓越，进口画芯真实色彩</div>
+          <div class="wrap-card-text ft-24">高端进口框条
+          </div>
+          <div class="wrap-card-desc">采用韩国进口PS框条, 纹理逼真,手感细腻, 更好地衬托画心</div>
         </div>
         <div class="wrap-card fl">
           <div class="wrap-card-icon thumbsup-icon"></div>
-          <div class="wrap-card-text ft-24">纯手工装裱</div>
-          <div class="wrap-card-desc">质感卓越，进口画芯真实色彩</div>
+          <div class="wrap-card-text ft-24">收藏级画质</div>
+          <div class="wrap-card-desc">色佳能打印机, 兼容照片及油画输出完美还原照片原片真实色彩</div>
         </div>
         <div class="wrap-card fl" style="margin: 0px;">
           <div class="wrap-card-icon picture-icon"></div>
           <div class="wrap-card-text ft-24">纯手工装裱</div>
-          <div class="wrap-card-desc">质感卓越，进口画芯真实色彩</div>
+          <div class="wrap-card-desc">由国际装裱师公会 “Fint Art” 认证推荐装裱师制作, 细节体现 “匠杺” 之美</div>
         </div>
       </div>
     </div>
@@ -98,59 +102,46 @@
     components: {ElButton}, name: 'Content',
     data() {
       return {
-        albumVisi: false,
         data: {
           arr: [],
           desc: '',
           albumList: [],
-        }
+        },
+        swiperOption: {
+          autoplay: 30000,
+          pagination: '.swiper-pagination',
+          paginationClickable: true,
+        },
+        dome: ''
       }
     },
     mounted() {
-      this.getIndex();
+      this.getIndex(1,3);
       this.getAlbum();
     },
-    created() {
-
-    },
     watch: {
-      $route (to) {
-
+      '$route'() {
+        this.getIndex(1,3);
+        this.getAlbum();
       }
     },
     methods: {
-      getIndex () {
-        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?is_hot=1" + "&limit=" + 2).then((res) => {
+      getAlbum () {
+        this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1)
+          .then((res) => {
+            this.data.albumList = res.data;
+          });
+      },
+      getIndex (hot, limit) {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?is_hot="+ hot + "&limit=" + limit).then((res) => {
           this.data.arr = res.data;
         })
       },
-      getAlbum () {
-        this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1)
-        .then((res) => {
-          this.data.albumList = res.data;
-        });
-      },
       goDetail (item) {
-        var options = {
-          title: item.title,
-          desc: item.desc,
-          id: item.id,
-          pic: item.pic,
-          price: item.price,
-          small: item.small,
-          size: item.size,
-          nums: item.nums,
-          guige: item.guige,
-        };
-        this.$storageSet('detail',  options);
         this.$router.push({
           path : '/pages/detail',
-          query:{ id:item.id }
+          query:{ id:item.goods_id }
         });
-        setTimeout((res) => {
-            location.reload();
-        },100);
-        window.scrollTo(0,0);
       },
     }
   }
@@ -174,8 +165,11 @@
   .wrap-desc .wrap-desc-text {
     color: #999;
     width: 90%;
-    text-align: center;
-    margin: 0px auto 67px;
+    text-align: justify;
+    margin: 0px auto 30px;
+    position: relative;
+    text-indent: 2em;
+    letter-spacing: 0.15em;
   }
 
   /* wrap-desc end */
@@ -233,13 +227,14 @@
   .content .wrap .wrap-card .wrap-card-text {
     text-align: center;
     margin-top: 15px;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     color: #4d4d4d;
   }
 
   .content .wrap .wrap-card .wrap-card-desc {
-    text-align: center;
+    text-align: justify;
+    text-indent: 1em;
     margin: 10px 5px 0px;
     color: #898989;
     font-size: 12px;
@@ -248,6 +243,10 @@
   /* content end */
 
   /* series start */
+  .series {
+    margin: 0px 5% 30px;
+    overflow: hidden;
+  }
   .series .el-button {
     margin: 30px 0px;
     width: 150px;
@@ -268,46 +267,37 @@
   }
 
   .shop-series .shop-series-pic img {
-    width: 145px;
-    height: 145px;
+    width: 125px;
+    height: 125px;
     border-radius: 100%;
   }
 
   .shop-series .shop-series-text {
     color: #666;
-    margin-top: 20px;
+    margin-top: 10px;
   }
 
   .shop-series .shop-series-text p:first-child {
-    height: 40px;
+    height: 30px;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 16px;
     line-height: 19px;
   }
-
-    /* series end */
-
+  /* series end */
   /* recommend start */
-  .recommend {
-
-  }
-
   .recommend .re-title {
     margin: 0px 18px;
   }
-
   .recommend .re-title span {
     color: #999;
   }
-
   .recommend .re-title h1 {
     margin-right: 10px;
   }
-
   .re-wrap-shop {
     height: 163px;
-    margin: 20px 10px;
+    margin: 10px;
   }
 
   .re-wrap-shop .card-tuijian {
@@ -316,35 +306,48 @@
   }
 
   .card-tuijian-pic {
-    width: 60%;
+    width: 65%;
     height: 100%;
   }
 
   .card-tuijian-desc {
     width: 35%;
+    position: relative;
+    color: #4d4e4e;
   }
 
   .card-tuijian .card-tuijian-desc .desc-title {
-    margin-top: 10px;
-    font-size: 12px;
-    color: #9d9e9e;
-    padding: 0px 5px;
+    /*margin: 10px 0 0 0;*/
+    margin-bottom: 10px;
+    color: #000;
+  }
+  .card-tuijian .card-tuijian-desc .desc-title, .card-tuijian-desc .desc-msg {
+    font-size: 16px;
     line-height: 17px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
-
   .card-tuijian-desc .desc-msg {
-    margin-top: 5px;
-    color: #9d9e9e;
-    line-height: 18px;
     padding: 0px 5px;
+    font-size: 14px;
+  }
+  .card-tuijian-desc .desc-pic {
+    width: 100%;
+    height: 99px;
+    margin: 0px auto;
+    position: absolute;
+    bottom: 0px;
   }
 
-  .card-tuijian-desc .desc-pic {
-    width: 90%;
-    height: 95px;
-    margin: 0px auto;
+  @model screen and (max-width: 375) {
+    .card-tuijian-desc .desc-pic {
+
+    }
   }
 
   /* recommend end */
-
 </style>

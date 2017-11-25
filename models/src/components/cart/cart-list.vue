@@ -2,8 +2,6 @@
   <div class="cart-body" :class="actives">
     <div class="cart-box">
       <div class="addition fl">
-        <!--<i class="iconfont icon-quxiaoquanxuan c_9e9d9d" :class="{'chose':list.checked}" @click="unActIt(list)" v-if="list.checked"></i>-->
-        <!--<i class="iconfont icon-checked-fill c_b11e25" :class="{'chose':list.checked}" @click="unActIt(list)" v-else-if="!list.checked"></i>-->
         <i class="iconfont icon-checked-fill c_b11e25" @click="unActIt" v-show="actives"></i>
         <i class="iconfont icon-quxiaoquanxuan c_9e9d9d" @click="unActIt" v-show="!actives"></i>
       </div>
@@ -15,17 +13,17 @@
             </template>
           </div>
           <div class="msg fl">
-            <p class="name ft-16">{{ pName }}</p>
+            <p class="name ft-14">{{ pName }}</p>
             <p class="format c_898989">{{ pformat }}</p>
+          </div>
+          <div class="money fl c_e64147 ft-14">
+            <label class="unit">¥</label>
+            <label>{{ pprice }}</label>
+            <span class="c_898989" style="margin-left: 10px;">x{{ pnums }}</span>
           </div>
         </div>
       </router-link>
-      <div class="money fr c_e64147 ft-14" v-show="mode !== 1">
-        <label class="unit">¥</label>
-        <label>{{ pprice }}</label>
-        <p class="c_898989">x{{ pnums }}</p>
-      </div>
-      <div class="money fr iconfont icon-shanchu" v-show="mode == 1" @click="deleteShop(pid)"></div>
+      <div class="fr iconfont icon-shanchu" v-show="mode == 1" @click="deleteShop(pid)"></div>
     </div>
   </div>
 </template>
@@ -201,14 +199,15 @@
   }
 
   .cart-body .cart-box {
+    position: relative;
     margin: 10px 0px 0px;
     background: #fff;
     overflow: hidden;
-    padding: 10px;
+    padding: 10px 5px;
   }
 
   .cart-box .addition {
-    margin: 24px 0px 0px 0px;
+    margin: 24px 5px 0px 0px;
   }
 
   .cart-box .addition .iconfont {
@@ -216,8 +215,8 @@
   }
 
   .cart-box .maininfo {
-    width: 72%;
-    /*height: 82px;*/
+    width: 88%;
+    position: relative;
   }
 
   .cart-box .maininfo .img {
@@ -227,32 +226,40 @@
 
   .cart-box .maininfo .msg {
     width: 65%;
-    margin-left: 10px;
+    margin-left: 5px;
   }
   .cart-box .maininfo .msg .name {
-    font-size: 1rem;
     line-height: 20px;
-    height: 42px;
+    word-break: break-all;
     overflow: hidden;
-    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   .cart-box .maininfo .msg .format {
-    height: 35px;
     line-height: 18px;
+    word-break: break-all;
     overflow: hidden;
-    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .cart-box .money {
-    width: 3.5rem;
     font-weight: bold;
     text-align: center;
-    margin: 21px 0px 0px 0px;
+    margin: 0px 10px 0;
+    position: absolute;
+    bottom: 0px;
+    left: 29%;
   }
   .cart-box .icon-shanchu {
     font-size: 26px;
     line-height: 50px;
     color: #808080;
+    position: absolute;
+    top: 22px;
+    right: 10px;
   }
   /* cart-box end */
 

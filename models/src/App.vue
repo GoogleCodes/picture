@@ -2,7 +2,9 @@
   <div id="app">
     <heads></heads>
     <goback></goback>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
     <vfoot></vfoot>
   </div>
 </template>

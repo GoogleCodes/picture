@@ -8,6 +8,8 @@ var vueLoaderConfig = require('./vue-loader.conf')
 
 var webpack = require("webpack")
 
+const vuxLoader = require('vux-loader')
+
 // const vuxLoader = require('vux-loader')
 // const webpackConfig = originalConfig
 
@@ -75,16 +77,6 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       },
-      {
-        test: /vux.src.*?js$/,
-        loader: 'babel'
-      },
-      {
-        test: /\.less$/, loader: 'style!css!less'
-      },
-      {
-        test: /\.scss$/, loader: 'style!css!sass?sourceMap'
-      },
     ]
   },
   plugins: [
@@ -95,8 +87,3 @@ module.exports = {
     })
   ]
 }
-
-
-// module.exports = vuxLoader.merge(webpackConfig, {
-//   plugins: ['vux-ui', 'progress-bar', 'duplicate-style']
-// })

@@ -1,36 +1,42 @@
 <template>
   <div style="padding-bottom: 53px;margin-top: 56px;">
-    <template v-for="(item, i) in list">
-      <div class="order-list">
-        <div class="order-number fl w100">订单号 ：{{ item.orderid }}</div>
-        <template v-for="(k, a) in item.goodsdata">
-          <router-link :to="{ path: '/pages/pic-detail', query: {id: k.gid }}" class="block w100 h100">
-            <div class="order-msg fl">
-              <div class="order-pic fl">
-                <img src="../../../static/images/23.png" alt="" class="w100 h100">
-              </div>
+    <div v-show="visi">
+      <template v-for="(item, i) in list">
+        <div class="order-list">
+          <div class="order-number fl w100">订单号 ：{{ item.orderid }}</div>
+          <template v-for="(k, a) in item.goodsdata">
+            <router-link :to="{ path: '/pages/pic-detail', query: {id: k.gid }}" class="block w100 h100">
+              <div class="order-msg fl">
+                <div class="order-pic fl">
+                  <img src="../../../static/images/23.png" alt="" class="w100 h100">
+                </div>
                 <div class="wrap fl">
                   <div class="wrap-title ft-16">{{ k.gname }}</div>
                   <div class="wrap-desc clear c_898989">{{ k.gremark }}</div>
                   <div class="wrap-money">￥{{ k.price }}</div>
                 </div>
-              <div class="status fr">
-                <span v-if="item.status == 0">待付款</span>
-                <span v-else-if="item.status == 1">已付款</span>
-                <span v-else-if="item.status == 2">已发货</span>
-                <span v-else-if="item.status == 3">已收货</span>
+                <div class="status fr">
+                  <span v-if="item.status == 0">待付款</span>
+                  <span v-else-if="item.status == 1">已付款</span>
+                  <span v-else-if="item.status == 2">已发货</span>
+                  <span v-else-if="item.status == 3">已收货</span>
+                </div>
               </div>
-            </div>
-          </router-link>
-        </template>
-        <div class="warp-input clear">
-          <el-button class="fr" @click="goToPay(1)" v-if="item.status == 0">去付款</el-button>
-          <el-button class="fr" @click="confirmOrd(1)" v-else-if="item.status == 2">已付款</el-button>
-          <el-button class="fr" @click="cancelOrd(1)" v-else-if="item.status == 3">已发货</el-button>
-          <el-button class="fr" @click="cancelOrd(1)" v-else-if="item.status == 4">已收货</el-button>
+            </router-link>
+          </template>
+          <div class="warp-input clear">
+            <el-button class="fr" @click="goToPay(1)" v-if="item.status == 0">去付款</el-button>
+            <el-button class="fr" @click="confirmOrd(1)" v-else-if="item.status == 2">已付款</el-button>
+            <el-button class="fr" @click="cancelOrd(1)" v-else-if="item.status == 3">已发货</el-button>
+            <el-button class="fr" @click="cancelOrd(1)" v-else-if="item.status == 4">已收货</el-button>
+          </div>
         </div>
-      </div>
-    </template>
+      </template>
+    </div>
+    <div v-show="!visi" class="box-no">
+      <i class="iconfont icon-kong block"></i>
+      <span>暂时没有订单</span>
+    </div>
   </div>
 </template>
 
@@ -45,11 +51,11 @@
   export default {
       components: {
         ElButton
-
       },
       data() {
           return {
             list: [],
+            visi: false,
           }
       },
       created() {
@@ -223,8 +229,19 @@
       text-align: center;
     }
   }
-
   /* order-list end */
+
+  /* box-no start */
+  .box-no {
+    margin: 190px 0px 0px;
+    text-align: center;
+    color: #8c8c8c;
+  }
+  .box-no .icon-kong {
+    font-size: 100px;
+    line-height: 105px;
+  }
+  /* box-no end */
 </style>
 
 <style>

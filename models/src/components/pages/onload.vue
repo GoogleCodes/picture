@@ -12,30 +12,28 @@
           </div>
           <ul>
             <template v-for="(item, index) in fileList">
-              <li class="fl" :class="{ 'chonsepic': index == chonseIndex }" @click="choosePic(item, index)">
+              <li class="fl" :class="{ 'chonsepic': index == chonseIndex }" @click.stop="choosePic(item)" @longtouch="longClick()">
                 <div class="onload-pic">
                   <i class="el-icon-close icon-guanbi" @click="deletePic(index, item)"></i>
-                  <i class="el-icon-check chonseok"></i>
+                  <i class="el-icon-check chonseok" v-show="chonseok"></i>
                   <!--<img src="../../../static/images/35.png" class="icon-guanbi" @click="clearpic()" />-->
                   <img :src="item.url" class="w100 h100" alt="">
                   <!--<img src="../../../static/images/47.png" class="chonseok" alt="">-->
                 </div>
-                <div class="input">
-                  <el-button class="prev fl" @click="changeNumber(item, -1)">-</el-button>
-                  <el-input v-model="item.num" class="fl" placeholder="0" readonly></el-input>
-                  <el-button class="next fl" @click="changeNumber(item, 1)">+</el-button>
-                </div>
+                <!--<div class="input">-->
+                  <!--<el-button class="prev fl" @click="changeNumber(item, -1)">-</el-button>-->
+                  <!--<el-input v-model="item.num" class="fl" placeholder="0" readonly></el-input>-->
+                  <!--<el-button class="next fl" @click="changeNumber(item, 1)">+</el-button>-->
+                <!--</div>-->
               </li>
             </template>
-
           </ul>
         </div>
         <div class="upload-pic clear">
           <div class="top-upload clearfix">
             <!--<a href="javascript:void(0);" class="fl block href-btn add-pic">增加照片</a>-->
-            <a class="block href-btn">增加购物车</a>
+            <a class="block href-btn" @click="saveImages()">保存图片</a>
           </div>
-
           <el-upload ref="upload" :drag="false" name="img"
             action="https://xinye-art.com/public/api/home/front/imgupload"
              :on-preview="handlePreview"
@@ -76,6 +74,20 @@
       ElButton
     },
     methods: {
+      saveImages() {
+        let values = '';
+        for (let i in this.fileList) {
+          values = this.fileList[i].response.data
+        }
+        this.$ajax.HttpPost('/api/home/shopcar/upSave',{
+          id: this.$route.query.id,
+          img: [{
+            img: values
+          }],
+        }).then((res) => {
+          this.$message(res.msg);
+        });
+      },
       changeNumber(item,flag) {
         if (flag > 0) {
           item.num += 1;
@@ -95,8 +107,14 @@
       handlePreview(file) {
         console.log(file);
       },
-      choosePic() {
-
+      choosePic(item, index) {
+        for (let i in this.fileList) {
+          console.log(this.fileList[i].uid);
+          if (this.fileList[i].uid === item.uid) {
+            this.chonseok = true;
+            break;
+          }
+        }
       },
       deletePic(index, item) {
         let getIndex = null;
@@ -109,10 +127,10 @@
         }
         if (getIndex >= 0) {
           this.fileList.splice(getIndex,1);
-          console.log(this.fileList);
         }
       },
-      handleAvatarSuccess(res, file) {
+      handleAvatarSuccess(res, file, fileList) {
+        this.fileList = fileList;
         this.piclist.push({
           url: res.data,
           num: 0,
@@ -161,8 +179,8 @@
 
   .container .label ul li {
     height: 100%;
-    width: 43%;
-    margin: 10px 11px 0px;
+    width: 8rem;
+    margin: 10px 11px 0px 0px;
     display: inline-block;
   }
 
@@ -176,7 +194,7 @@
 
   .container .label ul li .onload-pic {
     width: 100%;
-    height: 100%;
+    height: 9rem;
     position: relative;
   }
   .onload-pic .el-icon-close {
@@ -196,8 +214,8 @@
 
   .label ul li .onload-pic .icon-guanbi {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -8px;
+    right: -10px;
     font-size: 12px;
   }
 
@@ -237,7 +255,7 @@
 
   .input .el-button {
     height: 30px;
-    padding: 5px 8%;
+    padding: 7px 8%;
     margin: 0px;
     background: #c8c9ca;
     color: #fff;
@@ -267,7 +285,7 @@
   }
 
   .input .el-input {
-    width: 59px;
+    width: 65px;
   }
 
   .el-input__inner {

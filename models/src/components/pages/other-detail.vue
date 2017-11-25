@@ -1,7 +1,5 @@
 <template>
-
   <div style="background: #fff;">
-
     <div>
       <div style="margin-top: 46px;">
         <swiper :options="swiperOption" ref="mySwiper">
@@ -9,8 +7,7 @@
           <template v-for="(item, index) in data.pic">
             <swiper-slide  :style="{
                   background: 'url('+ item.src +') no-repeat',
-                  backgroundSize: 'cover',
-                  height: '180px'}">
+                  backgroundSize: 'cover',height: '180px'}">
             </swiper-slide>
           </template>
           <div class="swiper-pagination" slot="pagination"></div>
@@ -28,9 +25,7 @@
           </template>
         </swiper>
       </div>
-
     </div>
-
     <div class="experience clear">
       <div class="tb-wrap">
         <div class="right-select fl">

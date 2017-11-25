@@ -34,6 +34,10 @@
 </template>
 
 <script type="text/javascript">
+
+  import {mapGetters} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+
   export default {
     name: 'foots',
     data() {
@@ -42,6 +46,9 @@
         }
     },
     computed: {
+      ...mapGetters({
+        get_user_info: GET_USER_INFO
+      }),
       cart_count() {
         return this.$store.state.cart_count;
       }
@@ -50,10 +57,18 @@
 
     },
     mounted() {
-
+      this.fetchData();
     },
     methods: {
-
+      fetchData() {
+        this.load_data = true;
+        this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
+          {uid: this.get_user_info.id}).then((res) => {
+          this.$store.commit('SET_CART_NUMBER', this.cart_number);
+        }).catch((error) => {
+          this.load_data = false;
+        });
+      },
     }
   };
 </script>

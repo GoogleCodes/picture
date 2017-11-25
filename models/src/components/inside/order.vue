@@ -1,28 +1,32 @@
 <template>
   <div>
     <elenav></elenav>
-    <div>
-      <img src="../../../static/images/43.png" class="w100 h100" alt="">
+    <div class="order-banner" style="margin: 47px 0px 0px;">
+      <template v-for="k in data.shotcut">
+        <img :src="k.shotcut" class="w100 h100" alt="">
+      </template>
     </div>
     <div class="shoping-list">
       <ul>
         <template v-for="item in data.list">
           <li class="fl">
-            <router-link :to="{ path: '/pages/detail'}">
+            <router-link :to="{ path: '/content/proseries', query: {id: item.id}}">
               <div class="shop-body">
                 <div class="pic-img">
-                  <img :src="item.pic" alt="" class="w100 h100">
+                  <template v-for="k in item.goods_thumb">
+                    <img :src="k.url" alt="" class="w100 h100">
+                  </template>
                 </div>
                 <div class="item-wrap matop_10">
-                  <p class="ft-18">相册系列</p>
-                  <span class="block item-desc">了解更多 &gt;</span>
+                  <p class="ft-16">{{ item.goods_name }}</p>
+                  <span class="block item-desc ft-14">了解更多 &gt;</span>
                 </div>
               </div>
             </router-link>
           </li>
         </template>
       </ul>
-      <el-button class="shoping-move">加载更多...</el-button>
+      <el-button class="shoping-move clear">加载更多...</el-button>
     </div>
   </div>
 </template>
@@ -36,12 +40,18 @@
     data () {
       return {
         data: {
-          list: []
+          list: [],
+          shotcut: [],
         }
       }
     },
     created() {
       this.getOrder();
+    },
+    watch: {
+      '$route'() {
+        this.getOrder();
+      }
     },
     components: {
       ElButton,
@@ -49,10 +59,13 @@
     },
     methods: {
       getOrder() {
-        this.$http.get('../../../static/data/index.json').then((res) => {
-          this.data.list = res.data.tuijian;
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?limit=" + 4).then((res) => {
+          this.data.list = res.data;
+          this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.$route.query.id).then((res) => {
+            this.data.shotcut = res.data;
+          });
         });
-      }
+      },
     }
   }
 </script>
@@ -60,20 +73,21 @@
 <style type="text/css">
 
   /* shoping-list start */
+  .order-banner {
+    height: 11.5rem;
+  }
   .shoping-list {
-    width: 100%;
-    height: 100%;
-    padding: 15px 0 100px;
+    padding: 10px 10px 100px;
     background: #fff;
   }
 
   .shoping-list ul li {
-    width: 45%;
-    margin: 10px 8px;
+    width: 50%;
+    margin: 10px 0;
   }
 
   shoping-list ul li:nth-child(2n) {
-    margin: 10px 0px;
+    /*margin: 10px 0px;*/
   }
 
   .shoping-list ul li .shop-body {
@@ -83,6 +97,12 @@
     background: #fff;
     transition: 0.5s;
   }
+  .shoping-list ul li .shop-body .pic-img {
+    width: 80%;
+    height: 130px;
+    margin: 0px auto;
+  }
+
 
   .shoping-list ul li .shop-body .pic-img img {
     width: 100%;
@@ -152,6 +172,30 @@
 
   .utils-con ul li .gift {
     background-position: 6px 0px;
+  }
+
+  @media screen and (max-width : 600px){
+    .shoping-list ul li .shop-body .pic-img {
+      height: 216px;
+    }
+  }
+
+  @media screen and (max-width : 414px){
+    .shoping-list ul li .shop-body .pic-img {
+      height: 140px;
+    }
+  }
+
+  @media screen and (max-width : 375px){
+    .shoping-list ul li .shop-body .pic-img {
+      height: 130px;
+    }
+  }
+
+  @media screen and (max-width : 320px){
+    .shoping-list ul li .shop-body .pic-img {
+      height: 110px;
+    }
   }
 
   /* utils-con end */

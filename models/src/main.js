@@ -26,7 +26,7 @@ import {
 Vue.prototype.$storageSet = storageSet;
 Vue.prototype.$storageGet = storageGet;
 import * as fetch from './api/utils.js'
-import { tool_verify, tools_axios,tools_filter } from './api/tool'
+import { tool_verify, tools_axios, tools_filter } from './api/tool'
 //  验证
 Vue.prototype.$toolVerify = tool_verify;
 Vue.prototype.$ajax = tools_axios;

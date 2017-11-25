@@ -86,6 +86,7 @@
                   name: res.data.uname,
                   tel: this.ruleForm.username,
                 },
+                login: true
               });
               that.load_data = false;
               setTimeout(this.$router.replace({ path: '/' }),500);

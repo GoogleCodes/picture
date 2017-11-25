@@ -29,25 +29,16 @@
   <div class="fl">
     <div style="margin-top: 46px;">
       <swiper :options="swiperOption" ref="mySwiper">
-        <!-- slides -->
-        <template v-for="(item, index) in data.pic">
-          <swiper-slide  :style="{
-                  background: 'url('+ item.src +') no-repeat',
+        <template v-for="(item, index) in data.picture">
+          <swiper-slide :style="{
+                  background: 'url('+ item.url +') no-repeat',
+                  backgroundSize: 'cover',
                   height: '300px'}">
           </swiper-slide>
         </template>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
     </div>
-    <!-- swiper2 Thumbs -->
-    <swiper style="height: 75px;" :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
-      <template v-for="(item, index) in data.pic">
-        <swiper-slide :style="{
-                  background: 'url('+ item.src +') no-repeat',
-                  backgroundSize: 'cover'}">
-        </swiper-slide>
-      </template>
-    </swiper>
   </div>
 </template>
 
@@ -58,50 +49,29 @@
 
   export default {
     props: {
-
+      list: {
+        type: [Array,Object],
+        required: true
+      }
     },
     data() {
       return {
         data: {
-          pic: [{
-              "src" : '../../static/images/23.png',
-          },{
-              "src": '../../static/images/23.png'
-          },{
-              "src": '../../static/images/23.png'
-          },{
-              "src": '../../static/images/23.png'
-          },{
-              "src": '../../static/images/23.png'
-          }],
+          picture: [],
         },
         swiperOption: {
-          // swiper options 所有的配置同swiper官方api配置
           autoplay: 3000,
-          notNextTick: true,
-          direction: 'horizontal',
-          grabCursor: true,
           pagination: '.swiper-pagination',
           observeParents: true,
-          spaceBetween: 10,
-          debugger: true,
         },
-        swiperOptionThumbs: {
-          notNextTick: true,
-          spaceBetween: 10,
-          centeredSlides: true,
-          slidesPerView: 'auto',
-          touchRatio: 0.2,
-          slideToClickedSlide: true
-        }
       }
     },
     mounted() {
-        console.log(this.list, '+-+-');
-        const mySwiper = this.$refs.mySwiper.swiper
-        const swiperThumbs = this.$refs.swiperThumbs.swiper
-        mySwiper.params.control = swiperThumbs
-        swiperThumbs.params.control = mySwiper
+      const mySwiper = this.$refs.mySwiper.swiper
+    },
+    created() {
+      console.log(this.list);
+//      this.data.picture = JSON.parse(this.list.photo)
     },
     components: {
         swiper,
