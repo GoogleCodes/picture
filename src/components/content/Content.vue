@@ -3,29 +3,34 @@
     <!-- content start -->
     <div class="content clear">
       <div class="con-pro">
-        <img src="../../../static/images/02.png" alt="" style="width: 100%;height: 100%;">
+          <el-carousel height="600px">
+            <template v-for="(item, index) in data.banner">
+              <el-carousel-item>
+                <div class="banner clear">
+                  <router-link :to="{ path: item.url, query: {id: item.id}}">
+                    <img :src="item.img" :alt="item.name" >
+                  </router-link>
+                </div>
+              </el-carousel-item>
+            </template>
+          </el-carousel>
+        <!--<img src="../../../static/images/02.png" alt="" style="width: 100%;height: 100%;">-->
       </div>
       <div class="wrap clear">
         <div class="wrap-card fl">
           <div class="wrap-card-icon box-icon"></div>
-          <div class="wrap-card-text">纯手工装裱</div>
-          <div class="wrap-card-desc">
-            质感卓越，进口画芯高清质感图，高仿颜料纹理质感，佳能高级打印机准确输出，还原画芯真实色彩
-        </div>
+          <div class="wrap-card-text">高端进口框条</div>
+          <div class="wrap-card-desc">采用韩国进口PS框条, 纹理逼真,手感细腻, 更好地衬托画心</div>
         </div>
         <div class="wrap-card fl">
           <div class="wrap-card-icon thumbsup-icon"></div>
-          <div class="wrap-card-text">纯手工装裱</div>
-          <div class="wrap-card-desc">
-            质感卓越，进口画芯高清质感图，高仿颜料纹理质感，佳能高级打印机准确输出，还原画芯真实色彩
-        </div>
+          <div class="wrap-card-text">收藏级画质</div>
+          <div class="wrap-card-desc">色佳能打印机, 兼容照片及油画输出完美还原照片原片真实色彩</div>
         </div>
         <div class="wrap-card fl" style="margin: 0px;">
           <div class="wrap-card-icon picture-icon"></div>
           <div class="wrap-card-text">纯手工装裱</div>
-          <div class="wrap-card-desc">
-            质感卓越，进口画芯高清质感图，高仿颜料纹理质感，佳能高级打印机准确输出，还原画芯真实色彩
-          </div>
+            <div class="wrap-card-desc">由国际装裱师公会 “Fint Art” 认证推荐装裱师制作, 细节体现 “匠杺” 之美</div>
         </div>
         <div class="wrap-list clear">
           <template v-for="(item, index) in data.albumList">
@@ -50,7 +55,7 @@
           <span class="tuijian-span">时光印记，定格美好的回忆</span>
         </div>
         <div>
-          <div style="margin-top: 50px;">
+          <div style="margin: 50px 0px 100px;overflow: hidden;;">
             <template v-for="item in data.arr">
               <div class="card-tuijian fl">
                   <router-link class="fl block" :to="{ path: '/inside/orderlist', query: {id: item.goods_id}}">
@@ -82,7 +87,7 @@
         </div>
       </router-link>
       <div class="con-pro clear pro-moves">
-        <router-link :to="{ path: 'content/news'}">
+        <router-link :to="{ path: 'content/news'}" class="block">
           <img src="../../../static/images/09.jpg" alt="" style="width: 100%;height: 100%;">
         </router-link>
       </div>
@@ -92,21 +97,30 @@
 </template>
 
 <script type="text/javascript">
+
+  import { Carousel, CarouselItem } from 'element-ui'
+
   export default {
     name: 'Content',
     data() {
       return {
         albumVisi: false,
         data: {
+          banner: [],
           arr: [],
           desc: '',
           albumList: [],
-        }
+        },
       }
+    },
+    components: {
+      ElCarousel: Carousel,
+      ElCarouselItem: CarouselItem
     },
     mounted() {
       this.getIndex();
       this.getAlbum();
+      this.getBanner();
     },
     created() {
       this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1)
@@ -115,6 +129,13 @@
       });
     },
     methods: {
+      //  获取主图
+      getBanner() {
+        this.$ajax.HttpGet(this.$api.get_content.GET_BANNER).then((res) => {
+          this.data.banner = res.data;
+          console.log(this.data.banner);
+        });
+      },
       getIndex () {
         this.$ajax.HttpGet(this.$api.get_content.GET_ORDER +"?is_hot=1" + "&limit=" + 4).then((res) => {
           this.data.arr = res.data;
@@ -144,7 +165,8 @@
 
   .content .pro-moves {
     position: relative;
-    height: 350px;padding-top: 30px;
+    height: 350px;
+    padding-top: 0px;
   }
 
   .content .pro-moves .move {
@@ -161,7 +183,7 @@
     width: 1050px;
     overflow: hidden;
     height: 100%;
-    margin: 100px auto 0px;
+    margin: 245px auto 0px;
   }
 
   .content .wrap .wrap-card {
@@ -181,7 +203,7 @@
   .content .wrap .wrap-card .box-icon {
     background-position: 0px 0px;
     position: relative;
-    left: 4px;
+    left: 0px;
   }
 
   .content .wrap .wrap-card .thumbsup-icon {
@@ -202,7 +224,8 @@
     text-align: center;
     margin: 20px 5px;
     color: #898989;
-    font-size: 12px;
+    font-size: 14px;
+    letter-spacing: 5px;
   }
 
   .content .wrap .wrap-list {

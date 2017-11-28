@@ -78,12 +78,12 @@ module.exports = {
         include: [resolve('src'), resolve('test'),resolve('/node_modules/element-ui/src'),resolve('/node_modules/element-ui/packages')]
       },
     ]
-  },
-  plugins: [
-    new webpack.optimize.CommonsChunkPlugin('common.js'),
-    new webpack.ProvidePlugin({
-      jQuery: "jquery",
-      $: "jquery"
-    })
-  ]
+  }
+  // plugins: [
+  //   new webpack.optimize.CommonsChunkPlugin('common.js'),
+  //   new webpack.ProvidePlugin({
+  //     jQuery: "jquery",
+  //     $: "jquery"
+  //   })
+  // ]
 }

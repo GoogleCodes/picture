@@ -2,7 +2,7 @@
   <div style="width: 100%;height: 100%;position: relative;background: #f8f8f8;">
     <!-- login start -->
     <div class="administrator"></div>
-    <div class="login" v-loading="load_data" element-loading-text="正在登陆中..." @keyup.enter="logining">
+    <div class="login" v-loading="load_data" element-loading-text="正在登陆中...">
       <div class="login-form">
         <div class="tab">
           <div style="height: 40px;border-bottom: 1px solid #ccc;">
@@ -25,16 +25,16 @@
               </el-form-item>
             </div>
           </el-form>
-          <div class="form-input">
-            <div class="fl" style="cursor: pointer;width: 60%">
+          <div class="form-input clear">
+            <el-button class="comfirm" @click="logining('ruleForm')" type="primary">登录</el-button>
+          </div>
+          <div class="form-input" style="margin-top: 10px;">
+            <div class="fl checked_login">
               <el-checkbox-group v-model="checked_login" @change="changeGo">
                 <el-checkbox label="记住登录密码">记住登录密码</el-checkbox>
               </el-checkbox-group>
             </div>
             <router-link :to="{ path: '/user/find'}" class="fr" style="color: #b11e25;">忘记密码</router-link>
-          </div>
-          <div class="form-input clear">
-            <el-button class="comfirm" @click="logining('ruleForm')" type="primary">登录</el-button>
           </div>
         </div>
       </div>
@@ -61,7 +61,7 @@
     data () {
       return {
         ruleForm: {
-          username: '18520908682',
+          username: '13232800159',
           password: '',
         },
         rules: {
@@ -102,8 +102,17 @@
           '&pwd=' + this.ruleForm.password).then((res) => {
             if(res.code == 0) {
               that.load_data = false;
+              this.$message({
+                message: res.msg,
+                type: 'warning'
+              });
+              this.ruleForm.password = ''
               return false;
             } else {
+              this.$message({
+                message: res.msg,
+                type: 'warning'
+              });
               this.checked_login = true;
               this.$store.commit('GET_CHECKED_LOGIN',this.checked_login);
               that.set_user_info({
@@ -150,9 +159,13 @@
     width: 100%;
     height: 49px;
     border: none;
-    margin-top: 20px;
     color: #fff;
     background: #b11e25;
+  }
 
+  .tab .form-input .checked_login {
+    display: none;
+    cursor: pointer;
+    width: 60%;
   }
 </style>

@@ -32,7 +32,6 @@
     <div class="detailpage" style="padding-bottom: 100px;" v-html="list.goods_content">
       <!--<img src="../../../static/images/45.png" alt="" class="w100 h100">-->
     </div>
-
     <div class="thislayer" v-show="layer" @click="goLayer()"></div>
     <div class="item-layer" v-show="layer">
       <div class="item-shop-msg">
@@ -50,24 +49,21 @@
                  @changeGuige="changeGuige(pindex,val.id,val.item)"></guige>
         </ul>
       </div>
-      <div class="select-num clear">
+      <div class="select-num clear" style="display: none;">
         <span class="left fl">数量：</span>
         <div class="item-amount ">
-          <el-button class="no-minus fl" @click="changeNumber(list, -1)" :class="{'disabled':list.nums <= 1}">-</el-button>
-          <el-input type="text" class="fl" placeholder="0" v-model="list.nums" readonly></el-input>
-          <el-button class="add-max fl" @click="changeNumber(list, 1)" :class="{'disabled': list.nums >= 1}">+</el-button>
+          <el-button class="no-minus fl" @click="changeNumber(list, -1)" :class="{'disabled':list.sales_sum <= 1}">-</el-button>
+          <el-input type="text" class="fl" placeholder="0" v-model="list.sales_sum" readonly></el-input>
+          <el-button class="add-max fl" @click="changeNumber(list, 1)" :class="{'disabled': list.sales_sum >= 1}">+</el-button>
         </div>
       </div>
       <div class="select-btn clear">
-        <router-link :to="{ path: '/pages/onload', query:{id: 1}}" class="w100 h100 block">
-          <el-button class="ft-16">去上传照片</el-button>
-        </router-link>
+        <el-button class="ft-16" @click="goToUpload(list.goods_id)">去上传照片</el-button>
       </div>
     </div>
   </div>
     <!-- content end -->
 </template>
-
 
 <script type="text/javascript">
 
@@ -122,6 +118,13 @@
       }
     },
     methods: {
+      goToUpload(id) {
+        if (this.guige.length == 0) {
+          this.$message('请选择规格！');
+          return false;
+        }
+        setTimeout(this.$router.push({ path: '/pages/onload', query: {id: id}}), 1000)
+      },
       getDataShop() {
         this.$ajax.HttpGet(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.query.id).then((res) => {
           this.list = res.data
@@ -177,12 +180,12 @@
         //  大于0为加
         if (flag > 0) {
           //  item数量自增1
-          item.nums++;
+          item.sales_sum++;
         } else {
           //  item数量自减1
-          item.nums--;
-          if(item.nums <= 1) {
-            item.nums = 1;
+          item.sales_sum--;
+          if(item.sales_sum <= 1) {
+            item.sales_sum = 1;
           }
         }
       },

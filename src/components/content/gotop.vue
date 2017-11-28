@@ -12,21 +12,21 @@
       }
     },
     created() {
-      //  窗体滚动事件
-      $(window).scroll(function() {
-        if($(window).scrollTop() >= 350) {
-          $(".icon-dingbu").fadeIn(500);
-        } else {
-          $(".icon-dingbu").stop(true,true).fadeOut(500);
-        }
-      });
+//      //  窗体滚动事件
+//      $(window).scroll(function() {
+//        if($(window).scrollTop() >= 350) {
+//          $(".icon-dingbu").fadeIn(500);
+//        } else {
+//          $(".icon-dingbu").stop(true,true).fadeOut(500);
+//        }
+//      });
     },
     methods: {
-      goTopBack() {
-        $('html,body').animate({
-          scrollTop: 0,
-        },200);
-      },
+//      goTopBack() {
+//        $('html,body').animate({
+//          scrollTop: 0,
+//        },200);
+//      },
     },
   }
 </script>

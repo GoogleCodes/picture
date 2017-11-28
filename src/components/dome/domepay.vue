@@ -18,9 +18,11 @@
     },
     methods: {
       alipay() {
-        this.$ajax.HttpPost('/api/home/pay/alpay').then((res) => {
+        this.$ajax.HttpPost('/api/home/pay/alpay',{
+          id:28,
+          uid:8
+        }).then((res) => {
           $("#box").html(res);
-          this.dome = res;
         })
       },
     }

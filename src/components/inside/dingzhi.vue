@@ -61,16 +61,6 @@
               </div>
             </div>
           </div>
-          <!-- pages start -->
-          <!--<div class="clear goToPages" v-show="nullShop">-->
-            <!--<el-pagination @size-change="handleSizeChange"-->
-              <!--@current-change="handleCurrentChange"-->
-              <!--:current-page.sync="shopPages.current_page"-->
-              <!--:page-size="shopPages.per_page" :total="shopPages.total"-->
-              <!--layout="total, prev, pager, next">-->
-            <!--</el-pagination>-->
-          <!--</div>-->
-          <!-- pages start -->
         </div>
       </div>
 
@@ -116,12 +106,6 @@
       this.getChoose(1);
     },
     methods: {
-      handleSizeChange(val) {
-        console.log(val);
-      },
-      handleCurrentChange(val) {
-        console.log(`${val}`);
-      },
       getChoose(type) {
         if(this.data.dType == type) return true;
         this.data.dType = type;
@@ -140,7 +124,6 @@
           this.load_data = false;
           this.photoList = res.data.data;
           this.shopPages = res.data;
-          console.log(res.data);
           if (this.photoList.length != 0) {
             this.nullShop = true;
           } else {

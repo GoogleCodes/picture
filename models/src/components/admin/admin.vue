@@ -27,7 +27,7 @@
           </router-link>
         </li>
         <li>
-          <router-link :to="{ path: '/'}" class="block">
+          <router-link :to="{ path: '/user/personal'}" class="block">
             <div class="fl">
               <i class="iconfont icon-geren c_b3b3b3"></i>
               <span class="ft-16" style="margin-left: 5px;">个人资料</span>

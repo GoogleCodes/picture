@@ -26,7 +26,7 @@
           </li>
         </template>
       </ul>
-      <el-button class="shoping-move clear">加载更多...</el-button>
+      <el-button class="shoping-move clear" @click="loadMove()" v-show="moveFlog">加载更多...</el-button>
     </div>
   </div>
 </template>
@@ -42,7 +42,8 @@
         data: {
           list: [],
           shotcut: [],
-        }
+        },
+        moveFlog: true,
       }
     },
     created() {
@@ -58,6 +59,12 @@
       elenav,
     },
     methods: {
+      loadMove() {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER).then((res) => {
+          this.data.list = res.data;
+          this.moveFlog = false;
+        });
+      },
       getOrder() {
         this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?limit=" + 4).then((res) => {
           this.data.list = res.data;
@@ -79,6 +86,7 @@
   .shoping-list {
     padding: 10px 10px 100px;
     background: #fff;
+    overflow: hidden;
   }
 
   .shoping-list ul li {

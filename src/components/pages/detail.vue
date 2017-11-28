@@ -12,16 +12,11 @@
             <div class="select-text">{{ list.good_desc }}</div>
             <div class="select-price">¥{{ list.shop_price }}</div>
 
-
             <div class="select-color clear" v-for="(fmt,pindex) in list.myspec">
               <div class="left fl">{{ fmt.spec }}：</div>
               <ul style="width: 75%;float: right;" class="fl">
                 <guige :value="val.id" :text="val.item" v-for="val in fmt.item"
                        @changeGuige="changeGuige(pindex,val.id,val.item)"></guige>
-                <!--<template v-for="(list,index) in colorList.item">-->
-                  <!--<li class="fl" :class="{'active': index == currentSize}"-->
-                  <!--@click="choseSize(index, list)">{{ list.item }}</li>-->
-                <!--</template>-->
               </ul>
             </div>
 
@@ -29,7 +24,7 @@
               <span class="left fl">数量：</span>
               <div class="item-amount ">
                 <el-button class="no-minus fl" @click="changeNumber(list, -1)"
-                           :class="{'disabled':list.sales_sum <= 1}">-</el-button>
+                           :class="{'disabled':list.sales_sum <= 1}" style="margin-left: 0;">-</el-button>
                 <el-input type="text" class="fl" placeholder="0"
                           v-model="list.sales_sum" readonly></el-input>
                 <el-button class="add-max fl" @click="changeNumber(list, 1)"
@@ -37,11 +32,10 @@
               </div>
             </div>
             <div class="select-btn clear">
-              <el-button class="ft-16" @click="goCart()">加入购物车</el-button>
+              <el-button class="ft-16" @click="addCart()">加入购物车</el-button>
             </div>
           </div>
         </div>
-
         <div class="detail-bottom clear">
           <div class="product-title">PRESENTATION</div>
           <span class="product-text">商品详情</span>
@@ -55,26 +49,23 @@
             <span class="product-text">浏览其他</span>
             <ul class="product-list clearfix">
               <template v-for="(item, index) in randomList">
-                <li class="product-item">
-                  <router-link :to="{ path: '/pages/detail', query:{pid: item.goods_id }}" class="block">
-                    <div class="pic">
-                      <template v-for="(x,i) in item.goods_thumb">
-                        <img :src="x.url" alt="">
-                      </template>
-                    </div>
-                    <div class="item-m-desc">
-                      <div class="item-price ft-22 c_e64147">¥{{ item.shop_price }}</div>
-                      <div class="item-title">{{ item.goods_name }}</div>
-                      <div class="item-text">{{ item.goods_remark }}</div>
-                    </div>
-                  </router-link>
+                <li class="product-item" @click="watchElse(item.goods_id)">
+                  <div class="pic">
+                    <template v-for="(x,i) in item.goods_thumb">
+                      <img :src="x.url" alt="">
+                    </template>
+                  </div>
+                  <div class="item-m-desc">
+                    <div class="item-price ft-22 c_e64147">¥{{ item.shop_price }}</div>
+                    <div class="item-title">{{ item.goods_name }}</div>
+                    <div class="item-text">{{ item.goods_remark }}</div>
+                  </div>
                 </li>
               </template>
             </ul>
           </div>
         </div>
       </div>
-
     </div>
     <!-- content end -->
   </div>
@@ -141,10 +132,28 @@
         if (this.guigeName <= 0) {
           return '请选择商品规格和数量';
         }
-        return '已选择"' + this.guigeName.join('-') + '"';
+        return '已选择"' + this.guigeName.join('-').replace(/-/g,'') + '"';
       },
     },
     methods: {
+      getFilterArray(array) {
+        const res = [];
+        const json = {};
+        for (let i in array) {
+          const _self = array[i];
+          if(!json[_self]) {
+              res.push(_self);
+              json[_self] = 1;
+          }
+        }
+        return res;
+      },
+      watchElse(id) {
+        this.$router.replace({
+          path: '/pages/detail',
+          query: {id: id}
+        })
+      },
       getDataShop() {
         this.load.load_data = true;
         this.load_shotcut = true;
@@ -154,10 +163,8 @@
           switch (true) {
             case res.code == 1:
               this.list = res.data;
-              this.swiperList = this.$goFetch.goJson(res.data.photo);
+              this.swiperList = JSON.parse(res.data.photo);
               that.myspecList = this.list.myspec;
-              this.colorList = this.list.myspec['尺寸']
-              this.sizeList = this.list.myspec['颜色'];
               //  获取随机商品
               this.$ajax.HttpGet(this.$api.get_other.GET_OTHER + '?cid=' + this.list.cat_id + '&num=' + 3).then((res) => {
                 this.randomList = res.data;
@@ -202,7 +209,6 @@
         if (!this.checkGuige) {
           return;
         }
-        console.log(123);
         this.$ajax.HttpPost(this.$api.get_content.GET_POST_PRICE, {
           gid: this.list.goods_id,
           spec: this.guige.join('-').match(/\d+/g).toString().replace(',','-')
@@ -227,9 +233,8 @@
           }
         }
       },
-      goCart() {
+      addCart() {
         let that = this;
-        console.log(this.get_user_info.user == undefined);
         try {
           switch(true) {
             case this.get_user_info.user == undefined:
@@ -252,22 +257,20 @@
               return false;
             default:
           }
-          var json = {
+          let json = {
             uid: this.get_user_info.user.id,
             gid: this.$route.query.id,
             sid: this.charSID,
             num: this.list.sales_sum,
             price: this.list.shop_price,
             upimg: 'a',
-            specdata: this.guigeName.join('-'),
+            specdata: this.guigeName.join('-').replace(/-/g,'')
           };
           this.$ajax.HttpPost(this.$api.get_content.POST_CART_DATA,json).then((res) => {
-            setInterval(() => {
+            setTimeout(() => {
               that.$router.push({ path: '/cart/cart' });
-              location.reload();
             }, 500);
           });
-
         } catch(e) {}
       }
     }
@@ -304,6 +307,7 @@
     line-height: 35px;
     padding: 10px 0px;
     min-height: 35px;
+    margin-top: 15px;
   }
   .right-select .select-color .left {
     display: inline-block;
@@ -349,7 +353,7 @@
   }
 
   .right-select .select-color .right {
-    margin: 18px 17px 0 0;
+    margin: 0px 17px 17px 0;
   }
 
   .right-select .select-size .right .active, .right-select .select-color .active  {
@@ -494,6 +498,16 @@
     z-index: 10;
   }
 
+  .content-top p {
+    font-size: 26px;
+    line-height: 100px;
+  }
+
+  .content-top p img {
+    width: 80%;
+
+  }
+
   .preview {
     width: 100%;
     margin-top: 10px;
@@ -636,14 +650,7 @@
     height: 180px;
     margin: 16px;
   }
-  .product-list .product-item .item-title {
-    font-size: 16px;
-    color: #000;
-    line-height: 25px;
-    height: 50px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+
   .product-list .product-item .item-price {
     margin-top: 10px;
   }
@@ -653,12 +660,27 @@
     padding: 0px 20px;
   }
 
+  .product-list .product-item .item-title {
+    font-size: 16px;
+    color: #000;
+    line-height: 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
   .product-list .product-item .item-text {
     font-size: 14px;
     color: #333;
-    height: 30px;
     overflow: hidden;
     text-overflow: ellipsis;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
     line-height: 30px;
   }
   .product-list .product-item:hover {

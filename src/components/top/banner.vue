@@ -1,21 +1,15 @@
 <template>
   <!-- banner start -->
   <div>
-    <el-carousel height="500px">
-      <el-carousel-item>
-        <div class="banner clear">
-        <!--
-          <router-link :to="{ path: item.url, query: {id: item.id}}">
-            <img :src="item.img" :alt="item.name" >
-          </router-link>
-        -->
-          <div class="banner-title">杺 叶</div>
-          <div class="banner-text">
-            以 “匠杺”代表着一木一心，尽在人心。我们用心制造每一件印品的高质量，尽心做到每个客户满意。用心制造别具匠心的美好，这是我们对产品服务理念的定义。
-          </div>
-        </div>
-      </el-carousel-item>
-    </el-carousel>
+    <div class="banner clear">
+      <div class="banner-title">工会认证标志</div>
+      <div class="banner-text">
+        顺德第一家获  ”Fint Art”  公会认证的国际装裱师资质的公司。
+        用心、简单、重复，是杺叶的企业文化，也是 ”工匠精神” 的体现
+        “凝神屏气无言语，两手一心付案牍”
+        <div style="text-align: right;">——致杺叶</div>
+      </div>
+    </div>
   </div>
   <!-- banner end -->
 </template>
@@ -24,10 +18,7 @@
   export default {
     data() {
       return {
-        //  获取数据
-        list: [],
-        //  提示加载中
-        load_data: false,
+
       }
     },
     components: {
@@ -37,15 +28,37 @@
 
     },
     mounted() {
-        this.getBanner();
+
     },
     methods: {
-      //  获取主图
-      getBanner() {
-        this.$ajax.HttpGet(this.$api.get_content.GET_BANNER).then((res) => {
-          this.list = res.data;
-        });
-      }
+
     }
   }
 </script>
+<style type="text/css">
+
+  .banner-title {
+    writing-mode: tb-rl;
+    text-align: center;
+    font-size: 32px;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    right: 0px;
+    width: 35px;
+    margin: 0px auto;
+    letter-spacing: 8px;
+  }
+
+  .banner-text {
+    width: 563px;
+    height: 96px;
+    text-align: center;
+    margin: 0px auto;
+    color: #9fa0a0;
+    line-height: 35px;
+    padding: 320px 0px 0px;
+    letter-spacing: 4px;
+    font-family: 'Adobe 宋体 Std L';
+  }
+</style>

@@ -6,11 +6,6 @@
         <img :src="k.shotcut" alt="" style="width: 100%;height: 100%;">
       </template>
     </div>
-    <!--
-    <div class="advertising">
-      <img src="../../../static/images/32.png" class="w100 h100" alt="">
-    </div>
-    -->
     <div class="filter-con">
       <div class="filter-nav">
         <span class="fl">筛选条件 ：</span>
@@ -60,7 +55,7 @@
           </li>
         </template>
       </ul>
-      <a class="block clear shoping-move" @click="AllShowShop()">
+      <a class="block clear shoping-move" @click="AllShowShop()" v-show="shopAll">
         <span class="block" style="position: relative;top: 5px;">展开全部</span>
         <i class="block el-icon-arrow-down" style="position: relative;top: -1px;"></i>
       </a>
@@ -104,21 +99,13 @@
         </template>
       </ul>
     </div>
-
-    <!--
-    <div class="dingzhi clear">
-      <router-link :to="{ path: ''}">
-        <img src="../../../static/images/31.png" class="w100 h100" alt="">
-      </router-link>
-    </div>
-    -->
-
   </div>
 </template>
 
 <script type="text/javascript">
 
   import elenav from '@/components/top/Nav.vue'
+  import { Dropdown, DropdownMenu, DropdownItem } from 'element-ui'
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
 
   export default {
@@ -129,6 +116,7 @@
           listPages: {},
           shotcut: [],
         },
+        shopAll: true,
         randomList: [],
         //  规格
         specif: [],
@@ -143,6 +131,9 @@
     components: {
       ElButton,
       elenav,
+      ElDropdown: Dropdown,
+      ElDropdownMenu: DropdownMenu,
+      ElDropdownItem: DropdownItem
     },
     computed: {
       showPages () {
@@ -159,6 +150,7 @@
         "?keyword=" + this.searchText).then((res) => {
           this.data.list = res.data;
           this.load_data = false;
+          this.shopAll = false;
         });
       },
       handleCommand(command) {
@@ -202,9 +194,17 @@
         });
       },
       AllShowShop() {
-        this.$ajax.HttpGet(this.$api.get_other.GET_OTHER + "?cid=" + this.$route.query.id).then((res) => {
-          this.randomList = res.data;
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER).then((res) => {
+          this.load_data = false;
+          this.data.list = res.data;
+          this.data.listPages = res.data;
+          this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.$route.query.id).then((res) => {
+            this.data.shotcut = res.data;
+          });
+          this.getRadomList(this.$route.query.id, 4);
+          this.getSpecif();
         });
+        this.shopAll = false;
       }
     }
   }

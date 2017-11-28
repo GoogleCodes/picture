@@ -4,12 +4,12 @@
       <div class="fl">
         <div class="load-prc">
           <div class="bottom-tip">
-            <el-upload action="http://yuyin.ittun.com/public/api/home/front/imgupload"
+            <el-upload action="https://xinye-art.com/public/api/home/front/imgupload"
                         name="img" class="image-uploader-warp"
                         :drag="false" :on-preview="handlePreview"
                         :on-success="handleAvatarSuccess"
                         :before-upload="handleBeforeUpload"
-                        :onError="uploadError" :on-remove="handleRemove" 
+                        :onError="uploadError" :on-remove="handleRemove"
                         :file-list="goFile.fileList">
                 <el-button  type="primary" class="upload-btn">
                   <i class="el-icon-upload el-icon--right"></i>
@@ -22,8 +22,10 @@
           </div>
           <div class="item-pic">
             <template v-for="(k,i) in specList">
-              <div class="picture" :style="{background: 'url('+ k.img +')'}">
-                 <img :src="goFile.file.data" alt="" class="onloadPicture">
+              <div class="picture" :style="{background: 'url('+ k.img +') no-repeat',
+              'backgroundSize': 'cover'}">
+                <div v-if="goFile.file.data == undefined"></div>
+                <img v-else :src="goFile.file.data.path" class="onloadPicture">
               </div>
             </template>
           </div>
@@ -36,23 +38,12 @@
             <h1 class="ft-30 desc-title">{{ typeList.photo_name }}</h1>
             <div class="line"></div>
             <p class="ft-14" style="color: #898989;margin-left: 30px;">{{ typeList.photo_remark }}</p>
-            <template>
+            <template v-for="(k,pindex) in typeList.myspec">
               <div class="guige clear">
-                <h1 class="ft-18 guige-title">{{ SizeList.spec }}</h1>
+                <h1 class="ft-18 guige-title">{{ k.spec }}</h1>
                 <ul>
-                  <template v-for="(x,c) in SizeList.item">
-                    <li class="fl block" :class="{'active': c == current.cuSizeIndex}" @click="chonseSize(c,x.id)">{{ x.item }}</li>
-                  </template>
-                </ul>
-              </div>
-            </template>
-
-            <template>
-              <div class="guige clear">
-                <h1 class="ft-18 guige-title">{{ ColorList.spec }}</h1>
-                <ul>
-                  <template v-for="(x,c) in ColorList.item">
-                    <li class="fl block" :class="{'active': c == current.cuColorIndex}" @click="chonseSpec(c,x.id,x.item)">{{ x.item }}</li>
+                  <template v-for="x in k.item" >
+                    <vspec :value="x.id" :text="x.item" @chonseSpec="chonseSpec(pindex,x.id,x.item)"></vspec>
                   </template>
                 </ul>
               </div>
@@ -63,25 +54,23 @@
                 <span>暂无图片</span>
               </div>
             </div>
-
             <div class="have-pic clear">
-              <img :src="goFile.file.data" alt="" class="w100 h100">
+              <div class="pic-under" v-if="goFile.file.data == undefined"></div>
+              <img v-else :src="goFile.file.data.path" alt="" class="w100 h100">
             </div>
           </div>
         </template>
-        
       </div>
     </div>
 
     <!-- pop start -->
-    <div></div>
     <div class="pop" @click="_gopop()" v-show="pops"></div>
     <div class="pop-layer" id="layer" v-show="pops">
       <div class="fl layer-pic">
         <ul>
           <template v-for="(k,i) in goFile.fileList">
             <li @click="onChonsePic(k.response,i)">
-              <img :src="k.response.data" alt="" class="w100 h100">
+              <img :src="k.response.data.path" alt="" class="w100 h100">
             </li>
           </template>
         </ul>
@@ -90,15 +79,15 @@
         <div class="show-picture">
           <template v-for="(k,i) in specList">
             <div class="wrap-pic" :style="{background: 'url('+ k.data +')'}">
-              <img :src="goFile.cpic" alt="" class="onloadPicture w100 h100">
+              <img :src="goFile.cpic" alt="" :style="{width: '+ w + px'}" class="onloadPicture w100 h100">
             </div>
           </template>
           <div class="show-util">
-            <span class="block iconfont icon-fangda fl"></span>
-            <span class="block iconfont icon-suoxiao fl"></span>
+            <span class="block iconfont icon-fangda fl" @click="Bigger()"></span>
+            <span class="block iconfont icon-suoxiao fl" @click="Smaller()"></span>
           </div>
         </div>
-        <el-button>重新上传</el-button>
+        <el-button @click="pops = false">重新上传</el-button>
       </div>
       <div class="iconfont icon-zengjia close-pop" @click="pops = false"></div>
     </div>
@@ -110,8 +99,11 @@
 
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
 
+  import vspec from '@/components/dome/spec'
+
   export default {
     components: {
+      vspec,
       ElButton,
     },
     data() {
@@ -125,14 +117,11 @@
           file: {},
           cpic: '',
         },
-        current: {
-          cuSizeIndex: -1,
-          cuColorIndex: -1,
-        },
-        chSize: [],
-        guiges: [],
-        guigeNames: [],
+        guige: [],
+        guigeName: [],
         specList: [],
+        w: 0,
+        h: 0
       }
     },
     created() {
@@ -142,48 +131,68 @@
       this.getTypeList();
     },
     methods: {
+      Bigger() {
+
+      },
+      Smaller() {
+
+      },
       getTypeList() {
         this.$ajax.HttpPost('/api/home/photo/photoById',{
           id: this.$route.query.id
         }).then((res) => {
           this.typeList = res.data;
-          this.SizeList = res.data.myspec['尺寸'];
-          this.ColorList = res.data.myspec['颜色'];
         });
       },
-      chonseSize(index, id) {
-        this.current.cuSizeIndex = index;
-        let arr = [];
-        arr.push(id);
-        this.chSize = arr;
+      checkGuige() {
+        if (this.guige.length !== this.typeList.myspec) {
+          return false;
+        } else {
+          for (let gg = 0; gg < this.guige.length; gg++) {
+            if (typeof this.guige[gg] === 'undefined' || this.guige[gg] == '') {
+              return false;
+            }
+          }
+          return true;
+        }
       },
-      chonseSpec(index, id) {
-        this.current.cuColorIndex = index;
-        let arr = [];
-        arr.push(id);
-        this.guiges = this.chSize.concat(arr);
-        this.$postData('/api/home/photo/sku',{
+      chonseSpec(index, id, name) {
+        this.$set(this.guige, index, id);
+        this.$set(this.guigeName, index, name);
+        if (!this.checkGuige) {
+          return;
+        }
+        this.$ajax.HttpPost('/api/home/photo/sku',{
           pid: this.$route.query.id,
-          spec: this.guiges.join("-")
+          spec: this.guige.join("-").match(/\d+/g).toString().replace(',','-')
         }).then((res) => {
           this.specList = res.data;
         });
       },
       _openpop() {
+        if (this.goFile.fileList.length == 0) {
+          this.$message('请先上传图片');
+          return false;
+        }
         this.pops = true;
       },
       _gopop() {
         this.pops = false;
       },
       onChonsePic(key, index) {
-        this.goFile.cpic = key.data;
+        console.log(key.data.path, index);
+        this.goFile.cpic = key.data.path;
       },
       handleBeforeUpload(file) {
 
       },
       handleAvatarSuccess(res, file,fileList) {
-        this.goFile.file = res;
-        this.goFile.fileList = fileList;
+        try {
+          this.goFile.file = res;
+          this.goFile.fileList = fileList;
+          console.log(this.goFile.fileList,fileList);
+        } catch(e) {
+        }
       },
       handlePreview(file, fileList) {
       },
@@ -251,13 +260,14 @@
     width: 621px;
     height: 414px;
     margin: 50px auto 78px;
+    overflow: hidden;
     background: url('../../../static/images/38.png') no-repeat;
   }
 
   .load-prc .item-pic .picture .onloadPicture {
     width: 85%;
     height: 80%;
-    margin: 39px 53px;
+    margin: 39px 48px;
   }
 
   .load-prc .el-button{
@@ -276,7 +286,8 @@
 
   .load-desc .desc-title {
     margin: 40px 30px 10px;
-    font-size: 17px;
+    font-size: 21px;
+    line-height: 32px;
   }
 
   .load-desc .line {
@@ -347,11 +358,11 @@
   }
 
   .load-desc .have-pic {
-    border: 1px solid #000;
+    /*border: 1px solid #000;*/
     padding: 10px;
     width: 230px;
     height: 175px;
-    margin: 380px auto 60px;
+    margin: 380px auto 28px;
   }
   /* load-con end */
 
@@ -386,24 +397,25 @@
   }
 
   .pop-layer .layer-pic ul li {
-    margin: 25px;
+    margin: 0 25px 10px;
     width: 150px;
     height: 150px;
     cursor: pointer;
   }
 
   .pop-layer .fr {
-    width: 810px;
+    width: 815px;
     height: 620px;
     margin: 30px 35px;
     position: relative;
   }
 
   .pop-layer .fr .show-picture {
-    width: 95%;
-    height: 80%;
-    background: #f7f8f8;
+    width: 100%;
+    height: 85%;
     position: relative;
+    background: rgb(247, 248, 248);
+    overflow: hidden;
   }
 
   .pop-layer .fr .el-button {
@@ -433,6 +445,11 @@
     font-size: 25px;
     margin: 0px 10px;
     cursor: pointer;
+    color: #f1f1f1;
+    display: none;
+  }
+  .show-util .iconfont:hover {
+    background: #4bc487;
   }
 
   .pop-layer .close-pop {
@@ -461,11 +478,11 @@
   }
 
   .pop-layer .wrap-pic {
-    width: 735px;
-    height: 432px;
+    width: 100%;
+    height: 100%;
     margin: 0px auto;
-    position: relative;
-    top: 20px;
+    /*position: relative;*/
+    /*top: 20px;*/
     background: url('../../../static/images/38.png') no-repeat;
   }
 

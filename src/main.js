@@ -8,8 +8,6 @@ import Vue from 'vue'
 import App from './App'
 //  导入路由
 import VueResource from 'vue-resource'
-//  导入微信SDK
-var wx = require('weixin-js-sdk');
 //导入状态管理器
 import store from './store'
 //  导入组件
@@ -21,27 +19,19 @@ import '../static/css/idangerous.swiper.css'
 
 require('swiper/dist/css/swiper.css')
 
-//  导入路由
-import VueRouter from 'vue-router'
-import { storageSet } from './api/utils.js'
-Vue.prototype.$storageSet = storageSet;
-
-import * as fetch from './api/utils.js'
-Vue.prototype.$goFetch = fetch;
-
 import {localStorage, sessionStorage} from './common/storage'
 
-import * as goFetchs from './router/utils.js'
-Vue.prototype.$goFetchs = goFetchs;
-
 //  导入工具类
-import { tool_verify, tools_axios, tools_filter } from './api/tool'
+import { tool_verify, tools_axios, tools_filter, tools_storage, tools_mobile } from './api/tool'
 Vue.prototype.$tool = tool_verify;
 Vue.prototype.$ajax = tools_axios;
-
+Vue.prototype.$storage = tools_storage;
 //  加载过滤器
 Vue.filter('goPrice', tools_filter.changePrice);
 Vue.filter('gotimes', tools_filter.goTime);
+
+//  判断是否iphone 手机
+tools_mobile.goSwitch();
 
 //  导入API
 import api from './common/port_uri'

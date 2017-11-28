@@ -124,29 +124,6 @@
     position: relative;
 }
 
-.banner-title {
-    writing-mode:tb-rl;
-    text-align: center;
-    font-size: 45px;
-    position: absolute;
-    top: 110px;
-    left: 0px;
-    right: 0px;
-    width: 35px;
-    margin: 0px auto;
-}
-
-.banner-text {
-    width: 474px;
-    height: 96px;
-    text-align: center;
-    margin: 0px auto;
-    color: #9fa0a0;
-    line-height: 35px;
-    padding: 270px 0px 0px;
-    font-family: 'Adobe 宋体 Std L';
-}
-
 /* banner end */
 
 /* nav start */

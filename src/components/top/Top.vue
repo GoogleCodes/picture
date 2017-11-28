@@ -46,6 +46,8 @@
 
   import { cookieStorage } from '../../common/storage'
 
+  import { Badge, Button } from 'element-ui'
+
   export default {
       name: 'top',
       data () {
@@ -55,6 +57,10 @@
             list: {},
             user_name: ''
           };
+      },
+      components: {
+        ElBadge: Badge,
+        ElButton: Button,
       },
       mounted() {
         this.fetchData();

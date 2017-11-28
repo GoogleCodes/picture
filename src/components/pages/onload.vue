@@ -6,11 +6,13 @@
             <div class="upload-pic">
               <div class="top-upload clearfix">
                 <div class="left-pic">
-                  <img src="../../assets/images/31.jpg" alt="">
+                  <template v-for="k in list">
+                    <img :src="k.url" alt="">
+                  </template>
                 </div>
                 <div class="left-content">
-                  <div class="product-title">金色古典<span>MP14533-2B</span></div>
-                  <div class="product-text">高雅复古风</div>
+                  <div class="product-title">{{ $route.query.name }}</div>
+                  <div class="product-text">{{ $route.query.desc }}</div>
                 </div>
                 <div class="right-upload">
                   <el-upload action="https://xinye-art.com/public/api/home/front/imgupload"
@@ -18,8 +20,7 @@
                              :drag="false" :on-preview="handlePreview"
                              :on-success="handleAvatarSuccess"
                              :before-upload="handleBeforeUpload"
-                             :file-list="fileList"
-                             :onError="uploadError" :on-remove="handleRemove">
+                             :file-list="fileList" :onError="uploadError" :on-remove="handleRemove">
                     <el-button  type="primary" class="upload-btn">
                       <i class="el-icon-upload el-icon--right"></i>
                       <i>上传</i>
@@ -43,13 +44,20 @@
               <ul class="pic-list clearfix" v-else>
                 <template v-for="(k,i) in fileList">
                   <li class="pic-item">
-                    <img class="pic" :src="k.response.data" alt="">
-                    <div class="time">
-                      <img :src="k.response.data" alt="">
-                      <span>2017-08-18</span>
+                    <div style="border: 1px solid #dbdcdc;padding: 0 0 15px 0;">
+                      <img class="pic" :src="k.response.data.path" alt="">
+                      <div class="time">
+                        <img src="../../../static/images/36.png" alt="">
+                        <span>2017-08-18</span>
+                      </div>
+                      <div class="cancel">
+                        <img src="../../../static/images/35.png" alt="">
+                      </div>
                     </div>
-                    <div class="cancel">
-                      <img src="../../../static/images/35.png" alt="">
+                    <div class="item-amount">
+                      <el-button slot="prepend" class="no-minus fl" style="margin: 0 10px 0 0;" @click="inputNum(k.response.data, -1)">-</el-button>
+                      <el-input type="text" v-model="k.response.data.num" class="fl" readonly></el-input>
+                      <el-button slot="append" class="add-max fl" style="margin-left: 10px;" @click="inputNum(k.response.data, 1)">+</el-button>
                     </div>
                   </li>
                 </template>
@@ -61,11 +69,21 @@
                 <router-link :to="{ path: '/cart/cart'}">返回购物车</router-link>
               </div>
               <div class="right-ok" @click="conSubmit()">确认提交</div>
-              <span class="right-tip">您已经传了3张照片</span>
+              <span class="right-tip">您已经传了{{ count }}张照片</span>
             </div>
           </div>
         </div>
     </div>
+    <!--<div class="layer-upload"></div>-->
+    <!--<div class="layer-pop">-->
+      <!--<ul class="fl">-->
+        <!--<li>-->
+          <!--<img src="../../../static/images/33.png" alt="">-->
+        <!--</li>-->
+      <!--</ul>-->
+      <!--<div class="fr iconfont el-icon-close"></div>-->
+      <!--<img src="../../../static/images/33.png" alt="">-->
+    <!--</div>-->
   </div>
 </template>
 
@@ -73,48 +91,97 @@
 
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
 
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+
+
   export default {
     data() {
       return {
         fileList: [],
+        list: [],
         file: null,
         picVisi: true,
+        img: '',
+        arr: [],
+        options: {}
       }
     },
     created() {
 
     },
+    computed: {
+      ...mapGetters({
+        get_user_info: GET_USER_INFO
+      }),
+      //  统计上传多小张图片
+      count() {
+        return this.fileList.length;
+      }
+    },
     components: {
       ElButton,
     },
     methods: {
+      inputNum(k,i) {
+        i > 0 ? k.num += 1 : k.num -= 1;
+        if (k.num <= 1) {
+          k.num = 1;
+        }
+      },
+      fetchData() {
+        this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
+          {uid: this.get_user_info.user.id}).then((res) => {
+          for (let i in res.data) {
+            if(this.$route.query.id == res.data[i].id) {
+              this.list = res.data[i].goods_thumb;
+              console.log(this.list, '-+-+-');
+            }
+          }
+        }).catch((error) => {
+        });
+      },
+      conSubmit() {
+        let values = '';
+        for (let i in this.fileList) {
+          values = this.fileList[i].response.data
+        }
+        this.$ajax.HttpPost('/api/home/shopcar/upSave',{
+          id: this.$route.query.id,
+          img: JSON.stringify(this.arr),
+        }).then((res) => {
+          this.$message(res.msg);
+          setTimeout(() => {
+            this.$router.replace({ path: '/cart/cart'})
+          }, 3000)
+        });
+      },
       handleBeforeUpload(file) {
-        // console.log(file, "+-+-+-");
+
       },
       handleAvatarSuccess(res, file, fileList) {
         this.file = res.data;
         this.fileList = fileList;
-        this.$ajax.HttpPost('/api/home/shopcar/upSave',{
-          id: this.$route.query.id,
-          img: res,
-        }).then((res) => {
-            console.log(res);
-        });
+        let options = {};
+        for (let i in this.fileList) {
+          options = {
+            img: this.fileList[i].response.data.path
+          };
+        }
+        this.arr.push(options);
       },
       handlePreview(file, fileList) {
-        console.log(file,fileList, "+-+-+-");
+
       },
       uploadError (response, file, fileList) {
-        console.log('上传失败，请重试！')
+
       },
       handleRemove(file, fileList) {
         try {
           for (let i in fileList) {
             this.fileList = fileList[i];
-            console.log(fileList[i]);
           }
-        } catch (e){
-
+        } catch (e) {
         }
       }
     }
@@ -177,8 +244,6 @@
     width: 320px;
     margin-right: 190px;
   }
-
-
 
   .top-upload .right-upload .upload-btn {
     width: 320px;
@@ -256,10 +321,26 @@
   .cart-upload-pic .container .show-pic .pic-list .pic-item {
     float: left;
     position: relative;
-    width: 254px;
-    height: 200px;
-    margin: 0 15px 15px 0;
-    border: 1px solid #dbdcdc;
+    width: 252px;
+    margin: 0 17px 20px 0;
+    text-align: center;
+  }
+
+  .pic-list .pic-item:nth-child(4n) {
+    margin: 0;
+  }
+
+  .pic-item .item-amount {
+    margin: 20px 0px 0;
+    overflow: hidden;
+  }
+  .pic-item .item-amount .el-input {
+    width: 60%;
+  }
+  .pic-item .item-amount .el-input__inner {
+    width: 100%;
+    padding: 0;
+    margin: 0;
     text-align: center;
   }
   .cart-upload-pic .container .show-pic .pic-list .pic-item .pic {
@@ -288,7 +369,7 @@
   }
   .cart-upload-pic .container .show-pic .pic-list .pic-item .cancel {
     position: absolute;
-    top: -7px;
+    top: -14px;
     right: -7px;
   }
   .cart-upload-pic .container .show-pic .pic-list .pic-item .cancel img {
@@ -329,5 +410,61 @@
     float: right;
     color: #b01e26;
   }
+
+  .layer-upload {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+  }
+
+  .layer-pop {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    width: 1088px;
+    height: 550px;
+    display: block;
+    margin: 110px auto;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .layer-pop ul li {
+    width: 150px;
+    height: 150px;
+    margin: 0 20px 0 0;
+    overflow: hidden;
+  }
+
+  .layer-pop ul li:last-child {
+    margin-bottom: 30px;
+  }
+
+  .layer-pop ul {
+    height: 550px;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+
+  .layer-pop ul li img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .layer-pop .el-icon-close {
+    float: right;
+    padding: 15px;
+    cursor: pointer;
+  }
+
+  .layer-pop img {
+    margin: 30px;
+    height: 90%;
+  }
+
 </style>
 

@@ -21,8 +21,8 @@
                     <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
                   </template>
                 </div>
-                <p class="ft-18 shoping-name fl">{{ scope.row.goods_remark }}</p>
-                <p class="ft-14 shoping-desc fl" style="color: #898989;">详情信息</p>
+                <p class="ft-18 shoping-name fl">{{ scope.row.goods_name }}</p>
+                <p class="ft-14 shoping-desc fl" style="color: #898989;">{{ scope.row.goods_remark }}</p>
               </div>
             </template>
           </el-table-column>
@@ -46,7 +46,13 @@
           <el-table-column label="总价" width="143">
             <template scope="scope">
               <p class="ft-24 totalprice">{{ scope.row.price * scope.row.num }}</p>
-              <el-button @click="goLoad(scope.row.id)">上传图片</el-button>
+              <el-button @click="goLoad(
+              scope.row.id,
+              scope.row.goods_name,
+              scope.row.goods_remark,
+              scope.row.goods_thumb)">
+                上传图片
+              </el-button>
             </template>
           </el-table-column>
           <el-table-column prop="address" label="操作" show-overflow-tooltip width="88">
@@ -160,8 +166,15 @@
           this.data.totalMoney += selection[i].num * selection[i].price;
         }
       },
-      goLoad (id) {
-        this.$router.push({ path : '../pages/onload', query: {id: id}});
+      goLoad(id,name,desc,thumb) {
+        this.$router.push({
+          path : '../pages/onload',
+          query: {
+            id: id,
+            name: name,
+            desc: desc,
+            thumb: thumb
+          }});
       },
       changeNumber(item,flag) {
         if (flag > 0) {

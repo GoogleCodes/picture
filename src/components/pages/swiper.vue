@@ -32,6 +32,7 @@
       <template v-for="(item, index) in listpic">
         <swiper-slide :style="{
                   background: 'url('+ item.url +') no-repeat',
+                  'backgroundSize': 'cover',
                   height: '350px'}">
         </swiper-slide>
       </template>

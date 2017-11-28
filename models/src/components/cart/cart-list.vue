@@ -79,7 +79,7 @@
           }
       },
       created() {
-        console.log(this.list);
+
       },
       watch: {
           chosen() {
@@ -137,12 +137,17 @@
             }).then(() => {
               this.$ajax.HttpPost(this.$api.get_content.DELETE_CART_DATA,{
                 id: this.list.id,
-                uid: this.uid}).then((res) => {});
-              this.$message({
-                type: 'success',
-                message: res.msg
+                uid: this.uid}).then((res) => {
+                if (res.code == 1) {
+                  this.$message(res.msg);
+                  setTimeout(() => {
+                    location.reload()
+                  },1500);
+                } else {
+                  this.$message(res.msg);
+                  return false;
+                }
               });
-              setTimeout(location.reload(),500);
             }).catch(() => {
               this.$message({
                   type: 'info',

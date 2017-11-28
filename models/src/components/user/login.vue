@@ -153,6 +153,7 @@
     border: none;
     width: 90%;
     padding: 0px;
+    text-align: left;
   }
 
   .tab .form-input .login-btn {

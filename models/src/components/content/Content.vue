@@ -76,18 +76,18 @@
       <div class="wrap clear">
         <div class="wrap-card fl">
           <div class="wrap-card-icon box-icon"></div>
-          <div class="wrap-card-text ft-24">高端进口框条
+          <div class="wrap-card-text">高端进口框条
           </div>
           <div class="wrap-card-desc">采用韩国进口PS框条, 纹理逼真,手感细腻, 更好地衬托画心</div>
         </div>
         <div class="wrap-card fl">
           <div class="wrap-card-icon thumbsup-icon"></div>
-          <div class="wrap-card-text ft-24">收藏级画质</div>
+          <div class="wrap-card-text">收藏级画质</div>
           <div class="wrap-card-desc">色佳能打印机, 兼容照片及油画输出完美还原照片原片真实色彩</div>
         </div>
         <div class="wrap-card fl" style="margin: 0px;">
           <div class="wrap-card-icon picture-icon"></div>
-          <div class="wrap-card-text ft-24">纯手工装裱</div>
+          <div class="wrap-card-text">纯手工装裱</div>
           <div class="wrap-card-desc">由国际装裱师公会 “Fint Art” 认证推荐装裱师制作, 细节体现 “匠杺” 之美</div>
         </div>
       </div>
@@ -204,7 +204,7 @@
   }
 
   .content .wrap .wrap-card .wrap-card-icon {
-    width: 75px;
+    width: 73px;
     height: 69px;
     background: url("../../../static/images/03.png") no-repeat;
     margin: 0px auto;
@@ -227,7 +227,7 @@
   .content .wrap .wrap-card .wrap-card-text {
     text-align: center;
     margin-top: 15px;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: bold;
     color: #4d4d4d;
   }
@@ -323,6 +323,7 @@
   }
   .card-tuijian .card-tuijian-desc .desc-title, .card-tuijian-desc .desc-msg {
     font-size: 16px;
+    margin-top: 10px;
     line-height: 17px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -336,17 +337,25 @@
     font-size: 14px;
   }
   .card-tuijian-desc .desc-pic {
-    width: 100%;
-    height: 99px;
-    margin: 0px auto;
+    width: 90%;
+    height: 90px;
+    margin: 0px 5px;
     position: absolute;
     bottom: 0px;
   }
 
-  @model screen and (max-width: 375) {
-    .card-tuijian-desc .desc-pic {
+  .swiper-pagination-bullet {
+    width: 15px;
+    height: 8px;
+    border-radius: 5px;
+  }
 
-    }
+  .swiper-pagination-bullet-active {
+    opacity: 1;
+    background: #c40000;
+    width: 25px;
+    height: 8px;
+    border-radius: 5px;
   }
 
   /* recommend end */

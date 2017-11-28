@@ -160,7 +160,7 @@
             receiver: [{required: true, message: '请输入收货人的姓名！', trigger: 'blur'}],
             phone: [{required: true, message: '请输入联系人电话号码！', trigger: 'blur'}]
           },
-          shopmsg: this.$goFetch.storageGet('gopayData_info'),
+          shopmsg: this.$storage.storageGet('gopayData_info'),
           list: [],
           layer: false,
           address: chinaData,
@@ -169,10 +169,10 @@
             children: 'cities'
           },
           currentExpress: 0,
-          exporess: [{exp_title: '顺丰速递'},
-            {exp_title: '申通快递'},
-            {exp_title: '顺丰快递'},
-            {exp_title: '上门自提'},],
+          exporess: [
+            {exp_title: '顺丰速递'},
+            {exp_title: '上门自提'}
+          ],
           exporessText: '',
           pay: [
             {pic: '../../../static/images/43.jpg'},
@@ -180,13 +180,12 @@
           ],
           goWhatpay: '',
           payindex: 0,
-          currAddress: 0,
+          currAddress: -1,
           currAddJson: [],
         }
     },
     mounted () {
       this.setAddress();
-      console.log(this.get_user_info.user);
     },
     computed: {
       ...mapGetters({
@@ -220,13 +219,14 @@
           this.$ajax.HttpPost(this.$api.get_address.url_address +
             '?id='+ this.get_user_info.user.id +'&sname='+ this.ruleForm.receiver +
             '&tel='+ this.ruleForm.phone +
-            '&adr='+ this.waddress + this.ruleForm.address).then((res) => {
+            '&adr='+ this.ruleForm.whereAddress + this.ruleForm.address).then((res) => {
               this.layer = false;
               setTimeout(location.reload(), 500);
           })
         });
       },
-      goToPayMoney() {  //  提交订单去支付
+      //  提交订单去支付
+      goToPayMoney() {
         var options = {
           addressList: this.currAddJson,
           payMoney: parseFloat(this.lastPaySum),
@@ -239,25 +239,30 @@
           gid.push(this.shopmsg[i].id);
           textSpecdata = this.shopmsg[i].specdata;
         }
-        this.$ajax.HttpPost('/api/home/order/add',{
-          uid: this.get_user_info.user.id,
-          goodsdata: gid,
-          num: 1,
-          specdata: textSpecdata,
-          address: this.currAddJson,
-          uname: this.currAddJson.sname
-        }).then((res) => {
-          this.$goFetch.storageRemove('gopayData_info');
-          this.$message({
-            type: 'info',
-            message: res.msg,
-            duration: 3000,
-          });
-        });
+        switch(true) {
+          case this.currAddress == -1:
+            this.$message('请选择地址');
+            return false;
+          default:
+            this.$ajax.HttpPost('/api/home/order/add',{
+              uid: this.get_user_info.user.id,
+              goodsdata: gid,
+              num: 1,
+              specdata: textSpecdata,
+              address: this.currAddJson,
+              uname: this.currAddJson.sname
+            }).then((res) => {
+              this.$storage.storageRemove('gopayData_info');
+              this.$message(res.msg);
+              this.$router.replace({ path: '/admin/manage'});
+            });
+            return true;
+        }
       },
       goInChonseAdd(index, item) {
         this.currAddress = index;
         this.currAddJson = item;
+        console.log(this.currAddress, this.currAddJson);
       },
       chonsePay(index, item) {
         this.payindex = index;
@@ -341,7 +346,7 @@
   }
 
   .select-content .el-cascader .el-cascader__label {
-    line-height: 45px;
+    line-height: 36px;
     width: 95%;
     text-indent: 1em;
   }

@@ -25,6 +25,7 @@
       },
       created () {
           this.isUserTrue();
+          console.log(this.get_user_info.user.id);
       },
       computed: {
         ...mapGetters({

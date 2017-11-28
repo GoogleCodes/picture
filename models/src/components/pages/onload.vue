@@ -20,11 +20,11 @@
                   <img :src="item.url" class="w100 h100" alt="">
                   <!--<img src="../../../static/images/47.png" class="chonseok" alt="">-->
                 </div>
-                <!--<div class="input">-->
-                  <!--<el-button class="prev fl" @click="changeNumber(item, -1)">-</el-button>-->
-                  <!--<el-input v-model="item.num" class="fl" placeholder="0" readonly></el-input>-->
-                  <!--<el-button class="next fl" @click="changeNumber(item, 1)">+</el-button>-->
-                <!--</div>-->
+                <div class="input">
+                  <el-button class="prev fl" @click="changeNumber(item, -1)">-</el-button>
+                  <el-input v-model="item.num" class="fl" placeholder="0" readonly></el-input>
+                  <el-button class="next fl" @click="changeNumber(item, 1)">+</el-button>
+                </div>
               </li>
             </template>
           </ul>
@@ -64,7 +64,7 @@
         num: 0,
       }
     },
-    created() {
+    mounted() {
 
     },
     computed: {
@@ -89,13 +89,9 @@
         });
       },
       changeNumber(item,flag) {
-        if (flag > 0) {
-          item.num += 1;
-        } else {
-          item.num -= 1;
-          if (item.num <= 1) {
-            item.num = 1;
-          }
+        flag > 0 ? item.num += 1 : item.num -= 1;
+        if (item.num <= 1) {
+          item.num = 1;
         }
       },
       submitUpload() {
@@ -109,7 +105,6 @@
       },
       choosePic(item, index) {
         for (let i in this.fileList) {
-          console.log(this.fileList[i].uid);
           if (this.fileList[i].uid === item.uid) {
             this.chonseok = true;
             break;
@@ -130,6 +125,7 @@
         }
       },
       handleAvatarSuccess(res, file, fileList) {
+        console.log(fileList);
         this.fileList = fileList;
         this.piclist.push({
           url: res.data,
@@ -180,12 +176,12 @@
   .container .label ul li {
     height: 100%;
     width: 8rem;
-    margin: 10px 11px 0px 0px;
+    margin: 10px 14px 0px 0px;
     display: inline-block;
   }
 
   .container .label ul li:nth-child(2n) {
-    margin: 10px 7px 0px;
+    margin: 10px 0 0 0;
   }
 
   .container .label ul li .input {
@@ -194,7 +190,7 @@
 
   .container .label ul li .onload-pic {
     width: 100%;
-    height: 9rem;
+    height: 7rem;
     position: relative;
   }
   .onload-pic .el-icon-close {
@@ -255,7 +251,7 @@
 
   .input .el-button {
     height: 30px;
-    padding: 7px 8%;
+    padding: 7px 8.5%;
     margin: 0px;
     background: #c8c9ca;
     color: #fff;
@@ -285,7 +281,7 @@
   }
 
   .input .el-input {
-    width: 65px;
+    width: 4rem;
   }
 
   .el-input__inner {

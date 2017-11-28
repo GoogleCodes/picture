@@ -2,11 +2,6 @@
  * Created by SamHong on 2017/9/28.
  */
 
-import axios from 'axios'
-import qs from 'qs'
-import get_api from '../common/port_uri'
-import { Message } from 'element-ui'
-
 //  json 序列化
 export const storageSet = (key,value) => {
   try {

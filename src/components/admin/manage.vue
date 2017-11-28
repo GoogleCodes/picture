@@ -36,9 +36,10 @@
                         <img :src="y.url" alt="" class="J_ItemImg fl w100 h100" />
                       </template>
                     </div>
-                    <router-link :to="{ path: '/admin/shoping', query: {id: item.id}}" class="fl">
+                    <a class="fl">
                       <span class="item-title fl">{{ x.gname }}</span>
-                    </router-link>
+                    </a>
+                    <div class="tb_item-desc">{{ x.gremark }}</div>
                   </td>
                   <td class="itme-money" style="width:131px;">¥{{ x.price }}</td>
                   <td class="itme-number">{{ x.num }}</td>
@@ -51,7 +52,7 @@
                     <p>订单详情</p>
                   </td>
                   <td style="width: 130px;">
-                    <a class="nowpay privateBtn" v-if="item.status == 0">未付款</a>
+                    <a class="nowpay privateBtn" v-if="item.status == 0" @click="pay(item.id)">去付款</a>
                     <a class="cancel protected-Btn" v-if="item.status == 1">已付款</a>
                     <a class="select protected-Btn" v-if="item.status == 2">已发货</a>
                     <a class="delete protected-Btn" v-if="item.status == 3">已收货</a>
@@ -63,6 +64,7 @@
         </template>
       </div>
     </div>
+    <div v-html="box"></div>
   </div>
 </template>
 
@@ -76,6 +78,7 @@
       return {
         orderList: [],
         orderPages: {},
+        box: ''
       }
     },
     computed: {
@@ -87,6 +90,17 @@
       this.getOrderAdmin();
     },
     methods: {
+      pay(id) {
+        this.$ajax.HttpPost('/api/home/pay/alpay',{
+          id:id,
+          uid: this.get_user_info.user.id
+        }).then((res) => {
+          const box = document.createElement('div');
+          box.innerHTML = res;
+          document.body.appendChild(box);
+          document.forms[0].submit()
+        })
+      },
       getOrderAdmin() {
         this.$ajax.HttpPost(this.$api.get_content.GET_ORDER_ADMIN,{
           uid: + this.get_user_info.user.id
@@ -102,5 +116,8 @@
 <style type="text/css">
   .tbody-item {
     border-bottom: 1px solid #c9caca;
+  }
+  .tbody-item .tb_item-desc {
+    text-align: left;
   }
 </style>
