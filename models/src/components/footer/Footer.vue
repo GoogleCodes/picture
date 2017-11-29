@@ -58,14 +58,12 @@
     },
     mounted() {
       this.fetchData();
-      console.log(this.cart_count, '+-+-');
     },
     methods: {
       fetchData() {
         this.load_data = true;
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
           {uid: this.get_user_info.user.id}).then((res) => {
-          console.log(res.data.length);
           this.cart_number = res.data.length;
           this.$store.commit('SET_CART_NUMBER', this.cart_number);
         }).catch((error) => {

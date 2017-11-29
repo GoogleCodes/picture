@@ -45,7 +45,9 @@
       <div class="select-color clear" v-for="(fmt,pindex) in list.myspec">
         <span class="left fl">{{ fmt.spec }}：</span>
         <ul class="right clearfix fl">
-          <guige :value="val.id" :text="val.item" v-for="val in fmt.item"
+          <guige :value="val.id"
+                 :text="val.item"
+                 v-for="val in fmt.item"
                  @changeGuige="changeGuige(pindex,val.id,val.item)"></guige>
         </ul>
       </div>
@@ -77,6 +79,9 @@
 
   import eleSwipers from '@/components/pages/swiper'
 
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+
   import guige from '@/components/pages/guige'
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
@@ -102,6 +107,7 @@
         charSID: 0,
         guige: [],
         guigeName: [],
+        guigeID: 0,
         swiperOption: {
           autoplay: 30000,
           pagination: '.swiper-pagination',
@@ -117,13 +123,33 @@
         this.getDataShop();
       }
     },
+    computed: {
+      ...mapGetters({
+        get_user_info: GET_USER_INFO
+      }),
+    },
     methods: {
       goToUpload(id) {
         if (this.guige.length == 0) {
           this.$message('请选择规格！');
           return false;
+        } else {
+          const cart = {
+            uid: this.get_user_info.user.id,
+            gid: this.$route.query.id,
+            sid: this.charSID,
+            num: this.list.sales_sum,
+            upimg: '',
+            price: parseInt(this.list.shop_price),
+            specdata: this.guigeName.join('-').replace(/-/g,'')
+          };
+          this.$ajax.HttpPost(this.$api.get_content.POST_CART_DATA,cart).then((res) => {
+            this.$message('提交成功!');
+            setTimeout(() => {
+              this.$router.push({path: '/pages/onload',query: {id: id}})
+            }, 1000)
+          });
         }
-        setTimeout(this.$router.push({ path: '/pages/onload', query: {id: id}}), 1000)
       },
       getDataShop() {
         this.$ajax.HttpGet(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.query.id).then((res) => {
@@ -144,6 +170,7 @@
         }
       },
       changeGuige(index, id, name) {
+        this.guigeID = id
         this.$set(this.guige, index, id);
         this.$set(this.guigeName, index, name);
         if (!this.checkGuige) {
@@ -154,9 +181,9 @@
           spec: this.guige.join('-').match(/\d+/g).toString().replace(',','-')
         }).then((res) => {
           for (let i in res.data) {
-            this.charSID = res.data[i].sku_id;
-            this.list.shop_price = res.data[i].price;
-            this.list.goods_id = res.data[i].goods_id;
+            this.charSID = res.data[i].sku_id
+            this.list.shop_price = res.data[i].price
+            this.list.goods_id = res.data[i].goods_id
           }
         });
       },
@@ -168,25 +195,10 @@
           this.layer = true;
         }
       },
-      currentGuiGeIndex(index, item) {
-        this.guigeIndex = index;
-        this.data.currGuiGe = item;
-      },
-      currentGoIndex(index, item) {
-        this.currentIndex = index;
-        this.data.currSize = item;
-      },
       changeNumber(item,flag) {
-        //  大于0为加
-        if (flag > 0) {
-          //  item数量自增1
-          item.sales_sum++;
-        } else {
-          //  item数量自减1
-          item.sales_sum--;
-          if(item.sales_sum <= 1) {
-            item.sales_sum = 1;
-          }
+        flag > 0 ? item.sales_sum++ : item.sales_sum--
+        if(item.sales_sum <= 1) {
+          item.sales_sum = 1
         }
       },
       goCart() {
@@ -213,7 +225,7 @@
           message: '恭喜你，加入购物车成功！',
           type: 'success'
         });
-        setInterval(function() {
+        setInterval(() => {
           location.reload();
           that.$router.push({ path: '/cart/cart' });
         },500);

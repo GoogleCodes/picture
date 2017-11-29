@@ -7,7 +7,7 @@
             <span>已选</span>
             <i class="c_b11e25">0</i>
             <span>张 ,上传</span>
-            <i class="c_b11e25">0</i>
+            <i class="c_b11e25">{{ fileList.length }}</i>
             <span>张 上传中不要离开本页</span>
           </div>
           <ul>
@@ -21,9 +21,9 @@
                   <!--<img src="../../../static/images/47.png" class="chonseok" alt="">-->
                 </div>
                 <div class="input">
-                  <el-button class="prev fl" @click="changeNumber(item, -1)">-</el-button>
-                  <el-input v-model="item.num" class="fl" placeholder="0" readonly></el-input>
-                  <el-button class="next fl" @click="changeNumber(item, 1)">+</el-button>
+                  <el-button class="prev fl" @click="changeNumber(item.response.data, -1)">-</el-button>
+                  <el-input v-model="item.response.data.num" class="fl" placeholder="0" readonly></el-input>
+                  <el-button class="next fl" @click="changeNumber(item.response.data, 1)">+</el-button>
                 </div>
               </li>
             </template>
@@ -75,23 +75,25 @@
     },
     methods: {
       saveImages() {
-        let values = '';
+        let values = '', arr = [], json = {};
         for (let i in this.fileList) {
           values = this.fileList[i].response.data
         }
         this.$ajax.HttpPost('/api/home/shopcar/upSave',{
           id: this.$route.query.id,
-          img: [{
-            img: values
-          }],
+          img: values.path,
         }).then((res) => {
           this.$message(res.msg);
         });
       },
       changeNumber(item,flag) {
-        flag > 0 ? item.num += 1 : item.num -= 1;
-        if (item.num <= 1) {
-          item.num = 1;
+        if (flag >= 0) {
+          item.num += 1;
+        } else {
+          item.num -= 1;
+          if (item.num <= 1) {
+            item.num = 1;
+          }
         }
       },
       submitUpload() {
@@ -295,6 +297,13 @@
     width: 90%;
   }
   /* el-message-box end*/
+
+  @media screen and (max-width : 375px){
+    .container .label ul li {
+      margin: 10px 14px 0px 0px;
+    }
+  }
+
 
 
 </style>
