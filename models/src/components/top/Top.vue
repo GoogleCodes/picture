@@ -17,7 +17,7 @@
         <el-menu-item index="1">主页</el-menu-item>
         <el-submenu :index="index | TextToString" v-for="(item, index) in navList">
             <template slot="title">
-              <router-link :to="{ path: '/inside/orderlist', query: {id: item.id}}" class="block w100 h100">{{ item.title }}</router-link>
+              <router-link :to="{ path: '/inside/orderlist', query: {id: item.id, isup: item.is_up}}" class="block w100 h100">{{ item.title }}</router-link>
             </template>
           <!--<el-menu-item-group title="分组一">-->
             <!--<el-menu-item index="2-1">时尚对裱册12寸竖</el-menu-item>-->

@@ -81,7 +81,7 @@
       cartList
     },
     created() {
-      this.$store.dispatch("init");
+//      this.$store.dispatch("init");
       this.fetchData();
     },
     computed: {
@@ -117,7 +117,10 @@
       }
     },
     watch: {
-
+      //  监听路由
+      '$route'() {
+          this.fetchData();
+      }
     },
     // 定义过滤方法
     filters:{
@@ -127,6 +130,7 @@
       }
     },
     methods: {
+      //  获取购物车数据
       fetchData() {
         this.load_data = true;
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,{uid: this.userID}).then((res) => {
@@ -160,15 +164,15 @@
       },
       //  去结算
       goPay () {
-//        var options = {}
-//        if (this.multipleSelection.length == 0) {
-//          this.$message({
-//            message: '请选择商品!',
-//            type: 'warning'
-//          });
-//          return;
-//        }
-//        this.$router.push({ path: '/cart/submit' });
+        var options = {}
+        if (this.choseAll.length == 0) {
+          this.$message({
+            message: '请选择商品!',
+            type: 'warning'
+          });
+          return;
+        }
+        this.$router.push({ path: '/pages/ord-detail' });
       },
     }
   };

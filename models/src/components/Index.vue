@@ -1,9 +1,7 @@
 <template>
   <div style="background: #fff">
     <banner></banner>
-    <div>
-      <elecontent></elecontent>
-    </div>
+    <elecontent></elecontent>
     <gotop></gotop>
   </div>
 </template>
@@ -17,20 +15,31 @@
   import elecontent from '@/components/content/Content.vue'
   import foots from '@/components/footer/Footer.vue'
 
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_OPENID } from '../store/getters/type'
+
+
   export default {
     name: 'index',
     data () {
       return {
         list: [],
+        openid: ''
       }
     },
-    created() {
+    mounted() {
 
     },
     computed: {
+      ...mapGetters({
+        get_user_openid: GET_USER_OPENID
+      }),
       user_info() {
         return this.$store.state.user_info;
       }
+    },
+    methods: {
+
     },
     components: {
       heads,

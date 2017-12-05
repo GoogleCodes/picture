@@ -4,12 +4,11 @@
     <div class="login" v-loading="load_data" element-loading-text="正在登陆中...">
       <div class="login-form">
         <div class="tab">
-          <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
+          <el-form :model="ruleForm" ref="ruleForm">
             <div class="form-input">
               <div class="form-h2 iconfont icon-shouji fl"></div>
               <el-input class="inputInfo"v-model="ruleForm.username" placeholder="手机号"></el-input>
             </div>
-            <!--<div style="border-bottom: 1px solid #dcdddd;margin: 10px 0px;"></div>-->
             <div class="form-input">
               <div class="form-h2 iconfont icon-mima fl"></div>
               <el-input type="password" class="inputInfo" v-model="ruleForm.password" placeholder="密码"></el-input>
@@ -47,19 +46,16 @@
     data () {
       return {
         ruleForm: {
+          //  用户帐号
           username: '13232800159',
+          //  用户密码
           password: '123123',
-        },
-        rules: {
-          username: [{required: true, message: '请输入账户名！', trigger: 'blur'}],
-          password: [{required: true, message: '请输入账户密码！', trigger: 'blur'}]
         },
         //  请求时的loading效果
         load_data: false,
       }
     },
     created () {
-      //  调用Vuex action
       this.$store.commit('GET_CHECKED_LOGIN',this.checked_login);
 //      this.$store.dispatch("set_user_info");
     },
@@ -75,11 +71,11 @@
             pwd: this.ruleForm.password
           }).then((res) => {
             if(res.code == 0) {
+              this.$message(res.msg);
               that.load_data = false;
               return false;
             } else if(res.code == 1) {
               this.checked_login = true;
-              this.$store.commit('GET_CHECKED_LOGIN',this.checked_login);
               that.set_user_info({
                 user: {
                   id: res.data.id,
@@ -89,7 +85,9 @@
                 login: true
               });
               that.load_data = false;
-              setTimeout(this.$router.replace({ path: '/' }),500);
+              setTimeout(() => {
+                this.$router.replace({ path: '/' })
+              }, 500);
             }
         });
       }

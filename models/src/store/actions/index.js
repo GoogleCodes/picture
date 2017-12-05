@@ -7,6 +7,13 @@ export default {
   [actions.SET_USER_INFO]({commit}, userinfo){
     commit(mutations.SET_USER_INFO, userinfo)
   },
+
+
+
+  [actions.SET_WEBCHAT_MSG]({commit}, msg){
+    commit(mutations.SET_WEBCHAT_MSG, msg)
+  },
+
   //  删除cookie
   [actions.REMOVE_USER_INFO]({commit}, userinfo){
     commit(mutations.REMOVE_USER_INFO, userinfo)

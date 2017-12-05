@@ -44,13 +44,37 @@
                 </ul>
             </div>
         </template>
-
         <el-button class="nowGoPay" @click="goToPay()">立即支付</el-button>
+
+        <div class="props w100 h100">
+          <ul>
+            <li v-for="(k, i) in data.list">
+              <p>
+                <span>收货人:</span>
+                <span>{{ k.sname }}</span>
+              </p>
+              <p>
+                <span>联系电话:</span>
+                <span>{{ k.tel }}</span>
+              </p>
+              <p>
+                <span>详细地址:</span>
+                <span>{{ k.adr }}</span>
+              </p>
+            </li>
+          </ul>
+          <el-button class="propsSave">确定</el-button>
+        </div>
+
     </div>
 </template>
 
 <script type="text/javascript">
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
+
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+
     export default {
       components: {ElButton},
       data() {
@@ -69,6 +93,9 @@
 
       },
       computed: {
+        ...mapGetters({
+          get_user_info: GET_USER_INFO
+        }),
         amount () {
           return this.listStop.length;
         },
@@ -83,10 +110,14 @@
         },
       },
       mounted() {
-        this.getOrder();
+        this.setAddress();
       },
       methods: {
-
+        setAddress() {
+          this.$ajax.HttpGet(this.$api.get_address.get_address + '?id=' + this.get_user_info.user.id).then((res) => {
+            this.data.list = res.data;
+          });
+        },
         goSize() {
 
         },
@@ -189,5 +220,32 @@
     background-repeat: repeat-x;
     background-size: contain;
   }
+
+  .props {
+    position: fixed;
+    top: 47px;
+    left: 0px;
+    background: #fff;
+  }
+
+  .props .propsSave {
+    position: absolute;
+    bottom: 58px;
+    left: 0px;
+    width: 95%;
+    right: 0px;
+    color: #fff;
+    border: 1px solid #c40000;
+    background: #c40000;
+    margin: 0px auto;
+  }
+
+  .props ul li {
+    padding: 10px 5%;
+    margin: 10px 0px;
+    background: #fbfafa;
+    overflow: hidden;
+  }
+
   /* address-box end */
 </style>

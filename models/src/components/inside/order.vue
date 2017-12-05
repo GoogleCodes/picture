@@ -10,7 +10,7 @@
       <ul>
         <template v-for="item in data.list">
           <li class="fl">
-            <router-link :to="{ path: '/content/proseries', query: {id: item.id}}">
+            <router-link :to="{ path: '/content/proseries', query: {id: item.goods_id}}">
               <div class="shop-body">
                 <div class="pic-img">
                   <template v-for="k in item.goods_thumb">
@@ -66,8 +66,9 @@
         });
       },
       getOrder() {
-        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?limit=" + 4).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?cid="+ this.$route.query.id + "&limit=" + 4).then((res) => {
           this.data.list = res.data;
+          res.data == '' ? this.moveFlog = false : this.moveFlog = true;
           this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.$route.query.id).then((res) => {
             this.data.shotcut = res.data;
           });

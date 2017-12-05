@@ -450,6 +450,8 @@
 
   .tb-wrap {
     margin: 10px 10px;
+    position: relative;
+    top: 10px;
   }
 
   .right-select {

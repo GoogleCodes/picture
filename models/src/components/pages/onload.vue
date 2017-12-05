@@ -127,7 +127,6 @@
         }
       },
       handleAvatarSuccess(res, file, fileList) {
-        console.log(fileList);
         this.fileList = fileList;
         this.piclist.push({
           url: res.data,

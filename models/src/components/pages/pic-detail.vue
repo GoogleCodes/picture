@@ -21,37 +21,41 @@
           <div class="ex-line">
             <div class="c_4d4d4d fl">
               <span>收件人：</span>
-              <span>恩小猫</span>
+              <span>{{ adr.sname }}</span>
             </div>
-            <div class="fr c_4d4d4d">13672964196</div>
+            <div class="fr c_4d4d4d">
+              <span>手机号码：</span>
+              <span>{{ adr.tel }}</span>
+            </div>
             <div class="info-address c_4d4d4d">
               <span>收货地址：</span>
-              <span>广东省佛山市顺德区佛山市顺德区大良街道家电城41号</span>
+              <span>{{ adr.adr }}</span>
             </div>
           </div>
         </div>
       </div>
       <div class="info-body">
-        <router-link :to="{ path: '/pages/pic-detail'}" class="block">
+        <template v-for="(k, i) in data.goodsdata">
           <div class="order-msg fl">
-            <div class="line" style="">
+            <div class="line">
               <div class="order-pic fl">
-                <img src="../../../static/images/23.png" alt="" class="w100 h100">
+                <template v-for="y in k.gthumb">
+                  <img :src="y.url" alt="" class="w100 h100">
+                </template>
               </div>
               <div class="wrap fl">
-
-                <div class="wrap-title ft-16">#北欧风格装饰画 高格调 </div>
-                <div class="wrap-desc clear c_898989">装饰你的新房子 </div>
+                <div class="wrap-title ft-16">{{ k.gname }}</div>
+                <div class="wrap-desc clear c_898989">{{ k.gremark }}</div>
                 <div class="wrap-money"></div>
               </div>
               <div class="status fr">
-                <p>￥99.80</p>
+                <p>¥{{ k.price }}</p>
                 <p>X1</p>
               </div>
             </div>
           </div>
-        </router-link>
-        <div class="freight clear">
+        </template>
+        <div class="freight clear" style="display: none;">
           <span class="fl">运费</span>
           <span class="fr">包邮</span>
         </div>
@@ -82,48 +86,51 @@
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
 
   import {mapGetters, mapActions} from 'vuex'
-  import { GET_USER_INFO } from '../../store/getters/type'
+  import { GET_USER_INFO, GET_USER_OPENID } from '../../store/getters/type'
   import { REMOVE_USER_INFO } from '../../store/actions/type'
   import { cookieStorage } from '../../common/storage'
 
   export default {
     data() {
-      return {}
+      return {
+        data: {},
+        adr: {},
+      }
     },
     created() {
       this.getOrderMsg();
+      console.log(this.get_user_openid);
     },
     computed: {
       ...mapGetters({
-        get_user_info: GET_USER_INFO
-      }),
-      getID () {
-        let json = this.get_user_info
-        return json.user.id;
-      },
+        get_user_info: GET_USER_INFO,
+        get_user_openid: GET_USER_OPENID,
+      })
     },
-    components: {ElButton},
+    components: {
+      ElButton
+    },
     methods: {
       jsApiCall () {
-        var self = this
-        var config = JSON.parse(this.payConfig.wx)
-        WeixinJSBridge.invoke(
-          'getBrandWCPayRequest',
-          config,
-          function (res) {
-            if (res.err_msg === 'get_brand_wcpay_request:ok') {
-//              window.localStorage.removeItem('youcaiCartInfo')
-//              if (self.payInfo.alone === 0) {
-//                self.$router.push({name: "groupDetail", params: {id: self.payInfo.ordernum}})
-//              } else {
-//                self.$router.push({name: "orderDetails", params: {id: self.payInfo.id}})
-//              }
-            } else {
+        let self = this, config = null;
+        this.$ajax.HttpPost('/api/home/pay/mobilepay', {
+          openid: 'oQVgUw7q-XNU5aPMvLlLbNKChzcQ'
+        }).then((res) => {
+          config = JSON.parse(res.data);
+          WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',config,
+            function(res) {
+              if (res.err_msg === 'get_brand_wcpay_request:ok') {
+                alert('支付成功！');
+              } else {
+                alert('支付失败！');
+              }
             }
-          }
-        )
+          )
+        });
       },
-      pay(){
+      pay() {
+//         window.location.href = "https://xinye-art.com/public/api/home/pay/getcode"
         this.weixincallpay()
       },
       weixincallpay() {
@@ -141,11 +148,10 @@
       getOrderMsg() {
         this.$ajax.HttpPost('/api/home/order/oneorder',{
           id: this.$route.query.id,
-          uid: this.getID
+          uid: this.get_user_info.user.id
         }).then((res) => {
-            console.log(res);
-//          this.addressData = this.$goFetch.goJson(res.data.address);
-//          this.orderData = res.data;
+            this.data = res.data;
+            this.adr = JSON.parse(res.data.address);
         });
       }
     },
@@ -203,13 +209,18 @@
     background: #fff;
     margin-top: 10px;
     min-height: 81px;
-    padding: 10px 5px 0px 5px;
+    width: 95%;
+    padding: 10px 10px 0px;
   }
 
   .pic-detail .order-msg .line {
     overflow: hidden;
     border-bottom: 1px solid #ccc;
     margin-bottom: 10px;
+  }
+
+  .pic-detail .order-msg .line:last-child {
+    margin-bottom: 0;
   }
 
   .info-body {
@@ -241,11 +252,12 @@
   .pic-detail .order-msg .wrap .wrap-desc {
     /*height: 30px;*/
     /*line-height: 30px;*/
+    text-align: left;
   }
 
   .pic-detail .order-msg .order-pic {
     width: 35%;
-    height: 100%;
+    height: 95%;
     padding: 0px 5px;
   }
 
@@ -301,7 +313,7 @@
 
   .pic-detail .money-util {
     text-align: right;
-    margin: 20px 10px;
+    margin: 10px 10px 20px;
   }
 
   .pic-detail .comment {

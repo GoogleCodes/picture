@@ -50,18 +50,12 @@
     methods: {
       getOrder() {
         this.load_data = true;
-        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?limit=" + 4).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?cid=" + this.$route.query.id + "limit=" + 4).then((res) => {
           this.load_data = false;
           this.data.list = res.data;
           this.data.listPages = res.data;
-          this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.$route.query.id).then((res) => {
-            this.data.shotcut = res.data;
-          });
         });
       },
-      goInfo(id) {
-        this.$router.push({ path: '/pages/detail', query: {id:id}});
-      }
     }
   }
 </script>

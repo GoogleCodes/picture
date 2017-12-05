@@ -27,7 +27,7 @@
           </router-link>
         </li>
         <li>
-          <router-link :to="{ path: '/user/personal'}" class="block">
+          <router-link :to="{ path: '/user/personal'}" class="block w100 h100">
             <div class="fl">
               <i class="iconfont icon-geren c_b3b3b3"></i>
               <span class="ft-16" style="margin-left: 5px;">个人资料</span>
@@ -155,7 +155,7 @@
 <style scoped="">
   /* admin start */
   .admin {
-    margin: 47px 0px 0px;
+    margin: 47px 0 50px;
   }
 
   .admin ul {

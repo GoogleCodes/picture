@@ -3,7 +3,7 @@
     <div class="wrap-desc clear">
       <div class="wrap-desc-title ft-32">LOGO</div>
       <div class="wrap-desc-text">
-        顺德第一家获  ”Fint Art”  公会认证的国际装裱师资质的公司。
+        顺德第一家获 ”Fint Art” 公会认证的国际装裱师资质的公司。
         用心、简单、重复，是杺叶的企业文化，也是 ”工匠精神” 的体现
         “凝神屏气无言语，两手一心付案牍”
         <div style="text-align: right;">——致杺叶</div>
@@ -116,16 +116,20 @@
       }
     },
     mounted() {
-      this.getIndex(1,3);
+      this.getIndex(1, 3);
       this.getAlbum();
+      this.DeepCopy();
     },
     watch: {
       '$route'() {
-        this.getIndex(1,3);
+        this.getIndex(1, 3);
         this.getAlbum();
       }
     },
     methods: {
+      DeepCopy() {
+
+      },
       getAlbum () {
         this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1)
           .then((res) => {
@@ -133,14 +137,14 @@
           });
       },
       getIndex (hot, limit) {
-        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?is_hot="+ hot + "&limit=" + limit).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?is_hot=" + hot + "&limit=" + limit).then((res) => {
           this.data.arr = res.data;
         })
       },
       goDetail (item) {
         this.$router.push({
-          path : '/pages/detail',
-          query:{ id:item.goods_id }
+          path: '/pages/detail',
+          query: {id: item.goods_id}
         });
       },
     }
@@ -247,6 +251,7 @@
     margin: 0px 5% 30px;
     overflow: hidden;
   }
+
   .series .el-button {
     margin: 30px 0px;
     width: 150px;
@@ -284,20 +289,24 @@
     font-size: 16px;
     line-height: 19px;
   }
+
   /* series end */
   /* recommend start */
   .recommend .re-title {
     margin: 0px 18px;
   }
+
   .recommend .re-title span {
     color: #999;
   }
+
   .recommend .re-title h1 {
     margin-right: 10px;
   }
+
   .re-wrap-shop {
     height: 163px;
-    margin: 10px;
+    padding: 10px 0;
   }
 
   .re-wrap-shop .card-tuijian {
@@ -306,12 +315,12 @@
   }
 
   .card-tuijian-pic {
-    width: 65%;
+    width: 60%;
     height: 100%;
   }
 
   .card-tuijian-desc {
-    width: 35%;
+    width: 40%;
     position: relative;
     color: #4d4e4e;
   }
@@ -321,6 +330,7 @@
     margin-bottom: 10px;
     color: #000;
   }
+
   .card-tuijian .card-tuijian-desc .desc-title, .card-tuijian-desc .desc-msg {
     font-size: 16px;
     margin-top: 10px;
@@ -332,14 +342,16 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
+
   .card-tuijian-desc .desc-msg {
     padding: 0px 5px;
     font-size: 14px;
   }
+
   .card-tuijian-desc .desc-pic {
     width: 90%;
     height: 90px;
-    margin: 0px 5px;
+    margin: 0px 0 0 10px;
     position: absolute;
     bottom: 0px;
   }
@@ -356,6 +368,9 @@
     width: 25px;
     height: 8px;
     border-radius: 5px;
+  }
+  .swiper-slide {
+    width: 100%;
   }
 
   /* recommend end */

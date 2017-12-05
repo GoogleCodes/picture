@@ -6,4 +6,9 @@ export default {
   [type.GET_USER_INFO]: state => {
     return state.user_info
   },
+
+  [type.GET_USER_OPENID]: state => {
+    return state.user_openid
+  }
+
 }

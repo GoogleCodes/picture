@@ -19,10 +19,11 @@
           <div class="money fl c_e64147 ft-14">
             <label class="unit">¥</label>
             <label>{{ pprice }}</label>
-            <span class="c_898989" style="margin-left: 10px;">x{{ pnums }}</span>
+            <!--<span class="c_898989" style="margin-left: 10px;">x{{ pnums }}</span>-->
           </div>
         </div>
       </router-link>
+      <!--<el-button class="fr upload-pic">上传图片</el-button>-->
       <div class="fr iconfont icon-shanchu" v-show="mode == 1" @click="deleteShop(pid)"></div>
     </div>
   </div>
@@ -209,6 +210,12 @@
     background: #fff;
     overflow: hidden;
     padding: 10px 5px;
+  }
+
+  .cart-body .cart-box .upload-pic {
+    position: absolute;
+    top: calc(100% - 70%);
+    right: 10px;
   }
 
   .cart-box .addition {

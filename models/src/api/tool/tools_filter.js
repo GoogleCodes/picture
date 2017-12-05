@@ -15,6 +15,11 @@ export default new class goToFilter {
         return years + "-" + month + "-" + days + " " + (hours > 9 ? hours : '0' + hours) + ':' + (minutes > 9 ? minutes : '0' + minutes);
     }
 
+    //  把字符串转换为JSON
+    JsonParse(data) {
+      return JSON.parse(data)
+    }
+
     texts (value) {
         return value.substring(0,10);
     }
