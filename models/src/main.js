@@ -47,7 +47,6 @@ Vue.use(ElementUI);
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 Vue.use(VueAwesomeSwiper)
 
-
 //  网络请求模块vue-resource
 Vue.use(VueResource);
 

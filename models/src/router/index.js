@@ -159,7 +159,7 @@ let routes = [{
      requiresAuth: true
   },
 },{
-  path: '/pages/pic-detail',
+  path: '/pages/pic-detail/:id',
   name: 'picdetail',
   component: picdetail,
   meta: {
@@ -439,41 +439,20 @@ let routes = [{
 
 const router = new Router({
   routes,
-  mode: 'hash', //default: hash ,history
-  scrollBehavior (to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return {x: 0, y: 0}
-    }
-  }
 });
 
 // 全局路由配置
 // 路由开始之前的操作
 router.beforeEach((to, from, next) => {
-
-  let { href, protocol, host, search, hash } = window.location
-  const pathname = '/mobile' // 解决支付路径问题添加的前缀，替换成你的
-  search = search || '?'
-  hash = hash || '#!/'
-  let newHref = `${protocol}//${host}${pathname}${search}${hash}`
-  if (newHref !== href) {
-    window.location.replace(newHref)
-  }
-
-  let is_login = store.state.user_info.user
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (is_login == undefined) {
-      next({
-        name: 'login'
-      })
-    } else {
-      next()
-    }
-  } else {
-    next()
-  }
+  // let { href, protocol, host, search, hash } = window.location
+  // const pathname = '/mobile' // 解决支付路径问题添加的前缀，替换成你的
+  // search = search || '?'
+  // hash = hash || '#!/'
+  // let newHref = `${protocol}//${host}${pathname}${search}${hash}`
+  // if (newHref !== href) {
+  //   window.location.replace(newHref)
+  // }
+  next()
 });
 
 export default router;

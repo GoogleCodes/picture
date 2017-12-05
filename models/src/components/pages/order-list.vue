@@ -1,11 +1,11 @@
 <template>
   <div style="padding-bottom: 53px;margin-top: 56px;">
-    <div v-show="visi">
+    <div>
       <template v-for="(item, i) in list">
         <div class="order-list">
           <div class="order-number fl w100">订单号 ：{{ item.orderid }}</div>
           <template v-for="(k, a) in item.goodsdata">
-            <router-link :to="{ path: '/pages/pic-detail', query: {id: k.gid }}" class="block w100 h100">
+            <router-link :to="{ path: '/pages/pic-detail/' + k.gid}" class="block w100 h100">
               <div class="order-msg fl">
                 <div class="order-pic fl">
                   <img src="../../../static/images/23.png" alt="" class="w100 h100">
@@ -33,7 +33,7 @@
         </div>
       </template>
     </div>
-    <div v-show="!visi" class="box-no">
+    <div v-show="visi" class="box-no">
       <i class="iconfont icon-kong block"></i>
       <span>暂时没有订单</span>
     </div>
@@ -65,12 +65,6 @@
         ...mapGetters({
           get_user_info: GET_USER_INFO
         }),
-        getID () {
-          try {
-            let json = this.get_user_info
-            return json.user.id;
-          } catch(e) {}
-        },
       },
       mounted() {
         this.getOrder();
@@ -78,9 +72,10 @@
       methods: {
           getOrder() {
             this.$ajax.HttpPost(this.$api.get_content.GET_ORDER_ADMIN,{
-              uid: + this.getID
+              uid: + this.get_user_info.user.id
             }).then((res) => {
               this.list = res.data.data.data;
+              console.log(this.list);
             });
           },
           confirmOrd() {
@@ -143,6 +138,7 @@
 
   .order-list .order-msg {
     background: #f2f2f2;
+    width: 94%;
     margin: 0px 10px 10px 10px;
   }
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div>123123123
     <div class="pic-detail">
       <div class="bl-express-box">
         <div class="wait">
@@ -99,7 +99,12 @@
     },
     created() {
       this.getOrderMsg();
-      console.log(this.get_user_openid);
+    },
+    watch: {
+      '$route'() {
+        this.getOrderMsg();
+        location.reload()
+      }
     },
     computed: {
       ...mapGetters({
@@ -117,9 +122,8 @@
           openid: 'oQVgUw7q-XNU5aPMvLlLbNKChzcQ'
         }).then((res) => {
           config = JSON.parse(res.data);
-          WeixinJSBridge.invoke(
-            'getBrandWCPayRequest',config,
-            function(res) {
+          WeixinJSBridge.invoke('getBrandWCPayRequest',config, function(res) {
+              console.log(res);
               if (res.err_msg === 'get_brand_wcpay_request:ok') {
                 alert('支付成功！');
               } else {
@@ -147,11 +151,11 @@
       },
       getOrderMsg() {
         this.$ajax.HttpPost('/api/home/order/oneorder',{
-          id: this.$route.query.id,
+          id: this.$route.params.id,
           uid: this.get_user_info.user.id
         }).then((res) => {
-            this.data = res.data;
-            this.adr = JSON.parse(res.data.address);
+          this.data = res.data;
+          this.adr = JSON.parse(res.data.address);
         });
       }
     },
