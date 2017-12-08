@@ -6,6 +6,8 @@ import axios from 'axios'
 import qs from 'qs'
 import get_api from '../../common/port_uri'
 
+import {server_base_url} from '../../common/config'
+
 export default new class GoAxios {
 
   /**
@@ -13,6 +15,29 @@ export default new class GoAxios {
    */
   constructor() {
   }
+
+  fetch(options) {
+    return new Promise((resolve, reject) => {
+      const instance = axios.create({
+        //  设置默认跟地址
+        baseURL: server_base_url,
+        //  设置请求超时设置
+        timeout: 2000,
+        //  设置请求时的header
+      })
+      instance(options).then(({data: {code, msg, data}}) => {
+        //请求成功时,根据业务判断状态
+        if (code === get_api.get_code.success) {
+          resolve({code, msg, data})
+          return false
+        }
+        reject({code, msg, data})
+      }).catch((error) => {
+        //请求失败时,根据业务判断状态
+      })
+    });
+  }
+
 
   /**
    *

@@ -166,26 +166,24 @@
   /* cart-box start */
   .bar-wrapper .gopay {
     width: 120px;
-    height: 45px;
+    height: 50px;
     background: #b11e25;
     border: 1px solid #b11e25;
     color: #fff;
     box-sizing: border-box;
-    margin-right: 10px;
   }
 
   .bar-wrapper {
-    height: 44px;
+    height: 50px;
     position: fixed;
     bottom: 50px;
     width: 100%;
-    padding: 10px 0px;
     background: #fff;
   }
 
   .bar-wrapper .iconfont {
     font-size: 24px;
-    line-height: 42px;
+    line-height: 50px;
     margin-left: 10px;
   }
 
@@ -200,7 +198,7 @@
   }
 
   .bar-wrapper .total-price {
-    line-height: 45px;
+    line-height: 50px;
     margin-right: 10px;
   }
 

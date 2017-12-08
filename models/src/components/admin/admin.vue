@@ -143,7 +143,9 @@
             type: 'warning'
           }).then(() => {
             this.remove_user_info('user_info');
-            setTimeout(this.$router.replace({ path: '/'}), 500);
+            setTimeout(() => {
+              this.$router.replace({ path: '/user/login'})
+            }, 1500);
           }).catch(() => {
 
           });

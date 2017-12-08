@@ -1,6 +1,8 @@
 <template>
   <div style="background: #fff">
     <banner></banner>
+    <el-button @click="getOpenID()">获取openid</el-button>
+    <router-link :to="{ path: '/pages/pic-detail/1'}">123123123123123</router-link>
     <elecontent></elecontent>
     <gotop></gotop>
   </div>
@@ -16,8 +18,7 @@
   import foots from '@/components/footer/Footer.vue'
 
   import {mapGetters, mapActions} from 'vuex'
-  import { GET_USER_OPENID } from '../store/getters/type'
-
+  import { GET_USER_OPENID, GET_USER_INFO } from '../store/getters/type'
 
   export default {
     name: 'index',
@@ -28,18 +29,25 @@
       }
     },
     mounted() {
-
+      console.log(this.$route, this.get_user_info, this.get_user_openid);
     },
     computed: {
       ...mapGetters({
-        get_user_openid: GET_USER_OPENID
+        get_user_info: GET_USER_INFO,
+        get_user_openid: GET_USER_OPENID,
       }),
       user_info() {
         return this.$store.state.user_info;
       }
     },
     methods: {
-
+      getOpenID() {
+        if (this.$storageGet('openid') == null) {
+          window.location.href = "https://www.xinye-art.com/public/api/home/pay/getcode"
+          this.$storageSet('openid', this.get_user_openid);
+          return true;
+        }
+      },
     },
     components: {
       heads,

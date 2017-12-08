@@ -1,17 +1,17 @@
 <template>
-  <div>123123123
+  <div>
     <div class="pic-detail">
       <div class="bl-express-box">
-        <div class="wait">
+        <div class="wait" v-if="data.status == 0">
           <span class="fl ft-16">待付款，赶快去支付吧</span>
           <i class="iconfont icon-fukuan fr"></i>
         </div>
-        <div class="wait" style="display: none;">
-          <span class="fl ft-16">待付款，赶快去支付吧</span>
+        <div class="wait" v-else-if="data.status == 1">
+          <span class="fl ft-16">未发货，等待卖家发货</span>
           <i class="iconfont icon-fahuo fr"></i>
         </div>
-        <div class="wait" style="display: none;">
-          <span class="fl ft-16">待付款，赶快去支付吧</span>
+        <div class="wait" v-else-if="data.status == 2">
+          <span class="fl ft-16">快递中，等待买家确认收货</span>
           <i class="iconfont icon-yifahuo fr"></i>
         </div>
       </div>
@@ -72,7 +72,7 @@
             <span class="fl money">应付：</span>
             <span class="fl c_b11e25">￥39.80</span>
           </div>
-          <div class="gopay fr util-btn" @click="pay">立即支付</div>
+          <div class="gopay fr util-btn" @click="pay()">立即支付</div>
           <!--<div class="cancel fl util-btn">取消订单</div>-->
           <!--<div class="confirm fr util-btn">确认订单</div>-->
         </div>
@@ -97,13 +97,12 @@
         adr: {},
       }
     },
-    created() {
+    mounted() {
       this.getOrderMsg();
     },
     watch: {
       '$route'() {
         this.getOrderMsg();
-        location.reload()
       }
     },
     computed: {
@@ -117,13 +116,13 @@
     },
     methods: {
       jsApiCall () {
+        alert(this.get_user_openid);
         let self = this, config = null;
         this.$ajax.HttpPost('/api/home/pay/mobilepay', {
-          openid: 'oQVgUw7q-XNU5aPMvLlLbNKChzcQ'
+          openid: this.get_user_openid // this.$storageGet('openid')  oQVgUw7q-XNU5aPMvLlLbNKChzcQ
         }).then((res) => {
           config = JSON.parse(res.data);
           WeixinJSBridge.invoke('getBrandWCPayRequest',config, function(res) {
-              console.log(res);
               if (res.err_msg === 'get_brand_wcpay_request:ok') {
                 alert('支付成功！');
               } else {
@@ -134,7 +133,6 @@
         });
       },
       pay() {
-//         window.location.href = "https://xinye-art.com/public/api/home/pay/getcode"
         this.weixincallpay()
       },
       weixincallpay() {

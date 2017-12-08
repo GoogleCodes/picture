@@ -68,6 +68,7 @@ class Tools_Cookies {
     //设置domain
     let domain = options.domain || this.defaults.domain
     domain = domain ? ';domain=' + domain : ''
+    console.log(domain);
     //设置secure
     let secure = options.secure || this.defaults.secure ? ';secure' : ''
     if (options.secure === false) secure = ''

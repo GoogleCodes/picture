@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import { storageSet, storageGet } from '../api/utils.js'
+
 import store from '../store'
 //  首页
 import Index from '@/components/Index'
@@ -261,7 +263,7 @@ let routes = [{
   component: register,
   meta: {
     header: false,
-    footer: true,
+    footer: false,
     title: '注册帐号',
     goback: true,
      requiresAuth: true
@@ -272,7 +274,7 @@ let routes = [{
   component: find,
   meta: {
     header: false,
-    footer: true,
+    footer: false,
     title: '修改密码',
     goback: true,
      requiresAuth: true
@@ -294,7 +296,7 @@ let routes = [{
   component: modify,
   meta: {
     header: false,
-    footer: true,
+    footer: false,
     title: '找回密码',
     goback: true,
      requiresAuth: true
@@ -444,13 +446,20 @@ const router = new Router({
 // 全局路由配置
 // 路由开始之前的操作
 router.beforeEach((to, from, next) => {
-  // let { href, protocol, host, search, hash } = window.location
-  // const pathname = '/mobile' // 解决支付路径问题添加的前缀，替换成你的
-  // search = search || '?'
-  // hash = hash || '#!/'
-  // let newHref = `${protocol}//${host}${pathname}${search}${hash}`
-  // if (newHref !== href) {
-  //   window.location.replace(newHref)
+  let { href, protocol, host, search, hash } = window.location
+  const pathname = '/mobile/index.html' // 解决支付路径问题添加的前缀，替换成你的
+  search = search || '?'
+  hash = hash || '#!/'
+  let newHref = `${protocol}//${host}${pathname}${search}${hash}`
+  if (newHref !== href) {
+    window.location.replace(newHref)
+  }
+
+  // if (storageGet('openid') == 'undefined') {
+  //   location.href = "https://xinye-art.com/public/api/home/pay/getcode"
+  //
+  //   storageSet('openid', this.get_user_openid);
+  //   return true;
   // }
   next()
 });

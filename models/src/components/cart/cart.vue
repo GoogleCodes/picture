@@ -24,7 +24,7 @@
         <span class="iconfont icon-quxiaoquanxuan c_9e9d9d" @click="changAll(1)" v-show="!allsel">
           <i class="ft-16">全选</i>
         </span>
-          <el-button class="fr gopay" @click="goPay()">去结算</el-button>
+          <el-button class="fr gopay" @click="goPay()">去结算({{ choseAll.length }})</el-button>
           <p class="ft-14 fr total-price">
             <span class="c_898989">合计</span>
             <span class="c_e64147 ft-18 ft-we">{{ chosePrice }}</span>
@@ -164,7 +164,7 @@
       },
       //  去结算
       goPay () {
-        var options = {}
+        var options = {}, arr = []
         if (this.choseAll.length == 0) {
           this.$message({
             message: '请选择商品!',
@@ -172,7 +172,17 @@
           });
           return;
         }
-        this.$router.push({ path: '/pages/ord-detail' });
+        for (let i in this.data.cartShoplist) {
+          options = {
+            list: this.data.cartShoplist[i],
+            price: this.chosePrice,
+          }
+          arr.push(options);
+        }
+        this.$storageSet('cart_list_data', arr);
+        this.$router.push({
+          path: '/pages/ord-detail'
+        });
       },
     }
   };
@@ -200,8 +210,13 @@
     box-sizing: border-box;
     background: #b11e25;
     padding: 14px 28px;
-    margin-right: 10px;
     color: #fff;
+
+
+    width: 120px;
+    height: 100%;
+    /* margin-right: 10px; */
+    border-radius: 0px;
   }
 
   .bar-wrapper .delete-shop {
@@ -213,9 +228,8 @@
   .bar-wrapper {
     height: 44px;
     position: fixed;
-    bottom: 50px;
+    bottom: 0px;
     width: 100%;
-    padding: 10px 0px;
     background: #fff;
   }
 

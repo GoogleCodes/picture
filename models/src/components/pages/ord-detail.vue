@@ -25,9 +25,9 @@
                     <img src="../../../static/images/30.png" alt="" class="w100 h100">
                 </div>
                 <div class="balan-text fl">
-                    <div class="bal-title ft-16">{{ item.shopName }}</div>
+                    <div class="bal-title ft-16">{{ item.list.goods_name }}</div>
                     <p>单价 : <i class="c_b11e25">0.60元</i></p>
-                    <p>数量 : {{ item.number }}</p>
+                    <p>数量 : {{ item.list.num }}</p>
                 </div>
                 <ul class="clear">
                     <li>
@@ -79,18 +79,16 @@
       components: {ElButton},
       data() {
         return {
-          listStop: [{
-            shopName: '照片冲印、手机上传打印照片',
-            price: 50.5,
-            number: 1,
-          }],
+          listStop: [],
           data: {
             list: []
+
           }
         }
       },
       created() {
-
+        this.listStop = this.$storageGet('cart_list_data');
+        console.log(this.listStop);
       },
       computed: {
         ...mapGetters({
@@ -103,7 +101,7 @@
           let sum = 0;
           if (this.amount > 0) {
             for(let i in this.listStop) {
-              sum += this.listStop[i].price * this.listStop[i].number;
+              sum += this.listStop[i].price * this.listStop[i].list.num;
             }
           }
           return sum.toFixed(2)
@@ -122,11 +120,7 @@
 
         },
         goToPay() {
-          let options = {
-
-          };
-          //  跳转页面
-          this.$router.push({ path: '/pages/gopay' });
+          this.$router.push({ path: '/pages/pic-detail' });
         }
       }
     }
@@ -225,6 +219,7 @@
     position: fixed;
     top: 47px;
     left: 0px;
+    display: none;
     background: #fff;
   }
 
