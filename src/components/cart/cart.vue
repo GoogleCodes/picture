@@ -37,7 +37,7 @@
                 <el-button slot="prepend" class="no-minus fl" @click="changeNumber(scope.row, -1)"
                            :class="{'disabled':scope.row.num <= 1}">-</el-button>
                 <el-input type="text" class="fl" readonly
-                          v-model="scope.row.num" placeholder="0"></el-input>
+                          v-model="scope.row.num" placeholder="1"></el-input>
                 <el-button  slot="append" class="add-max fl" @click="changeNumber(scope.row, 1)"
                            :class="{'disabled':scope.row.num >= 1}" style="margin-left: 20px;">+</el-button>
               </div>
@@ -154,14 +154,14 @@
         this.data.totalMoney = 0;
       },
       //  返回的参数为选中行对应的对象
-      selected (selection) {
+      selected(selection) {
         this.isChonseShop = selection.length;
         this.multipleSelection = selection;
         this.data.totalMoney = 0;
         for(var i in selection) {
           //  判断返回的值是否是字符串
           if(typeof selection[i].num == 'string') {
-            selection[i].num = parseInt(selection[i].num);
+            selection[i].num = parseFloat(selection[i].num);
           }
           this.data.totalMoney += selection[i].num * selection[i].price;
         }

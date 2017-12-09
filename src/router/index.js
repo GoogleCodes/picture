@@ -117,7 +117,7 @@ let routes = [{
     requiresAuth: true
   }
 },{
-  path: '/pages/onload',
+  path: '/pages/onload/',
   name: 'onload',
   component: onloadpic,
   meta: {

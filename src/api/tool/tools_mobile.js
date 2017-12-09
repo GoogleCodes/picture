@@ -5,12 +5,11 @@
 import { tools_filter } from './index'
 
 const uri = "https://www.xinye-art.com/mobile/index.html";
+const pcUri = "https://www.xinye-art.com"
 
 export default new class tools_mobile {
 
-
-
-  //  判断是否iphone 手机
+  //  判断是否移动手机
   goSwitch() {
     switch(true) {
       case tools_filter.os().isPhone:
@@ -20,6 +19,7 @@ export default new class tools_mobile {
         window.location.href = uri;
         break;
       default:
+        // window.location.href = pcUri;
         break;
     }
   }

@@ -41,7 +41,7 @@
                 <img src="../../../static/images/34.png" alt="">
                 <span>暂无图片</span>
               </div>
-              <ul class="pic-list clearfix" v-else>
+              <ul class="pic-list clearfix block w100 h100" v-else>
                 <template v-for="(k,i) in fileList">
                   <li class="pic-item">
                     <div style="border: 1px solid #dbdcdc;padding: 0 0 15px 0;">
@@ -50,7 +50,7 @@
                         <img src="../../../static/images/36.png" alt="">
                         <span>2017-08-18</span>
                       </div>
-                      <div class="cancel">
+                      <div class="cancel" @click="deletePic(k, i)">
                         <img src="../../../static/images/35.png" alt="">
                       </div>
                     </div>
@@ -58,6 +58,27 @@
                       <el-button slot="prepend" class="no-minus fl" style="margin: 0 10px 0 0;" @click="inputNum(k.response.data, -1)">-</el-button>
                       <el-input type="text" v-model="k.response.data.num" class="fl" readonly></el-input>
                       <el-button slot="append" class="add-max fl" style="margin-left: 10px;" @click="inputNum(k.response.data, 1)">+</el-button>
+                    </div>
+                  </li>
+                </template>
+              </ul>
+              <ul class="pic-list clearfix block w100 h100">
+                <template v-for="(k,i) in fList">
+                  <li class="pic-item">
+                    <div style="border: 1px solid #dbdcdc;padding: 0 0 15px 0;">
+                      <img class="pic" :src="k.img" alt="">
+                      <div class="time">
+                        <img src="../../../static/images/36.png" alt="">
+                        <span>2017-08-18</span>
+                      </div>
+                      <div class="cancel" @click="deletePic(k, i)">
+                        <img src="../../../static/images/35.png" alt="">
+                      </div>
+                    </div>
+                    <div class="item-amount">
+                      <el-button slot="prepend" class="no-minus fl" style="margin: 0 10px 0 0;" @click="inputNum(k, -1)">-</el-button>
+                      <el-input type="text" v-model="k.num" class="fl" readonly></el-input>
+                      <el-button slot="append" class="add-max fl" style="margin-left: 10px;" @click="inputNum(k, 1)">+</el-button>
                     </div>
                   </li>
                 </template>
@@ -94,11 +115,11 @@
   import {mapGetters, mapActions} from 'vuex'
   import { GET_USER_INFO } from '../../store/getters/type'
 
-
   export default {
     data() {
       return {
         fileList: [],
+        fList: [],
         list: [],
         file: null,
         picVisi: true,
@@ -108,6 +129,13 @@
       }
     },
     created() {
+      this.fetchData()
+      let a = 123;
+      console.log(a >> 1);
+
+      this.$http.get('http://api.tmkoo.com/search.php?keyword='+ 1 +'&apiKey='+ 'JICHU_271143973' +'&apiPassword=Spd5U8nA6P&pageSize=10&pageNo=1&searchType=1').then((res) => {
+        console.log(res);
+      })
 
     },
     computed: {
@@ -117,7 +145,7 @@
       //  统计上传多小张图片
       count() {
         return this.fileList.length;
-      }
+      },
     },
     components: {
       ElButton,
@@ -128,33 +156,65 @@
         if (k.num <= 1) {
           k.num = 1;
         }
+        let options = {
+          img: k.img,
+          num: k.num,
+        }, arr = [];
+        arr.push(options)
+        this.$ajax.HttpPost('/api/home/shopcar/upSave',{
+          id: this.$route.query.id,
+          img: JSON.stringify(arr),
+          num: k.num,
+        }).then((res) => {
+          this.$message(res.msg);
+        });
+      },
+      deletePic(item, index) {
+        let getIndex = null;
+        for (let i in this.fileList) {
+          this.fileList[i].index = i
+          if (this.fileList[i].index === index) {
+            getIndex = i;
+            break;
+          }
+        }
+        if (getIndex >= 0) {
+          this.fileList.splice(getIndex,1);
+        }
       },
       fetchData() {
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
           {uid: this.get_user_info.user.id}).then((res) => {
           for (let i in res.data) {
-            if(this.$route.query.id == res.data[i].id) {
+            let id = res.data[i].id;
+            if(this.$route.query.id == id) {
+              this.fList = res.data[i].upimg;
               this.list = res.data[i].goods_thumb;
-              console.log(this.list, '-+-+-');
+              let arr = res.data[i].upimg;
+            }
+            for(let i in this.fList) {
+              console.log(this.fList[i], "0+0+0+0+0+");
             }
           }
         }).catch((error) => {
         });
       },
       conSubmit() {
-        let values = '';
-        for (let i in this.fileList) {
-          values = this.fileList[i].response.data
+        let that = this;
+
+
+        if (typeof JSON.stringify(this.arr) === 'string') {
+          this.$ajax.HttpPost('/api/home/shopcar/upSave',{
+            id: this.$route.query.id,
+            img: JSON.stringify(that.fileList),
+            num: 1,
+          }).then((res) => {
+            this.$message(res.msg);
+//          setTimeout(() => {
+//            this.$router.replace({ path: '/cart/cart'})
+//          }, 3000)
+          });
         }
-        this.$ajax.HttpPost('/api/home/shopcar/upSave',{
-          id: this.$route.query.id,
-          img: JSON.stringify(this.arr),
-        }).then((res) => {
-          this.$message(res.msg);
-          setTimeout(() => {
-            this.$router.replace({ path: '/cart/cart'})
-          }, 3000)
-        });
       },
       handleBeforeUpload(file) {
 
@@ -162,6 +222,7 @@
       handleAvatarSuccess(res, file, fileList) {
         this.file = res.data;
         this.fileList = fileList;
+        console.log(this.fileList);
         let options = {};
         for (let i in this.fileList) {
           options = {
@@ -370,6 +431,7 @@
   .cart-upload-pic .container .show-pic .pic-list .pic-item .cancel {
     position: absolute;
     top: -14px;
+    cursor: pointer;
     right: -7px;
   }
   .cart-upload-pic .container .show-pic .pic-list .pic-item .cancel img {

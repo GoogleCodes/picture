@@ -81,6 +81,7 @@
         }
         this.$ajax.HttpPost('/api/home/shopcar/upSave',{
           id: this.$route.query.id,
+          num: 0,
           img: values.path,
         }).then((res) => {
           this.$message(res.msg);
@@ -106,6 +107,7 @@
         console.log(file);
       },
       choosePic(item, index) {
+        alert(123123);
         for (let i in this.fileList) {
           if (this.fileList[i].uid === item.uid) {
             this.chonseok = true;

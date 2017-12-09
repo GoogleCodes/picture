@@ -30,9 +30,6 @@ Vue.prototype.$storage = tools_storage;
 Vue.filter('goPrice', tools_filter.changePrice);
 Vue.filter('gotimes', tools_filter.goTime);
 
-//  判断是否iphone 手机
-tools_mobile.goSwitch();
-
 //  导入API
 import api from './common/port_uri'
 Vue.prototype.$api = api;

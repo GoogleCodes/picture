@@ -116,9 +116,11 @@
     },
     methods: {
       jsApiCall () {
-        alert(this.get_user_openid);
+        console.log(this.get_user_info);
         let self = this, config = null;
         this.$ajax.HttpPost('/api/home/pay/mobilepay', {
+          id: 34,
+          uid: this.get_user_info.user.id,
           openid: this.get_user_openid // this.$storageGet('openid')  oQVgUw7q-XNU5aPMvLlLbNKChzcQ
         }).then((res) => {
           config = JSON.parse(res.data);

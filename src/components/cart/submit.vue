@@ -78,7 +78,7 @@
       <div class="item-price">
         <div class="fl">
           <span class="total ft-18">合计金额：￥<i>{{ lastPaySum }}</i></span>
-          <span class="actual ft-14">实际金额：<strong class="ft-28">￥99.9</strong></span>
+          <span class="actual ft-14">实际金额：<strong class="ft-28">￥{{ amoutPay }}</strong></span>
         </div>
         <el-button class="submit-order fr" @click="goToPayMoney()">提交订单</el-button>
       </div>
@@ -182,6 +182,7 @@
           payindex: 0,
           currAddress: -1,
           currAddJson: [],
+          amoutPay: 0,
         }
     },
     mounted () {
@@ -194,7 +195,8 @@
       lastPaySum () {
         let sum = 0;
         for (let ll in this.shopmsg) {
-          sum += this.shopmsg[ll].price * this.shopmsg[ll].num
+          sum += this.shopmsg[ll].price * this.shopmsg[ll].num;
+          console.log(sum);
         }
         return sum.toFixed(2);
       },
@@ -244,14 +246,16 @@
             this.$message('请选择地址');
             return false;
           default:
-            this.$ajax.HttpPost('/api/home/order/add',{
+            const json = {
               uid: this.get_user_info.user.id,
               goodsdata: gid,
               num: 1,
               specdata: textSpecdata,
               address: this.currAddJson,
               uname: this.currAddJson.sname
-            }).then((res) => {
+            };
+            console.log(json);
+            this.$ajax.HttpPost('/api/home/order/add',json).then((res) => {
               this.$storage.storageRemove('gopayData_info');
               this.$message(res.msg);
               this.$router.replace({ path: '/admin/manage'});
@@ -262,7 +266,6 @@
       goInChonseAdd(index, item) {
         this.currAddress = index;
         this.currAddJson = item;
-        console.log(this.currAddress, this.currAddJson);
       },
       chonsePay(index, item) {
         this.payindex = index;

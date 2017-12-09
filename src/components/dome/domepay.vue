@@ -17,6 +17,11 @@
 
     },
     methods: {
+      webchatpay() {
+        this.$http.post('https://xinye-art.com/public/api/home/pay/getcode').then((res) => {
+            console.log(res);
+        });
+      },
       alipay() {
         this.$ajax.HttpPost('/api/home/pay/alpay',{
           id:28,

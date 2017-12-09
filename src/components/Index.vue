@@ -16,6 +16,8 @@
   import elenav from '@/components/top/Nav.vue'
   import elecontent from '@/components/content/Content.vue'
 
+  import { tools_mobile } from '../api/tool'
+
   export default {
     name: 'index',
     data () {
@@ -24,7 +26,7 @@
       }
     },
     created() {
-
+      tools_mobile.goSwitch();
     },
     computed: {
       user_info() {

@@ -19,8 +19,7 @@
                        @changeGuige="changeGuige(pindex,val.id,val.item)"></guige>
               </ul>
             </div>
-
-            <div class="select-num clear">
+            <div class="select-num clear" v-if="$route.query.isup == 1">
               <span class="left fl">数量：</span>
               <div class="item-amount ">
                 <el-button class="no-minus fl" @click="changeNumber(list, -1)"
@@ -31,7 +30,11 @@
                            :class="{'disabled': list.sales_sum >= 1}">+</el-button>
               </div>
             </div>
+            <div v-else></div>
             <div class="select-btn clear">
+              <!--<router-link :to="{ path: '/pages/onload' }" v-if="$route.query.isup == 0">-->
+                <!--<el-button class="ft-16">开始冲印</el-button>-->
+              <!--</router-link>-->
               <el-button class="ft-16" @click="addCart()">加入购物车</el-button>
             </div>
           </div>
@@ -52,7 +55,7 @@
                 <li class="product-item" @click="watchElse(item.goods_id)">
                   <div class="pic">
                     <template v-for="(x,i) in item.goods_thumb">
-                      <img :src="x.url" alt="">
+                      <img :src="x.url">
                     </template>
                   </div>
                   <div class="item-m-desc">
@@ -114,6 +117,7 @@
     },
     mounted() {
       this.getDataShop();
+      console.log(this.$route.query.isup,'+-');
     },
     components: {
       ElInputNumber,
@@ -236,28 +240,31 @@
       addCart() {
         let that = this;
         try {
-          switch(true) {
-            case this.get_user_info.user == undefined:
-              this.$message('亲，请去登录一下');
-              setTimeout(() => {
-                this.$router.push({ path: '/user/login' });
-              }, 2000);
-              return false;
-            case this.guige.length == 0:
-              this.$message({
-                message: '请选择规格！',
-                type: 'warning'
-              });
-              return false;
-            case this.list.sales_sum == 0:
-              this.$message({
-                message: '请增加商品！谢谢啦！',
-                type: 'warning'
-              });
-              return false;
-            default:
+          if (this.$route.query.isup == 1) {
+            switch(true) {
+              case this.get_user_info.user == undefined:
+                this.$message('亲，请去登录一下');
+                setTimeout(() => {
+                  this.$router.push({ path: '/user/login' });
+                }, 2000);
+                return false;
+              case this.guige.length == 0:
+                this.$message({
+                  message: '请选择规格！',
+                  type: 'warning'
+                });
+                return false;
+              case this.list.sales_sum == 0:
+                this.$message({
+                  message: '请增加商品！谢谢啦！',
+                  type: 'warning'
+                });
+                return false;
+              default:
+                break;
+            }
           }
-          let json = {
+          const json = {
             uid: this.get_user_info.user.id,
             gid: this.$route.query.id,
             sid: this.charSID,

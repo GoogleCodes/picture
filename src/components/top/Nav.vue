@@ -7,7 +7,7 @@
           <router-link :to="{ path: '/'}" class="blocks nav-href">首页</router-link>
         </li>
         <li v-for="(item, index) in data.list">
-          <router-link :to="{ path: '/inside/orderlist', query: {id: item.id}}" class="blocks nav-href">
+          <router-link :to="{ path: '/inside/orderlist', query: {id: item.id, isup: item.is_up}}" class="blocks nav-href">
             <span>{{ item.title }}</span>
             <div class="dropDomn" v-show="dropDowm">
               <div class="triangle"></div>

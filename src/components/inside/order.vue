@@ -18,7 +18,7 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <template v-for="(warp, index) in item.children">
-                  <el-dropdown-item :command="warp.item">{{ warp.item }}</el-dropdown-item>
+                  <el-dropdown-item :command="warp">{{ warp.type_id }}{{ warp.item }}</el-dropdown-item>
                 </template>
               </el-dropdown-menu>
             </el-dropdown>
@@ -31,11 +31,17 @@
       </div>
     </div>
 
-    <div class="shoping-list" v-loading="load_data" element-loading-text="正在加载中...">
-      <ul>
+    <div class="shoping-list">
+      <template v-if="data.list == 0">
+        <div class="data-kong">
+          <i class="iconfont icon-kong"></i>
+          <p>小二去采购了！</p>
+        </div>
+      </template>
+      <ul class="w100 h100 block" style="overflow: hidden" v-else v-loading="load_data" element-loading-text="正在加载中...">
         <template v-for="item in data.list">
           <li class="fl">
-            <router-link :to="{ path: '/pages/detail', query: {id: item.goods_id }}">
+            <router-link :to="{ path: '/pages/detail', query: {id: item.goods_id, isup: $route.query.isup }}">
               <div class="shop-body">
                 <div class="pic-img">
                   <template v-for="(x,i) in item.goods_thumb">
@@ -54,6 +60,7 @@
             </router-link>
           </li>
         </template>
+
       </ul>
       <a class="block clear shoping-move" @click="AllShowShop()" v-show="shopAll">
         <span class="block" style="position: relative;top: 5px;">展开全部</span>
@@ -147,7 +154,7 @@
     methods: {
       handleIconClick() {
         this.$ajax.HttpGet(this.$api.get_content.GET_ORDER +
-        "?keyword=" + this.searchText).then((res) => {
+        "?cid=" + this.$route.query.id + "&keyword=" + this.searchText).then((res) => {
           this.data.list = res.data;
           this.load_data = false;
           this.shopAll = false;
@@ -155,10 +162,7 @@
       },
       handleCommand(command) {
         this.load_data = true;
-        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER, {
-          cid: this.$route.query.id,
-          spec: command
-        }).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER  + "?cid=" + this.$route.query.id + "&spec=" + command.id).then((res) => {
           this.data.list = res.data;
           if (this.data.list.length == 0) {
             this.$message({
@@ -177,10 +181,13 @@
       },
       getOrder() {
         this.load_data = true;
-        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?limit=" + 4).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?cid="+ this.$route.query.id +"&limit=" + 4).then((res) => {
           this.load_data = false;
           this.data.list = res.data;
           this.data.listPages = res.data;
+          if (res.data.length == 0) {
+            this.shopAll = false;
+          }
           this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.$route.query.id).then((res) => {
             this.data.shotcut = res.data;
           });
@@ -262,6 +269,22 @@
     width: 1200px;
     height: 100%;
     margin: 47px auto;
+  }
+
+  .shoping-list .data-kong {
+    text-align: center;
+    margin-top: 150px;
+    color: #9d9e9e;
+  }
+
+  .shoping-list .data-kong p {
+    margin-top: 40px;
+    font-size: 25px;
+    font-weight: bold;
+  }
+
+  .shoping-list .data-kong .icon-kong {
+    font-size: 150px;
   }
 
   .shoping-list ul li .shop-body {

@@ -88,7 +88,6 @@
       },
       created() {
         this.listStop = this.$storageGet('cart_list_data');
-        console.log(this.listStop);
       },
       computed: {
         ...mapGetters({
@@ -112,7 +111,8 @@
       },
       methods: {
         setAddress() {
-          this.$ajax.HttpGet(this.$api.get_address.get_address + '?id=' + this.get_user_info.user.id).then((res) => {
+          this.$ajax.HttpGet(this.$api.get_address.get_address +
+            '?id=' + this.get_user_info.user.id).then((res) => {
             this.data.list = res.data;
           });
         },
@@ -120,6 +120,9 @@
 
         },
         goToPay() {
+          const json = {
+
+          };
           this.$router.push({ path: '/pages/pic-detail' });
         }
       }
