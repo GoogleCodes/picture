@@ -99,6 +99,8 @@
     },
     mounted() {
       this.getOrderMsg();
+      console.log(this.$route.params.id);
+
     },
     watch: {
       '$route'() {
@@ -116,10 +118,9 @@
     },
     methods: {
       jsApiCall () {
-        console.log(this.get_user_info);
         let self = this, config = null;
         this.$ajax.HttpPost('/api/home/pay/mobilepay', {
-          id: 34,
+          id: this.$route.params.id,
           uid: this.get_user_info.user.id,
           openid: this.get_user_openid // this.$storageGet('openid')  oQVgUw7q-XNU5aPMvLlLbNKChzcQ
         }).then((res) => {
@@ -155,6 +156,7 @@
           uid: this.get_user_info.user.id
         }).then((res) => {
           this.data = res.data;
+          console.log(res.data);
           this.adr = JSON.parse(res.data.address);
         });
       }

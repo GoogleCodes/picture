@@ -8,7 +8,9 @@
             <router-link :to="{ path: '/pages/pic-detail/' + k.gid}" class="block w100 h100">
               <div class="order-msg fl">
                 <div class="order-pic fl">
-                  <img src="../../../static/images/23.png" alt="" class="w100 h100">
+                  <template v-for="(m, i) in k.gthumb">
+                    <img :src="m.url" alt="" class="w100 h100">
+                  </template>
                 </div>
                 <div class="wrap fl">
                   <div class="wrap-title ft-16">{{ k.gname }}</div>
@@ -25,7 +27,7 @@
             </router-link>
           </template>
           <div class="warp-input clear">
-            <el-button class="fr" @click="goToPay(1)" v-if="item.status == 0">去付款</el-button>
+            <el-button class="fr" @click="goToPay(item.id)" v-if="item.status == 0">去付款</el-button>
             <el-button class="fr" @click="confirmOrd(1)" v-else-if="item.status == 2">已付款</el-button>
             <el-button class="fr" @click="cancelOrd(1)" v-else-if="item.status == 3">已发货</el-button>
             <el-button class="fr" @click="cancelOrd(1)" v-else-if="item.status == 4">已收货</el-button>
@@ -97,8 +99,7 @@
           },
           goToPay(id) {
               this.$router.push({
-                  path: '/pages/ord-detail',
-                  query: {pid: id}
+                  path: '/pages/pic-detail/' + id,
               })
           },
           cancelOrd (id) {

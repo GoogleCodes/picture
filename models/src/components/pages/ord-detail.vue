@@ -11,40 +11,40 @@
             <!--</div>-->
             <div class="add-desc">
               <p style="margin-left: 16px;">
-                <span class="add-desc-name">某某某</span>
-                <span class="add-desc-phone">13232800159</span>
+                <span class="add-desc-name">{{ data.list.sname }}</span>
+                <span class="add-desc-phone">{{ data.list.tel }}</span>
               </p>
-              <p class="add-desc-msg"><i class="iconfont icon-dizhi"></i>广东省佛山市顺德区杏坛镇光华村</p>
+              <p class="add-desc-msg"><i class="iconfont icon-dizhi"></i>{{ data.list.adr }}</p>
             </div>
             <div class="border-line-vertical" style="right: 0px;"></div>
             <div class="border-line"></div>
         </div>
-        <template v-for="(item, index) in listStop">
-            <div class="balance-list">
-                <div class="balan-pic fl">
-                    <img src="../../../static/images/30.png" alt="" class="w100 h100">
-                </div>
-                <div class="balan-text fl">
-                    <div class="bal-title ft-16">{{ item.list.goods_name }}</div>
-                    <p>单价 : <i class="c_b11e25">0.60元</i></p>
-                    <p>数量 : {{ item.list.num }}</p>
-                </div>
-                <ul class="clear">
-                    <li>
-                        <span>商品合计 : </span>
-                        <span class="fr">¥ {{ lastPaySum }}</span>
-                    </li>
-                    <li>
-                        <span>实收金额 : </span>
-                        <span class="fr c_e64147" style="font-weight: bold">¥ 0.60</span>
-                    </li>
-                    <li class="c_b11e25">
-                        <span>注 : 快递费用自付</span>
-                    </li>
-                </ul>
+        <div class="balance-list">
+          <template v-for="(item, index) in listStop">
+            <div class="balan-pic fl">
+                <img src="../../../static/images/30.png" alt="" class="w100 h100">
             </div>
-        </template>
-        <el-button class="nowGoPay" @click="goToPay()">立即支付</el-button>
+            <div class="balan-text fl">
+                <div class="bal-title ft-16">{{ item.list.goods_name }}</div>
+                <p>单价 : <i class="c_b11e25">{{ item.list.price }}元</i></p>
+                <p>数量 : {{ item.list.num }}</p>
+            </div>
+          </template>
+          <ul class="clear">
+            <li>
+              <span>商品合计 : </span>
+              <span class="fr">¥ {{ lastPaySum }}</span>
+            </li>
+            <li>
+              <span>实收金额 : </span>
+              <span class="fr c_e64147" style="font-weight: bold">¥ {{ lastPaySum }}</span>
+            </li>
+            <li class="c_b11e25">
+              <span>注 : 快递费用自付</span>
+            </li>
+          </ul>
+        </div>
+        <el-button class="nowGoPay" @click="SubmitOrder()">提交订单</el-button>
 
         <div class="props w100 h100">
           <ul>
@@ -73,25 +73,25 @@
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
 
   import {mapGetters, mapActions} from 'vuex'
-  import { GET_USER_INFO } from '../../store/getters/type'
+  import { GET_USER_INFO, GET_USER_OPENID } from '../../store/getters/type'
 
     export default {
       components: {ElButton},
       data() {
         return {
-          listStop: [],
+          listStop: this.$storageGet('cart_list_data'),
           data: {
             list: []
-
           }
         }
       },
       created() {
-        this.listStop = this.$storageGet('cart_list_data');
+//        this.listStop = this.$storageGet('cart_list_data');
       },
       computed: {
         ...mapGetters({
-          get_user_info: GET_USER_INFO
+          get_user_info: GET_USER_INFO,
+          get_user_openid: GET_USER_OPENID
         }),
         amount () {
           return this.listStop.length;
@@ -100,7 +100,7 @@
           let sum = 0;
           if (this.amount > 0) {
             for(let i in this.listStop) {
-              sum += this.listStop[i].price * this.listStop[i].list.num;
+              sum += this.listStop[i].list.price * this.listStop[i].list.num;
             }
           }
           return sum.toFixed(2)
@@ -108,23 +108,79 @@
       },
       mounted() {
         this.setAddress();
+        console.log(this.data.list);
       },
       methods: {
+        SubmitOrder() {
+          let gid = [], textSpecdata = null;
+          for(let i in this.listStop) {
+            console.log(gid, this.listStop[i].list,this.listStop[i].list.id, "+-+-");
+            gid.push(this.listStop[i].list.id)
+            textSpecdata = this.listStop[i].list.specdata;
+          }
+          this.$ajax.HttpPost('/api/home/order/add', {
+            uid: this.get_user_info.user.id,
+            goodsdata: gid,
+            num: 1,
+            specdata: textSpecdata,
+            address: this.data.list,
+            uname: this.data.list.sname
+          }).then((res) => {
+            this.$message({
+              message: '提交成功！',
+              type: "success"
+            });
+          });
+        },
+        jsApiCall () {
+          let self = this, config = null;
+          this.$ajax.HttpPost('/api/home/pay/mobilepay', {
+            id: 34,
+            uid: this.get_user_info.user.id,
+            openid: this.get_user_openid // this.$storageGet('openid')  oQVgUw7q-XNU5aPMvLlLbNKChzcQ
+          }).then((res) => {
+            config = JSON.parse(res.data);
+            WeixinJSBridge.invoke('getBrandWCPayRequest',config, function(res) {
+                if (res.err_msg === 'get_brand_wcpay_request:ok') {
+                  alert('支付成功！');
+                  this.$router.push({ path: '/pages/pic-detail' });
+                } else {
+                  alert('支付失败！');
+                }
+              }
+            )
+          });
+        },
+        pay() {
+          this.weixincallpay()
+        },
+        weixincallpay() {
+          if (typeof WeixinJSBridge == "undefined") {
+            if (document.addEventListener) {
+              document.addEventListener('WeixinJSBridgeReady', this.jsApiCall(), false)
+            } else if (document.attachEvent) {
+              document.attachEvent('WeixinJSBridgeReady', this.jsApiCall());
+              document.attachEvent('onWeixinJSBridgeReady', this.jsApiCall())
+            }
+          } else {
+            this.jsApiCall()
+          }
+        },
         setAddress() {
           this.$ajax.HttpGet(this.$api.get_address.get_address +
             '?id=' + this.get_user_info.user.id).then((res) => {
             this.data.list = res.data;
+            for(let i in res.data) {
+              if(res.data[i].select == 1) {
+                this.data.list = res.data[i]
+                console.log(this.data.list, "+-+-+-");
+              }
+            }
           });
         },
         goSize() {
 
         },
-        goToPay() {
-          const json = {
-
-          };
-          this.$router.push({ path: '/pages/pic-detail' });
-        }
       }
     }
 </script>

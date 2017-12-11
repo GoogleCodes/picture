@@ -1,8 +1,6 @@
 <template>
   <div style="background: #fff">
     <banner></banner>
-    <el-button @click="getOpenID()">获取openid</el-button>
-    <router-link :to="{ path: '/pages/pic-detail/1'}">123123123123123</router-link>
     <elecontent></elecontent>
     <gotop></gotop>
   </div>
