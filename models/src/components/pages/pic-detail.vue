@@ -68,13 +68,16 @@
           </p>
         </div>
         <div class="comment clear">
-          <div class="comment-money fl">
-            <span class="fl money">应付：</span>
-            <span class="fl c_b11e25">￥39.80</span>
+          <div v-if="data.status == 0">
+            <div class="comment-money fl">
+              <span class="fl money">应付：</span>
+              <span class="fl c_b11e25">￥39.80</span>
+            </div>
+            <div class="gopay fr util-btn" @click="pay()">立即支付</div>
           </div>
-          <div class="gopay fr util-btn" @click="pay()">立即支付</div>
           <!--<div class="cancel fl util-btn">取消订单</div>-->
           <!--<div class="confirm fr util-btn">确认订单</div>-->
+          <div class="ConfirmReceipt fr util-btn" v-if="data.status == 1">确认收货</div>
         </div>
       </div>
     </div>
@@ -117,6 +120,9 @@
       ElButton
     },
     methods: {
+      ConfirmReceipt() {
+
+      },
       jsApiCall () {
         let self = this, config = null;
         this.$ajax.HttpPost('/api/home/pay/mobilepay', {
@@ -197,18 +203,24 @@
   }
 
   .info-express .exp-content .icon-dizhi {
-    line-height: 71px;
+    line-height: 80px;
     font-size: 20px;
   }
 
   .info-express .exp-content .ex-line {
-    margin-left: 32px;
+    margin: 0px 0px 0px 32px;
+    padding: 6px 0px;
   }
 
   .info-express .exp-content .ex-line .info-address {
-    height: 50px;
+    line-height: 20px;
     width: 100%;
     overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .pic-detail .order-msg {
@@ -249,16 +261,24 @@
   }
 
   .pic-detail .order-msg .wrap .wrap-title {
-    height: 23px;
-    overflow: hidden;
     line-height: 21px;
+    overflow: hidden;
     text-overflow: ellipsis;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
   }
 
   .pic-detail .order-msg .wrap .wrap-desc {
-    /*height: 30px;*/
-    /*line-height: 30px;*/
+    line-height: 20px;
     text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .pic-detail .order-msg .order-pic {
@@ -336,6 +356,12 @@
     width: 50%;
     text-align: center;
     box-sizing: border-box;
+  }
+
+  .pic-detail .comment .ConfirmReceipt {
+    width: 100%;
+    color: #fff;
+    background: #c40000;
   }
 
   .pic-detail .comment .comment-money {
