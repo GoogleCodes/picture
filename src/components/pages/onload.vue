@@ -130,13 +130,6 @@
     },
     created() {
       this.fetchData()
-      let a = 123;
-      console.log(a >> 1);
-
-      this.$http.get('http://api.tmkoo.com/search.php?keyword='+ 1 +'&apiKey='+ 'JICHU_271143973' +'&apiPassword=Spd5U8nA6P&pageSize=10&pageNo=1&searchType=1').then((res) => {
-        console.log(res);
-      })
-
     },
     computed: {
       ...mapGetters({
@@ -206,7 +199,7 @@
         if (typeof JSON.stringify(this.arr) === 'string') {
           this.$ajax.HttpPost('/api/home/shopcar/upSave',{
             id: this.$route.query.id,
-            img: JSON.stringify(that.fileList),
+            img: JSON.stringify(this.arr),
             num: 1,
           }).then((res) => {
             this.$message(res.msg);
@@ -226,7 +219,8 @@
         let options = {};
         for (let i in this.fileList) {
           options = {
-            img: this.fileList[i].response.data.path
+            img: this.fileList[i].response.data.path,
+            num: 1,
           };
         }
         this.arr.push(options);

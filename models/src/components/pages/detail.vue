@@ -25,17 +25,20 @@
           <div class="select-price">
             <span>¥{{ list.shop_price }}</span>
           </div>
-          <el-button class="fr" @click="showLayer()">开始冲印</el-button>
+          <el-button class="fr" @click="showLayer()" v-if="list.cat_id == 34">开始冲印</el-button>
+          <el-button class="fr" @click="showLayer()" v-else-if="list.cat_id == 35">加入购物车</el-button>
         </div>
       </div>
     </div>
-    <div class="detailpage" style="padding-bottom: 100px;" v-html="list.goods_content">
+    <div class="detailpage" style="padding-bottom: 30px;" v-html="list.goods_content">
       <!--<img src="../../../static/images/45.png" alt="" class="w100 h100">-->
     </div>
     <div class="thislayer" v-show="layer" @click="goLayer()"></div>
     <div class="item-layer" v-show="layer">
       <div class="item-shop-msg">
-        <div class="shop-pic fl" :style="{background: 'url('+ list.shotcut +') no-repeat'}"></div>
+        <div class="shop-pic fl" :style="{
+          background: 'url('+ list.shotcut +') no-repeat',
+          backgroundSize: 'cover'}"></div>
         <div class="shop-desc fl">
           <p class="ft-16 c_5d6060">{{ list.goods_name }}</p>
           <span class="ft-14">单价 : <i class="money">{{ list.shop_price }}元</i></span>
@@ -51,16 +54,17 @@
                  @changeGuige="changeGuige(pindex,val.id,val.item)"></guige>
         </ul>
       </div>
-      <div class="select-num clear" style="display: none;">
+      <div class="select-num clear" v-if="list.cat_id == 1">
         <span class="left fl">数量：</span>
-        <div class="item-amount ">
+        <div class="item-amount" @touchmove.prevent>
           <el-button class="no-minus fl" @click="changeNumber(list, -1)" :class="{'disabled':list.sales_sum <= 1}">-</el-button>
           <el-input type="text" class="fl" placeholder="0" v-model="list.sales_sum" readonly></el-input>
           <el-button class="add-max fl" @click="changeNumber(list, 1)" :class="{'disabled': list.sales_sum >= 1}">+</el-button>
         </div>
       </div>
       <div class="select-btn clear">
-        <el-button class="ft-16" @click="goToUpload(list.goods_id)">去上传照片</el-button>
+        <el-button class="ft-16" @click="goToUpload(list.goods_id, $route.query.isup)" v-if="list.cat_id == 34">去上传照片</el-button>
+        <el-button class="ft-16" @click="goToUpload(list.goods_id, $route.query.isup)" v-else-if="list.cat_id == 35">加入购物车</el-button>
       </div>
     </div>
   </div>
@@ -129,7 +133,7 @@
       }),
     },
     methods: {
-      goToUpload(id) {
+      goToUpload(id, isup) {
         if (this.guige.length == 0) {
           this.$message('请选择规格！');
           return false;
@@ -145,9 +149,15 @@
           };
           this.$ajax.HttpPost(this.$api.get_content.POST_CART_DATA,cart).then((res) => {
             this.$message('提交成功!');
-            setTimeout(() => {
-              this.$router.push({path: '/pages/onload',query: {id: id}})
-            }, 1000)
+            if (isup == 0) {
+              setTimeout(() => {
+                this.$router.push({path: '/pages/onload',query: {id: id}})
+              }, 1000)
+            } else if(isup == 1) {
+              setTimeout(() => {
+                this.$router.push({path: '/cart/cart'})
+              }, 1000)
+            }
           });
         }
       },
@@ -196,12 +206,13 @@
         }
       },
       changeNumber(item,flag) {
+
         flag > 0 ? item.sales_sum++ : item.sales_sum--
         if(item.sales_sum <= 1) {
           item.sales_sum = 1
         }
       },
-      goCart() {
+      addCart(id) {
         let that = this;
         if (this.list.nums == 0) {
           this.$message({
@@ -459,6 +470,7 @@
     color: #717171;
     padding: 10px 0px 15px;
     position: relative;
+    overflow: hidden;
     border-bottom: 1px solid #dcdddd;
   }
   .right-select .select-title, .right-select .select-text  {
@@ -482,7 +494,7 @@
   .right-select .el-button {
     position: absolute;
     right: 0px;
-    top: 58px;
+    top: 34px;
     color: #fff;
     padding: 10px 30px;
     background: #b11e25;
@@ -500,6 +512,7 @@
     color: #e64147;
     font-weight: bold;
     line-height: 40px;
+    float: left;
   }
 
   .detailpage p img {

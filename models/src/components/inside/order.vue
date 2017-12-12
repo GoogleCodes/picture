@@ -10,7 +10,7 @@
       <ul>
         <template v-for="item in data.list">
           <li class="fl">
-            <router-link :to="{ path: '/content/proseries', query: {id: item.goods_id}}">
+            <router-link :to="{ path: '/pages/detail', query: {id: item.goods_id, isup: $route.query.isup}}">
               <div class="shop-body">
                 <div class="pic-img">
                   <template v-for="k in item.goods_thumb">
@@ -48,6 +48,7 @@
     },
     created() {
       this.getOrder();
+      console.log(this.$route.query.isup)
     },
     watch: {
       '$route'() {

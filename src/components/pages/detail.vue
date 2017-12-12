@@ -11,7 +11,6 @@
             <div class="select-title">{{ list.goods_name }}<span>{{ list.goods_remark }}</span></div>
             <div class="select-text">{{ list.good_desc }}</div>
             <div class="select-price">¥{{ list.shop_price }}</div>
-
             <div class="select-color clear" v-for="(fmt,pindex) in list.myspec">
               <div class="left fl">{{ fmt.spec }}：</div>
               <ul style="width: 75%;float: right;" class="fl">
@@ -19,7 +18,7 @@
                        @changeGuige="changeGuige(pindex,val.id,val.item)"></guige>
               </ul>
             </div>
-            <div class="select-num clear" v-if="$route.query.isup == 1">
+            <div class="select-num clear" v-if="list.cat_id == 35">
               <span class="left fl">数量：</span>
               <div class="item-amount ">
                 <el-button class="no-minus fl" @click="changeNumber(list, -1)"

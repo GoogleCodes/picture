@@ -48,11 +48,14 @@
                     <p>包邮</p>
                   </td>
                   <td class="itme-pic">
-                    <p>待付款</p>
+                    <p v-if="item.status == 0">待付款</p>
+                    <p v-else-if="item.status = 1">已付款</p>
+                    <p v-else-if="item.status = 2">已发货</p>
+                    <p v-else-if="item.status = 3">已收货</p>
                     <p>订单详情</p>
                   </td>
                   <td style="width: 130px;">
-                    <a class="nowpay privateBtn" v-if="item.status == 0" @click="pay(item.id)">去付款</a>
+                    <a class="nowpay privateBtn" v-if="item.status == 0" @click="pay(item.id, item.paytype)">去付款</a>
                     <a class="cancel protected-Btn" v-if="item.status == 1">已付款</a>
                     <a class="select protected-Btn" v-if="item.status == 2">已发货</a>
                     <a class="delete protected-Btn" v-if="item.status == 3">已收货</a>
@@ -63,6 +66,11 @@
           </table>
         </template>
       </div>
+    </div>
+    <div class="layer-pop" v-show="payDisplay"></div>
+    <div class="wechatpay" v-show="payDisplay">
+      <i class="iconfont icon-guanbi block fr" @click="payDisplay = false"></i>
+      <img :src="wechat" alt="" class="w100 h100 block">
     </div>
     <div v-html="box"></div>
   </div>
@@ -78,7 +86,10 @@
       return {
         orderList: [],
         orderPages: {},
-        box: ''
+        box: '',
+        wechat: '',
+        elementTop: 0,
+        payDisplay: false,
       }
     },
     computed: {
@@ -90,16 +101,28 @@
       this.getOrderAdmin();
     },
     methods: {
-      pay(id) {
-        this.$ajax.HttpPost('/api/home/pay/alpay',{
-          id:id,
-          uid: this.get_user_info.user.id
-        }).then((res) => {
-          const box = document.createElement('div');
-          box.innerHTML = res;
-          document.body.appendChild(box);
-          document.forms[0].submit()
-        })
+      pay(id, paytype) {
+        if(paytype == 0) {
+          //  微信支付
+          this.payDisplay = true;
+          this.$ajax.HttpPost('/api/home/pay/wxpay', {
+            id: 51,
+            uid: this.get_user_info.user.id
+          }).then((res) => {
+            this.wechat = res.data;
+          });
+        } else if(paytype == 1) {
+          this.payDisplay = false;
+          this.$ajax.HttpPost('/api/home/pay/alpay',{
+            id:id,
+            uid: this.get_user_info.user.id
+          }).then((res) => {
+            const box = document.createElement('div');
+            box.innerHTML = res;
+            document.body.appendChild(box);
+            document.forms[0].submit()
+          })
+        }
       },
       getOrderAdmin() {
         this.$ajax.HttpPost(this.$api.get_content.GET_ORDER_ADMIN,{
@@ -120,4 +143,33 @@
   .tbody-item .tb_item-desc {
     text-align: left;
   }
+
+  /* wechatpay start */
+  .layer-pop {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+  }
+
+  .wechatpay {
+    width: 256px;
+    height: 256px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    margin: 250px auto;
+  }
+  .wechatpay .icon-guanbi {
+    color: #fff;
+    font-size: 25px;
+    line-height: 30px;
+    background: #9d9e9e;
+    padding: 10px;
+    cursor: pointer;
+  }
+  /* wechatpay end */
 </style>

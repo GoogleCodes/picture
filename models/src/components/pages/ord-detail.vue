@@ -22,7 +22,9 @@
         <div class="balance-list">
           <template v-for="(item, index) in listStop">
             <div class="balan-pic fl">
-                <img src="../../../static/images/30.png" alt="" class="w100 h100">
+              <template v-for="(k,v) in item.list.goods_thumb">
+                <img :src="k.url" alt="" class="w100 h100">
+              </template>
             </div>
             <div class="balan-text fl">
                 <div class="bal-title ft-16">{{ item.list.goods_name }}</div>
@@ -45,7 +47,6 @@
           </ul>
         </div>
         <el-button class="nowGoPay" @click="SubmitOrder()">提交订单</el-button>
-
         <div class="props w100 h100">
           <ul>
             <li v-for="(k, i) in data.list">
@@ -114,7 +115,6 @@
         SubmitOrder() {
           let gid = [], textSpecdata = null;
           for(let i in this.listStop) {
-            console.log(gid, this.listStop[i].list,this.listStop[i].list.id, "+-+-");
             gid.push(this.listStop[i].list.id)
             textSpecdata = this.listStop[i].list.specdata;
           }
@@ -130,6 +130,9 @@
               message: '提交成功！',
               type: "success"
             });
+            setTimeout(() => {
+              this.$router.push({ path: '/pages/order'});
+            }, 1500)
           });
         },
         jsApiCall () {

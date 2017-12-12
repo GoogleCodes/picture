@@ -5,7 +5,7 @@
         <div class="order-list">
           <div class="order-number fl w100">订单号 ：{{ item.orderid }}</div>
           <template v-for="(k, a) in item.goodsdata">
-            <router-link :to="{ path: '/pages/pic-detail/' + k.gid}" class="block w100 h100">
+            <router-link :to="{ path: '/pages/pic-detail/' + item.id}" class="block w100 h100">
               <div class="order-msg fl">
                 <div class="order-pic fl">
                   <template v-for="(m, i) in k.gthumb">
@@ -61,7 +61,6 @@
           }
       },
       created() {
-
       },
       computed: {
         ...mapGetters({

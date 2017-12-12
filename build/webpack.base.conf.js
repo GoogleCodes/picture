@@ -48,7 +48,11 @@ module.exports = {
       },{//  js文件用babel转码
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')],
+        include: [
+          resolve('src'),
+          resolve('test'),
+          resolve('node_modules/element-ui/src/mixins/emitter.js')
+        ],
         exclude: resolve('node_modules')
       },{//  图片后缀
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

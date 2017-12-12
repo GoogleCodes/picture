@@ -12,7 +12,7 @@
       <div class="cart-content">
         <template v-for="(item, index) in list">
           <div class="cart-address cart-box fl" :class="{'actives': index == currAddress}" @click="goInChonseAdd(index, item)">
-            <p class="el-icon-check" v-if="item.select"></p>
+            <p class="el-icon-check" :class="{'active': item.select == 1}" v-if="item.select"></p>
             <p class="ft-18 cart-box-head">
               <strong>{{ item.sname }}</strong>/<strong>{{ item.tel }}</strong>
             </p>
@@ -168,6 +168,10 @@
             value: 'label',
             children: 'cities'
           },
+          data: {
+            abc: '123'
+          },
+          dome: this.data,
           currentExpress: 0,
           exporess: [
             {exp_title: '顺丰速递'},
@@ -187,6 +191,7 @@
     },
     mounted () {
       this.setAddress();
+      console.log(this.dome, "123123")
     },
     computed: {
       ...mapGetters({
@@ -254,10 +259,26 @@
               address: this.currAddJson,
               uname: this.currAddJson.sname
             };
-            console.log(json);
             this.$ajax.HttpPost('/api/home/order/add',json).then((res) => {
               this.$storage.storageRemove('gopayData_info');
               this.$message(res.msg);
+                if(this.payIndex == 0) {
+                  this.$ajax.HttpPost('/api/home/order/setPayType', {
+                    id: gid,
+                    uid: this.get_user_info.user.id,
+                    type: 0,
+                  }).then((res) => {
+                    console.log(res);
+                  });
+                } else if(this.payIndex == 1) {
+                  this.$ajax.HttpPost('/api/home/order/setPayType', {
+                    id: gid,
+                    uid: this.get_user_info.user.id,
+                    type: 1,
+                  }).then((res) => {
+                    console.log(res);
+                  });
+                }
               this.$router.replace({ path: '/admin/manage'});
             });
             return true;
@@ -410,7 +431,7 @@
     position: relative;
   }
 
-  .cart-body .cart-content .cart-address .el-icon-check {
+  .cart-body .cart-content .cart-address .active {
     position: absolute;
     right: 0px;
     background: #b11e25;

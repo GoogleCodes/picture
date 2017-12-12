@@ -11,7 +11,8 @@
       <div class="series">
         <template v-for="(k,i) in data.albumList">
           <div class="shop-series fl">
-            <router-link :to="{ path: '/inside/orderlist', query: {id: k.id}}" class="block">
+            <router-link :to="{ path: '/inside/orderlist',
+            query: {id: k.id, isup: k.is_up }}" class="block">
               <div class="shop-series-pic">
                 <img :src="k.shotcut" class="w100 h100" alt="">
               </div>
@@ -131,9 +132,10 @@
 
       },
       getAlbum () {
-        this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1)
+        this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 0)
           .then((res) => {
             this.data.albumList = res.data;
+            console.log(res.data);
           });
       },
       getIndex (hot, limit) {
@@ -264,11 +266,11 @@
   .shop-series {
     width: 47%;
     height: 100%;
-    margin: 0px 6px;
+    margin: 0 6px 20px;
   }
 
   .shop-series:nth-child(2n) {
-    margin: 0px 0px;
+    margin: 0;
   }
 
   .shop-series .shop-series-pic img {

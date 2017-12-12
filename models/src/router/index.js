@@ -161,7 +161,7 @@ let routes = [{
     goback: true,
     title: '产品详情',
     footer: true,
-     requiresAuth: true
+    requiresAuth: true
   },
 },{
   path: '/pages/pic-detail/:id',
@@ -450,6 +450,7 @@ const router = new Router({
 // 路由开始之前的操作
 router.beforeEach((to, from, next) => {
   let { href, protocol, host, search, hash } = window.location
+  console.log(window.location);
   const pathname = '/mobile/index.html' // 解决支付路径问题添加的前缀，替换成你的
   search = search || '?'
   hash = hash || '#!/'
@@ -461,9 +462,21 @@ router.beforeEach((to, from, next) => {
   if (store.state.user_openid == undefined) {
       window.location.href = "https://xinye-art.com/public/api/home/pay/getcode"
       storageSet('openid', store.state.user_openid);
-    return true;
+      return true;
   }
-  next()
+
+  let is_login = store.state.user_info.user
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (is_login == undefined) {
+      next({
+        name: 'login'
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 
 });
 
