@@ -26,8 +26,8 @@
 </style>
 
 <template>
-  <div style="width:650px;height: 500px;" class="fl">
-    <swiper style="width:650px;" :options="swiperOption" ref="mySwiper">
+  <div style="width:96.5%;height: 500px;" class="fl">
+    <swiper style="width:100%;" :options="swiperOption" ref="mySwiper">
       <!-- slides -->
       <template v-for="(item, index) in listpic">
         <swiper-slide :style="{
@@ -37,10 +37,10 @@
         </swiper-slide>
       </template>
       <!-- Optional controls -->
-      <div class="swiper-pagination"  slot="pagination"></div>
+      <div class="swiper-pagination" slot="pagination"></div>
       <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
       <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
-      <div class="swiper-scrollbar"   slot="scrollbar"></div>
+      <div class="swiper-scrollbar" slot="scrollbar"></div>
     </swiper>
     <!-- swiper2 Thumbs -->
     <swiper style="height: 75px;" :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
@@ -69,41 +69,27 @@
       data() {
           return {
               data: {
-                  pic: [{
-                      "src" : '../../static/images/23.png',
-                  },{
-                      "src": '../../static/images/23.png'
-                  },{
-                      "src": '../../static/images/23.png'
-                  },{
-                      "src": '../../static/images/23.png'
-                  },{
-                      "src": '../../static/images/23.png'
-                  }],
+                  pic: [],
               },
               swiperOption: {
                   // swiper options 所有的配置同swiper官方api配置
                   autoplay: 3000,
                   notNextTick: true,
                   direction: 'horizontal',
-                  grabCursor: true,
                   pagination: '.swiper-pagination',
-                  paginationClickable: true,
                   prevButton: '.swiper-button-prev',
                   nextButton: '.swiper-button-next',
-                  scrollbar: '.swiper-scrollbar',
-                  mousewheelControl: true,
                   observeParents: true,
                   spaceBetween: 10,
-                  debugger: true,
+                  onlyExternal:true,
               },
               swiperOptionThumbs: {
-                  autoplay: 3000,
-                  notNextTick: true,
+                  notNextTick: false,
                   spaceBetween: 10,
                   centeredSlides: true,
                   slidesPerView: 'auto',
                   touchRatio: 0.2,
+                  onlyExternal:true,
                   slideToClickedSlide: true
               }
           }
@@ -119,14 +105,10 @@
           swiperSlide
       },
       computed: {
-//        swiper() {
-//            return this.$refs.mySwiper.swiper
-//        }
+
       },
       methods: {
-        onTransitionStart (swiper) {
-          console.log(swiper, '-----------')
-        }
+
       },
   }
 </script>

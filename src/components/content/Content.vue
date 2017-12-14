@@ -58,7 +58,7 @@
           <div style="margin: 50px 0px 100px;overflow: hidden;;">
             <template v-for="item in data.arr">
               <div class="card-tuijian fl">
-                  <router-link class="fl block" :to="{ path: '/inside/orderlist', query: {id: item.goods_id}}">
+                  <router-link class="fl block" :to="{ path: '/pages/detail/' + item.goods_id}">
                     <div class="card-tuijian-pic fl">
                       <template v-for="(x, i) in item.goods_thumb">
                         <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
@@ -79,7 +79,6 @@
           </div>
         </div>
       </div>
-
       <router-link :to="{ path: '/inside/orderlist', query: {id: 34}}">
         <div class="con-pro clear pro-moves">
           <img src="../../../static/images/08.jpg" alt="" style="width: 100%;height: 100%;">

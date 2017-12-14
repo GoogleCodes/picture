@@ -12,7 +12,7 @@
       <div class="cart-content">
         <template v-for="(item, index) in list">
           <div class="cart-address cart-box fl" :class="{'actives': index == currAddress}" @click="goInChonseAdd(index, item)">
-            <p class="el-icon-check" :class="{'active': item.select == 1}" v-if="item.select"></p>
+            <p class="el-icon-check" :class="{'active': index == currAddress}" v-if="index == currAddress"></p>
             <p class="ft-18 cart-box-head">
               <strong>{{ item.sname }}</strong>/<strong>{{ item.tel }}</strong>
             </p>
@@ -27,7 +27,7 @@
             <span>还没添加快递地址</span>
           </div>
         </div>
-        <div class="distribution clear">
+        <div class="distribution clear" style="display: none">
           <div class="distr-title ft-18">配送方式</div>
           <ul>
             <li class="fl expressli" v-for="(item, index) in exporess"
@@ -42,7 +42,7 @@
             </ul>
           </div>
         </div>
-        <div class="list-goods">
+        <div class="list-goods clear">
           <div class="list-head ft-18">
             <i class="iconfont icon-gouwudai ft-20"></i>
             <span>商品清单</span>
@@ -78,7 +78,7 @@
       <div class="item-price">
         <div class="fl">
           <span class="total ft-18">合计金额：￥<i>{{ lastPaySum }}</i></span>
-          <span class="actual ft-14">实际金额：<strong class="ft-28">￥{{ amoutPay }}</strong></span>
+          <span class="actual ft-14">实际金额：<strong class="ft-28">￥{{ lastPaySum }}</strong></span>
         </div>
         <el-button class="submit-order fr" @click="goToPayMoney()">提交订单</el-button>
       </div>
@@ -184,6 +184,7 @@
           ],
           goWhatpay: '',
           payindex: 0,
+          payloots: 0,
           currAddress: -1,
           currAddJson: [],
           amoutPay: 0,
@@ -240,7 +241,7 @@
           whatPay: this.goWhatpay,
           Exporess: this.exporessText
         };
-        var sku_id = 0, gid = [], textSpecdata = null;
+        var sku_id = 0, gid = [], textSpecdata = null, that = this;
         for (let i in this.shopmsg) {
           sku_id = this.shopmsg[i].sku_id;
           gid.push(this.shopmsg[i].id);
@@ -256,30 +257,32 @@
               goodsdata: gid,
               num: 1,
               specdata: textSpecdata,
+              paytype: 1,
               address: this.currAddJson,
               uname: this.currAddJson.sname
             };
             this.$ajax.HttpPost('/api/home/order/add',json).then((res) => {
               this.$storage.storageRemove('gopayData_info');
               this.$message(res.msg);
-                if(this.payIndex == 0) {
+                if(that.payloots == 0) {
                   this.$ajax.HttpPost('/api/home/order/setPayType', {
                     id: gid,
                     uid: this.get_user_info.user.id,
-                    type: 0,
+                    type: that.payloots,
                   }).then((res) => {
                     console.log(res);
                   });
-                } else if(this.payIndex == 1) {
+                } else if(that.payloots == 1) {
                   this.$ajax.HttpPost('/api/home/order/setPayType', {
                     id: gid,
                     uid: this.get_user_info.user.id,
-                    type: 1,
+                    type: that.payloots,
                   }).then((res) => {
                     console.log(res);
                   });
                 }
-              this.$router.replace({ path: '/admin/manage'});
+                return false;
+//              this.$router.replace({ path: '/admin/manage'});
             });
             return true;
         }
@@ -289,12 +292,16 @@
         this.currAddJson = item;
       },
       chonsePay(index, item) {
-        this.payindex = index;
         if (index == 0) {
+          this.payindex = index;
           this.goWhatpay = 'wechar';
+          this.payloots = 0;
         } else if (index == 1) {
+          this.payindex = index;
           this.goWhatpay = 'alipay';
+          this.payloots = 1;
         }
+        console.log(this.payloots, '+-+-+-');
       },
       currExpress(index, item) {
         this.currentExpress = index

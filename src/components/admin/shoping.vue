@@ -49,15 +49,16 @@
                 <span style="color: #3e3a39;" v-if="orderData.status == 2">订单状态:  已发货</span>
                 <span style="color: #3e3a39;" v-if="orderData.status == 3">订单状态:  查看物流</span>
               </dt>
-              <dd class="imfor-title">确认收货,超时订单自动确认收货</dd>
-              <dd class="imfor-title">物流：中通快递运单号:{{ orderData.orderid }}</dd>
-              <dd class="imfor-title">{{ orderData.time | gotimes }}</dd>
+              <div v-if="orderData.status == 1">
+                <dd class="imfor-title">确认收货,超时订单自动确认收货</dd>
+                <dd class="imfor-title">物流：中通快递运单号:{{ orderData.orderid }}</dd>
+                <dd class="imfor-title">{{ orderData.time | gotimes }}</dd>
+              </div>
               <dd class="imfor-title" style="margin-top: 10px;">
-                <span class="fl">您可以</span>
-                <a class="ui-btn block fl confirm NotShipped" v-if="orderData.status == 0">去付款</a>
-                <a class="ui-btn block fl confirm" v-if="orderData.status == 1">已付款</a>
-                <a class="ui-btn block fl confirm" v-if="orderData.status == 2">已发货</a>
-                <a class="ui-btn block fl select" v-if="orderData.status == 3">查看物流</a>
+                <span class="fl" style="line-height: 30px;">您可以</span>
+                <a class="ui-btn block fl confirm NotShipped" @click="goToPay(orderData.id, orderData.paytype)" v-if="orderData.status == 0">去付款</a>
+                <a class="ui-btn block fl confirm" v-if="orderData.status == 1">确认订单</a>
+                <a class="ui-btn block fl select" v-if="orderData.status == 1">查看物流</a>
               </dd>
             </dl>
           </div>
@@ -106,26 +107,28 @@
                     <p>订单详情</p>
                   </td>
                   <td style="width: 130px;">
-                    <a class="nowpay privateBtn" v-if="orderData.status == 0">立即付款</a>
+                    <a class="nowpay privateBtn" v-if="orderData.status == 0" @click="goToPay(orderData.id, orderData.paytype)">立即付款</a>
                     <a class="cancel protected-Btn">取消订单</a>
                     <a class="select protected-Btn" v-if="orderData.status == 2">查看物流</a>
                     <a class="delete protected-Btn" v-if="orderData.status == 3">X</a>
                   </td>
                 </tr>
               </template>
-              
             </tbody>
           </template>
-          
         </table>
       </div>
-
       <div class="BarHolder">
         <div class="fr bar-picre">
           <p>商品总价：￥<i>{{ orderData.fee }}</i></p>
           <p>实际付款：￥<i>360.00</i></p>
         </div>
       </div>
+    </div>
+    <div class="layer-pop" v-show="payDisplay"></div>
+    <div class="wechatpay" v-show="payDisplay">
+      <i class="iconfont icon-guanbi block fr" @click="payDisplay = false"></i>
+      <img :src="wechat" alt="" class="w100 h100 block">
     </div>
   </div>
 </template>
@@ -140,6 +143,8 @@
       return {
         addressData: {},
         orderData: {},
+        payDisplay: false,
+        wechat: ''
       }
     },
     computed: {
@@ -151,12 +156,35 @@
       this.getToOrder();
     },
     methods: {
+      goToPay(id, paytype) {
+        if(paytype == 0) {
+          //  微信支付
+          this.payDisplay = true;
+          this.$ajax.HttpPost('/api/home/pay/wxpay', {
+            id: id,
+            uid: this.get_user_info.user.id
+          }).then((res) => {
+            this.wechat = res.data;
+          });
+        } else if(paytype == 1) {
+          this.payDisplay = false;
+          this.$ajax.HttpPost('/api/home/pay/alpay',{
+            id:id,
+            uid: this.get_user_info.user.id
+          }).then((res) => {
+            const box = document.createElement('div');
+            box.innerHTML = res;
+            document.body.appendChild(box);
+            document.forms[0].submit()
+          })
+        }
+      },
       getToOrder() {
         this.$ajax.HttpPost('/api/home/order/oneorder',{
-          id: this.$route.query.id,
+          id: this.$route.params.id,
           uid: this.get_user_info.user.id
         }).then((res) => {
-          this.addressData = this.$goFetch.goJson(res.data.address);
+          this.addressData = JSON.parse(res.data.address);
           this.orderData = res.data;
         });
       }
@@ -168,6 +196,8 @@
   .admin-right .trade-detail dl .imfor-title .NotShipped {
     background: #fff;
     color: #b11e25;
+    cursor: pointer;
+    line-height: 30px;
   }
   .admin-right .trade-detail dl .imfor-title .NotShipped:hover {
     background: #b11e25;
@@ -175,7 +205,7 @@
   }
 
   .order-table table .tbody-item .tr-item {
-    border-bottom: 1px solid #c9caca; 
+    border-bottom: 1px solid #c9caca;
   }
 
   .admin-right .infoBlock .table-list .info-address {
@@ -184,5 +214,35 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
+
+
+  /* wechatpay start */
+  .layer-pop {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    margin: 0px auto;
+    background: rgba(0,0,0,0.5);
+  }
+
+  .wechatpay {
+    width: 256px;
+    height: 256px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    margin: 250px auto;
+  }
+  .wechatpay .icon-guanbi {
+    color: #fff;
+    font-size: 25px;
+    line-height: 30px;
+    background: #9d9e9e;
+    padding: 10px;
+    cursor: pointer;
+  }
+  /* wechatpay end */
 </style>

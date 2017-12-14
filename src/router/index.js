@@ -87,7 +87,7 @@ let routes = [{
     requiresAuth: true
   },
 },{
-  path: '/pages/detail',
+  path: '/pages/detail/:id',
   name: 'detail',
   component: detail,
   meta: {
@@ -207,7 +207,7 @@ let routes = [{
       requiresAuth: true
     },
   },{
-    path: '/admin/shoping',
+    path: '/admin/shoping/:id',
     name: 'shoping',
     component: shoping,
     meta: {

@@ -570,11 +570,11 @@
 }
 
 .admin-right .table-td {
-    border: 1px solid #c9caca;
-    width: 666px;
-    height: 100%;
-    margin: 34px 0 0;
-    padding: 9px 0px 6px;
+  border: 1px solid #c9caca;
+  width: 666px;
+  height: 192px;
+  margin: 34px 0 0;
+  min-height: 202px;
 }
 
 .admin-right .trade-detail {
@@ -583,7 +583,9 @@
 }
 
 .admin-right .trade-detail dl dd {
-    line-height: 30px;
+    line-height: 25px;
+    cursor: pointer;
+    overflow: hidden;
 }
 
 .admin-right .trade-detail dl .trade-title {

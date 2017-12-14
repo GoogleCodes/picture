@@ -41,7 +41,7 @@
       <ul class="w100 h100 block" style="overflow: hidden" v-else v-loading="load_data" element-loading-text="正在加载中...">
         <template v-for="item in data.list">
           <li class="fl">
-            <router-link :to="{ path: '/pages/detail', query: {id: item.goods_id, isup: $route.query.isup }}">
+            <router-link :to="{ path: '/pages/detail/' + item.goods_id}">
               <div class="shop-body">
                 <div class="pic-img">
                   <template v-for="(x,i) in item.goods_thumb">
@@ -422,7 +422,9 @@
     width: 376px;
     height: 100%;
     text-align: center;
+    border-bottom: 1px solid #c9caca;
     margin: 56px 24px 0px 0;
+    padding-bottom: 10px;
   }
 
   .gift-con ul li .gift-sp-pic {
@@ -431,12 +433,14 @@
   }
 
   .gift-con ul li .gift-sp-desc {
-    height: 55px;
     line-height: 25px;
     margin: 15px 0px 0px;
-    border-bottom: 1px solid #c9caca;
     overflow: hidden;
     text-overflow: ellipsis;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .gift-con ul li:last-child {

@@ -36,9 +36,9 @@
                         <img :src="y.url" alt="" class="J_ItemImg fl w100 h100" />
                       </template>
                     </div>
-                    <a class="fl">
+                    <router-link :to="{ path: '/admin/shoping/' + item.id }" class="fl">
                       <span class="item-title fl">{{ x.gname }}</span>
-                    </a>
+                    </router-link>
                     <div class="tb_item-desc">{{ x.gremark }}</div>
                   </td>
                   <td class="itme-money" style="width:131px;">¥{{ x.price }}</td>
@@ -106,7 +106,7 @@
           //  微信支付
           this.payDisplay = true;
           this.$ajax.HttpPost('/api/home/pay/wxpay', {
-            id: 51,
+            id: id,
             uid: this.get_user_info.user.id
           }).then((res) => {
             this.wechat = res.data;
@@ -142,6 +142,7 @@
   }
   .tbody-item .tb_item-desc {
     text-align: left;
+
   }
 
   /* wechatpay start */
@@ -151,6 +152,7 @@
     left: 0px;
     width: 100%;
     height: 100%;
+    margin: 0px auto;
     background: rgba(0,0,0,0.5);
   }
 

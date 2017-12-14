@@ -51,18 +51,20 @@
             <span class="product-text">浏览其他</span>
             <ul class="product-list clearfix">
               <template v-for="(item, index) in randomList">
-                <li class="product-item" @click="watchElse(item.goods_id)">
-                  <div class="pic">
-                    <template v-for="(x,i) in item.goods_thumb">
-                      <img :src="x.url">
-                    </template>
-                  </div>
-                  <div class="item-m-desc">
-                    <div class="item-price ft-22 c_e64147">¥{{ item.shop_price }}</div>
-                    <div class="item-title">{{ item.goods_name }}</div>
-                    <div class="item-text">{{ item.goods_remark }}</div>
-                  </div>
-                </li>
+                <router-link :to="{ path: '/pages/detail/' + item.goods_id}" class="block w100 h100" replace>
+                  <li class="product-item">
+                    <div class="pic">
+                      <template v-for="(x,i) in item.goods_thumb">
+                        <img :src="x.url">
+                      </template>
+                    </div>
+                    <div class="item-m-desc">
+                      <div class="item-price ft-22 c_e64147">¥{{ item.shop_price }}</div>
+                      <div class="item-title">{{ item.goods_name }}</div>
+                      <div class="item-text">{{ item.goods_remark }}</div>
+                    </div>
+                  </li>
+                </router-link>
               </template>
             </ul>
           </div>
@@ -116,7 +118,11 @@
     },
     mounted() {
       this.getDataShop();
-      console.log(this.$route.query.isup,'+-');
+    },
+    watch: {
+      '$route'() {
+        this.getDataShop();
+      }
     },
     components: {
       ElInputNumber,
@@ -160,7 +166,7 @@
       getDataShop() {
         this.load.load_data = true;
         this.load_shotcut = true;
-        this.$ajax.HttpGet(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.query.id).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_STOP_MSG + '?id=' + this.$route.params.id).then((res) => {
           let that = this;
           this.load.load_data = false;
           switch (true) {
@@ -265,7 +271,7 @@
           }
           const json = {
             uid: this.get_user_info.user.id,
-            gid: this.$route.query.id,
+            gid: this.$route.params.id,
             sid: this.charSID,
             num: this.list.sales_sum,
             price: this.list.shop_price,
@@ -370,7 +376,7 @@
 
   .right-select .select-num {
     color: #666;
-    padding-top: 25px;
+    padding-top: 20px;
   }
   .right-select .select-num .left {
     display: inline-block;
@@ -429,7 +435,7 @@
     background: #414042;
     border: 2px solid #333333;
     box-sizing: border-box;
-    margin: 65px 0px;
+    margin: 30px 0px;
     border-radius: 0px;
   }
   .right-select .select-btn a {
