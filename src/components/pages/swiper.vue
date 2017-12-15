@@ -64,6 +64,10 @@
           type: Array,
           twoWay: true,
           required: true,
+        },
+        cid: {
+          type: Number,
+          required: true,
         }
       },
       data() {

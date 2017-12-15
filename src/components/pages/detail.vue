@@ -5,7 +5,7 @@
         <img :src="list.shotcut" alt="" style="width: 100%;height: 100%;">
       </div>
       <div class="experience" style="margin: 50px auto;background: #fff">
-        <detailSwiper :listpic="swiperList"></detailSwiper>
+        <detailSwiper :listpic="swiperList" :cid="list.cat_id"></detailSwiper>
         <div class="tb-wrap fl" v-loading="load.load_data" element-loading-text="正在加载中...">
           <div class="right-select fr">
             <div class="select-title">{{ list.goods_name }}<span>{{ list.goods_remark }}</span></div>
