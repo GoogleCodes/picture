@@ -26,30 +26,57 @@
 </style>
 
 <template>
-  <div style="width:96.5%;height: 500px;" class="fl">
-    <swiper style="width:100%;" :options="swiperOption" ref="mySwiper">
-      <!-- slides -->
-      <template v-for="(item, index) in listpic">
-        <swiper-slide :style="{
+  <div>
+    <div style="width:96.5%;height: 500px;" class="fl" v-if="cid == 32">
+      <swiper style="width:100%;" :options="swiperOption" ref="mySwiper">
+        <!-- slides -->
+        <template v-for="(item, index) in listpic">
+          <swiper-slide :style="{
                   background: 'url('+ item.url +') no-repeat',
                   'backgroundSize': 'cover',
                   height: '350px'}">
-        </swiper-slide>
-      </template>
-      <!-- Optional controls -->
-      <div class="swiper-pagination" slot="pagination"></div>
-      <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
-      <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
-      <div class="swiper-scrollbar" slot="scrollbar"></div>
-    </swiper>
-    <!-- swiper2 Thumbs -->
-    <swiper style="height: 75px;" :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
-      <template v-for="(item, index) in listpic">
-        <swiper-slide :style="{ background: 'url('+ item.url +') no-repeat',
+          </swiper-slide>
+        </template>
+        <!-- Optional controls -->
+        <div class="swiper-pagination" slot="pagination"></div>
+        <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
+        <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
+        <div class="swiper-scrollbar" slot="scrollbar"></div>
+      </swiper>
+      <!-- swiper2 Thumbs -->
+      <swiper style="height: 75px;" :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
+        <template v-for="(item, index) in listpic">
+          <swiper-slide :style="{ background: 'url('+ item.url +') no-repeat',
                   backgroundSize: 'cover'}">
-        </swiper-slide>
-      </template>
-    </swiper>
+          </swiper-slide>
+        </template>
+      </swiper>
+    </div>
+    <div style="width:650px;height: 500px;" class="fl" v-else>
+      <swiper style="width:650px;" :options="swiperOption" ref="mySwiper">
+        <!-- slides -->
+        <template v-for="(item, index) in listpic">
+          <swiper-slide :style="{
+                  background: 'url('+ item.url +') no-repeat',
+                  'backgroundSize': 'cover',
+                  height: '350px'}">
+          </swiper-slide>
+        </template>
+        <!-- Optional controls -->
+        <div class="swiper-pagination" slot="pagination"></div>
+        <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
+        <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
+        <div class="swiper-scrollbar" slot="scrollbar"></div>
+      </swiper>
+      <!-- swiper2 Thumbs -->
+      <swiper style="height: 75px;" :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
+        <template v-for="(item, index) in listpic">
+          <swiper-slide :style="{ background: 'url('+ item.url +') no-repeat',
+                  backgroundSize: 'cover'}">
+          </swiper-slide>
+        </template>
+      </swiper>
+    </div>
   </div>
 </template>
 
