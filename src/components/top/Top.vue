@@ -64,7 +64,6 @@
         ElButton: Button,
       },
       mounted() {
-        console.log(this.get_user_info);
         this.fetchData();
         this.$ajax.HttpPost('/api/home/user/userinfo',{
           id: this.get_user_info.user.id

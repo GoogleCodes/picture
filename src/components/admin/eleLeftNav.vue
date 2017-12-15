@@ -23,7 +23,7 @@
       -->
 
       <h2 class="admin-uname ft-16">
-        <el-input :value="uname" @blur="chonse(uname)"></el-input>
+        <el-input v-model="uname" @blur="chonse(uname)"></el-input>
       </h2>
       <p class="admin-vip"></p>
     </div>
@@ -140,6 +140,7 @@
         return isLt2M;
       },
       chonse(name) {
+        console.log(name);
         this.$ajax.HttpPost('/api/home/user/setmember',{
           id: this.get_user_info.user.id,
           uname: name
