@@ -10,7 +10,7 @@
           <div class="fl">
             <router-link :to="{ path: '/admin/manage'}" style="color: #9fa0a0;" class="block">
               <div class="iconfont icon-yonghu fl" > <!-- :style="{background:'url('+ author +')'}" -->
-                <img :src="list.author" alt="" class="w11 h100" >
+                <img :src="imageUrl" alt="" class="w11 h100" >
               </div>
               <div class="icon-username fl">{{ user_name }}</div>
             </router-link>
@@ -55,7 +55,8 @@
             closeuser: false,
             author: '',
             list: {},
-            user_name: ''
+            user_name: '',
+            imageUrl: ''
           };
       },
       components: {
@@ -63,7 +64,13 @@
         ElButton: Button,
       },
       mounted() {
+        console.log(this.get_user_info);
         this.fetchData();
+        this.$ajax.HttpPost('/api/home/user/userinfo',{
+          id: this.get_user_info.user.id
+        }).then((res) => {
+          this.imageUrl = res.data.img;
+        });
       },
       computed: {
         ...mapGetters({

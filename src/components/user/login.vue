@@ -87,10 +87,10 @@
           window.history.back();
         }
       },
-      changeGo (event) {
+      changeGo(event) {
         event ? this.checked_login = event : this.checked_login = event;
       },
-      logining (formName) {
+      logining(formName) {
         let that = this;
         this.$refs[formName].validate((valid) => {
           if (!valid) {
@@ -119,6 +119,7 @@
                 user: {
                   id: res.data.id,
                   name: res.data.uname,
+                  img: res.data.img,
                   tel: this.ruleForm.username,
                 },
                 login: true

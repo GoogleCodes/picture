@@ -295,7 +295,7 @@
 }
 
 .admin .admin-left .admin-pic {
-    width:93px;
+    width: 125px;
     height: 93px;
     margin: 0px auto;
     border-radius: 100%;
@@ -347,7 +347,6 @@
 .admin .admin-left .admin-pic .admin-vip {
     width: 100%;
     height: 18px;
-    margin-top: 10px;
     background: url('../images/17.png') no-repeat -3px -35px;
 }
 

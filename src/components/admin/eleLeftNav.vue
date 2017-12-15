@@ -1,8 +1,30 @@
 <template>
   <div class="admin-left fl">
     <div class="admin-pic">
-      <img src="../../assets/images/16.png" alt="" style="width: 100%;height: 100%;">
-      <h2 class="admin-uname ft-16">{{ get_user_info.user.name }}</h2>
+      <el-upload action="https://xinye-art.com/public/api/home/front/imgupload"
+                 class="avatar-uploader"
+                 name="img"
+        :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload">
+        <img v-if="imageUrl" :src="imageUrl" class="avatar w100 h100">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+
+      <!-- 坑逼上传工具 -->
+      <!--
+      <div class="text-center">
+        <img v-if="userAvatar">
+        <button id="pick-avatar">Select An image</button>
+        <avatar-cropper
+          :uploaded="updateUserAvatar"
+          trigger="#pick-avatar"
+          upload-url="https://xinye-art.com/public/api/home/front/imgupload"></avatar-cropper>
+      </div>
+      -->
+
+      <h2 class="admin-uname ft-16">
+        <el-input :value="uname" @blur="chonse(uname)"></el-input>
+      </h2>
       <p class="admin-vip"></p>
     </div>
     <div class="admin-nav">
@@ -59,10 +81,17 @@
   import { GET_USER_INFO } from '../../store/getters/type'
   import { REMOVE_USER_INFO } from '../../store/actions/type'
 
+  import AvatarCropper from "vue-avatar-cropper"
+
   export default {
+    components: { AvatarCropper },
     data() {
       return {
-
+        imageUrl: '',
+        uname: '',
+        json: {},
+        userAvatar: undefined,
+        fileList: [],
       }
     },
     computed: {
@@ -74,12 +103,52 @@
 
     },
     mounted() {
-
+      this.$ajax.HttpPost('/api/home/user/userinfo',{
+        id: this.get_user_info.user.id
+      }).then((res) => {
+        this.uname = res.data.uname
+        this.imageUrl = res.data.img;
+      });
     },
     methods: {
       ...mapActions({
         remove_user_info: REMOVE_USER_INFO,
       }),
+      updateUserAvatar(res) {
+        return;
+        this.$ajax.HttpPost('/api/home/user/setmember', {
+          id: this.get_user_info.user.id,
+        }).then(() => {
+          this.userAvatar = resp.relative_url
+        })
+      },
+      handleAvatarSuccess(res, file) {
+        this.$ajax.HttpPost('/api/home/user/setmember',{
+          id: this.get_user_info.user.id,
+          img: res.data.path
+        }).then((res) => {
+          setTimeout(() => {
+            location.reload();
+          }, 1500)
+        });
+      },
+      beforeAvatarUpload(file) {
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isLt2M;
+      },
+      chonse(name) {
+        this.$ajax.HttpPost('/api/home/user/setmember',{
+          id: this.get_user_info.user.id,
+          uname: name
+        }).then((res) => {
+          if (res.code === 0) {
+//            this.$message(res.msg);
+          }
+        });
+      },
       goBack() {
         this.$confirm('确定要退出吗?, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -100,3 +169,19 @@
     },
   }
 </script>
+
+
+<style type="text/css">
+  /* admin-uname start */
+  .admin-uname .el-input__inner {
+    border: none;
+  }
+
+  .el-upload--text {
+    width: 100px;
+    height: 100px;
+    display: block;
+  }
+
+  /* admin-uname end */
+</style>
