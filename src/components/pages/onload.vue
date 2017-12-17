@@ -194,8 +194,6 @@
       },
       conSubmit() {
         let that = this;
-
-
         if (typeof JSON.stringify(this.arr) === 'string') {
           this.$ajax.HttpPost('/api/home/shopcar/upSave',{
             id: this.$route.query.id,

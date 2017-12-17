@@ -80,7 +80,7 @@
       components: {ElButton},
       data() {
         return {
-          listStop: this.$storageGet('cart_list_data'),
+          listStop: [],
           data: {
             list: []
           }
@@ -107,8 +107,14 @@
           return sum.toFixed(2)
         },
       },
+      watch: {
+        "$route"() {
+          this.listStop = this.$storageGet('cart_list_data')
+        }
+      },
       mounted() {
         this.setAddress();
+        this.listStop = this.$storageGet('cart_list_data')
         console.log(this.data.list);
       },
       methods: {

@@ -23,7 +23,7 @@
           </div>
         </div>
       </router-link>
-      <!--<el-button class="fr upload-pic">上传图片</el-button>-->
+      <el-button class="fr upload-pic" v-show="mode == 0" @click="upimg(pid)">上传图片</el-button>
       <div class="fr iconfont icon-shanchu" v-show="mode == 1" @click="deleteShop(pid)"></div>
     </div>
   </div>
@@ -106,6 +106,11 @@
           }
       },
       methods: {
+          upimg(id) {
+            setTimeout(() => {
+              this.$router.push({path: '/pages/onload',query: {id: id}})
+            }, 1000)
+          },
           actIt() {
               if(!this.actives) {
                   this.chosen.push({

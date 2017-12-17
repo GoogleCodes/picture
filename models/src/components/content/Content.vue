@@ -132,10 +132,9 @@
 
       },
       getAlbum () {
-        this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 0)
+        this.$ajax.HttpGet(this.$api.get_content.GET_NAV)
           .then((res) => {
             this.data.albumList = res.data;
-            console.log(res.data);
           });
       },
       getIndex (hot, limit) {

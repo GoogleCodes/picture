@@ -54,6 +54,11 @@
 
 <script type="text/javascript">
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
+
+
+  import {mapGetters, mapActions} from 'vuex'
+  import { GET_USER_INFO } from '../../store/getters/type'
+
   export default {
     data() {
       return {
@@ -62,18 +67,33 @@
         chonseok: false,
         piclist: [],
         num: 0,
+        upimg: []
       }
     },
     mounted() {
-
+      this.fetch();
     },
     computed: {
-
+      ...mapGetters({
+        get_user_info: GET_USER_INFO
+      }),
     },
     components: {
       ElButton
     },
     methods: {
+      fetch() {
+        this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
+          {uid: this.get_user_info.user.id}).then((res) => {
+          for(let i in res.data) {
+            let id = res.data[i].id;
+            console.log(this.$route.query.id == id)
+            if(this.$route.query.id == id) {
+              console.log(res.data[i]);
+            }
+          }
+        })
+      },
       saveImages() {
         let values = '', arr = [], json = {};
         for (let i in this.fileList) {
@@ -107,7 +127,6 @@
         console.log(file);
       },
       choosePic(item, index) {
-        alert(123123);
         for (let i in this.fileList) {
           if (this.fileList[i].uid === item.uid) {
             this.chonseok = true;

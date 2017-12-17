@@ -173,12 +173,17 @@
           return;
         }
         for (let i in this.data.cartShoplist) {
-          options = {
-            list: this.data.cartShoplist[i],
-            price: this.chosePrice,
+          for(let y in this.choseAll) {
+              if(this.data.cartShoplist[i].id == this.choseAll[y]) {
+                options = {
+                  list: this.data.cartShoplist[i],
+                  price: this.chosePrice,
+                }
+                arr.push(options);
+              }
           }
-          arr.push(options);
         }
+        console.log(arr);
         this.$storageSet('cart_list_data', arr);
         this.$router.push({
           path: '/pages/ord-detail'
