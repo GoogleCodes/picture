@@ -1,13 +1,12 @@
 <template>
   <div>
     <div class="admin clear">
-      <div class="head" :style="{
-                          background: 'url(../../../static/images/banner/01.jpg) no-repeat',
-                          backgroundSize: 'cover'}">
+      <div class="head"
+           :style="{background: 'url('+  +') no-repeat',backgroundSize: '100%'}">
         <div class="head-pic">
-          <img src="../../../static/images/50.png" class="w100 h100" alt="">
+          <img :src="user_pic" class="w100 h100" alt="">
         </div>
-        <!--<div class="head-name ft-20">{{ userList.name }}</div>-->
+        <div class="head-name ft-18">{{ user_name }}</div>
         <div class="head-vip">
           <span class="iconvip iconfont icon-vip1"></span>
           <span class="vipspan">普通会员</span>
@@ -107,10 +106,17 @@
       data () {
           return {
             userList: {},
+            user_pic: '',
+            user_name: '',
           }
       },
       created () {
-          console.log(this.get_user_info);
+        this.$ajax.HttpPost('/api/home/user/userinfo',{
+          id: this.get_user_info.user.id
+        }).then((res) => {
+          this.user_name = res.data.uname;
+          this.user_pic = res.data.img;
+        });
 //          this.isUserTrue();
       },
       components: {
@@ -170,6 +176,8 @@
     margin: 0px 10px;
     height: 45px;
     line-height: 45px;
+    clear: both;
+    width: 95%;
     border-bottom: 1px solid rgb(230,230,230);
   }
   .admin ul li:last-child {
@@ -186,12 +194,12 @@
   .head .head-pic {
     width: 90px;
     height: 90px;
-    padding-top: 23px;
+    padding-top: 20px;
     margin: 0px auto;
   }
   .head .head-name {
     text-align: center;
-    color: #fff;
+    color: #999;
     margin-top: 10px;
   }
   .head .head-vip {

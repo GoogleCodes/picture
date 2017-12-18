@@ -5,7 +5,7 @@
         <i class="iconfont icon-checked-fill c_b11e25" @click="unActIt" v-show="actives"></i>
         <i class="iconfont icon-quxiaoquanxuan c_9e9d9d" @click="unActIt" v-show="!actives"></i>
       </div>
-      <router-link :to="{ path: '/pages/detail', query:{pid: pid}}" class="block w100 h100">
+      <!--<router-link :to="{ path: '/pages/detail', query:{pid: pid}}" class="block w100 h100">-->
         <div class="maininfo fl">
           <div class="img fl">
             <template v-for="(k,i) in img">
@@ -22,7 +22,7 @@
             <!--<span class="c_898989" style="margin-left: 10px;">x{{ pnums }}</span>-->
           </div>
         </div>
-      </router-link>
+      <!--</router-link>-->
       <el-button class="fr upload-pic" v-show="mode == 0" @click="upimg(pid)">上传图片</el-button>
       <div class="fr iconfont icon-shanchu" v-show="mode == 1" @click="deleteShop(pid)"></div>
     </div>
@@ -107,9 +107,9 @@
       },
       methods: {
           upimg(id) {
-            setTimeout(() => {
-              this.$router.push({path: '/pages/onload',query: {id: id}})
-            }, 1000)
+              setTimeout(() => {
+                  this.$router.push({path: '/pages/onload',query: {id: id}})
+              }, 1000)
           },
           actIt() {
               if(!this.actives) {

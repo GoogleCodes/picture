@@ -240,6 +240,15 @@
     text-align: center;
     margin: 0 68px 85px 38px;
   }
+
+  .content .wrap .wrap-li:first-child {
+    z-index: -1;
+    -webkit-filter: blur(20px);
+    filter: blur(2px);
+    background: rgba(255,0,0,.5);
+    overflow: hidden;
+  }
+
   .content .wrap .wrap-li p, .wrap-more {
     line-height: 45px;
     color: #fff;
@@ -247,6 +256,9 @@
 
   .content .wrap .wrap-li .wrap-more {
     font-size: 16px;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
   }
 
   .content .wrap .wrap-li p {

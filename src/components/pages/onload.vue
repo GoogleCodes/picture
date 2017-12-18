@@ -146,7 +146,6 @@
     },
     methods: {
       inputNum(k,i) {
-        console.log(this.fList);
         i > 0 ? k.num += 1 : k.num -= 1;
         if (k.num <= 1) {
           k.num = 1;
@@ -188,14 +187,13 @@
               let arr = res.data[i].upimg;
             }
             for(let i in this.fList) {
-              console.log(this.fList[i], "0+0+0+0+0+");
+              console.log(this.fList[i]);
             }
           }
         }).catch((error) => {
         });
       },
       conSubmit() {
-        let that = this;
         if (typeof JSON.stringify(this.arr) === 'string') {
           this.$ajax.HttpPost('/api/home/shopcar/upSave',{
             id: this.$route.query.id,
@@ -204,9 +202,6 @@
           }).then((res) => {
             this.$message(res.msg);
             location.reload();
-//          setTimeout(() => {
-//            this.$router.replace({ path: '/cart/cart'})
-//          }, 3000)
           });
         }
       },
