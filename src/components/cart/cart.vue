@@ -45,7 +45,7 @@
           </el-table-column>
           <el-table-column label="总价" width="143">
             <template scope="scope">
-              <p class="ft-24 totalprice">{{ scope.row.price * scope.row.num }}</p>
+              <p class="ft-24 totalprice">{{ scope.row.price * scope.row.num | goPrice }}</p>
               <el-button @click="goLoad(
               scope.row.id,
               scope.row.goods_name,
@@ -110,7 +110,6 @@
       ElRadio,
     },
     created() {
-
     },
     mounted() {
      this.fetchData();
@@ -138,6 +137,7 @@
           this.$store.commit('SET_CART_NUMBER', this.cart_number);
           this.load_data = false;
           this.data.list = res.data;
+          console.log(this.data.list);
         }).catch((error) => {
           this.load_data = false;
         });

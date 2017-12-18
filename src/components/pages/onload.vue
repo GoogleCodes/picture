@@ -37,7 +37,7 @@
             </div>
             <!-- 图片展示 -->
             <div class="show-pic">
-              <div class="no-pic" v-if="fileList.length == 0">
+              <div class="no-pic" v-if="fileList.length == 0 && fList.length == 0">
                 <img src="../../../static/images/34.png" alt="">
                 <span>暂无图片</span>
               </div>
@@ -62,6 +62,7 @@
                   </li>
                 </template>
               </ul>
+              <div class="tab-title">已经上传图片</div>
               <ul class="pic-list clearfix block w100 h100">
                 <template v-for="(k,i) in fList">
                   <li class="pic-item">
@@ -72,7 +73,7 @@
                         <span>2017-08-18</span>
                       </div>
                       <div class="cancel" @click="deletePic(k, i)">
-                        <img src="../../../static/images/35.png" alt="">
+                        <!--<img src="../../../static/images/35.png" alt="">-->
                       </div>
                     </div>
                     <div class="item-amount">
@@ -145,6 +146,7 @@
     },
     methods: {
       inputNum(k,i) {
+        console.log(this.fList);
         i > 0 ? k.num += 1 : k.num -= 1;
         if (k.num <= 1) {
           k.num = 1;
@@ -156,7 +158,7 @@
         arr.push(options)
         this.$ajax.HttpPost('/api/home/shopcar/upSave',{
           id: this.$route.query.id,
-          img: JSON.stringify(arr),
+          img: JSON.stringify(this.fList),
           num: k.num,
         }).then((res) => {
           this.$message(res.msg);
@@ -197,10 +199,11 @@
         if (typeof JSON.stringify(this.arr) === 'string') {
           this.$ajax.HttpPost('/api/home/shopcar/upSave',{
             id: this.$route.query.id,
-            img: JSON.stringify(this.arr),
+            img: JSON.stringify(this.arr.concat(this.fList)),
             num: 1,
           }).then((res) => {
             this.$message(res.msg);
+            location.reload();
 //          setTimeout(() => {
 //            this.$router.replace({ path: '/cart/cart'})
 //          }, 3000)
@@ -213,7 +216,6 @@
       handleAvatarSuccess(res, file, fileList) {
         this.file = res.data;
         this.fileList = fileList;
-        console.log(this.fileList);
         let options = {};
         for (let i in this.fileList) {
           options = {
@@ -351,7 +353,7 @@
   }
   .cart-upload-pic .container .show-pic {
     /* 展示图片 */
-    padding: 38px;
+    padding: 38px 5px;
     margin-bottom: 26px;
     background: #fff;
   }
@@ -375,11 +377,11 @@
     float: left;
     position: relative;
     width: 252px;
-    margin: 0 17px 20px 0;
+    margin: 0 15px 20px 7px;
     text-align: center;
   }
 
-  .pic-list .pic-item:nth-child(4n) {
+  .cart-upload-pic .container .show-pic .pic-list .pic-item:nth-child(4n) {
     margin: 0;
   }
 
@@ -518,6 +520,15 @@
   .layer-pop img {
     margin: 30px;
     height: 90%;
+  }
+
+  .tab-title {
+    height: 50px;
+    line-height: 50px;
+    margin: 10px 10px 20px;
+    border-bottom: 1px solid #ccc;
+    font-size: 20px;
+    font-weight: bold;
   }
 
 </style>
