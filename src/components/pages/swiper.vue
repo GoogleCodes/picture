@@ -27,8 +27,8 @@
 
 <template>
   <div>
-    <div style="width:96.5%;height: 500px;" class="fl" v-if="cid == 32">
-      <swiper style="width:650px;" :options="swiperOption" ref="mySwiper">
+    <div style="width:650px;height: 500px;" class="fl" v-if="cid == 32">
+      <swiper style="width:100%;" :options="swiperOption" ref="mySwiper">
         <!-- slides -->
         <template v-for="(item, index) in listpic">
           <swiper-slide :style="{
@@ -52,7 +52,7 @@
         </template>
       </swiper>
     </div>
-    <div style="width:650px;height: 500px;" class="fl" v-else>
+    <div style="width:96.5%;height: 500px;" class="fl" v-else>
       <swiper style="width:100%;" :options="swiperOption" ref="mySwiper">
         <!-- slides -->
         <template v-for="(item, index) in listpic">

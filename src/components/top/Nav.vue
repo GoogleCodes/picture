@@ -7,7 +7,19 @@
           <router-link :to="{ path: '/'}" class="blocks nav-href">首页</router-link>
         </li>
         <li v-for="(item, index) in data.list">
-          <router-link :to="{ path: '/inside/orderlist', query: {id: item.id, isup: item.is_up}}" class="blocks nav-href">
+          <router-link :to="{ path: '/pages/frame', query: {id: item.id, isup: item.is_up}}"
+                       v-if="item.id == 32"
+                       class="blocks nav-href">
+            <span>{{ item.title }}</span>
+            <div class="dropDomn" v-show="dropDowm">
+              <div class="triangle"></div>
+              <ul class="drop-ul fl">
+                <li class="clear" v-for="(wrap, index) in item.dounav">{{ wrap.title}}</li>
+              </ul>
+            </div>
+            <div class="dropDome-Image fl"></div>
+          </router-link>
+          <router-link :to="{ path: '/inside/orderlist', query: {id: item.id, isup: item.is_up}}" class="blocks nav-href" v-else>
             <span>{{ item.title }}</span>
             <div class="dropDomn" v-show="dropDowm">
               <div class="triangle"></div>

@@ -2,7 +2,10 @@
   <div>
     <!-- tab-banner start-->
     <div class="tab-banner">
-      <img src="../../../static/images/42.jpg" alt="" class="w100 h100" >
+      <template v-for="(k,v) in shotcut">
+        <img :src="k.shotcut" alt="" class="w100" style="height: 320px;" >
+        <!--<img src="../../../static/images/42.jpg" alt="" class="w100 h100" >-->
+      </template>
     </div>
     <!-- tab-banner end -->
 
@@ -15,21 +18,27 @@
           <p>婚纱相框</p>
         </div>
         <ul class="product-list clearfix">
-          <li>
-            <div class="frame-pic">
-              <img src="../../../static/images/40.jpg" alt="" class="w100 h100" />
-              <div class="filter-layer" style=""></div>
-            </div>
-            <div class="content">
-              <h3>复古木纹</h3>
-              <p>MP14533-2B</p>
-              <router-link :to="{ path: '/'}" class="display">
-                <span class="more">查看更多</span>
+          <template v-for="(k, i) in list">
+            <li>
+              <router-link :to="{ path: '/pages/detail/' + k.goods_id}" class="w100 h100 block">
+                <div class="frame-pic">
+                  <template v-for="(l, v) in k.goods_thumb">
+                    <img :src="l.url" alt="" class="w100 h100" />
+                  </template>
+                  <div class="filter-layer" style=""></div>
+                </div>
+                <div class="content">
+                  <h3>{{ k.goods_name }}</h3>
+                  <p>{{ k.goods_remark }}</p>
+                  <!--<router-link :to="{ path: '/'}" class="display">-->
+                    <span class="more">查看更多</span>
+                  <!--</router-link>-->
+                </div>
               </router-link>
-            </div>
-          </li>
+            </li>
+          </template>
         </ul>
-        <div class="show-more">
+        <div class="show-more" @click="more()" v-show="moreVisible">
           <span class="btn-more">展开更多</span>
         </div>
       </div>
@@ -52,7 +61,9 @@
   export default {
     data() {
       return {
-
+        list: [],
+        shotcut: [],
+        moreVisible: true,
       }
     },
     components: {
@@ -60,10 +71,23 @@
       foots
     },
     created() {
-
+      this.getOrder();
     },
     methods: {
-
+      getOrder() {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?cid="+ this.$route.query.id +"&limit=" + 4).then((res) => {
+          this.list = res.data;
+          this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.$route.query.id).then((res) => {
+            this.shotcut = res.data;
+          });
+        });
+      },
+      more() {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?cid="+ this.$route.query.id).then((res) => {
+          this.list = res.data;
+          this.moreVisible = false;
+        });
+      }
     }
   }
 </script>
