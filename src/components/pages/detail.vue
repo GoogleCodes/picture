@@ -279,8 +279,9 @@
             specdata: this.guigeName.join('-').replace(/-/g,'')
           };
           this.$ajax.HttpPost(this.$api.get_content.POST_CART_DATA,json).then((res) => {
+              console.log(res.data);
             setTimeout(() => {
-              that.$router.push({ path: '/cart/cart' });
+              that.$router.push({ path: '/cart/add-cart/'+ this.$route.params.id +'/' + this.list.cat_id });
             }, 500);
           });
         } catch(e) {}

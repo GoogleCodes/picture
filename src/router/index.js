@@ -258,7 +258,7 @@ let routes = [{
     requiresAuth: true
   },
 },{
-  path: '/cart/add-cart',
+  path: '/cart/add-cart/:id/:cid',
   name: 'addCart',
   component: addcart,
   meta: {
