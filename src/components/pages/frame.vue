@@ -19,9 +19,9 @@
         </div>
         <ul class="product-list clearfix">
           <template v-for="(k, i) in list">
-            <li>
+            <li v-if="i == 0">
               <router-link :to="{ path: '/pages/detail/' + k.goods_id}" class="w100 h100 block">
-                <div class="frame-pic">
+                <div class="frame-pic frame-pic-hover">
                   <template v-for="(l, v) in k.goods_thumb">
                     <img :src="l.url" alt="" class="w100 h100" />
                   </template>
@@ -36,6 +36,25 @@
                 </div>
               </router-link>
             </li>
+
+            <li v-else>
+              <router-link :to="{ path: '/pages/detail/' + k.goods_id}" class="w100 h100 block">
+                <div class="frame-pic">
+                  <template v-for="(l, v) in k.goods_thumb">
+                    <img :src="l.url" alt="" class="w100 h100" />
+                  </template>
+                  <div class="filter-layer" style=""></div>
+                </div>
+                <div class="content">
+                  <h3>{{ k.goods_name }}</h3>
+                  <p>{{ k.goods_remark }}</p>
+                  <!--<router-link :to="{ path: '/'}" class="display">-->
+                  <span class="more">查看更多</span>
+                  <!--</router-link>-->
+                </div>
+              </router-link>
+            </li>
+
           </template>
         </ul>
         <div class="show-more" @click="more()" v-show="moreVisible">
@@ -141,8 +160,14 @@
     height: 381px;
   }
 
+  .frame-product .product-list li .frame-pic-hover:hover {
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -ms-filter: blur(2px);
+    -o-filter: blur(2px);
+  }
+
   .frame-pic .filter-layer {
-    background: rgba(0,0,0,0.5);
     -webkit-filter: blur(2px);
     -moz-filter: blur(2px);
     -ms-filter: blur(2px);

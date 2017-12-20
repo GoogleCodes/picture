@@ -34,7 +34,19 @@
         </div>
         <div class="wrap-list clear">
           <template v-for="(item, index) in data.albumList">
-            <div class="wrap-li fl" :style="{background: 'url('+ item.shotcut +') no-repeat 100%'}">
+            <div class="wrap-li fl wrap-li-hover" :style="{
+            background: 'url('+ item.shotcut +') no-repeat 100%'}" v-if="index == 0">
+              <div class="wrap-li-pic"></div>
+              <div v-if="item.title !== ''" style="width: 100%;height: 100%;border-radius: 100%;">
+                <router-link :to="{ path: '/inside/orderlist', query: {id: item.id }}" class="wrap-more block">
+                  <p class="ft-16">{{ item.title }}</p>
+                  <span>{{ item.title }}</span>
+                </router-link>
+              </div>
+              <div v-else="" style="background: rgba(255,255,255,0.1);width: 100%;height: 100%;border-radius: 100%;"></div>
+            </div>
+            <div class="wrap-li fl" :style="{
+            background: 'url('+ item.shotcut +') no-repeat 100%'}" v-if="index !== 0">
               <div class="wrap-li-pic"></div>
               <div v-if="item.title !== ''" style="width: 100%;height: 100%;border-radius: 100%;">
                 <router-link :to="{ path: '/inside/orderlist', query: {id: item.id }}" class="wrap-more block">
@@ -239,13 +251,17 @@
     border-radius: 100%;
     text-align: center;
     margin: 0 68px 85px 38px;
+    transition: .5s;
   }
 
-  .content .wrap .wrap-li:first-child {
-    z-index: -1;
+  .content .wrap .wrap-li-hover:hover {
+    filter: blur(1px);
+    transition: .5s;
+  }
+
+  .content .wrap .wrap-li:hover {
     -webkit-filter: blur(20px);
     filter: blur(2px);
-    background: rgba(255,0,0,.5);
     overflow: hidden;
   }
 

@@ -52,7 +52,7 @@
         </template>
       </swiper>
     </div>
-    <div style="width:96.5%;height: 500px;" class="fl" v-else>
+    <div style="width:96.5%;height: auto;" class="fl" v-else>
       <swiper style="width:100%;" :options="swiperOption" ref="mySwiper">
         <!-- slides -->
         <template v-for="(item, index) in listpic">
@@ -69,10 +69,11 @@
         <div class="swiper-scrollbar" slot="scrollbar"></div>
       </swiper>
       <!-- swiper2 Thumbs -->
-      <swiper style="height: 75px;" :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
+      <swiper style="bottom: 120px;height: 100px!important;" :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
         <template v-for="(item, index) in listpic">
           <swiper-slide :style="{ background: 'url('+ item.url +') no-repeat',
-                  backgroundSize: 'cover'}">
+                  backgroundSize: 'cover',
+                  width: '13%'}">
           </swiper-slide>
         </template>
       </swiper>
@@ -81,7 +82,6 @@
 </template>
 
 <script type="text/javascript">
-
 
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
@@ -103,23 +103,21 @@
                   pic: [],
               },
               swiperOption: {
-                  // swiper options 所有的配置同swiper官方api配置
-                  autoplay: 3000,
-                  notNextTick: true,
+                  autoplay: 5000,
+                  notNextTick: false,
                   direction: 'horizontal',
                   pagination: '.swiper-pagination',
                   prevButton: '.swiper-button-prev',
                   nextButton: '.swiper-button-next',
                   observeParents: true,
                   spaceBetween: 10,
-                  onlyExternal:true,
+                onlyExternal:true,
               },
               swiperOptionThumbs: {
                   notNextTick: false,
                   spaceBetween: 10,
                   centeredSlides: true,
                   slidesPerView: 'auto',
-                  touchRatio: 0.2,
                   onlyExternal:true,
                   slideToClickedSlide: true
               }
@@ -143,3 +141,11 @@
       },
   }
 </script>
+
+<style>
+  .gallery-thumbs .swiper-slide {
+    width: 13%;
+    height: 100%;
+    opacity: 0.4;
+  }
+</style>

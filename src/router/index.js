@@ -73,7 +73,7 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
-    nav: false,
+    nav: true,
     requiresAuth: true
   },
 },{
@@ -83,7 +83,7 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
-    nav: false,
+    nav: true,
     requiresAuth: true
   },
 },{
@@ -93,7 +93,7 @@ let routes = [{
   meta: {
     header: true,
     footer: true,
-    nav: false,
+    nav: true,
     requiresAuth: true
   },
 },{

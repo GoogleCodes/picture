@@ -6,6 +6,17 @@
         <img :src="k.shotcut" alt="" style="width: 100%;height: 100%;">
       </template>
     </div>
+    <div class="customized">
+      <div class="customized-main">
+        <div class="customized-title">
+          <p class="customized-h1">相册定制</p>
+          <span class="customized-h2">CUSTOMIZED</span>
+        </div>
+        <div class="customized-desc ft-16">
+          一向以独特的设计，将东西方设计匠心巧妙联姻，轻奢与温馨交融，各种高档材质的混搭工艺，紧靠时代前沿。
+        </div>
+      </div>
+    </div>
     <div class="filter-con">
       <div class="filter-nav">
         <span class="fl">筛选条件 ：</span>
@@ -135,6 +146,11 @@
     mounted() {
       this.getOrder();
     },
+    watch: {
+      '$route'() {
+        this.getOrder();
+      }
+    },
     components: {
       ElButton,
       elenav,
@@ -218,6 +234,48 @@
 </script>
 
 <style type="text/css">
+
+  /* customized start */
+  .customized {
+    background: #fcf9f5;
+    height: 148px;
+  }
+
+  .customized .customized-main {
+    width: 1200px;
+    margin: 0px auto;
+    position: relative;
+  }
+
+  .customized .customized-main .customized-title {
+    line-height: 30px;
+    padding-top: 54px;
+  }
+
+  .customized .customized-main .customized-desc {
+    text-align: center;
+    width: 512px;
+    margin: 0px auto;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    right: 0px;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .customized-main .customized-title .customized-h1 {
+    font-size: 32px;
+    font-weight: bold;
+  }
+
+  .customized-main .customized-title .customized-h2 {
+    font-size: 16px;
+    color: #9fa0a0;
+  }
+
+  /* customized end */
+
   /* filter con end */
   .filter-con {
     width: 100%;

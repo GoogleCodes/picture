@@ -1,8 +1,7 @@
 <template>
   <div>
     <!-- content start -->
-
-
+    <elenav></elenav>
     <div class="content clear" style="margin: 0px auto;" v-loading="load_data" element-loading-text="正在加载中...">
       <div class="con-pro" style="height: 360px;">
         <img src="../../assets/images/19.png" alt="" style="width: 100%;height: 100%;">
@@ -104,6 +103,13 @@
       this.getTypeList();
       this.chonseTab(1);
       this.getChoose(1);
+    },
+    watch: {
+      '$route'() {
+        this.getTypeList();
+        this.chonseTab(1);
+        this.getChoose(1);
+      }
     },
     methods: {
       getChoose(type) {

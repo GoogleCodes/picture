@@ -262,11 +262,12 @@
               uname: this.currAddJson.sname
             };
             this.$ajax.HttpPost('/api/home/order/add',json).then((res) => {
+              console.log(res.data, '-----------------------------------------------------');
               this.$storage.storageRemove('gopayData_info');
               this.$message(res.msg);
                 if(that.payloots == 0) {
                   this.$ajax.HttpPost('/api/home/order/setPayType', {
-                    id: gid,
+                    id: res.data,
                     uid: this.get_user_info.user.id,
                     type: that.payloots,
                   }).then((res) => {
@@ -274,15 +275,14 @@
                   });
                 } else if(that.payloots == 1) {
                   this.$ajax.HttpPost('/api/home/order/setPayType', {
-                    id: gid,
+                    id: res.data,
                     uid: this.get_user_info.user.id,
                     type: that.payloots,
                   }).then((res) => {
                     console.log(res);
                   });
                 }
-                return false;
-//              this.$router.replace({ path: '/admin/manage'});
+              this.$router.replace({ path: '/admin/manage'});
             });
             return true;
         }

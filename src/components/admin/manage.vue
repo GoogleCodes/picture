@@ -66,6 +66,8 @@
           </table>
         </template>
       </div>
+
+      <div v-html="orderPages"></div>
     </div>
     <div class="layer-pop" v-show="payDisplay"></div>
     <div class="wechatpay" v-show="payDisplay">
@@ -89,6 +91,7 @@
         box: '',
         wechat: '',
         elementTop: 0,
+        page: '',
         payDisplay: false,
       }
     },
@@ -129,7 +132,8 @@
           uid: + this.get_user_info.user.id
         }).then((res) => {
           this.orderList = res.data.data.data;
-          this.orderPages = res.data.data;
+          this.orderPages = res.data.page;
+          console.log(this.orderPages);
         });
       }
     }
@@ -174,4 +178,34 @@
     cursor: pointer;
   }
   /* wechatpay end */
+
+  /* pagination start */
+  .pagination {
+    height: 50px;
+  }
+
+  .pagination .disabled {
+    background: #9d9e9e;
+  }
+
+  .pagination .active {
+    background: #c40000;
+  }
+
+  .pagination li, .pagination li a{
+    float: left;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    margin: 0 10px 0 0;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    background: #9d9e9e;
+  }
+
+  /* pagination end */
+
 </style>

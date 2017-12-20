@@ -1,5 +1,6 @@
 <template>
   <div class="bgcolor">
+    <elenav></elenav>
     <div class="content clear" style="margin: 0px auto 25px;">
       <div class="con-pro" style="height: 360px;" v-loading="load.load_data" element-loading-text="正在加载中...">
         <img :src="list.shotcut" alt="" style="width: 100%;height: 100%;">
@@ -7,7 +8,7 @@
       <div class="experience" style="margin: 50px auto;background: #fff">
         <detailSwiper :listpic="swiperList" :cid="list.cat_id"></detailSwiper>
         <div class="tb-wrap fl" v-loading="load.load_data" element-loading-text="正在加载中...">
-          <div class="right-select fr">
+          <div class="right-select fr" v-if="list.cat_id !== 32" :style="{position: 'relative',top: '-120px'}">
             <div class="select-title">{{ list.goods_name }}<span>{{ list.goods_remark }}</span></div>
             <div class="select-text">{{ list.good_desc }}</div>
             <div class="select-price">¥{{ list.shop_price }}</div>
@@ -37,6 +38,38 @@
               <el-button class="ft-16" @click="addCart()">加入购物车</el-button>
             </div>
           </div>
+
+          <div class="right-select fr" v-else>
+            <div class="select-title">{{ list.goods_name }}<span>{{ list.goods_remark }}</span></div>
+            <div class="select-text">{{ list.good_desc }}</div>
+            <div class="select-price">¥{{ list.shop_price }}</div>
+            <div class="select-color clear" v-for="(fmt,pindex) in list.myspec">
+              <div class="left fl">{{ fmt.spec }}：</div>
+              <ul style="width: 75%;float: right;" class="fl">
+                <guige :value="val.id" :text="val.item" v-for="val in fmt.item"
+                       @changeGuige="changeGuige(pindex,val.id,val.item)"></guige>
+              </ul>
+            </div>
+            <div class="select-num clear" v-if="list.cat_id == 35">
+              <span class="left fl">数量：</span>
+              <div class="item-amount ">
+                <el-button class="no-minus fl" @click="changeNumber(list, -1)"
+                           :class="{'disabled':list.sales_sum <= 1}" style="margin-left: 0;">-</el-button>
+                <el-input type="text" class="fl" placeholder="0"
+                          v-model="list.sales_sum" readonly></el-input>
+                <el-button class="add-max fl" @click="changeNumber(list, 1)"
+                           :class="{'disabled': list.sales_sum >= 1}">+</el-button>
+              </div>
+            </div>
+            <div v-else></div>
+            <div class="select-btn clear">
+              <!--<router-link :to="{ path: '/pages/onload' }" v-if="$route.query.isup == 0">-->
+              <!--<el-button class="ft-16">开始冲印</el-button>-->
+              <!--</router-link>-->
+              <el-button class="ft-16" @click="addCart()">加入购物车</el-button>
+            </div>
+          </div>
+
         </div>
         <div class="detail-bottom clear">
           <div class="product-title">PRESENTATION</div>
@@ -143,6 +176,11 @@
         }
         return '已选择"' + this.guigeName.join('-').replace(/-/g,'') + '"';
       },
+      topClass() {
+        if(this.list.cat_id !== 32) {
+          return 60 + 'px';
+        }
+      }
     },
     methods: {
       getFilterArray(array) {
