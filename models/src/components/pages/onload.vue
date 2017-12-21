@@ -36,6 +36,7 @@
           </div>
           <el-upload ref="upload" :drag="false" name="img"
             action="https://xinye-art.com/public/api/home/front/imgupload"
+             :on-preview="handlePreview"
              :on-remove="handleRemove"
              :on-success="handleAvatarSuccess"
              :file-list="fileList" :auto-upload="false">
@@ -54,6 +55,7 @@
 <script type="text/javascript">
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
 
+
   import {mapGetters, mapActions} from 'vuex'
   import { GET_USER_INFO } from '../../store/getters/type'
 
@@ -61,16 +63,15 @@
     data() {
       return {
         fileList: [],
-        fList: [],
-        arr: [],
         chonseIndex: 0,
         chonseok: false,
         piclist: [],
         num: 0,
+        upimg: []
       }
     },
-    created() {
-      this.fetchData();
+    mounted() {
+      this.fetch();
     },
     computed: {
       ...mapGetters({
@@ -81,22 +82,39 @@
       ElButton
     },
     methods: {
+      fetch() {
+        this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
+          {uid: this.get_user_info.user.id}).then((res) => {
+          for(let i in res.data) {
+            let id = res.data[i].id;
+            console.log(this.$route.query.id == id)
+            if(this.$route.query.id == id) {
+              console.log(res.data[i]);
+            }
+          }
+        })
+      },
       saveImages() {
-        if (typeof JSON.stringify(this.arr) === 'string') {
-          this.$ajax.HttpPost('/api/home/shopcar/upSave',{
-            id: this.$route.query.id,
-            img: JSON.stringify(this.arr.concat(this.fList)),
-            num: 1,
-          }).then((res) => {
-            this.$message(res.msg);
-            location.reload();
-          });
+        let values = '', arr = [], json = {};
+        for (let i in this.fileList) {
+          values = this.fileList[i].response.data
         }
+        this.$ajax.HttpPost('/api/home/shopcar/upSave',{
+          id: this.$route.query.id,
+          num: 0,
+          img: values.path,
+        }).then((res) => {
+          this.$message(res.msg);
+        });
       },
       changeNumber(item,flag) {
-        flag >= 0 ? item.num += 1 : item.num -= 1;
-        if (item.num <= 1) {
-          item.num = 1;
+        if (flag >= 0) {
+          item.num += 1;
+        } else {
+          item.num -= 1;
+          if (item.num <= 1) {
+            item.num = 1;
+          }
         }
       },
       submitUpload() {
@@ -104,6 +122,9 @@
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
       },
       choosePic(item, index) {
         for (let i in this.fileList) {
@@ -128,31 +149,9 @@
       },
       handleAvatarSuccess(res, file, fileList) {
         this.fileList = fileList;
-        let options = {};
-        for(let i in this.fileList) {
-          options = {
-            img: this.fileList[i].response.data.path,
-            num: this.fileList[i].response.data.num
-          };
-        }
-        this.arr.push(options);
-        console.log(this.arr);
-      },
-      fetchData() {
-        this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
-          {uid: this.get_user_info.user.id}).then((res) => {
-          for (let i in res.data) {
-            let id = res.data[i].id;
-            if(this.$route.query.id == id) {
-              this.fList = res.data[i].upimg;
-              this.list = res.data[i].goods_thumb;
-              let arr = res.data[i].upimg;
-            }
-            for(let i in this.fList) {
-              console.log(this.fList[i], "0+0+0+0+0+");
-            }
-          }
-        }).catch((error) => {
+        this.piclist.push({
+          url: res.data,
+          num: 0,
         });
       },
       clearpic() {
@@ -171,6 +170,9 @@
             message: '已取消删除'
           });
         });
+      },
+      goUpLoading() {
+
       }
     }
   }

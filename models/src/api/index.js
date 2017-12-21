@@ -1,9 +1,9 @@
 //api请求索引
 //导入模块
-import * as api_user from './user'
+import * as api_con from './content'
 
 const apiObj = {
-  api_user
+  api_con
 }
 
 const install = function (Vue) {

@@ -25,7 +25,8 @@
           <div class="select-price">
             <span>¥{{ list.shop_price }}</span>
           </div>
-          <el-button class="fr" @click="showLayer()">加入购物车</el-button>
+          <el-button class="fr" @click="showLayer()" v-if="list.cat_id == 34">开始冲印</el-button>
+          <el-button class="fr" @click="showLayer()" v-else-if="list.cat_id == 35">加入购物车</el-button>
         </div>
       </div>
     </div>
@@ -62,8 +63,8 @@
         </div>
       </div>
       <div class="select-btn clear">
-        <!--<el-button class="ft-16" @click="goToUpload(list.goods_id, $route.query.isup)" v-if="list.cat_id == 34">加入购物车</el-button>-->
-        <el-button class="ft-16" @click="goToUpload(list.goods_id, $route.query.isup)">加入购物车</el-button>
+        <el-button class="ft-16" @click="goToUpload(list.goods_id, $route.query.isup)" v-if="list.cat_id == 34">去上传照片</el-button>
+        <el-button class="ft-16" @click="goToUpload(list.goods_id, $route.query.isup)" v-else-if="list.cat_id == 35">加入购物车</el-button>
       </div>
     </div>
   </div>
@@ -132,7 +133,7 @@
       }),
     },
     methods: {
-      goToUpload(id) {
+      goToUpload(id, isup) {
         if (this.guige.length == 0) {
           this.$message('请选择规格！');
           return false;
@@ -148,9 +149,15 @@
           };
           this.$ajax.HttpPost(this.$api.get_content.POST_CART_DATA,cart).then((res) => {
             this.$message('提交成功!');
-            setTimeout(() => {
-              this.$router.push({path: '/cart/cart'})
-            }, 1000)
+            if (isup == 0) {
+              setTimeout(() => {
+                this.$router.push({path: '/pages/onload',query: {id: id}})
+              }, 1000)
+            } else if(isup == 1) {
+              setTimeout(() => {
+                this.$router.push({path: '/cart/cart'})
+              }, 1000)
+            }
           });
         }
       },
@@ -506,8 +513,6 @@
     font-weight: bold;
     line-height: 40px;
     float: left;
-    position: relative;
-    top: 10px;
   }
 
   .detailpage p img {

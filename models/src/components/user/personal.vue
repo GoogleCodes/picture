@@ -1,17 +1,13 @@
 <template>
   <div class="tools-pson">
-
     <div class="personal">
       <div class="per-tools">
         <ul>
-          <li style="position: relative;">
-            <span class="fl ft-14 block chonseHead w100" id="pick-avatar">头像</span>
+          <li>
+            <span class="fl ft-14">头像</span>
             <div class="fr">
               <div class="pson-pic fl">
-                <img :src="user_pic" alt="" class="w100 h100">
-                <avatar-cropper
-                  trigger="#pick-avatar" upload-form-name="img"
-                  upload-url="https://xinye-art.com/public/api/home/front/imgupload"></avatar-cropper>
+                <img src="../../../static/images/58.png" alt="" class="w100 h100">
               </div>
               <div class="icon-youbian iconfont fl"></div>
             </div>
@@ -62,45 +58,31 @@
 
   import {mapGetters} from 'vuex'
   import { GET_USER_INFO } from '../../store/getters/type'
-  import AvatarCropper from "vue-avatar-cropper"
 
   export default {
     data() {
       return {
         list: [],
-        defaults: '',
-        user_pic: '',
-        userAvatar: undefined,
+        defaults: ''
       }
     },
-    components: { AvatarCropper },
     computed: {
       ...mapGetters({
         get_user_info: GET_USER_INFO
       })
     },
     mounted() {
+      console.log(this.get_user_info);
       this.setAddress();
-      this.$ajax.HttpPost('/api/home/user/userinfo',{
-        id: this.get_user_info.user.id
-      }).then((res) => {
-        this.user_pic = res.data.img;
-      });
     },
     methods: {
-      updateUserAvatar(resp) {
-        this.$http.patch('/users/23', {
-          avatar: resp.relative_url
-        }).then(() => {
-          this.userAvatar = resp.relative_url
-        })
-      },
       setAddress() {
         let that = this;
         this.$ajax.HttpGet(this.$api.get_address.get_address + '?id=' + 6).then((res) => {
           for (let i in res.data) {
             if (res.data[i].select == 1) {
 //              that.default = res.data[i].adr;
+              console.log(that.defaults = res.data[i].adr)
             }
           }
         });
@@ -117,13 +99,6 @@
     background: #fff;
     overflow: hidden;
   }
-
-  .personal .per-tools ul li .chonseHead {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-  }
-
   .personal .per-tools ul li {
     height: 3rem;
     line-height: 3rem;
@@ -162,10 +137,4 @@
     border: 1px solid #c40000;
   }
   /* personal end */
-</style>
-
-<style type="text/css">
-  .avatar-cropper .avatar-cropper-container .avatar-cropper-footer .avatar-cropper-btn {
-    padding: 0px;
-  }
 </style>

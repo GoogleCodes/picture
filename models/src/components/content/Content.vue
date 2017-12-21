@@ -10,7 +10,20 @@
       </div>
       <div class="series">
         <template v-for="(k,i) in data.albumList">
-          <div class="shop-series fl">
+          <div class="shop-series fl" v-if="k.id == 32">
+            <router-link :to="{ path: '/content/proseries',
+            query: {id: k.id, isup: k.is_up }}" class="block">
+              <div class="shop-series-pic">
+                <img :src="k.shotcut" class="w100 h100" alt="">
+              </div>
+              <div class="shop-series-text">
+                <p class="ft-18">{{ k.title }}</p>
+                <p class="ft-12">了解更多 &gt;</p>
+              </div>
+            </router-link>
+          </div>
+
+          <div class="shop-series fl" v-if="k.id !== 32">
             <router-link :to="{ path: '/inside/orderlist',
             query: {id: k.id, isup: k.is_up }}" class="block">
               <div class="shop-series-pic">

@@ -20,7 +20,7 @@ export default new class GoAxios {
     return new Promise((resolve, reject) => {
       const instance = axios.create({
         //  设置默认跟地址
-        baseURL: server_base_url,
+        baseURL: get_api.get_http_ip.GET_YUYIN_HTTP + 'public' + server_base_url,
         //  设置请求超时设置
         timeout: 2000,
         //  设置请求时的header
