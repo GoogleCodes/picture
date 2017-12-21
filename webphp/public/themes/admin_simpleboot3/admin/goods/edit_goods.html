@@ -1,0 +1,348 @@
+<include file="public@header"/>
+<style type="text/css">
+    .pic-list li {
+        margin-bottom: 5px;
+    }
+</style>
+<script type="text/html" id="photos-item-tpl">
+    <li id="saved-image{id}">
+        <input id="photo-{id}" type="hidden" name="photo_urls[]" value="{filepath}">
+        <input class="form-control" id="photo-{id}-name" type="text" name="photo_names[]" value="{name}"
+               style="width: 200px;" title="图片名称">
+        <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+             onclick="imagePreviewDialog(this.src);">
+        <a href="javascript:uploadOneImage('图片上传','#photo-{id}');">替换</a>
+        <a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
+    </li>
+</script>
+<script type="text/html" id="files-item-tpl">
+    <li id="saved-file{id}">
+        <input id="file-{id}" type="hidden" name="file_urls[]" value="{filepath}">
+        <input class="form-control" id="file-{id}-name" type="text" name="file_names[]" value="{name}"
+               style="width: 200px;" title="文件名称">
+        <a id="file-{id}-preview" href="{preview_url}" target="_blank">下载</a>
+        <a href="javascript:uploadOne('图片上传','#file-{id}','file');">替换</a>
+        <a href="javascript:(function(){$('#saved-file{id}').remove();})();">移除</a>
+    </li>
+</script>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('Goods/goodslist')}">产品列表</a></li>
+        <li class="active"><a>编辑产品</a></li>
+    </ul>
+    <div class="row margin-top-20">
+        <div class="col-md-2">
+            <div class="list-group">
+                <a class="list-group-item" href="#A" data-toggle="tab">基本属性</a>
+                <a class="list-group-item" href="#B" data-toggle="tab">规格设置</a>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <form action="{:url('Goods/edit_goods_Post',array('goods_id'=>$data['goods_id']))}" method="post"
+                  class="form-horizontal js-ajax-form margin-top-20">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th width="100">分类<span class="form-required">*</span></th>
+                                        <td>
+                                            <input class="form-control" type="text" style="width:400px;" required
+                                                   value="{$data.title|default=''}"
+                                                   placeholder="请选择分类" onclick="doSelectCategory();"
+                                                   id="js-categories-name-input"
+                                                   readonly/>
+                                            <input class="form-control" type="hidden" value="{$data.cat_id|default=''}"
+                                                   name="post[cat_id]"
+                                                   id="js-categories-id-input"/>
+
+                                            <!--{$data.cat_id|default=''}-->
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <th>标题<span class="form-required">*</span></th>
+                                        <td>
+                                            <input class="form-control" type="text" name="post[goods_name]"
+                                                   id="title" required value="{$data.goods_name|default=''}"
+                                                   placeholder="请输入标题"/>
+
+                                            <input class="form-control" type="hidden" name="post[goods_id]"
+                                                   id="goods_id" required value="{$data.goods_id|default=''}"
+                                                   placeholder="产品id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>价格<span class="form-required">*</span></th>
+                                        <td><input class="form-control" type="text" name="post[shop_price]"
+                                                   id="shop_price" value="{$data.shop_price|default=''}" required
+                                                   placeholder="请输入价格"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>简短描述</th>
+                                        <td>
+                                            <input class="form-control" type="text" name="post[goods_remark]"
+                                                   id="keywords" value="{$data.goods_remark|default=''}"
+                                                   placeholder="请输入简短描述">
+                                            <!--<p class="help-block">多关键词之间用英文逗号隔开</p>-->
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>上架</th>
+                                        <td><select name="post[is_on_sale]" id="is_on_sale" style="width:50px;">
+                                            <option value="1"
+                                            <if condition="$data.is_on_sale eq 1">selected</if>
+                                            >是</option>
+                                            <option value="0"
+                                            <if condition="$data.is_on_sale eq 0">selected</if>
+                                            >否</option>
+                                        </select>
+                                        </td>
+
+
+                                        <!--goods_remark 简短描述-->
+                                        <!--goods_thumb 缩略图-->
+                                    </tr>
+                                    <tr>
+                                        <th>热门</th>
+                                        <td><select name="post[is_hot]" id="is_hot" style="width:50px;">
+                                            <option value="0"
+                                            <if condition="$data.is_hot eq 0">selected</if>
+                                            >否</option>
+                                            <option value="1"
+                                            <if condition="$data.is_hot eq 1">selected</if>
+                                            >是</option>
+                                            
+                                        </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <foreach name="mlevel" item="val" key="k2">
+                                    <tr>
+                                        <th>{$val.lname}折扣</th>
+                                        <td>
+                                            <foreach name="data['youhui']" item="yval" key="kval">
+                                                <if condition="$yval.lv eq $val.id">
+                                                    <input type="text" class="form-control" placeholder="请输入会员折扣 如:0.9"
+                                                           name="goods_discount[{$k2}][discount]" value="{$yval.discount}">
+                                                    <input type="hidden" name="goods_discount[{$k2}][lv]" value="{$yval.lv}">
+                                                </if>
+                                            </foreach>
+                                        </td>
+                                    </tr>
+                                    </foreach>
+                                    </tr>
+                                    <!--<tr>-->
+                                    <!--<th>摘要</th>-->
+                                    <!--<td>-->
+                                    <!--<textarea class="form-control" name="post[post_excerpt]" style="height: 50px;"-->
+                                    <!--placeholder="请填写摘要"></textarea>-->
+                                    <!--</td>-->
+                                    <!--</tr>-->
+                                    <tr>
+                                        <th>图文介绍</th>
+                                        <td>
+                                            <script type="text/plain" id="content" name="post[goods_content]">
+                                                {$data.goods_content|default=''}
+
+
+                                            </script>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>首图</th>
+                                        <td>
+                                            <ul id="goods_thumb" class="pic-list list-unstyled form-inline"></ul>
+                                            <input type="hidden" name="goods_thumb" id="thumbnail"
+                                                   value="{$goods_thumb.url|default=''}">
+                                            <div>
+                                                <a href="javascript:uploadOneImage('图片上传','#js-thumbnail-input');">
+                                                    <if condition="empty($goods_thumb['url'])">
+                                                        <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                                             id="js-thumbnail-input-preview"
+                                                             width="135" style="cursor: pointer"/>
+                                                        <else/>
+                                                        <img src="{:cmf_get_image_preview_url($goods_thumb['url'])}"
+                                                             id="js-thumbnail-input-preview"
+                                                             width="135" style="cursor: pointer"/ >
+                                                    </if>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>相册</th>
+                                        <td>
+                                            <ul id="photos" class="pic-list list-unstyled form-inline">
+                                                <notempty name="$photo">
+                                                    <foreach name="$photo" item="vo">
+                                                        <php>$img_url=cmf_get_image_preview_url($vo['url']);</php>
+                                                        <li id="saved-image{$key}">
+                                                            <input id="photo-{$key}" type="hidden" name="photo_urls[]"
+                                                                   value="{$vo.url}">
+                                                            <input class="form-control" id="photo-{$key}-name"
+                                                                   type="text"
+                                                                   name="photo_names[]"
+                                                                   value="{$vo.name|default=''}" style="width: 200px;"
+                                                                   title="图片名称">
+                                                            <img id="photo-{$key}-preview"
+                                                                 src="{:cmf_get_image_preview_url($vo['url'])}"
+                                                                 style="height:36px;width: 36px;"
+                                                                 onclick="parent.imagePreviewDialog(this.src);">
+                                                            <a href="javascript:uploadOneImage('图片上传','#photo-{$key}');">替换</a>
+                                                            <a href="javascript:(function(){$('#saved-image{$key}').remove();})();">移除</a>
+                                                        </li>
+                                                    </foreach>
+                                                </notempty>
+                                            </ul>
+                                            <a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');"
+                                               class="btn btn-sm btn-default">选择图片</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>附件</th>
+                                        <td>
+                                            <ul id="files" class="pic-list list-unstyled form-inline">
+                                                <notempty name="$file">
+                                                    <foreach name="$file" item="vo">
+                                                        <php>$file_url=cmf_get_file_download_url($vo['url']);</php>
+                                                        <li id="saved-file{$key}">
+                                                            <input id="file-{$key}" type="hidden" name="file_urls[]"
+                                                                   value="{$vo.url}">
+                                                            <input class="form-control" id="file-{$key}-name"
+                                                                   type="text"
+                                                                   name="file_names[]"
+                                                                   value="{$vo.name}" style="width: 200px;"
+                                                                   title="图片名称">
+                                                            <a id="file-{$key}-preview" href="{$file_url}"
+                                                               target="_blank">下载</a>
+                                                            <a href="javascript:uploadOne('图片上传','#file-{$key}');">替换</a>
+                                                            <a href="javascript:(function(){$('#saved-file{$key}').remove();})();">移除</a>
+                                                        </li>
+                                                    </foreach>
+                                                </notempty>
+                                            </ul>
+                                            <a href="javascript:uploadMultiFile('附件上传','#files','files-item-tpl');"
+                                               class="btn btn-sm btn-default">选择文件</a>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="B">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>产品规格</label>
+                            </div>
+                            <div class="form-group">
+                                <select name="post[goods_type]" id="" class="form-control select_type">
+                                    <option value="">请选择商品类型</option>
+                                    <foreach name="goods_type" item="val">
+                                        <option value="{$val.id}"
+                                        <if condition="$val['id'] eq $data['goods_type']">selected</if>
+                                        >{$val.key}</option>
+                                    </foreach>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="ajax_spec_data"><!-- ajax 返回规格--></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('ADD')}</button>
+                        <a class="btn btn-default" href="{:url('Goods/goodlist')}">{:lang('BACK')}</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+<include file="public@input"/>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+  //编辑器路径定义
+  var editorURL = GV.WEB_ROOT;
+</script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript">
+  $(function () {
+
+    editorcontent = new baidu.editor.ui.Editor();
+    editorcontent.render('content');
+    try {
+      editorcontent.sync();
+    } catch (err) {
+    }
+
+    $('.btn-cancel-thumbnail').click(function () {
+      $('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
+      $('#thumbnail').val('');
+    });
+
+    $('#more-template-select').val("{$post.more.template|default=''}");
+
+  });
+
+  function doSelectCategory() {
+    var selectedCategoriesId = $('#js-categories-id-input').val();
+    openIframeLayer("{:url('Goods/goods_Category_select')}?ids=" + selectedCategoriesId, '请选择分类', {
+      area: ['700px', '400px'],
+      btn: ['确定', '取消'],
+      yes: function (index, layero) {
+        //do something
+
+        var iframeWin = window[layero.find('iframe')[0]['name']];
+        var selectedCategories = iframeWin.confirm();
+        if (selectedCategories.selectedCategoriesId.length == 0) {
+          layer.msg('请选择分类');
+          return;
+        }
+        $('#js-categories-id-input').val(selectedCategories.selectedCategoriesId.join(','));
+        $('#js-categories-name-input').val(selectedCategories.selectedCategoriesName.join(' '));
+        //console.log(layer.getFrameIndex(index));
+        layer.close(index); //如果设定了yes回调，需进行手工关闭
+      }
+    });
+  }
+</script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('.select_type').change(function () {
+      var type_id = $(this).val();
+      var goods_id = $("input[name='post[goods_id]']").val();
+
+//      console.log(type_id);
+//      console.log(goods_id);
+//
+//      return;
+      $.ajax({
+        type: 'GET',
+        data: {type_id: type_id, id: goods_id},
+        url: "{:url('Goods/ajaxGetSpec')}",
+        success: function (data) {
+          $("#ajax_spec_data").html('')
+          $("#ajax_spec_data").append(data);
+          //alert('132');
+          ajaxGetSpecInput();	// 触发完  马上处罚 规格输入框
+        }
+      });
+    });
+    $(".select_type").trigger('change');
+  });
+</script>
+
+
+</body>
+</html>

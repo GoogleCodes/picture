@@ -1,0 +1,56 @@
+{
+  "nav": [
+    {
+      "title" : "首页",
+      "src" : "/"
+    },
+    {
+      "title" : "皮册定制",
+      "src" : "/inside/orderlist",
+      "dounav": [
+        {"title": "时尚对裱册12寸竖"},
+        {"title": "时尚对裱册45寸竖"}
+      ]
+    },
+    {
+      "title" : "字画装裱",
+      "src" : "/inside/dingzhi",
+      "dounav" : []
+    },
+    {
+      "title" : "照片装裱",
+      "src" : "/",
+      "dounav": [
+        {"title": "时尚对裱册12寸竖"},
+        {"title": "时尚对裱册45寸竖"}
+      ]
+    },
+    {
+      "title" : "婚纱套系",
+      "src" : "/pages/frame",
+      "dounav" : []
+    },
+    {
+      "title" : "特殊本",
+      "src" : "/",
+      "dounav" : []
+    },
+    {
+      "title" : "照片冲印",
+      "src" : "/",
+      "dounav" : []
+    },
+    {
+      "title" : "装饰画",
+      "src" : "/",
+      "dounav" : []
+    }
+  ]
+}
+
+
+
+
+
+
+

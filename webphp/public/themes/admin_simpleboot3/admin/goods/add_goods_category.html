@@ -1,0 +1,296 @@
+<include file="public@header"/>
+<style type="text/css">
+    .pic-list li {
+        margin-bottom: 5px;
+    }
+</style>
+<script type="text/html" id="photos-item-tpl">
+    <li id="saved-image{id}">
+        <input id="photo-{id}" type="hidden" name="photo_urls[]" value="{filepath}">
+        <input class="form-control" id="photo-{id}-name" type="text" name="photo_names[]" value="{name}"
+               style="width: 200px;" title="图片名称">
+        <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+             onclick="imagePreviewDialog(this.src);">
+        <a href="javascript:uploadOneImage('图片上传','#photo-{id}');">替换</a>
+        <a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
+    </li>
+</script>
+<script type="text/html" id="files-item-tpl">
+    <li id="saved-file{id}">
+        <input id="file-{id}" type="hidden" name="file_urls[]" value="{filepath}">
+        <input class="form-control" id="file-{id}-name" type="text" name="file_names[]" value="{name}"
+               style="width: 200px;" title="文件名称">
+        <a id="file-{id}-preview" href="{preview_url}" target="_blank">下载</a>
+        <a href="javascript:uploadOne('图片上传','#file-{id}','file');">替换</a>
+        <a href="javascript:(function(){$('#saved-file{id}').remove();})();">移除</a>
+    </li>
+</script>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('Goods/goods_Category')}">分类列表</a></li>
+        <li class="active"><a href="{:url('Goods/add_goods_Category')}">添加分类</a></li>
+    </ul>
+    <div class="row margin-top-20">
+        <div class="col-md-2">
+            <div class="list-group">
+                <a class="list-group-item" href="#A" data-toggle="tab">基本属性</a>
+                <a class="list-group-item" href="#B" data-toggle="tab">SEO设置</a>
+                <!--<a class="list-group-item" href="#C" data-toggle="tab">模板设置</a>-->
+            </div>
+        </div>
+        <div class="col-md-6">
+            <form class="js-ajax-form" action="{:url('Goods/add_goods_Category')}" method="post">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-parent"><span class="form-required">*</span>上级</label>
+                            <div>
+                                <select class="form-control" name="parent_id" id="input-parent">
+                                    <option value="0">作为一级分类</option>
+                                    {$categories_tree}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-name"><span class="form-required">*</span>分类名称</label>
+                            <div>
+                                <input type="text" class="form-control" id="input-name" name="title">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-parent">首页推荐</label>
+                            <div>
+                                <select class="form-control" name="top">
+                                    <option value="0">不推荐</option>
+                                    <option value="1">推荐</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!--<div class="form-group">-->
+                            <!--<label for="input-name">分类别名</label>-->
+                            <!--<div>-->
+                                <!--<input type="text" class="form-control" id="input-alias" name="alias">-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<div class="form-group">-->
+                            <!--<label for="input-description">描述</label>-->
+                            <!--<div>-->
+                                <!--<textarea class="form-control" name="description" id="input-description"></textarea>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <label for="input-description">banner图</label>
+                            <div>
+                                <!--<input type="hidden" name="more[thumbnail]" class="form-control"-->
+                                       <!--id="js-thumbnail-input">-->
+                                <div>
+                                    <!--<a href="javascript:uploadOneImage('图片上传','#js-thumbnail-input');">-->
+                                        <!--<img src="__TMPL__/public/assets/images/default-thumbnail.png"-->
+                                             <!--id="js-thumbnail-input-preview"-->
+                                             <!--width="135" style="cursor: pointer"/>-->
+                                    <!--</a>-->
+                                    <input type="hidden" name="shotcut" id="thumbnail" value="">
+                                    <a href="javascript:uploadOneImage('图片上传','#thumbnail');">
+                                        <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                             id="thumbnail-preview"
+                                             width="135" style="cursor: pointer"/>
+                                    </a>
+                                    <input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="B">
+                        <div class="form-group">
+                            <label for="input-seo_title">SEO标题</label>
+                            <div>
+                                <input type="text" class="form-control" id="input-seo_title" name="seo_title">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-seo_keywords">SEO关键字</label>
+                            <div>
+                                <input type="text" class="form-control" id="input-seo_keywords" name="seo_keywords">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-seo_description">SEO描述</label>
+                            <div>
+                                <textarea class="form-control" name="seo_description"
+                                          id="input-seo_description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('ADD')}</button>
+                    <a class="btn btn-default" href="{:url('Goods/goods_Category')}">{:lang('BACK')}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--<form action="{:url('Goods/add_goods_Category')}" method="post" class="form-horizontal js-ajax-form margin-top-20">-->
+        <!--<div class="row">-->
+            <!--<div class="col-md-9">-->
+                <!--<table class="table table-bordered">-->
+                    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th width="100">分类<span class="form-required">*</span></th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input class="form-control" type="text" style="width:400px;" required value=""&ndash;&gt;-->
+                    <!--&lt;!&ndash;placeholder="请选择分类" onclick="doSelectCategory();" id="js-categories-name-input"&ndash;&gt;-->
+                    <!--&lt;!&ndash;readonly/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input class="form-control" type="hidden" value="" name="post[categories]"&ndash;&gt;-->
+                    <!--&lt;!&ndash;id="js-categories-id-input"/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<th>标题<span class="form-required">*</span></th>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<td>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input class="form-control" type="text" name="title"&ndash;&gt;-->
+                                   <!--&lt;!&ndash;id="title" required value="" placeholder="请输入标题"/>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th>关键词</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input class="form-control" type="text" name="post[post_keywords]" id="keywords" value=""&ndash;&gt;-->
+                    <!--&lt;!&ndash;placeholder="请输入关键字">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<p class="help-block">多关键词之间用英文逗号隔开</p>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th>文章来源</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td><input class="form-control" type="text" name="post[post_source]" id="source" value=""&ndash;&gt;-->
+                    <!--&lt;!&ndash;placeholder="请输入文章来源"></td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th>摘要</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<textarea class="form-control" name="post[post_excerpt]" style="height: 50px;"&ndash;&gt;-->
+                    <!--&lt;!&ndash;placeholder="请填写摘要"></textarea>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th>内容</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<script type="text/plain" id="content" name="post[post_content]"></script>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<th>缩略图</th>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<td>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div style="text-align: center;">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<input type="hidden" name="shotcut" id="thumbnail" value="">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<a href="javascript:uploadOneImage('图片上传','#thumbnail');">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<img src="__TMPL__/public/assets/images/default-thumbnail.png"&ndash;&gt;-->
+                                         <!--&lt;!&ndash;id="thumbnail-preview"&ndash;&gt;-->
+                                         <!--&lt;!&ndash;width="135" style="cursor: pointer"/>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th>附件</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<ul id="files" class="pic-list list-unstyled form-inline">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<a href="javascript:uploadMultiFile('附件上传','#files','files-item-tpl');"&ndash;&gt;-->
+                    <!--&lt;!&ndash;class="btn btn-sm btn-default">选择文件</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+                <!--</table>-->
+                <!--<div class="form-group">-->
+                    <!--<div class="col-sm-offset-2 col-sm-10">-->
+                        <!--<button type="submit" class="btn btn-primary js-ajax-submit">{:lang('ADD')}</button>-->
+                        <!--<a class="btn btn-default" href="{:url('Goods/goods_Category')}">{:lang('BACK')}</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;<div class="col-md-3">&ndash;&gt;-->
+            <!--&lt;!&ndash;<table class="table table-bordered">&ndash;&gt;-->
+            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<th><b>缩略图</b></th>&ndash;&gt;-->
+            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div style="text-align: center;">&ndash;&gt;-->
+            <!--&lt;!&ndash;<input type="hidden" name="post[more][thumbnail]" id="thumbnail" value="">&ndash;&gt;-->
+            <!--&lt;!&ndash;<a href="javascript:uploadOneImage('图片上传','#thumbnail');">&ndash;&gt;-->
+            <!--&lt;!&ndash;<img src="__TMPL__/public/assets/images/default-thumbnail.png"&ndash;&gt;-->
+            <!--&lt;!&ndash;id="thumbnail-preview"&ndash;&gt;-->
+            <!--&lt;!&ndash;width="135" style="cursor: pointer"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;</a>&ndash;&gt;-->
+            <!--&lt;!&ndash;<input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<th><b>创建时间</b></th>&ndash;&gt;-->
+            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td>&ndash;&gt;-->
+            <!--&lt;!&ndash;<input class="form-control js-bootstrap-datetime" type="text" name="post[published_time]"&ndash;&gt;-->
+            <!--&lt;!&ndash;value="{:date('Y-m-d H:i:s',time())}">&ndash;&gt;-->
+            <!--&lt;!&ndash;</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;&ndash;&gt;-->
+
+            <!--&lt;!&ndash;</table>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</div>-->
+    <!--</form>-->
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+  //编辑器路径定义
+  var editorURL = GV.WEB_ROOT;
+</script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript">
+  $(function () {
+
+    editorcontent = new baidu.editor.ui.Editor();
+    editorcontent.render('content');
+    try {
+      editorcontent.sync();
+    } catch (err) {
+    }
+
+    $('.btn-cancel-thumbnail').click(function () {
+      $('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
+      $('#thumbnail').val('');
+    });
+
+  });
+
+  //  function doSelectCategory() {
+  //    var selectedCategoriesId = $('#js-categories-id-input').val();
+  //    openIframeLayer("{:url('AdminCategory/select')}?ids=" + selectedCategoriesId, '请选择分类', {
+  //      area: ['700px', '400px'],
+  //      btn: ['确定', '取消'],
+  //      yes: function (index, layero) {
+  //        //do something
+  //
+  //        var iframeWin          = window[layero.find('iframe')[0]['name']];
+  //        var selectedCategories = iframeWin.confirm();
+  //        if (selectedCategories.selectedCategoriesId.length == 0) {
+  //          layer.msg('请选择分类');
+  //          return;
+  //        }
+  //        $('#js-categories-id-input').val(selectedCategories.selectedCategoriesId.join(','));
+  //        $('#js-categories-name-input').val(selectedCategories.selectedCategoriesName.join(' '));
+  //        //console.log(layer.getFrameIndex(index));
+  //        layer.close(index); //如果设定了yes回调，需进行手工关闭
+  //      }
+  //    });
+  //  }
+</script>
+</body>
+</html>

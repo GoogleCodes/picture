@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+<!--1.注册方法-->
+<!--2.注册获取短信验证码-->
+<!--3.登录方法-->
+<!--4.重置密码-->
+<!--5.重置密码获取短信验证码-->
+<!--6.用户中心-修改密码-->
+<!--7.添加收货地址-->
+<!--8.删除收货地址-->
+
+
+注册方法
+/api/home/User/reg
+
+字段
+用户名 : uname
+手机号 : tel
+密码 : pwd
+确认密码 : repwd
+验证码 : code
+
+注册请求验证码
+/api/home/User/regsend
+字段
+手机号 : tel
+
+登录方法
+/api/home/User/login
+手机号 : tel
+密码 : pwd
+
+返回
+id：用户ID
+uname：用户名
+tel：用户手机
+
+重置密码方法
+/api/home/User/findpwd
+
+手机号 : tel
+密码 : pwd
+确认密码 : repwd
+验证码 : code
+
+重置密码请求验证码
+/api/home/User/findsend
+
+手机号 : tel
+
+
+
+用户中心->修改密码方法
+/api/home/User/chapwd
+
+用户id : id
+当前密码 : opwd
+新密码 : npwd
+确认新密码 : nrepwd
+
+
+
+<form action="{:url("/api/home/User/reg")}" method="post">
+用户名<input type="text" name='uname'>
+手机号<input type="text" name='tel'>
+密码<input type="text" name='pwd'>
+确认密码<input type="text" name="repwd">
+验证码<input type="text" name="code">
+注册<input type="submit">
+</form>
+
+
+<form action="{:url("/api/home/User/regsend")}" method="post">
+手机号码<input type="text" name='tel'>
+注册请求验证码<input type="submit">
+</form>
+
+
+<form action="{:url("/api/home/User/login")}" method="post">
+手机号<input type="text" name='tel'>
+密码<input type="text" name='pwd'>
+登录<input type="submit">
+</form>
+
+
+<form action="{:url("/api/home/User/findpwd")}" method="post">
+手机号<input type="text" name='tel'>
+验证码<input type="text" name='code'>
+密码<input type="text" name='pwd'>
+确认密码<input type="text" name='repwd'>
+重置密码<input type="submit">
+</form>
+
+
+<form action="{:url("/api/home/User/findsend")}" method="post">
+手机号码<input type="text" name='tel'>
+重置密码请求验证码<input type="submit">
+</form>
+
+
+<form action="{:url("/api/home/User/chapwd")}" method="post">
+id:6<input type="text" name='id'>
+当前密码<input type="text" name='opwd'>
+新密码<input type="text" name='npwd'>
+确认当前密码<input type="text" name='nrepwd'>
+修改密码<input type="submit">
+</form>
+
+
+<form action="{:url("/api/home/User/chapwd")}" method="post">
+id:6<input type="text" name='id'>
+当前密码<input type="text" name='opwd'>
+新密码<input type="text" name='npwd'>
+确认当前密码<input type="text" name='nrepwd'>
+添加收货地址<input type="submit">
+</form>
+
+<form action="{:url("/api/home/User/addadr")}" method="post">
+id:6<input type="text" name='id'>
+收件人<input type="text" name='sname'>
+手机<input type="text" name='tel'>
+地址<input type="text" name='adr'>
+默认地址<input type="text" name='select'>
+添加收货地址<input type="submit">
+</form>
+
+<form action="{:url("/api/home/User/findadr")}" method="post">
+用户id:6<input type="text" name='id'>
+查找收货地址<input type="submit">
+</form>
+
+<form action="{:url("/api/home/User/deladr")}" method="post">
+收货地址id:6<input type="text" name='id'>
+删除收货地址<input type="submit">
+</form>
+
+<form action="{:url("/api/home/User/selectadr")}" method="post">
+收货地址id:16<input type="text" name='id'>
+用户id:7<input type="text" name='uid'>
+默认收货地址<input type="submit">
+</form>
+
+</body>
+</html>

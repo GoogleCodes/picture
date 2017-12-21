@@ -1,0 +1,91 @@
+<include file="public@header" />
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('user/index')}">用户列表</a></li>
+        <!--<li><a href="{:url('user/add')}">{:lang('ADMIN_USER_ADD')}</a></li>-->
+    </ul>
+    <!--<form class="well form-inline margin-top-20" method="post" action="{:url('User/index')}">-->
+        <!--用户手机号码:-->
+        <!--<input type="text" class="form-control" name="user_login" style="width: 120px;" value="{:input('request.user_login/s','')}" placeholder="请输入{:lang('USERNAME')}">-->
+
+        <!--<input type="submit" class="btn btn-primary" value="搜索" />-->
+        <!--<a class="btn btn-danger" href="{:url('User/index')}">清空</a>-->
+    <!--</form>-->
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th width="50">ID</th>
+            <th>用户名</th>
+            <th>用户手机</th>
+            <th>注册时间</th>
+            <th>会员级别</th>
+            <th width="130">{:lang('ACTIONS')}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <foreach name="info" item="vo">
+            <tr>
+                <td>{$vo.id}</td>
+                <td>{$vo.uname}</td>
+                <td>{$vo.tel}</td>
+                <td>{$vo.creatime|date="Y-m-d H:i:s",###}</td>
+                <td>
+                    <select class="form-control" value='{$vo["level"]}'>
+                        <foreach name="level" item="vo2">
+                            <?php if ($vo['level']==$vo2['id']): ?>
+                            <option value="{$vo2.id}" selected>{$vo2.lname}</option>
+                            <?php else: ?>
+                            <option value="{$vo2.id}">{$vo2.lname}</option>
+                            <?php endif; ?>
+                        </foreach>
+                    </select>
+                    <a href="javascript:;" data-id='{$vo.id}' class="levelset " >设置</a>
+                </td>
+                <td>
+                    <a href="{:url('admin/member/order',array('uid'=>$vo['id']))}" >会员订单</a>
+                    <a href="" class="js-ajax-delete">{:lang('DELETE')}</a>
+
+                    <!--{:url('RecycleBin/restore',array('id'=>$vo['id']))}-->
+                    <!--{:url('RecycleBin/delete',array('id'=>$vo['id']))}-->
+                </td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+    <div class="pagination">{$page|default=''}</div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    
+//会员级别设置
+$(".levelset").click(function(){
+
+    var mid = $(this).attr('data-id');
+    var level = $(this).parent().find('select').val();
+    var url = "{:url('admin/member/setlevel')}";
+    var data = {
+        mid:mid,
+        level:level
+    }
+    $.post(url,data,function(e){
+        new Noty({
+            text: e.msg,
+            type: 'success',
+            layout: 'topCenter',
+            modal: true,
+            animation: {
+                open: 'animated bounceInDown', // Animate.css class names
+                close: 'animated bounceOutUp', // Animate.css class names
+            },
+            timeout: 1
+        }).show();
+    })
+
+})
+//会员级别设置
+
+</script>
+</body>
+</html>

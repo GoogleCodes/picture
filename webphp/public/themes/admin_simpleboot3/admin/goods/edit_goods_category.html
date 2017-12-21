@@ -1,0 +1,117 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('Goods/goods_Category')}">分类管理</a></li>
+        <li><a href="{:url('Goods/add_goods_Category')}">添加分类</a></li>
+        <li class="active"><a>编辑分类</a></li>
+    </ul>
+    <div class="row margin-top-20">
+        <div class="col-md-2">
+            <div class="list-group">
+                <a class="list-group-item" href="#A" data-toggle="tab">基本属性</a>
+                <a class="list-group-item" href="#B" data-toggle="tab">SEO设置</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <form class="js-ajax-form" action="{:url('Goods/edit_goods_Category')}" method="post">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-parent"><span class="form-required">*</span>上级</label>
+                            <div>
+                                <select class="form-control" name="parent_id" id="input-parent">
+                                    <option value="0">作为一级分类</option>
+                                    {$categories_tree}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-name"><span class="form-required">*</span>分类名称</label>
+                            <div>
+                                <input type="text" class="form-control" id="input-name" name="title" value="{$title}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-parent">首页推荐</label>
+                            <div>
+                                <select class="form-control" name="top">
+                                    <option value="0" <?php if ($top==0): ?>
+                                        selected
+                                    <?php endif ?> >不推荐</option>
+                                    <option value="1" <?php if ($top==1): ?>
+                                        selected
+                                    <?php endif ?> >推荐</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="input-description">描述</label>-->
+                            <!--<div>-->
+                                <!--<textarea class="form-control" name="description"-->
+                                          <!--id="input-description">{$description}</textarea>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <label for="input-description">banner图</label>
+                            <div>
+                                <input type="hidden" name="shotcut" class="form-control"
+                                       value="{$shotcut|default=''}" id="js-thumbnail-input">
+                                <div>
+                                    <a href="javascript:uploadOneImage('图片上传','#js-thumbnail-input');">
+                                        <if condition="empty($shotcut)">
+                                            <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                                 id="js-thumbnail-input-preview"
+                                                 width="135" style="cursor: pointer"/>
+                                            <else/>
+                                            <img src="{:cmf_get_image_preview_url($shotcut)}"
+                                                 id="js-thumbnail-input-preview"
+                                                 width="135" style="cursor: pointer"/>
+                                        </if>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="B">
+                        <div class="form-group">
+                            <label for="input-seo_title">SEO标题</label>
+                            <div>
+                                <input type="text" class="form-control" id="input-seo_title" name="seo_title"
+                                       value="{$seo_title}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-seo_keywords">SEO关键字</label>
+                            <div>
+                                <input type="text" class="form-control" id="input-seo_keywords" name="seo_keywords"
+                                       value="{$seo_keywords}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-seo_description">SEO描述</label>
+                            <div>
+                                <textarea class="form-control" name="seo_description" id="input-seo_description">{$seo_description}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" name="id" value="{$id}">
+                    <button type="submit" class="btn btn-primary js-ajax-submit" data-refresh="0">{:lang('SAVE')}
+                    </button>
+                    <a class="btn btn-default" href="{:url('Goods/goods_Category')}">{:lang('BACK')}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+  $('#input-list_tpl').val("{$list_tpl|default=''}");
+  $('#input-one_tpl').val("{$one_tpl|default=''}");
+</script>
+</body>
+</html>

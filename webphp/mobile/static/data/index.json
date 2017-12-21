@@ -1,0 +1,62 @@
+{
+  "description" : "时光印记，定格美好的回忆",
+  "tuijian" : [
+    {
+      "id": 1,
+      "pic" : "https://dn-coding-net-production-pp.qbox.me/fd0c7b83-1f2d-4068-b220-8645d046bc13.jpg?imageView2/2/w/560/ignore-error/1",
+      "title" : "儿童款相册",
+      "desc" : "AAAAAAAAAAA",
+      "small" : "https://dn-coding-net-production-pp.qbox.me/fd0c7b83-1f2d-4068-b220-8645d046bc13.jpg?imageView2/2/w/560/ignore-error/1",
+      "price" : 11,
+      "nums" : 0,
+      "guige": [
+        {"a" : "金黄色"},
+        {"a" : "蓝色"}],
+      "size": [
+        {"one": "一寸"},
+        {"one": "二村"}]
+    },{
+      "id": 2,
+      "pic" : "https://dn-coding-net-production-pp.qbox.me/fd0c7b83-1f2d-4068-b220-8645d046bc13.jpg?imageView2/2/w/560/ignore-error/1",
+      "title" : "少年款相册",
+      "desc" : "BBBBBBBBBB",
+      "small" : "https://dn-coding-net-production-pp.qbox.me/fd0c7b83-1f2d-4068-b220-8645d046bc13.jpg?imageView2/2/w/560/ignore-error/1",
+      "price" : 148,
+      "nums" : 0,
+      "guige": [
+        {"a" : "金黄色"},
+        {"a" : "蓝色"}],
+      "size": [
+        {"one": "十寸"},
+        {"one": "六寸"}]
+    },{
+      "id": 3,
+      "pic" : "https://dn-coding-net-production-pp.qbox.me/fd0c7b83-1f2d-4068-b220-8645d046bc13.jpg?imageView2/2/w/560/ignore-error/1",
+      "title" : "中年款相册",
+      "desc" : "CCCCCCCCC",
+      "small" : "https://dn-coding-net-production-pp.qbox.me/fd0c7b83-1f2d-4068-b220-8645d046bc13.jpg?imageView2/2/w/560/ignore-error/1",
+      "price" : 183,
+      "nums" : 0,
+      "guige": [
+        {"a" : "金黄色"},
+        {"a" : "蓝色"}],
+      "size": [
+        {"one": "一寸"},
+        {"one": "三村"}]
+    },{
+      "id": 4,
+      "pic" : "https://dn-coding-net-production-pp.qbox.me/fd0c7b83-1f2d-4068-b220-8645d046bc13.jpg?imageView2/2/w/560/ignore-error/1",
+      "title" : "老年款相册",
+      "desc" : "DDDDDDDDD",
+      "small" : "https://dn-coding-net-production-pp.qbox.me/fd0c7b83-1f2d-4068-b220-8645d046bc13.jpg?imageView2/2/w/560/ignore-error/1",
+      "price" : 456,
+      "nums" : 0,
+      "guige": [
+        {"a" : "金黄色"},
+        {"a" : "蓝色"}],
+      "size": [
+        {"one": "一寸"},
+        {"one": "二村"}]
+    }
+  ]
+}

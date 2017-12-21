@@ -1,0 +1,63 @@
+<include file="public@header" />
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('user/index')}">会员级别</a></li>
+        <!-- <li><a href="{:url('admin/member/addlevel')}">添加级别</a></li> -->
+    </ul>
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th width="50">ID</th>
+            <th>级别名称</th>
+            <th width="130">{:lang('ACTIONS')}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <foreach name="data" item="vo">
+            <tr>
+                <td>{$vo.id}</td>
+                <td>{$vo.lname}</td>
+                <td>
+                    <a href="{:url('admin/member/editlevel',array('id'=>$vo['id']))}" >编辑</a>
+                </td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+    <div class="pagination">{$page|default=''}</div>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    
+//会员级别设置
+$(".levelset").click(function(){
+
+    var mid = $(this).attr('data-id');
+    var level = $(this).parent().find('select').val();
+    var url = "{:url('admin/member/setlevel')}";
+    var data = {
+        mid:mid,
+        level:level
+    }
+    $.post(url,data,function(e){
+        new Noty({
+            text: e.msg,
+            type: 'success',
+            layout: 'topCenter',
+            modal: true,
+            animation: {
+                open: 'animated bounceInDown', // Animate.css class names
+                close: 'animated bounceOutUp', // Animate.css class names
+            },
+            timeout: 1
+        }).show();
+    })
+
+})
+//会员级别设置
+
+</script>
+</body>
+</html>
