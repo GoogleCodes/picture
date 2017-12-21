@@ -22,10 +22,10 @@
             <li v-if="i == 0">
               <router-link :to="{ path: '/pages/detail/' + k.goods_id}" class="w100 h100 block">
                 <div class="frame-pic frame-pic-hover">
+                  <div class="filter-layer"></div>
                   <template v-for="(l, v) in k.goods_thumb">
                     <img :src="l.url" alt="" class="w100 h100" />
                   </template>
-                  <div class="filter-layer" style=""></div>
                 </div>
                 <div class="content">
                   <h3>{{ k.goods_name }}</h3>
@@ -160,24 +160,25 @@
     height: 381px;
   }
 
-  .frame-product .product-list li .frame-pic-hover:hover {
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -ms-filter: blur(2px);
-    -o-filter: blur(2px);
+  .frame-product .product-list li .frame-pic-hover{
+    width: 584px;
+    position: relative;
+    height: 381px;
+    z-index: 10;
   }
 
-  .frame-pic .filter-layer {
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -ms-filter: blur(2px);
-    -o-filter: blur(2px);
-    position: absolute;
-    filter: blur(2px);
-    height: 100%;
+  .frame-pic:hover .filter-layer  {
+    background: rgba(0,0,0,0.5);
     width: 100%;
-    left: 0px;
+    height: 100%;
+    position: absolute;
     top: 0px;
+    left: 0px;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -ms-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
   }
 
   .frame-product .product-list li .content {
@@ -187,6 +188,7 @@
     left: 50%;
     margin-left: -100px;
     text-align: center;
+    z-index: 30;
   }
   .frame-product .product-list li .content h3 {
     font-size: 26px;

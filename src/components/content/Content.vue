@@ -34,9 +34,9 @@
         </div>
         <div class="wrap-list clear">
           <template v-for="(item, index) in data.albumList">
-            <div class="wrap-li fl wrap-li-hover" :style="{
+            <div class="wrap-li fl" :style="{
             background: 'url('+ item.shotcut +') no-repeat 100%'}" v-if="index == 0">
-              <div class="wrap-li-pic"></div>
+              <div class="wrap-li-pic wrap-li-hover"></div>
               <div v-if="item.title !== ''" style="width: 100%;height: 100%;border-radius: 100%;">
                 <router-link :to="{ path: '/inside/orderlist', query: {id: item.id }}" class="wrap-more block">
                   <p class="ft-16">{{ item.title }}</p>
@@ -252,17 +252,23 @@
     text-align: center;
     margin: 0 68px 85px 38px;
     transition: .5s;
+    position: relative;
+  }
+
+  .content .wrap .wrap-li-pic {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    transition: 0.5s;
   }
 
   .content .wrap .wrap-li-hover:hover {
-    filter: blur(1px);
-    transition: .5s;
-  }
-
-  .content .wrap .wrap-li:hover {
-    -webkit-filter: blur(20px);
-    filter: blur(2px);
-    overflow: hidden;
+    background: rgba(0,0,0,0.3);
+    transition: 0.5s;
+    cursor: pointer;
   }
 
   .content .wrap .wrap-li p, .wrap-more {
