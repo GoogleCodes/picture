@@ -12,42 +12,50 @@
           </div>
           <ul>
             <template v-for="(item, index) in fileList">
-              <li class="fl" :class="{ 'chonsepic': index == chonseIndex }" @click.stop="choosePic(item)" @longtouch="longClick()">
+              <li class="fl" :class="{ 'chonsepic': index == chonseIndex }" @click.stop="choosePic(item, index)">
                 <div class="onload-pic">
                   <i class="el-icon-close icon-guanbi" @click="deletePic(index, item)"></i>
                   <i class="el-icon-check chonseok" v-show="chonseok"></i>
                   <!--<img src="../../../static/images/35.png" class="icon-guanbi" @click="clearpic()" />-->
-                  <img :src="item.url" class="w100 h100" alt="">
+                  <img :src="item.url" class="w100 h100 previewer-demo-img" @click="$refs.previewer.show(index)">
                   <!--<img src="../../../static/images/47.png" class="chonseok" alt="">-->
                 </div>
                 <div class="input">
-                  <el-button class="prev fl" @click="changeNumber(item.response.data, -1)">-</el-button>
-                  <el-input v-model="item.response.data.num" class="fl" placeholder="0" readonly></el-input>
-                  <el-button class="next fl" @click="changeNumber(item.response.data, 1)">+</el-button>
+                  <el-button class="prev fl" @click="changeNumber(index, -1)">-</el-button>
+                  <el-input v-model="arr[index].sum" class="fl" placeholder="0" readonly></el-input>
+                  <el-button class="next fl" @click="changeNumber(index, 1)">+</el-button>
                 </div>
               </li>
             </template>
           </ul>
         </div>
         <div class="upload-pic clear">
-          <div class="top-upload clearfix">
-            <!--<a href="javascript:void(0);" class="fl block href-btn add-pic">增加照片</a>-->
-            <a class="block href-btn" @click="saveImages()">保存图片</a>
-          </div>
-          <el-upload ref="upload" :drag="false" name="img"
-            action="https://xinye-art.com/public/api/home/front/imgupload"
-             :on-remove="handleRemove"
-             :on-success="handleAvatarSuccess"
-             :file-list="fileList" :auto-upload="false">
-            <el-button slot="trigger" size="small" type="primary" class="fl">选取文件</el-button>
-            <el-button style="margin-left: 10px;" size="small" type="success" class="fr" @click="submitUpload">上传到服务器</el-button>
+
+          <el-upload
+            class="upload-demo" name="img"
+            :action="uploadUrl"
+            :on-success="handleAvatarSuccess"
+            :file-list="fileList" :multiple="true">
+            <el-button size="small" type="primary">点击上传</el-button>
+            <el-button>立即下单</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
+
+          <!--<div class="top-upload clearfix">-->
+            <!--&lt;!&ndash;<a href="javascript:void(0);" class="fl block href-btn add-pic">增加照片</a>&ndash;&gt;-->
+            <!--<a class="block href-btn" @click="saveImages()">保存图片</a>-->
+          <!--</div>-->
+
         </div>
         <div class="c_9fa0a0 toast">点击照片可以删除</div>
       </div>
     </div>
     <div class="msg-ps clear">备注 ：(建议使用wifi/移动4G网络上传，上传时请耐心等候）</div>
+
+    <div style="height: 150px;">
+      <previewer :list="countArrays" ref="previewer" :options="options"></previewer>
+    </div>
+
   </div>
 </template>
 
@@ -57,9 +65,12 @@
   import {mapGetters, mapActions} from 'vuex'
   import { GET_USER_INFO } from '../../store/getters/type'
 
+  import previewer from '../../../node_modules/vux/src/components/previewer/index.vue'
+
   export default {
     data() {
       return {
+        uploadUrl: 'https://xinye-art.com/public/api/home/front/imgupload',
         fileList: [],
         fList: [],
         arr: [],
@@ -67,6 +78,16 @@
         chonseok: false,
         piclist: [],
         num: 0,
+        count: 0,
+        countArrays: [],
+        options: {
+          getThumbBoundsFn (index) {
+            let thumbnail = document.querySelectorAll('.previewer-demo-img')[index]
+            let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
+            let rect = thumbnail.getBoundingClientRect()
+            return {x: rect.left, y: rect.top + pageYScroll, w: rect.width}
+          }
+        },
       }
     },
     created() {
@@ -78,9 +99,13 @@
       }),
     },
     components: {
-      ElButton
+      ElButton,
+      previewer,
     },
     methods: {
+      show(index) {
+        this.$refs.previewer.show(index)
+      },
       saveImages() {
         if (typeof JSON.stringify(this.arr) === 'string') {
           this.$ajax.HttpPost('/api/home/shopcar/upSave',{
@@ -93,10 +118,17 @@
           });
         }
       },
-      changeNumber(item,flag) {
-        flag >= 0 ? item.num += 1 : item.num -= 1;
-        if (item.num <= 1) {
-          item.num = 1;
+      handleChange(file, fileList) {
+
+      },
+      changeNumber(index,flag) {
+        if(flag >= 1) {
+          this.arr[index].sum++;
+        } else {
+          this.arr[index].sum--;
+        }
+        if (this.arr[index].sum <= 1) {
+          this.arr[index].sum = 1;
         }
       },
       submitUpload() {
@@ -127,16 +159,31 @@
         }
       },
       handleAvatarSuccess(res, file, fileList) {
-        this.fileList = fileList;
-        let options = {};
-        for(let i in this.fileList) {
-          options = {
-            img: this.fileList[i].response.data.path,
-            num: this.fileList[i].response.data.num
-          };
-        }
+        let options = {sum: 1};
         this.arr.push(options);
-        console.log(this.arr);
+        let b = {};
+        try {
+          setTimeout(() => {
+            this.fileList = fileList;
+
+            /*for(let i in fileList) {
+              b = {
+                src: fileList[i].url,
+                sum: 1
+              };
+            }
+            this.countArrays.push(b);
+//          this.fileList = fileList;*/
+          }, 500)
+        } catch(e) {
+
+        }
+//        for(let i in this.countArrays) {
+//          options = {
+//            img: this.countArrays[i].src,
+//            num: this.countArrays[i].sum
+//          };
+//        }
       },
       fetchData() {
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
@@ -253,6 +300,10 @@
     /*border: 1px solid #20a0ff;*/
     color: #fff;
     padding: 10px 33px;
+  }
+
+  .upload-demo .el-upload {
+    width: 100%;
   }
 
   .container .el-upload__tip {

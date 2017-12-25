@@ -8,8 +8,9 @@
             <span class="fl ft-14 block chonseHead w100" id="pick-avatar">头像</span>
             <div class="fr">
               <div class="pson-pic fl">
-                <img :src="user_pic" alt="" class="w100 h100">
+                <img :src="user_pic" class="w100 h100">
                 <avatar-cropper
+                  :uploaded="updateUserAvatar"
                   trigger="#pick-avatar" upload-form-name="img"
                   upload-url="https://xinye-art.com/public/api/home/front/imgupload"></avatar-cropper>
               </div>
@@ -88,12 +89,8 @@
       });
     },
     methods: {
-      updateUserAvatar(resp) {
-        this.$http.patch('/users/23', {
-          avatar: resp.relative_url
-        }).then(() => {
-          this.userAvatar = resp.relative_url
-        })
+      updateUserAvatar(res) {
+        console.log(res);
       },
       setAddress() {
         let that = this;

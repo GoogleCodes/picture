@@ -99,8 +99,9 @@
 
 <script type="text/javascript">
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
+
   export default {
-    components: {ElButton}, name: 'Content',
+    components: { ElButton }, name: 'Content',
     data() {
       return {
         data: {
@@ -113,7 +114,7 @@
           pagination: '.swiper-pagination',
           paginationClickable: true,
         },
-        dome: ''
+        dome: '',
       }
     },
     mounted() {
@@ -370,6 +371,7 @@
     height: 8px;
     border-radius: 5px;
   }
+
   .swiper-slide {
     width: 100%;
   }
