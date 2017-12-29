@@ -192,7 +192,7 @@
     },
     mounted () {
       this.setAddress();
-      console.log(this.dome, "123123")
+      console.log(this.shopmsg);
     },
     computed: {
       ...mapGetters({
