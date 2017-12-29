@@ -447,6 +447,8 @@ const router = new Router({
 // 全局路由配置
 // 路由开始之前的操作
 router.beforeEach((to, from, next) => {
+
+
   // let { href, protocol, host, search, hash } = window.location
   // const pathname = '/mobile/index.html' // 解决支付路径问题添加的前缀，替换成你的
   // search = search || '?'

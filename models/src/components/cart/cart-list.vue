@@ -23,6 +23,7 @@
           </div>
         </div>
       <!--</router-link>-->
+      <!--<router-link :to="{ path: '/pages/onload',query: {id: id} }">上传图片</router-link>-->
       <el-button class="fr upload-pic" v-show="mode == 0" @click="upimg(pid)">上传图片</el-button>
       <div class="fr iconfont icon-shanchu" v-show="mode == 1" @click="deleteShop(pid)"></div>
     </div>

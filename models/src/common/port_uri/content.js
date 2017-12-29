@@ -34,5 +34,7 @@ exports.UPDATE_CART = '/api/home/shopcar/edit'
 exports.GET_ORDER_ADMIN = '/api/home/order/orderList'
 //  上传图片
 exports.ON_LOAD_PIC = '/api/home/ceshi/imgupload'
+//  微信SDK
+exports.GET_SDK = '/api/home/front/jssdk'
 
 

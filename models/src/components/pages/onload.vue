@@ -7,7 +7,7 @@
             <span>已选</span>
             <i class="c_b11e25">0</i>
             <span>张 ,上传</span>
-            <i class="c_b11e25">{{ fileList.length }}</i>
+            <i class="c_b11e25">{{ list.length }}</i>
             <span>张 上传中不要离开本页</span>
           </div>
           <ul>
@@ -34,7 +34,7 @@
                   <i class="el-icon-close icon-guanbi" @click="deletePic(index, item)"></i>
                   <i class="el-icon-check chonseok" v-show="chonseok"></i>
                   <!--<img src="../../../static/images/35.png" class="icon-guanbi" @click="clearpic()" />-->
-                  <img :src="item.src" class="w100 h100 previewer-demo-img" @click="$refs.previewer.show(index)">
+                  <img :src="item.src" style="margin: 0px auto;" class="previewer-demo-img block" @click="$refs.previewer.show(index)">
                   <!--<img src="../../../static/images/47.png" class="chonseok" alt="">-->
                 </div>
                 <div class="input">
@@ -57,7 +57,8 @@
             <el-button size="small" type="primary">增加相片</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
-          <el-button>立即下单</el-button>
+          <el-button @click="orderNow()">立即下单</el-button>
+
 
           <!--<div class="top-upload clearfix">-->
           <!--&lt;!&ndash;<a href="javascript:void(0);" class="fl block href-btn add-pic">增加照片</a>&ndash;&gt;-->
@@ -83,6 +84,9 @@
 
   import {mapGetters, mapActions} from 'vuex'
   import {GET_USER_INFO} from '../../store/getters/type'
+
+
+  import wx from 'weixin-js-sdk'
 
 
   export default {
@@ -113,7 +117,20 @@
     },
     created() {
       this.fetchData();
+      this.$ajax.HttpPost('/api/home/front/jssdk').then((res) => {
+        wx.config({
+          debug: true,
+          appId: res.appId,
+          timestamp: res.timestamp,
+          nonceStr: res.nonceStr,
+          signature: res.signature,
+          jsApiList: res.jsApiList,
+        });
 
+
+      });
+      console.log(window.location.href.split('#')[0])
+      console.log(encodeURIComponent(window.location.href.split('#')[0]));
     },
     watch: {
       '$route'() {
@@ -130,6 +147,9 @@
       previewer,
     },
     methods: {
+      orderNow() {
+
+      },
       saveImages() {
         let json = {}, arr = [], brr = [], option = {};
         for(let y in this.list) {
@@ -162,6 +182,7 @@
 
       },
       changeNumber(index, flag) {
+        let option = {}, json = {}, arr = [], brr = [], that = this;
         if (flag >= 1) {
           this.list[index].sum++;
         } else {
@@ -169,6 +190,30 @@
         }
         if (this.list[index].sum <= 1) {
           this.list[index].sum = 1;
+        }
+//        option = {
+//          num: this.list[index].sum,
+//          img: this.list[index].src,
+//        };
+//        brr.push(option);
+
+        for(let i in this.list) {
+          json = {
+            img: this.list[i].src,
+            num: this.list[i].sum,
+          };
+          arr.push(json);
+        }
+        let count = arr;
+        if (typeof JSON.stringify(count) === 'string') {
+          this.$ajax.HttpPost('/api/home/shopcar/upSave', {
+            id: that.$route.query.id,
+            img: JSON.stringify(count),
+            num: 1,
+          }).then((res) => {
+            this.$message(res.msg);
+//            location.reload();
+          });
         }
       },
       //  删除相片
@@ -207,18 +252,13 @@
       },
       changePicture() {
         wx.chooseImage({
-          count: 1,
-          needResult: 1,
-          sizeType: ['original', 'compressed'],     // 可以指定是原图还是压缩图，默认二者都有
-          sourceType: ['album', 'camera'],          // 可以指定来源是相册还是相机，默认二者都有
-          success(data) {
-            localIds = data.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-            if (rh.tostr(localIds)) {
-              wxuploadImage(localIds);
-            }
-          },
-          fail(res) {
-            alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+          count: 1, // 默认9
+          debug: true,
+          sizeType: ['original', 'compressed'],
+          sourceType: ['album', 'camera'],
+          success: function (res) {
+            var localIds = res.localIds;
+            console.log(localIds);
           }
         });
       },
@@ -258,11 +298,10 @@
           for (let j in arr) {
             json = {
               src: arr[j].img,
-              sum: 1,
+              sum: arr[j].num,
             };
             this.list.push(json);
           }
-          console.log(this.list);
         }).catch((error) => {
         });
       },
@@ -307,13 +346,13 @@
 
   .container .label ul li {
     height: 100%;
-    width: 8rem;
+    width: 46%;
     margin: 10px 14px 0px 0px;
     display: inline-block;
   }
 
   .container .label ul li:nth-child(2n) {
-    margin: 10px 0 0 0;
+    margin: 10px 0 20px 0;
   }
 
   .container .label ul li .input {
@@ -322,7 +361,8 @@
 
   .container .label ul li .onload-pic {
     width: 100%;
-    height: 7rem;
+    height: 130px;
+    overflow: hidden;
     position: relative;
   }
 
@@ -344,8 +384,8 @@
 
   .label ul li .onload-pic .icon-guanbi {
     position: absolute;
-    top: -8px;
-    right: -10px;
+    top: 0px;
+    right: 0px;
     font-size: 12px;
   }
 
@@ -370,6 +410,10 @@
     margin: 0px 10px;
     left: 0px;
     top: 0px;
+  }
+
+  .upload-demo .el-upload .el-button , .upload-pic .el-button {
+    width: 46%
   }
 
   .container .upload-pic .el-button {
@@ -412,6 +456,7 @@
     color: #fff;
     border: 1px solid #c8c9ca;
     border-radius: 0px;
+    width: 25%;
   }
 
   .upload-pic .top-upload .href-btn {
@@ -437,7 +482,7 @@
   }
 
   .input .el-input {
-    width: 4rem;
+    width: 50%;
   }
 
   .el-input__inner {
