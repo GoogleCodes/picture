@@ -9,6 +9,7 @@
             <span>张 ,上传</span>
             <i class="c_b11e25">{{ list.length }}</i>
             <span>张 上传中不要离开本页</span>
+            <el-button @click="changePicture"></el-button>
           </div>
           <ul>
             <!--<template v-for="(item, index) in fileList" v-show="!isNoList">-->
@@ -92,6 +93,7 @@
   export default {
     data() {
       return {
+        localIds: '',
         list: [],
         isNoList: false,
         uploadUrl: 'https://xinye-art.com/public/api/home/front/imgupload',
@@ -117,9 +119,11 @@
     },
     created() {
       this.fetchData();
-      this.$ajax.HttpPost('/api/home/front/jssdk').then((res) => {
+      this.$ajax.HttpPost('/api/home/front/jssdk', {
+        url: window.location.href
+      }).then((res) => {
         wx.config({
-          debug: true,
+          debug: false,
           appId: res.appId,
           timestamp: res.timestamp,
           nonceStr: res.nonceStr,
@@ -127,10 +131,15 @@
           jsApiList: res.jsApiList,
         });
 
+        wx.ready(function() {
+//          alert("wx.config success.");
+        })
+
+        wx.error(function() {
+//          alert("wx.config failed.");
+        })
 
       });
-      console.log(window.location.href.split('#')[0])
-      console.log(encodeURIComponent(window.location.href.split('#')[0]));
     },
     watch: {
       '$route'() {
@@ -174,7 +183,7 @@
             num: 1,
           }).then((res) => {
             this.$message(res.msg);
-            location.reload();
+//            location.reload();
           });
         }
       },
@@ -191,12 +200,6 @@
         if (this.list[index].sum <= 1) {
           this.list[index].sum = 1;
         }
-//        option = {
-//          num: this.list[index].sum,
-//          img: this.list[index].src,
-//        };
-//        brr.push(option);
-
         for(let i in this.list) {
           json = {
             img: this.list[i].src,
@@ -212,7 +215,6 @@
             num: 1,
           }).then((res) => {
             this.$message(res.msg);
-//            location.reload();
           });
         }
       },
@@ -253,12 +255,25 @@
       changePicture() {
         wx.chooseImage({
           count: 1, // 默认9
-          debug: true,
-          sizeType: ['original', 'compressed'],
-          sourceType: ['album', 'camera'],
+          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
           success: function (res) {
-            var localIds = res.localIds;
-            console.log(localIds);
+            var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+            wx.uploadImage({
+              localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+              isShowProgressTips: 1, // 默认为1，显示进度提示
+              success: function (res) {
+                var serverId = res.serverId; // 返回图片的服务器端ID
+                wx.downloadImage({
+                  serverId: serverId.toString(), // 需要下载的图片的服务器端ID，由uploadImage接口获得
+                  isShowProgressTips: 1, // 默认为1，显示进度提示
+                  success: function (res) {
+                    var downloadId = res.localId; // 返回图片下载后的本地ID
+                    alert(downloadId);
+                  }
+                });
+              }
+            });
           }
         });
       },
