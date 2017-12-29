@@ -80,7 +80,7 @@
       components: {ElButton},
       data() {
         return {
-          listStop: [],
+          listStop: this.$storageGet('cart_list_data'),
           data: {
             list: []
           }
@@ -107,14 +107,8 @@
           return sum.toFixed(2)
         },
       },
-      watch: {
-        "$route"() {
-          this.listStop = this.$storageGet('cart_list_data')
-        }
-      },
       mounted() {
         this.setAddress();
-        this.listStop = this.$storageGet('cart_list_data')
         console.log(this.data.list);
       },
       methods: {
@@ -129,15 +123,17 @@
             goodsdata: gid,
             num: 1,
             specdata: textSpecdata,
+            paytype: 1,
             address: this.data.list,
             uname: this.data.list.sname
           }).then((res) => {
+            console.log(res.data);
             this.$message({
               message: '提交成功！',
               type: "success"
             });
             setTimeout(() => {
-              this.$router.push({ path: '/pages/order'});
+              this.$router.push({ path: '/pages/pic-detail/' + res.data});
             }, 1500)
           });
         },

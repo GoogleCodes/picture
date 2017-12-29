@@ -5,7 +5,7 @@
         <div class="order-list">
           <div class="order-number fl w100">订单号 ：{{ item.orderid }}</div>
           <template v-for="(k, a) in item.goodsdata">
-            <router-link :to="{ path: '/pages/pic-detail/' + item.id}" class="block w100 h100">
+            <!--<router-link :to="{ path: '/pages/pic-detail/' + item.id}" class="block w100 h100">-->
               <div class="order-msg fl">
                 <div class="order-pic fl">
                   <template v-for="(m, i) in k.gthumb">
@@ -24,7 +24,7 @@
                   <span v-else-if="item.status == 3">已收货</span>
                 </div>
               </div>
-            </router-link>
+            <!--</router-link>-->
           </template>
           <div class="warp-input clear">
             <el-button class="fr" @click="goToPay(item.id)" v-if="item.status == 0">去付款</el-button>
@@ -154,16 +154,19 @@
   }
 
   .order-list .order-msg .wrap .wrap-title {
-    height: 23px;
-    overflow: hidden;
     line-height: 21px;
+  }
+
+  .order-list .order-msg .wrap .wrap-title, .order-list .order-msg .wrap .wrap-desc {
+    overflow: hidden;
     text-overflow: ellipsis;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .order-list .order-msg .wrap .wrap-desc {
-    height: 30px;
-    overflow: hidden;
-    text-overflow: ellipsis;
     text-align: left;
   }
 

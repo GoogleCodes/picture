@@ -10,20 +10,7 @@
       </div>
       <div class="series">
         <template v-for="(k,i) in data.albumList">
-          <div class="shop-series fl" v-if="k.id == 32">
-            <router-link :to="{ path: '/content/proseries',
-            query: {id: k.id, isup: k.is_up }}" class="block">
-              <div class="shop-series-pic">
-                <img :src="k.shotcut" class="w100 h100" alt="">
-              </div>
-              <div class="shop-series-text">
-                <p class="ft-18">{{ k.title }}</p>
-                <p class="ft-12">了解更多 &gt;</p>
-              </div>
-            </router-link>
-          </div>
-
-          <div class="shop-series fl" v-if="k.id !== 32">
+          <div class="shop-series fl">
             <router-link :to="{ path: '/inside/orderlist',
             query: {id: k.id, isup: k.is_up }}" class="block">
               <div class="shop-series-pic">
@@ -41,6 +28,15 @@
         </div>
       </div>
     </div>
+
+    <!--<div style="height: 300px;">-->
+      <!--<img class="previewer-demo-img" v-for="(item, index) in list"-->
+           <!--:src="item.src" width="100" @click="$refs.previewer.show(index)">-->
+      <!--<div>-->
+        <!--<previewer :list="list" ref="previewer" :options="options"></previewer>-->
+      <!--</div>-->
+    <!--</div>-->
+
     <div class="recommend">
       <div class="re-title ft-18">
         <h1 class="fl">热门推荐</h1>
@@ -112,8 +108,12 @@
 
 <script type="text/javascript">
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
+
+
+  import previewer from '../../../node_modules/vux/src/components/previewer/index.vue'
+
   export default {
-    components: {ElButton}, name: 'Content',
+    components: { ElButton, previewer, }, name: 'Content',
     data() {
       return {
         data: {
@@ -121,12 +121,25 @@
           desc: '',
           albumList: [],
         },
+        list: [{
+          src: 'https://xinye-art.com/public/upload/20171205/4b08ff585cc89e587708eb130adbd8ac.jpg',
+        },{
+          src: 'https://xinye-art.com/public/upload/20171205/4b08ff585cc89e587708eb130adbd8ac.jpg'
+        }],
+        options: {
+          getThumbBoundsFn (index) {
+            let thumbnail = document.querySelectorAll('.previewer-demo-img')[index]
+            let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
+            let rect = thumbnail.getBoundingClientRect()
+            return {x: rect.left, y: rect.top + pageYScroll, w: rect.width}
+          }
+        },
         swiperOption: {
           autoplay: 30000,
           pagination: '.swiper-pagination',
           paginationClickable: true,
         },
-        dome: ''
+        dome: '',
       }
     },
     mounted() {
@@ -383,6 +396,7 @@
     height: 8px;
     border-radius: 5px;
   }
+
   .swiper-slide {
     width: 100%;
   }

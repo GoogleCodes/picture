@@ -13,7 +13,7 @@ const vuxLoader = require('vux-loader')
 // const vuxLoader = require('vux-loader')
 // const webpackConfig = originalConfig
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
@@ -47,37 +47,39 @@ module.exports = {
   module: {
     //  各种不同类型文件加载器配置
     rules: [{
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: vueLoaderConfig
-      },{//  js文件用babel转码
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')],
-        exclude: resolve('node_modules')
-      },{//  图片后缀
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
-        }
-      },{
-        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('media/[name].[hash:7].[ext]')
-        }
-      },{//  字体文件
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
-        }
-      },
-    ]
+      test: /\.vue$/,
+      loader: 'vue-loader',
+      options: vueLoaderConfig
+    }, {//  js文件用babel转码
+      test: /\.js$/,
+      loader: 'babel-loader',
+      include: [resolve('src'), resolve('test')],
+      exclude: resolve('node_modules')
+    }, {//  图片后缀
+      test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+      loader: 'url-loader',
+      options: {
+        limit: 10000,
+        name: utils.assetsPath('img/[name].[hash:7].[ext]')
+      }
+    }, {
+      test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+      loader: 'url-loader',
+      options: {
+        limit: 10000,
+        name: utils.assetsPath('media/[name].[hash:7].[ext]')
+      }
+    }, {
+      test: /\.less$/,
+      loader: 'style-loader!css-loader!less-loader'
+    }, {//  字体文件
+      test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+      loader: 'url-loader',
+      options: {
+        limit: 10000,
+        name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+      }
+    }]
   }
   // plugins: [
   //   new webpack.optimize.CommonsChunkPlugin('common.js'),
