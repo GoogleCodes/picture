@@ -9,26 +9,8 @@
             <span>张 ,上传</span>
             <i class="c_b11e25">{{ list.length }}</i>
             <span>张 上传中不要离开本页</span>
-            <el-button @click="changePicture"></el-button>
           </div>
           <ul>
-            <!--<template v-for="(item, index) in fileList" v-show="!isNoList">-->
-              <!--<li class="fl" :class="{ 'chonsepic': index == chonseIndex }" @click.stop="choosePic(item, index)">-->
-                <!--<div class="onload-pic">-->
-                  <!--<i class="el-icon-close icon-guanbi" @click="deletePic(index, item)"></i>-->
-                  <!--<i class="el-icon-check chonseok" v-show="chonseok"></i>-->
-                  <!--&lt;!&ndash;<img src="../../../static/images/35.png" class="icon-guanbi" @click="clearpic()" />&ndash;&gt;-->
-                  <!--<img :src="item.url" class="w100 h100 previewer-demo-img" @click="$refs.previewer.show(index)">-->
-                  <!--&lt;!&ndash;<img src="../../../static/images/47.png" class="chonseok" alt="">&ndash;&gt;-->
-                <!--</div>-->
-                <!--<div class="input">-->
-                  <!--<el-button class="prev fl" @click="changeNumber(index, -1)">-</el-button>-->
-                  <!--<el-input v-model="arr[index].sum" class="fl" placeholder="0" readonly></el-input>-->
-                  <!--<el-button class="next fl" @click="changeNumber(index, 1)">+</el-button>-->
-                <!--</div>-->
-              <!--</li>-->
-            <!--</template>-->
-
             <template v-for="(item, index) in list" v-show="isNoList">
               <li class="fl" :class="{ 'chonsepic': index == chonseIndex }" @click.stop="choosePic(item, index)">
                 <div class="onload-pic">
@@ -49,6 +31,13 @@
         </div>
         <div class="upload-pic clear">
 
+          <!--<input type="file" id="img{{ pid }}{{ $index }}" name="imgs[]"-->
+                 <!--@click="fileClick($index)"-->
+                 <!--@change="getImage($index)"-->
+                 <!--multiple="multiple"-->
+                 <!--accept="image/jpeg,image/png,image/gif" />-->
+
+
           <el-upload
             class="upload-demo" name="img"
             :action="uploadUrl"
@@ -59,7 +48,6 @@
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
           <el-button @click="orderNow()">立即下单</el-button>
-
 
           <!--<div class="top-upload clearfix">-->
           <!--&lt;!&ndash;<a href="javascript:void(0);" class="fl block href-btn add-pic">增加照片</a>&ndash;&gt;-->
@@ -115,12 +103,13 @@
             return {x: rect.left, y: rect.top + pageYScroll, w: rect.width}
           }
         },
+        imgs: [],
       }
     },
     created() {
       this.fetchData();
       this.$ajax.HttpPost('/api/home/front/jssdk', {
-        url: window.location.href
+        url: encodeURIComponent(window.location.href.split('#')[0])
       }).then((res) => {
         wx.config({
           debug: false,
@@ -159,6 +148,20 @@
       orderNow() {
 
       },
+      fileClick(index) {
+        let evt = window.event;
+        evt.stopPropagation();
+        document.getElementById('img'+this.pid+index).value = '';
+      },
+      getImage(index) {
+        let file = document.getElementById('img'+this.pid+index);
+        this.imgs[index].state = 1;
+        if(this.handleFiles(file.files[0],index)===false){
+          this.imgs[index].state = 0;
+          file.value = '';
+          return false;
+        }
+      },
       saveImages() {
         let json = {}, arr = [], brr = [], option = {};
         for(let y in this.list) {
@@ -183,7 +186,7 @@
             num: 1,
           }).then((res) => {
             this.$message(res.msg);
-//            location.reload();
+            location.reload();
           });
         }
       },
@@ -254,7 +257,7 @@
       },
       changePicture() {
         wx.chooseImage({
-          count: 1, // 默认9
+          count: 9, // 默认9
           sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
           sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
           success: function (res) {
@@ -264,6 +267,7 @@
               isShowProgressTips: 1, // 默认为1，显示进度提示
               success: function (res) {
                 var serverId = res.serverId; // 返回图片的服务器端ID
+                alert(serverId);
                 wx.downloadImage({
                   serverId: serverId.toString(), // 需要下载的图片的服务器端ID，由uploadImage接口获得
                   isShowProgressTips: 1, // 默认为1，显示进度提示

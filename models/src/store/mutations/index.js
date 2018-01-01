@@ -12,7 +12,8 @@ export default {
     if (userinfo === null) {
       cookieStorage.remove(user_info)
     } else {
-      cookieStorage.set('user_info', userinfo, '2017-12-30T23:50:50.932Z')
+      cookieStorage.set('user_info', userinfo)
+      console.log(userinfo)
     }
   },
 

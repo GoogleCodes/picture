@@ -448,20 +448,20 @@ const router = new Router({
 // 路由开始之前的操作
 router.beforeEach((to, from, next) => {
 
-  // let { href, protocol, host, search, hash } = window.location
-  // const pathname = '/mobile/index.html' // 解决支付路径问题添加的前缀，替换成你的
-  // search = search || '?'
-  // hash = hash || '#!/'
-  // let newHref = `${protocol}//${host}${pathname}${search}${hash}`
-  // if (newHref !== href) {
-  //   window.location.replace(newHref)
-  // }
-  //
-  // if (store.state.user_openid == undefined) {
-  //     window.location.href = "https://xinye-art.com/public/api/home/pay/getcode"
-  //     storageSet('openid', store.state.user_openid);
-  //     return true;
-  // }
+  let { href, protocol, host, search, hash } = window.location
+  const pathname = '/mobile/index.html' // 解决支付路径问题添加的前缀，替换成你的
+  search = search || '?'
+  hash = hash || '#!/'
+  let newHref = `${protocol}//${host}${pathname}${search}${hash}`
+  if (newHref !== href) {
+    window.location.replace(newHref)
+  }
+
+  if (store.state.user_openid == undefined) {
+      window.location.href = "https://xinye-art.com/public/api/home/pay/getcode"
+      storageSet('openid', store.state.user_openid);
+      return true;
+  }
 
   let is_login = store.state.user_info.user
   if (to.matched.some(record => record.meta.requiresAuth)) {

@@ -33,7 +33,9 @@
   import heads from '@/components/top/Top.vue'
   import foots from '@/components/footer/Footer.vue'
   import { mapActions } from 'vuex'
+  import { mapGetters } from 'vuex'
   import { SET_USER_INFO } from '../../store/actions/type'
+  import { GET_USER_INFO } from '../../store/getters/type'
 
   import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
   import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
@@ -85,6 +87,7 @@
                 },
                 login: true
               });
+              console.log(this.get_user_info)
               that.load_data = false;
               setTimeout(() => {
                 this.$router.replace({ path: '/' })
@@ -97,7 +100,9 @@
 
     },
     computed: {
-
+      ...mapGetters({
+        get_user_info: GET_USER_INFO
+      }),
     },
     components: {
       ElCheckboxGroup, ElFormItem, ElForm, ElButton, ElInput, heads,
