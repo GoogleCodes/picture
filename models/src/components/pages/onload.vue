@@ -29,20 +29,18 @@
             </template>
           </ul>
         </div>
+        <!--<button @click="fileClick">增加相片</button>-->
         <div class="upload-pic clear">
 
-          <!--<input type="file" id="img{{ pid }}{{ $index }}" name="imgs[]"-->
-                 <!--@click="fileClick($index)"-->
-                 <!--@change="getImage($index)"-->
-                 <!--multiple="multiple"-->
-                 <!--accept="image/jpeg,image/png,image/gif" />-->
-
+          <!--<input type="file" id="img" name="img"-->
+                 <!--@change="changePicture"-->
+                 <!--multiple="multiple" accept="image/jpeg,image/png,image/gif" />-->
 
           <el-upload
             class="upload-demo" name="img"
             :action="uploadUrl"
-            :on-change="changePicture"
             :on-success="handleAvatarSuccess"
+            :http-request="changePicture"
             :file-list="fileList" :multiple="true">
             <el-button size="small" type="primary">增加相片</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -74,9 +72,7 @@
   import {mapGetters, mapActions} from 'vuex'
   import {GET_USER_INFO} from '../../store/getters/type'
 
-
   import wx from 'weixin-js-sdk'
-
 
   export default {
     data() {
@@ -109,15 +105,15 @@
     created() {
       this.fetchData();
       this.$ajax.HttpPost('/api/home/front/jssdk', {
-        url: encodeURIComponent(window.location.href.split('#')[0])
+        url: window.location.href.split('#')[0]
       }).then((res) => {
         wx.config({
-          debug: false,
+          debug: true,
           appId: res.appId,
           timestamp: res.timestamp,
           nonceStr: res.nonceStr,
           signature: res.signature,
-          jsApiList: res.jsApiList,
+          jsApiList: ["uploadImage", "chooseImage", "previewImage", "downloadImage"],  //  res.jsApiList,
         });
 
         wx.ready(function() {
@@ -148,15 +144,15 @@
       orderNow() {
 
       },
-      fileClick(index) {
+      fileClick() {
         let evt = window.event;
         evt.stopPropagation();
-        document.getElementById('img'+this.pid+index).value = '';
+        document.getElementById('img').click();
       },
       getImage(index) {
         let file = document.getElementById('img'+this.pid+index);
         this.imgs[index].state = 1;
-        if(this.handleFiles(file.files[0],index)===false){
+        if(this.handleFiles(file.files[0],index) === false){
           this.imgs[index].state = 0;
           file.value = '';
           return false;
@@ -257,21 +253,20 @@
       },
       changePicture() {
         wx.chooseImage({
-          count: 9, // 默认9
+          count: 9,
           sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-          success: function (res) {
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有 , 'camera'
+          success(res) {
             var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
             wx.uploadImage({
               localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
               isShowProgressTips: 1, // 默认为1，显示进度提示
-              success: function (res) {
+              success(res) {
                 var serverId = res.serverId; // 返回图片的服务器端ID
-                alert(serverId);
                 wx.downloadImage({
                   serverId: serverId.toString(), // 需要下载的图片的服务器端ID，由uploadImage接口获得
                   isShowProgressTips: 1, // 默认为1，显示进度提示
-                  success: function (res) {
+                  success(res) {
                     var downloadId = res.localId; // 返回图片下载后的本地ID
                     alert(downloadId);
                   }
