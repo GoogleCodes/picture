@@ -1,5 +1,8 @@
 <template>
   <div class="bgcolor">
+
+    <input type="text" id="dome">
+
     <elenav></elenav>
     <div class="content clear" style="margin: 0px auto 25px;">
       <div class="con-pro" style="height: 360px;" v-loading="load.load_data" element-loading-text="正在加载中...">
@@ -7,6 +10,38 @@
       </div>
       <div class="experience" style="margin: 50px auto;background: #fff">
         <detailSwiper :listpic="swiperList" :cid="list.cat_id"></detailSwiper>
+
+        <div class="pc-slide">
+          <div class="view">
+            <div class="swiper-container">
+              <a class="arrow-left" href="#"></a>
+              <a class="arrow-right" href="#"></a>
+              <div class="swiper-wrapper">
+                <template v-for="k in swiper">
+                  <div class="swiper-slide">
+                    <a target="_blank">
+                      <img :src="k.url" alt="">
+                    </a>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+          <div class="preview">
+            <a class="arrow-left" href="#"></a>
+            <a class="arrow-right" href="#"></a>
+            <div class="swiper-container">
+              <div class="swiper-wrapper">
+                <template v-for="k in swiper">
+                  <div class="swiper-slide active-nav">
+                    <img :src="k.url" alt="" style="width: 100%;height: 100%;">
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="tb-wrap fl" v-loading="load.load_data" element-loading-text="正在加载中...">
           <div class="right-select fr" v-if="list.cat_id !== 32" :style="{position: 'relative',top: '-120px'}">
             <div class="select-title">{{ list.goods_name }}<span>{{ list.goods_remark }}</span></div>
@@ -122,12 +157,15 @@
   import { GET_USER_INFO } from '../../store/getters/type'
   import guige from '@/components/pages/guige'
 
+  import Swiper from '../../../static/js/idangerous.swiper.min.js'
+
   export default {
     name: 'dingzhi',
     data() {
       return {
         list: {},
         swiperList: [],
+        swiper: [],
         data: {
           dtype: 1,
           currGuiGe: "",
@@ -149,12 +187,21 @@
         chName: [],
       }
     },
+    fliters: {
+      setEvent(url) {
+        this.banners();
+        return url
+      }
+    },
     mounted() {
+
       this.getDataShop();
+
     },
     watch: {
       '$route'() {
         this.getDataShop();
+        location.reload();
       }
     },
     components: {
@@ -170,6 +217,9 @@
       ...mapGetters({
         get_user_info: GET_USER_INFO
       }),
+//      swiper() {
+//        return JSON.parse(localStorage.getItem('swiper'));
+//      },
       getGuigeName() {
         if (this.guigeName <= 0) {
           return '请选择商品规格和数量';
@@ -183,6 +233,55 @@
       }
     },
     methods: {
+      getSwiper() {
+        var viewSwiper = new Swiper('.view .swiper-container', {
+          autoplay: '5000',
+          direction: 'horizontal',
+          onSlideChangeStart: function () {
+            updateNavPosition();
+          }
+        })
+
+        $('.view .arrow-left,.preview .arrow-left').on('click', function (e) {
+          e.preventDefault();
+          if (viewSwiper.activeIndex == 0) {
+            viewSwiper.swipeTo(viewSwiper.slides.length - 1, 1000);
+            return;
+          }
+          viewSwiper.swipePrev();
+        })
+
+        $('.view .arrow-right,.preview .arrow-right').on('click', function (e) {
+          e.preventDefault();
+          if (viewSwiper.activeIndex == viewSwiper.slides.length - 1) {
+            viewSwiper.swipeTo(0, 1000);
+            return
+          }
+          viewSwiper.swipeNext();
+        })
+
+        var previewSwiper = new Swiper('.preview .swiper-container', {
+          visibilityFullFit: true,
+          slidesPerView: 'auto',
+          onlyExternal: true,
+          onSlideClick: function () {
+            viewSwiper.swipeTo(previewSwiper.clickedSlideIndex);
+          }
+        })
+
+        function updateNavPosition() {
+          $('.preview .active-nav').removeClass('active-nav');
+          var activeNav = $('.preview .swiper-slide').eq(viewSwiper.activeIndex).addClass('active-nav');
+          if (!activeNav.hasClass('swiper-slide-visible')) {
+            if (activeNav.index() > previewSwiper.activeIndex) {
+              var thumbsPerNav = Math.floor(previewSwiper.width / activeNav.width()) - 1;
+              previewSwiper.swipeTo(activeNav.index() - thumbsPerNav);
+            } else {
+              previewSwiper.swipeTo(activeNav.index());
+            }
+          }
+        }
+      },
       getFilterArray(array) {
         const res = [];
         const json = {};
@@ -211,7 +310,12 @@
             case res.code == 1:
               this.list = res.data;
               this.swiperList = JSON.parse(res.data.photo);
+              localStorage.setItem('swiper', res.data.photo)
               that.myspecList = this.list.myspec;
+              that.$nextTick(() => {
+                that.getSwiper();
+                this.swiper = JSON.parse(localStorage.getItem('swiper'));
+              });
               //  获取随机商品
               this.$ajax.HttpGet(this.$api.get_other.GET_OTHER + '?cid=' + this.list.cat_id + '&num=' + 3).then((res) => {
                 this.randomList = res.data;
@@ -751,4 +855,88 @@
     color: #fff;
   }
 
+</style>
+
+<style>
+
+  .pc-slide {
+    width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .view .swiper-container {
+    width: 100%;
+    height: 350px;
+  }
+
+  .view .arrow-left {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    margin-top: -25px;
+    width: 28px;
+    height: 51px;
+    z-index: 10;
+  }
+
+  .view .arrow-right {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -25px;
+    width: 28px;
+    height: 51px;
+    z-index: 10;
+  }
+
+  .preview {
+    width: 100%;
+    margin-top: 10px;
+    position: absolute;
+    bottom: 0px;
+  }
+
+  .preview .swiper-container {
+    width: 430px;
+    height: 82px;
+    margin-left: 35px;
+  }
+
+  .preview .swiper-slide {
+    width: 100px;
+    height: 82px;
+  }
+
+  .preview .slide6 {
+    width: 82px;
+  }
+
+  .preview .arrow-left {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    margin-top: -9px;
+    width: 9px;
+    height: 18px;
+    z-index: 10;
+  }
+
+  .preview .arrow-right {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -9px;
+    width: 9px;
+    height: 18px;
+    z-index: 10;
+  }
+
+  .preview img {
+    padding: 1px;
+  }
+
+  .preview .active-nav img {
+    padding: 0;
+  }
 </style>
