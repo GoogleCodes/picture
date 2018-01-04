@@ -13,7 +13,6 @@ export default {
       cookieStorage.remove(user_info)
     } else {
       cookieStorage.set('user_info', userinfo)
-      console.log(userinfo)
     }
   },
 

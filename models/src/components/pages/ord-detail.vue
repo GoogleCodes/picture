@@ -109,7 +109,6 @@
       },
       mounted() {
         this.setAddress();
-        console.log(this.data.list);
       },
       methods: {
         SubmitOrder() {
@@ -127,7 +126,6 @@
             address: this.data.list,
             uname: this.data.list.sname
           }).then((res) => {
-            console.log(res.data);
             this.$message({
               message: '提交成功！',
               type: "success"

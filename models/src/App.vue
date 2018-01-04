@@ -15,22 +15,14 @@
   import goback from '@/components/top/back.vue'
   import vfoot from '@/components/footer/Footer.vue'
 
-export default {
-  name: 'app',
-  data() {
-      return {
-
-      };
-  },
-  crated() {
-
-  },
-  components: {
-    heads,
-    vfoot,
-    goback
+  export default {
+    name: 'app',
+    components: {
+      heads,
+      vfoot,
+      goback
+    }
   }
-}
 </script>
 
 <style lang="less">

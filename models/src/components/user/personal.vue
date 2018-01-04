@@ -162,7 +162,8 @@
 </style>
 
 <style type="text/css">
-  .avatar-cropper .avatar-cropper-container .avatar-cropper-footer .avatar-cropper-btn {
-    padding: 0px;
+
+  .avatar-cropper .avatar-cropper-container .avatar-cropper-footer .avatar-cropper-btn  {
+    padding: 0px 0px;
   }
 </style>

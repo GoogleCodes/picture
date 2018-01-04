@@ -50,7 +50,7 @@
               </div>
               <div class="status fr">
                 <p>¥{{ k.price }}</p>
-                <p>X1</p>
+                <p>X{{ k.num }}</p>
               </div>
             </div>
           </div>
@@ -60,11 +60,13 @@
           <span class="fr">包邮</span>
         </div>
         <div class="money-util fr">
-          <p>商品总价：￥39.80</p>
+          <template v-for="(k, i) in data.goodsdata">
+            <p>商品总价：￥{{ k.price }}</p>
+          </template>
           <p class="ft-18">
             <span>实付款：</span>
             <span class="c_b11e25">￥</span>
-            <i class="c_b11e25">39.80</i>
+            <i class="c_b11e25">{{ countPrice }}</i>
           </p>
         </div>
         <div class="comment clear">
@@ -102,8 +104,6 @@
     },
     mounted() {
       this.getOrderMsg();
-      console.log(this.$route.params.id);
-
     },
     watch: {
       '$route'() {
@@ -114,7 +114,14 @@
       ...mapGetters({
         get_user_info: GET_USER_INFO,
         get_user_openid: GET_USER_OPENID,
-      })
+      }),
+      countPrice() {
+        let count = 0;
+        for(let i in this.data.goodsdata) {
+          count = this.data.goodsdata[i].price * this.data.goodsdata[i].num
+        }
+        return count;
+      }
     },
     components: {
       ElButton
@@ -162,7 +169,6 @@
           uid: this.get_user_info.user.id
         }).then((res) => {
           this.data = res.data;
-          console.log(res.data);
           this.adr = JSON.parse(res.data.address);
         });
       }

@@ -27,7 +27,7 @@
       }
     },
     mounted() {
-      console.log(this.$route, this.get_user_info, this.get_user_openid);
+
     },
     computed: {
       ...mapGetters({

@@ -71,6 +71,9 @@ import news from '@/components/content/news'
 import newsdetail from '@/components/content/newsdetail'
 //  个人资料
 import personal from '@/components/user/personal'
+
+//  Dome 测试
+import DomeUpload from '@/components/dome/dome'
 Vue.use(Router);
 
 let routes = [{
@@ -437,6 +440,17 @@ let routes = [{
     footer: true,
      requiresAuth: true
   }
+},{
+  path: '/dome/dome',
+  name: 'DomeUpload',
+  component: DomeUpload,
+  meta: {
+    header: false,
+    goback: true,
+    title: '装饰画',
+    footer: true,
+     requiresAuth: true
+  }
 }];
 
 
@@ -457,6 +471,7 @@ router.beforeEach((to, from, next) => {
     window.location.replace(newHref)
   }
 
+  //  判断open是否存在
   if (store.state.user_openid == undefined) {
       window.location.href = "https://xinye-art.com/public/api/home/pay/getcode"
       storageSet('openid', store.state.user_openid);

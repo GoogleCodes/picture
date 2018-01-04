@@ -5,7 +5,7 @@
         <div class="order-list">
           <div class="order-number fl w100">订单号 ：{{ item.orderid }}</div>
           <template v-for="(k, a) in item.goodsdata">
-            <!--<router-link :to="{ path: '/pages/pic-detail/' + item.id}" class="block w100 h100">-->
+            <router-link :to="{ path: '/pages/pic-detail/' + item.id}" class="block w100 h100">
               <div class="order-msg fl">
                 <div class="order-pic fl">
                   <template v-for="(m, i) in k.gthumb">
@@ -24,13 +24,13 @@
                   <span v-else-if="item.status == 3">已收货</span>
                 </div>
               </div>
-            <!--</router-link>-->
+            </router-link>
           </template>
           <div class="warp-input clear">
             <el-button class="fr" @click="goToPay(item.id)" v-if="item.status == 0">去付款</el-button>
-            <el-button class="fr" @click="confirmOrd(1)" v-else-if="item.status == 2">已付款</el-button>
-            <el-button class="fr" @click="cancelOrd(1)" v-else-if="item.status == 3">已发货</el-button>
-            <el-button class="fr" @click="cancelOrd(1)" v-else-if="item.status == 4">已收货</el-button>
+            <el-button class="fr" @click="confirmOrd(1)" v-else-if="item.status == 1">已付款</el-button>
+            <el-button class="fr" @click="cancelOrd(1)" v-else-if="item.status == 2">已发货</el-button>
+            <el-button class="fr" @click="cancelOrd(1)" v-else-if="item.status == 3">已收货</el-button>
           </div>
         </div>
       </template>
@@ -76,7 +76,6 @@
               uid: + this.get_user_info.user.id
             }).then((res) => {
               this.list = res.data.data.data;
-              console.log(this.list);
             });
           },
           confirmOrd() {

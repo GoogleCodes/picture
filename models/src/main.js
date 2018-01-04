@@ -18,6 +18,13 @@ import router from './router'
 import ElementUI from 'element-ui'
 //  导入swiper-css
 require('swiper/dist/css/swiper.css')
+
+// require('../node_modules/vconsole/dist/vconsole.min.js');
+
+import VConsole from '../node_modules/vconsole/dist/vconsole.min.js'
+
+var vConsole = new VConsole();
+
 //  导入路由
 import VueRouter from 'vue-router'
 import {

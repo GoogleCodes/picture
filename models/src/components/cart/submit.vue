@@ -171,7 +171,7 @@
         }
     },
     created () {
-      console.log(this.list);
+
     },
     methods: {
       submitMessage(formName) {
@@ -179,7 +179,6 @@
           if (!valid) {
             return false;
           }
-          //  登录提交
           let json = {
             waddress : this.ruleForm.whereAddress,
             address : this.ruleForm.address,
@@ -190,7 +189,6 @@
           var arr = [];
           arr.push(json);
           localStorage.setItem('Info_address',JSON.stringify(arr));
-          console.log(json);
         });
       },
       chonsePay(index, item) {
