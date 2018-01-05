@@ -11,7 +11,7 @@
             <span>张 上传中不要离开本页</span>
           </div>
           <ul class="localIds">
-            <template v-for="(item, index) in fileList">
+            <template v-for="(item, index) in list">
               <!--  v-show="isNoList"  @click.stop="choosePic(item, index)"  -->
               <li class="fl localIds" :class="{ 'chonsepic': index == chonseIndex }">
                 <div class="onload-pic" id="onloads">
@@ -28,7 +28,7 @@
                   <el-button class="next fl" @click="changeNumber(index, 1)">+</el-button>
                 </div>
                 <div>
-                  <el-input v-model="item.remarks">remarks</el-input>
+                  <el-input style="margin: 10px 0 0;" v-model="item.remarks" @blur="saveRemarks(index, item.remarks)">remarks</el-input>
                 </div>
               </li>
             </template>
@@ -52,7 +52,7 @@
     <div class="msg-ps clear">备注 ：(建议使用wifi/移动4G网络上传，上传时请耐心等候）</div>
 
     <div style="height: 150px;">
-      <previewer :list="fileList" ref="previewer" :options="options"></previewer>
+      <previewer :list="list" ref="previewer" :options="options"></previewer>
     </div>
 
   </div>
@@ -102,7 +102,7 @@
         url: window.location.href.split('#')[0]
       }).then((res) => {
         wx.config({
-          debug: false,
+          debug: true,
           appId: res.appId,
           timestamp: res.timestamp,
           nonceStr: res.nonceStr,
@@ -139,6 +139,29 @@
     methods: {
       fileClick() {
         document.getElementById('img').click();
+      },
+      saveRemarks(index, remarks) {
+        let json = {}, arr = [], that = this;
+        this.list[index].remarks = remarks;
+        this.remarks = remarks;
+        for (let i in this.list) {
+          json = {
+            img: this.list[i].src,
+            num: this.list[i].num,
+            remarks: this.list[i].remarks,
+            code: this.list[i].code
+          };
+          arr.push(json);
+        }
+        if (typeof JSON.stringify(arr) === 'string') {
+          this.$ajax.HttpPost('/api/home/shopcar/upSave', {
+            id: that.$route.query.id,
+            img: JSON.stringify(arr),
+            num: 1,
+          }).then((res) => {
+            this.$message(res.msg);
+          });
+        }
       },
       saveImages() {
         let brr = [], option = {}, that = this;
@@ -177,32 +200,33 @@
       changeNumber(index, flag) {
         let option = {}, json = {}, arr = [], brr = [], that = this;
         if (flag >= 1) {
-          this.fileList[index].num++;
+          this.list[index].num++;
         } else {
-          this.fileList[index].num--;
+          this.list[index].num--;
         }
-        if (this.fileList[index].num <= 1) {
-          this.fileList[index].num = 1;
+        if (this.list[index].num <= 1) {
+          this.list[index].num = 1;
         }
-        console.log(this.fileList[index].num);
-        return;
-        for (let y in that.fileList) {
-          option = {
-            img: this.fileList[y].src,
-            num: this.fileList[y].num,
-            remarks: this.fileList[y].remarks,
-          };
-          brr.push(option);
-        }
+        console.log(this.list[index].num);
+//        for (let y in that.fileList) {
+//          option = {
+//            img: this.fileList[y].src,
+//            num: this.fileList[y].num,
+//            remarks: this.fileList[y].remarks,
+//            code: this.fileList[y].code,
+//          };
+//          brr.push(option);
+//        }
         for (let i in this.list) {
           json = {
             img: this.list[i].src,
             num: this.list[i].num,
             remarks: this.list[i].remarks,
+            code: this.list[i].code,
           };
           arr.push(json);
         }
-        let count = arr.concat(brr);
+        let count = arr;  //  arr.concat(brr);
         if (typeof JSON.stringify(count) === 'string') {
           this.$ajax.HttpPost('/api/home/shopcar/upSave', {
             id: that.$route.query.id,
@@ -225,13 +249,13 @@
       //  删除相片
       deletePic(index, item) {
         let getIndex = null, json = {}, arr = [];
-        this.fileList.splice(index, 1);
-        return;
-        for (let i in this.fileList) {
+        this.list.splice(index, 1);
+        for (let i in this.list) {
           json = {
-            img: this.fileList[i].src,
-            num: this.fileList[i].num,
-            remarks: '',
+            img: this.list[i].src,
+            num: this.list[i].num,
+            remarks: this.list[i].remarks,
+            code: this.list[i].code
           };
           arr.push(json);
         }
@@ -250,15 +274,18 @@
         let evt = window.event;
         evt.stopPropagation();
         let json = {}, that = this;
+        // ID数组
+        var localIds = null;
         // 上传序号
         var idx = 0;
+        var serverIds = '';
         wx.ready(function () {
           wx.chooseImage({
             count: 9, // 默认9
             sizeType: ['original'],
             sourceType: ['album'],
             success(res) {
-              var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+              localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
               //  必须做一下mediaId的设定，否则将会无法在安卓端得到微信上传功能的触发
               let i = 0;
               if (window.__wxjs_is_wkwebview) {  //判断是否是WKWebview内核，也就是苹果内核
@@ -275,7 +302,6 @@
                       };
                       that.fileList.push(json);
 //                      that.list.push(json);
-                      console.log(that.fileList, 'fileList');
                       i++;
                       if (i < localData.length) {
                         localImgData();
@@ -301,75 +327,80 @@
                   console.log(that.fileList, 'fileList');
                 }
                 localImgData();
-//                that.saveImages();
               }
+
               uploadImage(localIds);
 
               function uploadImage(localIds) {
-                let realLocalIds = localIds.toString().split(',');
-                let mediaIdArray = "";
-
                 wx.uploadImage({
-                  localId: realLocalIds[i].toString(), //  需要上传的图片的本地ID，由chooseImage接口获得
+                  localId: localIds[idx].toString(), //  需要上传的图片的本地ID，由chooseImage接口获得
                   isShowProgressTips: 1, // 默认为1,显示进度提示
                   success(res) {
                     idx++;
+                    //存储图片媒体ID，用，号分割
+                    serverIds = res.serverId + ','
+
+                    console.log(serverIds, '---serverId');
+
                     var serverId = res.serverId; // 返回图片的服务器端ID
                     this.serverId = res.serverId;
-                    mediaIdArray += serverId + ',';
-                    console.log(mediaIdArray, '---serverId');
-                    if (idx < mediaIdArray.length) {
+
+                    console.log(serverIds.length,  "----", idx < serverIds.length);
+
+                    if (idx < that.fileList) {  //  本地图片ID 还没全部获取完图片媒体ID
+                      //  调用上传递归函数
                       uploadImage(localIds);
                     } else {
+                      //  上传序号归零
                       idx = 0;
-                      let arr = [], json = {};
+                      let arr = [], json = {}, xyz = {}, brr = [];
                       that.serverId = serverId;
+                      for (let i in that.list) {
+                        xyz = {
+                          img: that.list[i].src,
+                          num: that.list[i].num,
+                          code: serverIds,
+                          remarks: that.list[i].remarks,
+                        }
+                        brr.push(xyz);
+                      }
                       for (let i in that.fileList) {
                         json = {
                           img: 'a',
                           num: that.fileList[i].num,
-                          code: mediaIdArray,
+                          code: serverIds,
                           remarks: '',
                         };
                         arr.push(json);
                       }
-                      console.log(arr, "sava");
-                      if (typeof JSON.stringify(arr) === 'string') {
+                      let count = arr.concat(brr);
+                      console.log(count, "sava");
+                      if (typeof JSON.stringify(count) === 'string') {
                         that.$ajax.HttpPost('/api/home/shopcar/upSave', {
                           id: that.$route.query.id,
-                          img: JSON.stringify(arr),
-                          code: serverId,
+                          img: JSON.stringify(count),
+                          code: serverIds,
                           num: 1,
                         }).then((res) => {
                           console.log(res, 'uploadSave');
-                          this.$message(res.msg);
+                          that.$message(res.msg);
+//                          setTimeout((res) => {
+//                            location.reload();
+//                          }, 500)
                         });
                       }
-                      mediaIdArray = '';
+                      serverIds = '';
                       return true;
                     }
+                  },
+                  fail(err) {
+                    alert("上传失败，msg："+JSON.stringify(res));
                   }
                 });
               }
+
             }
           });
-        })
-      },
-      getLocalImgData(localIds) {
-        let thisObj = this;
-        let localId = localIds.pop();
-        let i = 0;
-        wx.getLocalImgData({
-          localId: localIds[i],
-          success(res) {
-            let localData = res.localData;
-            localData = localData.replace('jgp', 'jpeg');
-            thisObj.images.push({imgSrc: localData, localId: localId});
-            i++;
-            if (localIds.length > 0) {
-              thisObj.getLocalImgData(localIds)
-            }
-          },
         })
       },
       //  上传成功相片
@@ -407,9 +438,10 @@
           }
           for (let j in arr) {
             json = {
+              code: arr[j].code,
               src: arr[j].img,
               num: arr[j].num,
-              remarks: '',
+              remarks: arr[j].remarks,
             };
             this.list.push(json);
           }
@@ -447,7 +479,7 @@
   }
 
   .container .label ul li:nth-child(2n) {
-    margin: 10px 0 20px 0;
+    margin: 10px 0 10px 0;
   }
 
   .container .label ul li .input {
