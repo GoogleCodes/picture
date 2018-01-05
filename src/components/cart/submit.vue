@@ -192,7 +192,7 @@
     },
     mounted () {
       this.setAddress();
-      console.log(this.shopmsg);
+      console.log(this.dome, "123123")
     },
     computed: {
       ...mapGetters({
@@ -262,7 +262,6 @@
               uname: this.currAddJson.sname
             };
             this.$ajax.HttpPost('/api/home/order/add',json).then((res) => {
-              console.log(res.data, '-----------------------------------------------------');
               this.$storage.storageRemove('gopayData_info');
               this.$message(res.msg);
                 if(that.payloots == 0) {
@@ -271,7 +270,7 @@
                     uid: this.get_user_info.user.id,
                     type: that.payloots,
                   }).then((res) => {
-                    console.log(res);
+
                   });
                 } else if(that.payloots == 1) {
                   this.$ajax.HttpPost('/api/home/order/setPayType', {

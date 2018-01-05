@@ -57,15 +57,15 @@
                   </div>
                   <div class="item-amount">
                     <el-button slot="prepend" class="no-minus fl" style="margin: 0 10px 0 0;"
-                               @click="changeNumber(i, -1)">
-                       -
-                    </el-button>
+                               @click="changeNumber(i, -1)"> - </el-button>
                     <el-input type="text" v-model="k.sum" class="fl" readonly></el-input>
-
+                    <div style="font-size: 36px;">{{ k.img }}</div>
                     <el-button slot="append" class="add-max fl" style="margin-left: 10px;"
                                @click="changeNumber(i, 1)">+
                     </el-button>
                   </div>
+                  <el-input style="margin-top: 10px;" placeholder="请增加备注"
+                            v-model="k.remarks" @blur="saveRemarks(i, k.remarks)"></el-input>
                 </li>
               </template>
             </ul>
@@ -113,6 +113,7 @@
         arr: [],
         options: {},
         orderList: [],
+        remarks: '1abaf'
       }
     },
     created() {
@@ -131,6 +132,28 @@
       ElButton,
     },
     methods: {
+      //  增加备注
+      saveRemarks(index, remarks) {
+        let json = {}, arr = [], that = this;
+        this.list[index].remarks = remarks;
+        for (let i in this.list) {
+          json = {
+            img: this.list[i].src,
+            num: this.list[i].sum,
+            remarks: this.list[i].remarks
+          };
+          arr.push(json);
+        }
+        if (typeof JSON.stringify(arr) === 'string') {
+          this.$ajax.HttpPost('/api/home/shopcar/upSave', {
+            id: that.$route.query.id,
+            img: JSON.stringify(arr),
+            num: 1,
+          }).then((res) => {
+            this.$message(res.msg);
+          });
+        }
+      },
       changeNumber(index, flag) {
         let option = {}, json = {}, arr = [], brr = [], that = this;
         if (flag >= 1) {
@@ -218,10 +241,11 @@
               }
             }
           }
-          for (let j in arr) {
+          for (let j = 0; j < arr.length; j++) {
             json = {
               src: arr[j].img,
               sum: arr[j].num,
+              remarks: arr[j].remarks,
             };
             this.list.push(json);
           }
@@ -233,7 +257,7 @@
         for(let y in this.list) {
           option = {
             img: this.list[y].src,
-            num: this.list[y].sum
+            num: this.list[y].sum,
           };
           brr.push(option);
         }
@@ -241,6 +265,7 @@
           json = {
             img: this.fileList[i].response.data.path,
             num: this.fileList[i].response.data.num,
+            remarks: ''
           };
           arr.push(json);
         }

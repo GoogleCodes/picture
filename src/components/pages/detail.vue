@@ -1,17 +1,14 @@
 <template>
   <div class="bgcolor">
-
-    <input type="text" id="dome">
-
     <elenav></elenav>
     <div class="content clear" style="margin: 0px auto 25px;">
       <div class="con-pro" style="height: 360px;" v-loading="load.load_data" element-loading-text="正在加载中...">
         <img :src="list.shotcut" alt="" style="width: 100%;height: 100%;">
       </div>
       <div class="experience" style="margin: 50px auto;background: #fff">
-        <detailSwiper :listpic="swiperList" :cid="list.cat_id"></detailSwiper>
+        <detailSwiper :listpic="swiperList" :cid="list.cat_id" v-if="list.cat_id == 32"></detailSwiper>
 
-        <div class="pc-slide">
+        <div class="pc-slide" v-else>
           <div class="view">
             <div class="swiper-container">
               <a class="arrow-left" href="#"></a>
@@ -34,7 +31,7 @@
               <div class="swiper-wrapper">
                 <template v-for="k in swiper">
                   <div class="swiper-slide active-nav">
-                    <img :src="k.url" alt="" style="width: 100%;height: 100%;">
+                    <img :src="k.url" style="width: 100%;height: 100%;">
                   </div>
                 </template>
               </div>
@@ -43,7 +40,7 @@
         </div>
 
         <div class="tb-wrap fl" v-loading="load.load_data" element-loading-text="正在加载中...">
-          <div class="right-select fr" v-if="list.cat_id !== 32" :style="{position: 'relative',top: '-120px'}">
+          <div class="right-select fr" v-if="list.cat_id !== 32" :style="{position: 'relative',top: '-20px'}">
             <div class="select-title">{{ list.goods_name }}<span>{{ list.goods_remark }}</span></div>
             <div class="select-text">{{ list.good_desc }}</div>
             <div class="select-price">¥{{ list.shop_price }}</div>
@@ -58,17 +55,19 @@
               <span class="left fl">数量：</span>
               <div class="item-amount ">
                 <el-button class="no-minus fl" @click="changeNumber(list, -1)"
-                           :class="{'disabled':list.sales_sum <= 1}" style="margin-left: 0;">-</el-button>
+                           :class="{'disabled':list.sales_sum <= 1}" style="margin-left: 0;">-
+                </el-button>
                 <el-input type="text" class="fl" placeholder="0"
                           v-model="list.sales_sum" readonly></el-input>
                 <el-button class="add-max fl" @click="changeNumber(list, 1)"
-                           :class="{'disabled': list.sales_sum >= 1}">+</el-button>
+                           :class="{'disabled': list.sales_sum >= 1}">+
+                </el-button>
               </div>
             </div>
             <div v-else></div>
             <div class="select-btn clear">
               <!--<router-link :to="{ path: '/pages/onload' }" v-if="$route.query.isup == 0">-->
-                <!--<el-button class="ft-16">开始冲印</el-button>-->
+              <!--<el-button class="ft-16">开始冲印</el-button>-->
               <!--</router-link>-->
               <el-button class="ft-16" @click="addCart()">加入购物车</el-button>
             </div>
@@ -89,11 +88,13 @@
               <span class="left fl">数量：</span>
               <div class="item-amount ">
                 <el-button class="no-minus fl" @click="changeNumber(list, -1)"
-                           :class="{'disabled':list.sales_sum <= 1}" style="margin-left: 0;">-</el-button>
+                           :class="{'disabled':list.sales_sum <= 1}" style="margin-left: 0;">-
+                </el-button>
                 <el-input type="text" class="fl" placeholder="0"
                           v-model="list.sales_sum" readonly></el-input>
                 <el-button class="add-max fl" @click="changeNumber(list, 1)"
-                           :class="{'disabled': list.sales_sum >= 1}">+</el-button>
+                           :class="{'disabled': list.sales_sum >= 1}">+
+                </el-button>
               </div>
             </div>
             <div v-else></div>
@@ -154,7 +155,7 @@
   import detailSwiper from '@/components/pages/swiper'
 
   import {mapGetters, mapActions} from 'vuex'
-  import { GET_USER_INFO } from '../../store/getters/type'
+  import {GET_USER_INFO} from '../../store/getters/type'
   import guige from '@/components/pages/guige'
 
   import Swiper from '../../../static/js/idangerous.swiper.min.js'
@@ -165,7 +166,7 @@
       return {
         list: {},
         swiperList: [],
-        swiper: [],
+        swiper: JSON.parse(localStorage.getItem('swiper')),
         data: {
           dtype: 1,
           currGuiGe: "",
@@ -174,7 +175,7 @@
         load: {
           load_data: false,
         },
-        choose:[],
+        choose: [],
         charItem: '',
         charId: 0,
         charSID: 0,
@@ -187,16 +188,8 @@
         chName: [],
       }
     },
-    fliters: {
-      setEvent(url) {
-        this.banners();
-        return url
-      }
-    },
     mounted() {
-
       this.getDataShop();
-
     },
     watch: {
       '$route'() {
@@ -217,18 +210,15 @@
       ...mapGetters({
         get_user_info: GET_USER_INFO
       }),
-//      swiper() {
-//        return JSON.parse(localStorage.getItem('swiper'));
-//      },
       getGuigeName() {
         if (this.guigeName <= 0) {
           return '请选择商品规格和数量';
         }
-        return '已选择"' + this.guigeName.join('-').replace(/-/g,'') + '"';
+        return '已选择"' + this.guigeName.join('-').replace(/-/g, '') + '"';
       },
       topClass() {
-        if(this.list.cat_id !== 32) {
-          return 60 + 'px';
+        if (this.list.cat_id !== 32) {
+          return 20 + 'px';
         }
       }
     },
@@ -241,7 +231,6 @@
             updateNavPosition();
           }
         })
-
         $('.view .arrow-left,.preview .arrow-left').on('click', function (e) {
           e.preventDefault();
           if (viewSwiper.activeIndex == 0) {
@@ -250,7 +239,6 @@
           }
           viewSwiper.swipePrev();
         })
-
         $('.view .arrow-right,.preview .arrow-right').on('click', function (e) {
           e.preventDefault();
           if (viewSwiper.activeIndex == viewSwiper.slides.length - 1) {
@@ -259,7 +247,6 @@
           }
           viewSwiper.swipeNext();
         })
-
         var previewSwiper = new Swiper('.preview .swiper-container', {
           visibilityFullFit: true,
           slidesPerView: 'auto',
@@ -287,9 +274,9 @@
         const json = {};
         for (let i in array) {
           const _self = array[i];
-          if(!json[_self]) {
-              res.push(_self);
-              json[_self] = 1;
+          if (!json[_self]) {
+            res.push(_self);
+            json[_self] = 1;
           }
         }
         return res;
@@ -310,11 +297,11 @@
             case res.code == 1:
               this.list = res.data;
               this.swiperList = JSON.parse(res.data.photo);
-              localStorage.setItem('swiper', res.data.photo)
               that.myspecList = this.list.myspec;
+              localStorage.setItem('swiper', res.data.photo)
               that.$nextTick(() => {
+                that.swiper = JSON.parse(localStorage.getItem('swiper'));
                 that.getSwiper();
-                this.swiper = JSON.parse(localStorage.getItem('swiper'));
               });
               //  获取随机商品
               this.$ajax.HttpGet(this.$api.get_other.GET_OTHER + '?cid=' + this.list.cat_id + '&num=' + 3).then((res) => {
@@ -362,7 +349,7 @@
         }
         this.$ajax.HttpPost(this.$api.get_content.GET_POST_PRICE, {
           gid: this.list.goods_id,
-          spec: this.guige.join('-').match(/\d+/g).toString().replace(',','-')
+          spec: this.guige.join('-').match(/\d+/g).toString().replace(',', '-')
         }).then((res) => {
           for (let i in res.data) {
             this.charSID = res.data[i].sku_id;
@@ -371,7 +358,7 @@
           }
         });
       },
-      changeNumber(item,flag) {
+      changeNumber(item, flag) {
         //  大于0为加
         if (flag > 0) {
           //  item数量自增1
@@ -379,22 +366,23 @@
         } else {
           //  item数量自减1
           item.sales_sum--;
-          if(item.sales_sum <= 1) {
+          if (item.sales_sum <= 1) {
             item.sales_sum = 1;
           }
         }
       },
       addCart() {
         let that = this;
+        if (this.get_user_info.user == undefined) {
+          this.$message('亲，请去登录一下');
+          setTimeout(() => {
+            this.$router.push({path: '/user/login'});
+          }, 2000);
+          return false;
+        }
         try {
           if (this.$route.query.isup == 1) {
-            switch(true) {
-              case this.get_user_info.user == undefined:
-                this.$message('亲，请去登录一下');
-                setTimeout(() => {
-                  this.$router.push({ path: '/user/login' });
-                }, 2000);
-                return false;
+            switch (true) {
               case this.guige.length == 0:
                 this.$message({
                   message: '请选择规格！',
@@ -418,15 +406,16 @@
             num: this.list.sales_sum,
             price: this.list.shop_price,
             upimg: 'a',
-            specdata: this.guigeName.join('-').replace(/-/g,'')
+            specdata: this.guigeName.join('-').replace(/-/g, '')
           };
-          this.$ajax.HttpPost(this.$api.get_content.POST_CART_DATA,json).then((res) => {
-              console.log(res.data);
+          this.$ajax.HttpPost(this.$api.get_content.POST_CART_DATA, json).then((res) => {
+            console.log(res.data);
             setTimeout(() => {
-              that.$router.push({ path: '/cart/add-cart/'+ this.$route.params.id +'/' + this.list.cat_id });
+              that.$router.push({path: '/cart/add-cart/' + this.$route.params.id + '/' + this.list.cat_id});
             }, 500);
           });
-        } catch(e) {}
+        } catch (e) {
+        }
       }
     }
   }
@@ -438,32 +427,38 @@
     font-size: 18px;
     color: #717171;
   }
+
   .right-select .select-title {
     font-size: 26px;
     line-height: 35px;
     color: #000;
     margin-bottom: 15px;
   }
+
   .right-select .select-title span {
     font-size: 14px;
     padding-left: 10px;
   }
+
   .right-select .select-text {
     font-size: 15px;
     line-height: 50px;
   }
+
   .right-select .select-price {
     font-size: 24px;
     color: #e54147;
     border-bottom: 1px solid #ccc;
     padding-bottom: 20px;
   }
+
   .right-select .select-color {
     line-height: 35px;
     padding: 10px 0px;
     min-height: 35px;
     margin-top: 15px;
   }
+
   .right-select .select-color .left {
     display: inline-block;
     width: 100px;
@@ -487,13 +482,13 @@
     width: 100px;
     line-height: 35px;
   }
+
   .right-select .select-size .right {
     float: left;
     width: 295px;
     cursor: pointer;
     margin-bottom: 20px;
   }
-
 
   .right-select .select-size .right li, .right-select .select-color .right {
     float: left;
@@ -511,7 +506,7 @@
     margin: 0px 17px 17px 0;
   }
 
-  .right-select .select-size .right .active, .right-select .select-color .active  {
+  .right-select .select-size .right .active, .right-select .select-color .active {
     border: 1px solid #b11e25;
     background: #b11e25;
     color: #fff;
@@ -521,6 +516,7 @@
     color: #666;
     padding-top: 20px;
   }
+
   .right-select .select-num .left {
     display: inline-block;
     width: 100px;
@@ -560,6 +556,7 @@
     text-align: center;
     line-height: 36px;
   }
+
   .right-select .select-num .num {
     display: inline-block;
     width: 75px;
@@ -570,6 +567,7 @@
     text-align: center;
     line-height: 36px;
   }
+
   .right-select .select-btn .el-button {
     width: 145px;
     height: 43px;
@@ -581,6 +579,7 @@
     margin: 30px 0px;
     border-radius: 0px;
   }
+
   .right-select .select-btn a {
     display: block;
     width: 145px;
@@ -592,17 +591,20 @@
     text-align: center;
     padding-top: 45px;
   }
+
   .detail-bottom .product-title {
     font-size: 30px;
     color: #000;
     text-align: center;
   }
+
   .detail-bottom .product-text {
     position: relative;
     font-size: 18px;
     color: #333;
     line-height: 50px;
   }
+
   .detail-bottom .product-text:before,
   .detail-bottom .product-text:after {
     content: '';
@@ -612,25 +614,29 @@
     border-bottom: 1px solid #717171;
     top: 50%;
   }
+
   .detail-bottom .product-text:before {
     left: -45px;
   }
+
   .detail-bottom .product-text:after {
     right: -45px;
   }
+
   .detail-bottom .content-top {
     padding-top: 60px;
     margin: 0 40px 48px;
   }
+
   /* preview */
   .pc-slide {
-    margin: 23px;
     float: left;
+    position: relative;
   }
 
   .view .swiper-container {
-    width: 660px;
-    height: 500px;
+    width: 1200px;
+    height: 350px;
   }
 
   .view .arrow-left {
@@ -663,21 +669,39 @@
 
   }
 
+  .preview-iview{
+    width: 100%;
+    position: absolute;
+  }
+
   .preview {
     width: 100%;
     margin-top: 10px;
-    position: relative;
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+  }
+
+  .preview .swiper-slide img {
+    padding: 0;
+    border: 3px solid #fff;
+  }
+
+  .preview .active-nav img {
+    padding: 0;
+    border: 3px solid #F00;
   }
 
   .preview .swiper-container {
-    width: 430px;
+    width: 80%;
     height: 82px;
     margin-left: 35px;
   }
 
   .preview .swiper-slide {
-    width: 87px;
-    height: 82px;
+    width: 100px;
+    height: 76px;
+    margin: 0px 10px;
   }
 
   .preview .slide6 {
@@ -708,10 +732,6 @@
     padding: 1px;
   }
 
-  .preview .active-nav img {
-    padding: 0;
-    border: 1px solid #F00;
-  }
   /* preview */
 
 </style>
@@ -721,24 +741,29 @@
   .swiper-container {
     margin: 20px;
   }
+
   .swiper-slide {
     background-size: cover;
     background-position: center;
   }
+
   .gallery-top {
-    height: 80%!important;
+    height: 80% !important;
     width: 100%;
   }
+
   .gallery-thumbs {
-    height: 20%!important;
+    height: 20% !important;
     box-sizing: border-box;
     padding: 10px 0;
   }
+
   .gallery-thumbs .swiper-slide {
     width: 25%;
     height: 100%;
     opacity: 0.4;
   }
+
   .gallery-thumbs .swiper-slide-active {
     opacity: 1;
   }
@@ -750,18 +775,21 @@
     padding-bottom: 80px;
     background: #f9f9f9;
   }
+
   .hunsha-product-else .product-title {
     font-size: 30px;
     color: #000;
     text-align: center;
     font-family: PingFangSC-Ultralight, sans-serif;
   }
+
   .hunsha-product-else .product-text {
     position: relative;
     font-size: 18px;
     color: #333;
     line-height: 50px;
   }
+
   .hunsha-product-else .product-text:before,
   .hunsha-product-else .product-text:after {
     content: '';
@@ -771,16 +799,20 @@
     border-bottom: 1px solid #717171;
     top: 50%;
   }
+
   .hunsha-product-else .product-text:before {
     left: -45px;
   }
+
   .hunsha-product-else .product-text:after {
     right: -45px;
   }
-  .product-list{
+
+  .product-list {
     width: 1250px;
     margin-top: 30px;
   }
+
   .product-list .product-item {
     float: left;
     width: 285px;
@@ -800,7 +832,8 @@
     width: 100%;
     background: #fff;
   }
-  .product-list .product-item .pic img{
+
+  .product-list .product-item .pic img {
     width: 240px;
     height: 180px;
     margin: 16px;
@@ -838,6 +871,7 @@
     -webkit-box-orient: vertical;
     line-height: 30px;
   }
+
   .product-list .product-item:hover {
     border: 4px solid #b11e25;
     background: #b11e25;
@@ -851,92 +885,9 @@
   .product-list .product-item:hover .item-title {
     color: #fff;
   }
+
   .product-list .product-item:hover .item-text {
     color: #fff;
   }
 
-</style>
-
-<style>
-
-  .pc-slide {
-    width: 1200px;
-    margin: 0 auto;
-    position: relative;
-  }
-
-  .view .swiper-container {
-    width: 100%;
-    height: 350px;
-  }
-
-  .view .arrow-left {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    margin-top: -25px;
-    width: 28px;
-    height: 51px;
-    z-index: 10;
-  }
-
-  .view .arrow-right {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    margin-top: -25px;
-    width: 28px;
-    height: 51px;
-    z-index: 10;
-  }
-
-  .preview {
-    width: 100%;
-    margin-top: 10px;
-    position: absolute;
-    bottom: 0px;
-  }
-
-  .preview .swiper-container {
-    width: 430px;
-    height: 82px;
-    margin-left: 35px;
-  }
-
-  .preview .swiper-slide {
-    width: 100px;
-    height: 82px;
-  }
-
-  .preview .slide6 {
-    width: 82px;
-  }
-
-  .preview .arrow-left {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    margin-top: -9px;
-    width: 9px;
-    height: 18px;
-    z-index: 10;
-  }
-
-  .preview .arrow-right {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    margin-top: -9px;
-    width: 9px;
-    height: 18px;
-    z-index: 10;
-  }
-
-  .preview img {
-    padding: 1px;
-  }
-
-  .preview .active-nav img {
-    padding: 0;
-  }
 </style>

@@ -1,31 +1,23 @@
 <template>
   <div class="admin-left fl">
     <div class="admin-pic">
-      <el-upload action="https://xinye-art.com/public/api/home/front/imgupload"
-                 class="avatar-uploader"
-                 name="img"
-        :on-success="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar w100 h100">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-      </el-upload>
-
-      <!-- 坑逼上传工具 -->
-      <!--
-      <div class="text-center">
-        <img v-if="userAvatar">
-        <button id="pick-avatar">Select An image</button>
+      <div class="text-center" @mouseover="overUploadImage" @mouseout="outUploadImage">
+        <div v-show="imageShow" id="pick-avatar" class="changePic" style="width: 90px;height: 90px;">更换头像</div>
+        <img :src="imageUrl" style="width: 90px;height: 90px;">
         <avatar-cropper
-          :uploaded="updateUserAvatar"
-          trigger="#pick-avatar"
+          @uploading="handleUploading"
+          @uploaded="handleUploaded"
+          trigger="#pick-avatar" upload-form-name="img"
           upload-url="https://xinye-art.com/public/api/home/front/imgupload"></avatar-cropper>
       </div>
-      -->
-
-      <h2 class="admin-uname ft-16">
-        <el-input v-model="uname" @blur="chonse(uname)"></el-input>
-      </h2>
-      <p class="admin-vip"></p>
+      <div>
+        <h2 class="admin-uname ft-16 fl">
+          <p class="fl" style="margin-top: 8px;text-align: center;width:100%;" v-show="inputName">{{ uname }}</p>
+          <el-input v-model="uname" @blur="chonse(uname)" class="fl" v-show="!inputName"></el-input>
+          <p class="iconfont icon-weibiaoti- fl" @click="updateName()"></p>
+        </h2>
+        <p class="admin-vip clear"></p>
+      </div>
     </div>
     <div class="admin-nav">
       <dl class="admin-dl" style="color: #b11e25;">
@@ -92,6 +84,8 @@
         json: {},
         userAvatar: undefined,
         fileList: [],
+        inputName: true,
+        imageShow: false,
       }
     },
     computed: {
@@ -108,12 +102,30 @@
       }).then((res) => {
         this.uname = res.data.uname
         this.imageUrl = res.data.img;
+        if(this.imageUrl == '') {
+          this.imageShow = true;
+        } else {
+          this.imageShow = false;
+        }
       });
     },
     methods: {
       ...mapActions({
         remove_user_info: REMOVE_USER_INFO,
       }),
+      updateName() {
+        if(this.inputName == false) {
+          this.inputName = true;
+        } else if(this.inputName == true) {
+          this.inputName = false;
+        }
+      },
+      overUploadImage() {
+        this.imageShow = true;
+      },
+      outUploadImage() {
+        this.imageShow = false;
+      },
       updateUserAvatar(res) {
         return;
         this.$ajax.HttpPost('/api/home/user/setmember', {
@@ -122,7 +134,10 @@
           this.userAvatar = resp.relative_url
         })
       },
-      handleAvatarSuccess(res, file) {
+      handleUploading(form, xhr) {
+
+      },
+      handleUploaded(res) {
         this.$ajax.HttpPost('/api/home/user/setmember',{
           id: this.get_user_info.user.id,
           img: res.data.path
@@ -140,14 +155,12 @@
         return isLt2M;
       },
       chonse(name) {
-        console.log(name);
         this.$ajax.HttpPost('/api/home/user/setmember',{
           id: this.get_user_info.user.id,
           uname: name
         }).then((res) => {
-          if (res.code === 0) {
-//            this.$message(res.msg);
-          }
+          this.inputName = true;
+          this.$message(res.msg);
         });
       },
       goBack() {
@@ -175,7 +188,7 @@
 <style type="text/css">
   /* admin-uname start */
   .admin-uname .el-input__inner {
-    border: none;
+    cursor:default;
   }
 
   .el-upload--text {
@@ -185,4 +198,50 @@
   }
 
   /* admin-uname end */
+
+
+  /* icon-weibiaoti- start */
+  .admin-uname .icon-weibiaoti- {
+    position: absolute;
+    right: 2px;
+    top: 8px;
+    color: #9fa0a0;
+    font-size: 23px;
+    cursor: pointer;
+  }
+  /* icon-weibiaoti- end */
+
+  /* text-center start */
+  .text-center .iconfont {
+    text-align: center;
+    font-size: 80px;
+    line-height: 70px;
+  }
+
+  .text-center {
+    position: relative;
+    width: 90px;
+    margin: 0px auto;
+  }
+
+  .text-center:first-child {
+    cursor: pointer;
+  }
+
+  .text-center .changePic {
+    text-align: center;
+    line-height: 95px;
+    font-size: 16px;
+    border-radius: 100%;
+    background: rgba(0,0,0,0.5);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    color: #fff;
+  }
+
+  .text-center:hover .iconfont {
+    display: block;
+  }
+  /* text-center end */
 </style>

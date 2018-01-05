@@ -143,7 +143,7 @@ let routes = [{
   meta: {
     header: true,
     footer: false,
-    nav: false,
+    nav: true,
     requiresAuth: true
   }
 },{

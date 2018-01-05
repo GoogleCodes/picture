@@ -24,8 +24,8 @@
           }
       },
       created () {
-          this.isUserTrue();
-          console.log(this.get_user_info.user.id);
+        this.isUserTrue();
+//        console.log(this.get_user_info.user.id);
       },
       computed: {
         ...mapGetters({
@@ -39,11 +39,11 @@
       },
       methods: {
         isUserTrue() {
-            if (this.get_user_info == 'null') {
-                setTimeout(() => {
-                    this.$router.push({ path: '/user/login'}, 200)
-                });
-            }
+          if (this.get_user_info.user == undefined) {
+            setTimeout(() => {
+                this.$router.push({ path: '/user/login'}, 200)
+            }, 500);
+          }
         }
       },
   };

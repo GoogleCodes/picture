@@ -18,11 +18,11 @@
             </div>
             <div class="pages">
                 <div class="fl">
-                    <el-button class="prve">上一遍</el-button>
+                    <el-button class="prve">上一篇</el-button>
                     <span>2016年顺德装饰画、相框展示会</span>
                 </div>
                 <div class="fr">
-                    <el-button class="next">下一遍</el-button>
+                    <el-button class="next">上一篇</el-button>
                     <span>2016年顺德装饰画、相框展示会</span>
                 </div>
             </div>

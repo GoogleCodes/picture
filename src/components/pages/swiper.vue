@@ -27,7 +27,7 @@
 
 <template>
   <div>
-    <div style="width:650px;height: 500px;" class="fl" v-if="cid == 32">
+    <div style="width:650px;height: 500px;" class="fl">
       <swiper style="width:100%;" :options="swiperOption" ref="mySwiper">
         <!-- slides -->
         <template v-for="(item, index) in listpic">
@@ -47,13 +47,12 @@
       <swiper style="height: 75px;" :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
         <template v-for="(item, index) in listpic">
           <swiper-slide :style="{ background: 'url('+ item.url +') no-repeat',
-                  backgroundSize: 'cover'}">
+                  backgroundSize: 'cover',
+                  opacity: '1'}">
           </swiper-slide>
         </template>
       </swiper>
     </div>
-
-
     <!--<div style="width:96.5%;height: auto;" class="fl" v-else>-->
       <!--<swiper style="width:100%;" :options="swiperOption" ref="mySwiper">-->
         <!--&lt;!&ndash; slides &ndash;&gt;-->
@@ -71,11 +70,12 @@
         <!--<div class="swiper-scrollbar" slot="scrollbar"></div>-->
       <!--</swiper>-->
       <!--&lt;!&ndash; swiper2 Thumbs &ndash;&gt;-->
-      <!--<swiper style="bottom: 120px;height: 100px!important;" :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">-->
+      <!--<swiper style="bottom: 160px;height: 100px!important;" :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">-->
         <!--<template v-for="(item, index) in listpic">-->
           <!--<swiper-slide :style="{ background: 'url('+ item.url +') no-repeat',-->
                   <!--backgroundSize: 'cover',-->
-                  <!--width: '13%'}">-->
+                  <!--width: '13%',-->
+                  <!--opacity: '1'}">-->
           <!--</swiper-slide>-->
         <!--</template>-->
       <!--</swiper>-->
@@ -104,7 +104,6 @@
               data: {
                   pic: [],
               },
-              myspecList: JSON.parse(localStorage.getItem('swiper')),
               swiperOption: {
                   autoplay: 5000,
                   notNextTick: false,
@@ -117,7 +116,6 @@
                 onlyExternal:true,
               },
               swiperOptionThumbs: {
-                  notNextTick: false,
                   spaceBetween: 10,
                   centeredSlides: true,
                   slidesPerView: 'auto',
@@ -149,6 +147,13 @@
   .gallery-thumbs .swiper-slide {
     width: 13%;
     height: 100%;
-    opacity: 0.4;
+    opacity: 1;
+    border: 4px solid rgba(0,0,0,0.1);
   }
+
+  .gallery-thumbs .swiper-slide-active{
+    opacity: 1;
+    border: 4px solid #c40000;
+  }
+
 </style>

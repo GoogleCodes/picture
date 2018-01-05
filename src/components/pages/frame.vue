@@ -1,5 +1,6 @@
 <template>
   <div>
+    <elenav></elenav>
     <!-- tab-banner start-->
     <div class="tab-banner">
       <template v-for="(k,v) in shotcut">
@@ -19,7 +20,7 @@
         </div>
         <ul class="product-list clearfix">
           <template v-for="(k, i) in list">
-            <li v-if="i == 0">
+            <li>
               <router-link :to="{ path: '/pages/detail/' + k.goods_id}" class="w100 h100 block">
                 <div class="frame-pic frame-pic-hover">
                   <div class="filter-layer"></div>
@@ -31,30 +32,11 @@
                   <h3>{{ k.goods_name }}</h3>
                   <p>{{ k.goods_remark }}</p>
                   <!--<router-link :to="{ path: '/'}" class="display">-->
-                    <span class="more">查看更多</span>
-                  <!--</router-link>-->
-                </div>
-              </router-link>
-            </li>
-
-            <li v-else>
-              <router-link :to="{ path: '/pages/detail/' + k.goods_id}" class="w100 h100 block">
-                <div class="frame-pic">
-                  <template v-for="(l, v) in k.goods_thumb">
-                    <img :src="l.url" alt="" class="w100 h100" />
-                  </template>
-                  <div class="filter-layer" style=""></div>
-                </div>
-                <div class="content">
-                  <h3>{{ k.goods_name }}</h3>
-                  <p>{{ k.goods_remark }}</p>
-                  <!--<router-link :to="{ path: '/'}" class="display">-->
                   <span class="more">查看更多</span>
                   <!--</router-link>-->
                 </div>
               </router-link>
             </li>
-
           </template>
         </ul>
         <div class="show-more" @click="more()" v-show="moreVisible">
@@ -73,10 +55,9 @@
 </template>
 
 <script type="text/javascript">
-
   import heads from '@/components/top/Top.vue'
+  import elenav from '@/components/top/Nav.vue'
   import foots from '@/components/footer/Footer.vue'
-
   export default {
     data() {
       return {
@@ -87,7 +68,8 @@
     },
     components: {
       heads,
-      foots
+      foots,
+      elenav
     },
     created() {
       this.getOrder();
@@ -153,20 +135,17 @@
     margin-bottom: 28px;
     box-shadow: 0 0 5px #ccc;
   }
-
   .frame-product .product-list li .frame-pic {
     width: 584px;
     position: relative;
     height: 381px;
   }
-
   .frame-product .product-list li .frame-pic-hover{
     width: 584px;
     position: relative;
     height: 381px;
     z-index: 10;
   }
-
   .frame-pic:hover .filter-layer  {
     background: rgba(0,0,0,0.5);
     width: 100%;
@@ -180,7 +159,6 @@
     -o-transition: 0.5s;
     transition: 0.5s;
   }
-
   .frame-product .product-list li .content {
     position: absolute;
     width: 200px;
@@ -225,8 +203,6 @@
     color: #4D4D4D;
     cursor: pointer;
   }
-
-
   .frame-ban {
     height: 400px;
     margin: 45px auto;

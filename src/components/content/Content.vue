@@ -3,17 +3,17 @@
     <!-- content start -->
     <div class="content clear">
       <div class="con-pro">
-          <el-carousel height="600px">
-            <template v-for="(item, index) in data.banner">
-              <el-carousel-item>
-                <div class="banner clear">
-                  <router-link :to="{ path: item.url, query: {id: item.id}}">
-                    <img :src="item.img" :alt="item.name" >
-                  </router-link>
-                </div>
-              </el-carousel-item>
-            </template>
-          </el-carousel>
+        <el-carousel height="600px">
+          <template v-for="(item, index) in data.banner">
+            <el-carousel-item>
+              <div class="banner clear">
+                <router-link :to="{ path: item.url, query: {id: item.id}}">
+                  <img :src="item.img" :alt="item.name">
+                </router-link>
+              </div>
+            </el-carousel-item>
+          </template>
+        </el-carousel>
         <!--<img src="../../../static/images/02.png" alt="" style="width: 100%;height: 100%;">-->
       </div>
       <div class="wrap clear">
@@ -30,31 +30,21 @@
         <div class="wrap-card fl" style="margin: 0px;">
           <div class="wrap-card-icon picture-icon"></div>
           <div class="wrap-card-text">纯手工装裱</div>
-            <div class="wrap-card-desc">由国际装裱师公会 “Fint Art” 认证推荐装裱师制作, 细节体现 “匠杺” 之美</div>
+          <div class="wrap-card-desc">由国际装裱师公会 “Fint Art” 认证推荐装裱师制作, 细节体现 “匠杺” 之美</div>
         </div>
         <div class="wrap-list clear">
           <template v-for="(item, index) in data.albumList">
             <div class="wrap-li fl" :style="{
-            background: 'url('+ item.shotcut +') no-repeat 100%'}" v-if="index == 0">
-              <div class="wrap-li-pic wrap-li-hover"></div>
-              <div v-if="item.title !== ''" style="width: 100%;height: 100%;border-radius: 100%;">
-                <router-link :to="{ path: '/inside/orderlist', query: {id: item.id }}" class="wrap-more block">
+            background: 'url('+ item.shotcut +') no-repeat 100%'}">
+              <router-link :to="{ path: '/inside/orderlist', query: {id: item.id }}" class="wrap-more block">
+                <div class="wrap-li-pic wrap-li-hover"></div>
+                <div v-if="item.title !== ''" style="width: 100%;height: 100%;border-radius: 100%;">
                   <p class="ft-16">{{ item.title }}</p>
                   <span>{{ item.title }}</span>
-                </router-link>
-              </div>
-              <div v-else="" style="background: rgba(255,255,255,0.1);width: 100%;height: 100%;border-radius: 100%;"></div>
-            </div>
-            <div class="wrap-li fl" :style="{
-            background: 'url('+ item.shotcut +') no-repeat 100%'}" v-if="index !== 0">
-              <div class="wrap-li-pic"></div>
-              <div v-if="item.title !== ''" style="width: 100%;height: 100%;border-radius: 100%;">
-                <router-link :to="{ path: '/inside/orderlist', query: {id: item.id }}" class="wrap-more block">
-                  <p class="ft-16">{{ item.title }}</p>
-                  <span>{{ item.title }}</span>
-                </router-link>
-              </div>
-              <div v-else="" style="background: rgba(255,255,255,0.1);width: 100%;height: 100%;border-radius: 100%;"></div>
+                </div>
+                <div v-else=""
+                     style="background: rgba(255,255,255,0.1);width: 100%;height: 100%;border-radius: 100%;"></div>
+              </router-link>
             </div>
           </template>
         </div>
@@ -70,23 +60,23 @@
           <div style="margin: 50px 0px 100px;overflow: hidden;;">
             <template v-for="item in data.arr">
               <div class="card-tuijian fl">
-                  <router-link class="fl block" :to="{ path: '/pages/detail/' + item.goods_id}">
-                    <div class="card-tuijian-pic fl">
+                <router-link class="fl block" :to="{ path: '/pages/detail/' + item.goods_id}">
+                  <div class="card-tuijian-pic fl">
+                    <template v-for="(x, i) in item.goods_thumb">
+                      <img :src="x.url" alt="" style="width: 100%;height: 100%;"/>
+                    </template>
+                  </div>
+                  <div class="card-tuijian-desc fl">
+                    <div class="desc-title">{{ item.goods_name }}</div>
+                    <span class="desc-msg blocks">{{ item.goods_remark }}</span>
+                    <div class="desc-pic">
                       <template v-for="(x, i) in item.goods_thumb">
-                        <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
+                        <img :src="x.url" alt="" style="width: 100%;height: 100%;"/>
                       </template>
                     </div>
-                    <div class="card-tuijian-desc fl">
-                      <div class="desc-title">{{ item.goods_name }}</div>
-                      <span class="desc-msg blocks">{{ item.goods_remark }}</span>
-                      <div class="desc-pic">
-                        <template v-for="(x, i) in item.goods_thumb">
-                          <img :src="x.url" alt="" style="width: 100%;height: 100%;" />
-                        </template>
-                      </div>
-                    </div>
-                  </router-link>
-                </div>
+                  </div>
+                </router-link>
+              </div>
             </template>
           </div>
         </div>
@@ -108,9 +98,7 @@
 </template>
 
 <script type="text/javascript">
-
-  import { Carousel, CarouselItem } from 'element-ui'
-
+  import {Carousel, CarouselItem} from 'element-ui'
   export default {
     name: 'Content',
     data() {
@@ -135,9 +123,8 @@
     },
     created() {
       this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1)
-      .then((res) => {
-
-      });
+        .then((res) => {
+        });
     },
     methods: {
       //  获取主图
@@ -148,15 +135,15 @@
         });
       },
       getIndex () {
-        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER +"?is_hot=1" + "&limit=" + 4).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?is_hot=1" + "&limit=" + 4).then((res) => {
           this.data.arr = res.data;
         });
       },
       getAlbum () {
         this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1)
-        .then((res) => {
-          this.data.albumList = res.data;
-        });
+          .then((res) => {
+            this.data.albumList = res.data;
+          });
       },
     }
   }
@@ -241,12 +228,13 @@
 
   .content .wrap .wrap-list {
     padding-top: 130px;
+    overflow: hidden;
   }
 
   .content .wrap .wrap-li {
     width: 260px;
     height: 260px;
-    background: url('../../assets/images/05.png') no-repeat ;
+    background: url('../../assets/images/05.png') no-repeat;
     /*filter: blur(1px);*/
     border-radius: 100%;
     text-align: center;
@@ -266,7 +254,7 @@
   }
 
   .content .wrap .wrap-li-hover:hover {
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.3);
     transition: 0.5s;
     cursor: pointer;
   }
@@ -297,7 +285,7 @@
     font-size: 31px;
   }
 
-  .tuijian-header .tuijian-span{
+  .tuijian-header .tuijian-span {
     color: #9fa0a0;
   }
 
@@ -361,10 +349,9 @@
     margin: 0 10px 0 17px;
   }
 
-
   .content .wrap .wrap-list .wrap-li:nth-child(3n) {
     margin: 0px;
   }
-  /* content end */
 
+  /* content end */
 </style>
