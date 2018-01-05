@@ -36,7 +36,7 @@
           <template v-for="(item, index) in data.albumList">
             <div class="wrap-li fl" :style="{
             background: 'url('+ item.shotcut +') no-repeat 100%'}">
-              <router-link :to="{ path: '/inside/orderlist', query: {id: item.id }}" class="wrap-more block">
+              <router-link :to="{ path: '/inside/orderlist/' + item.id}" class="wrap-more block">
                 <div class="wrap-li-pic wrap-li-hover"></div>
                 <div v-if="item.title !== ''" style="width: 100%;height: 100%;border-radius: 100%;">
                   <p class="ft-16">{{ item.title }}</p>
@@ -81,7 +81,7 @@
           </div>
         </div>
       </div>
-      <router-link :to="{ path: '/inside/orderlist', query: {id: 34}}">
+      <router-link :to="{ path: '/inside/orderlist/34'}">
         <div class="con-pro clear pro-moves">
           <img src="../../../static/images/08.jpg" alt="" style="width: 100%;height: 100%;">
           <a class="block move"></a>

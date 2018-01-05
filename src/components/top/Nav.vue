@@ -7,7 +7,7 @@
           <router-link :to="{ path: '/'}" class="blocks nav-href">首页</router-link>
         </li>
         <li v-for="(item, index) in data.list">
-          <router-link :to="{ path: '/pages/frame', query: {id: item.id, isup: item.is_up}}"
+          <router-link :to="{ path: '/pages/frame/' + item.id}"
                        v-if="item.id == 32"
                        class="blocks nav-href">
             <span>{{ item.title }}</span>
@@ -19,7 +19,7 @@
             </div>
             <div class="dropDome-Image fl"></div>
           </router-link>
-          <router-link :to="{ path: '/inside/orderlist', query: {id: item.id, isup: item.is_up}}" class="blocks nav-href" v-else>
+          <router-link :to="{ path: '/inside/orderlist/' + item.id}" class="blocks nav-href" v-else>
             <span>{{ item.title }}</span>
             <div class="dropDomn" v-show="dropDowm">
               <div class="triangle"></div>
@@ -87,14 +87,19 @@
 
   .nav ul li .nav-href {
     line-height: 25px;
-    border: 1px solid #B3B3B3;
+    border: 1px solid #b3b3b3;
     border-top: none;
     border-bottom: none;
-    margin: 12px 65px 12px 0px;
-    padding: 0px 10px;
+    margin: 12px 65px 12px 0;
+    padding: 0 10px;
     font-size: 16px;
-    color: #3e3a39;
     position: relative;
+    color: #3e3a39;
+  }
+
+  .nav ul li .nav-href:hover {
+    color: #fff;
+    background: #3e3a39;
   }
 
   .nav .Experience {

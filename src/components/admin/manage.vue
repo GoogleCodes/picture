@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- admin-right start -->
     <div class="admin-right fr">
       <div class="orderHistory">
         <h1 class="ft-26">Order History</h1>
@@ -16,9 +17,9 @@
           <li class="fl">操作</li>
         </ul>
       </div>
-      <div class="order-table">
+      <div class="order-table" v-loading="loading" element-loading-text="拼命加载中">
         <template v-for="(item, index) in orderList">
-          <table v-loading="loading" element-loading-text="拼命加载中">
+          <table>
             <thead class="thead-item">
             <tr class="tr-item">
               <td colspan="6" style="padding-left: 18px;">
@@ -31,7 +32,6 @@
               <tbody class="tbody-item">
               <tr class="tr-item">
                 <td class="itme-pic" style="width: 316px;">
-
                   <router-link :to="{ path: '/admin/shoping/' + item.id }" class="fl">
                     <div style="width: 123px;height: 109px;margin: 0px 15px;" class="fl">
                       <template v-for="(y,n) in x.gthumb">
@@ -40,7 +40,6 @@
                     </div>
                     <span class="item-title fl">{{ x.gname }}</span>
                     <div class="tb_item-desc">{{ x.gremark }}</div>
-
                   </router-link>
                 </td>
                 <td class="itme-money" style="width:131px;">¥{{ x.price }}</td>
@@ -58,9 +57,9 @@
                 </td>
                 <td style="width: 130px;">
                   <a class="nowpay privateBtn" v-if="item.status == 0" @click="pay(item.id, item.paytype)">去付款</a>
-                  <a class="cancel protected-Btn" v-if="item.status == 1">已付款</a>
-                  <a class="select protected-Btn" v-if="item.status == 2">已发货</a>
-                  <a class="delete protected-Btn" v-if="item.status == 3">已收货</a>
+                  <a class="cancel protected-Btn" v-else-if="item.status == 1">已付款</a>
+                  <a class="select protected-Btn" v-else-if="item.status == 2">已发货</a>
+                  <a class="delete protected-Btn" v-else-if="item.status == 3">已收货</a>
                 </td>
               </tr>
               </tbody>
@@ -68,24 +67,24 @@
           </table>
         </template>
       </div>
-      <!--<div class="block">-->
-        <!--<el-pagination-->
-          <!--layout="prev, pager, next"-->
-          <!--:page-count="orderPages.current_page"-->
-          <!--:page-size="orderPages.last_page"-->
-          <!--:current-page="orderPages.per_page"-->
-          <!--:total="orderPages.total">-->
-        <!--</el-pagination>-->
-      <!--</div>-->
+      <div class="block">
+        <el-pagination
+          layout="prev, pager, next"
+          :page-count="orderPages.current_page"
+          :page-size="orderPages.last_page"
+          :current-page="orderPages.per_page"
+          :total="orderPages.total">
+        </el-pagination>
+      </div>
       <!--<div v-html="orderPages"></div>-->
     </div>
     <div class="layer-pop" v-show="payDisplay"></div>
     <div class="wechatpay" v-show="payDisplay">
-      <div class="fl payType">微信支付</div>
+      <div class="fl payType iconfont icon-weixinzhifu"></div>
       <i class="iconfont icon-guanbi block fr" @click="payDisplay = false"></i>
       <img :src="wechat" alt="" class="w100 h100 block">
     </div>
-    <div v-html="box"></div>
+    <!-- admin-right end -->
   </div>
 </template>
 
@@ -186,12 +185,13 @@
   }
 
   .wechatpay .payType {
-    background: #dadada;
+    background: #fff;
     width: 82%;
     height: 50px;
     line-height: 50px;
-    font-size: 23px;
-    text-indent: 1.5em;
+    font-size: 40px;
+    text-indent: 0.5rem;
+    text-align: center;
     color: #44b549;
   }
 
@@ -202,6 +202,10 @@
     background: #9d9e9e;
     padding: 10px;
     cursor: pointer;
+  }
+
+  .wechatpay .icon-guanbi:hover {
+    background: #c40000;
   }
 
   /* wechatpay end */
@@ -234,5 +238,29 @@
   }
 
   /* pagination end */
+
+  /* pages start */
+
+  .admin-right .el-pagination {
+    padding: 45px 5px;
+  }
+
+  .admin-right .el-pagination .el-pager li {
+    min-width: 45px;
+    height: 40px;
+    line-height: 38px;
+  }
+
+  .admin-right .el-pagination button, .el-pagination span {
+    min-width: 50px;
+    height: 40px;
+    line-height: 28px;
+  }
+
+  .admin-right .el-pager li.btn-quicknext, .el-pager li.btn-quickprev {
+    line-height: 38px;
+  }
+
+  /* pages end */
 
 </style>

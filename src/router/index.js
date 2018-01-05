@@ -77,7 +77,7 @@ let routes = [{
     requiresAuth: true
   },
 },{
-  path: '/inside/orderlist',
+  path: '/inside/orderlist/:id',
   name: 'orderlist',
   component: orderlist,
   meta: {
@@ -137,7 +137,7 @@ let routes = [{
     requiresAuth: true
   }
 },{
-  path: '/pages/frame',
+  path: '/pages/frame/:id',
   name: 'frame',
   component: frame,
   meta: {

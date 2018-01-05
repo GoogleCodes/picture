@@ -74,17 +74,22 @@
     created() {
       this.getOrder();
     },
+    computed: {
+      typeId() {
+        return this.$route.params.id;
+      },
+    },
     methods: {
       getOrder() {
-        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?cid="+ this.$route.query.id +"&limit=" + 4).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?cid="+ this.typeId +"&limit=" + 4).then((res) => {
           this.list = res.data;
-          this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.$route.query.id).then((res) => {
+          this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.typeId).then((res) => {
             this.shotcut = res.data;
           });
         });
       },
       more() {
-        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?cid="+ this.$route.query.id).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?cid="+ this.typeId).then((res) => {
           this.list = res.data;
           this.moreVisible = false;
         });

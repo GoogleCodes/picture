@@ -3,7 +3,7 @@
     <div class="admin-pic">
       <div class="text-center" @mouseover="overUploadImage" @mouseout="outUploadImage">
         <div v-show="imageShow" id="pick-avatar" class="changePic" style="width: 90px;height: 90px;">更换头像</div>
-        <img :src="imageUrl" style="width: 90px;height: 90px;">
+        <img :src="imageUrl">
         <avatar-cropper
           @uploading="handleUploading"
           @uploaded="handleUploaded"
@@ -222,6 +222,12 @@
     position: relative;
     width: 90px;
     margin: 0px auto;
+  }
+
+  .text-center img {
+    width: 90px;
+    height: 90px;
+    border-radius: 100%;
   }
 
   .text-center:first-child {

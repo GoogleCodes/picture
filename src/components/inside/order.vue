@@ -145,6 +145,7 @@
     },
     mounted() {
       this.getOrder();
+      console.log(this.typeId);
     },
     watch: {
       '$route'() {
@@ -165,7 +166,10 @@
         } else {
           return true;
         }
-      }
+      },
+      typeId() {
+        return this.$route.params.id;
+      },
     },
     methods: {
       handleIconClick() {
@@ -197,14 +201,14 @@
       },
       getOrder() {
         this.load_data = true;
-        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?cid="+ this.$route.query.id +"&limit=" + 4).then((res) => {
+        this.$ajax.HttpGet(this.$api.get_content.GET_ORDER + "?cid="+ this.typeId +"&limit=" + 4).then((res) => {
           this.load_data = false;
           this.data.list = res.data;
           this.data.listPages = res.data;
           if (res.data.length == 0) {
             this.shopAll = false;
           }
-          this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.$route.query.id).then((res) => {
+          this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.typeId).then((res) => {
             this.data.shotcut = res.data;
           });
           this.getRadomList(this.$route.query.id, 4);
@@ -221,7 +225,7 @@
           this.load_data = false;
           this.data.list = res.data;
           this.data.listPages = res.data;
-          this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.$route.query.id).then((res) => {
+          this.$ajax.HttpGet('/api/home/front/PrdClassifyById?id=' + this.typeId).then((res) => {
             this.data.shotcut = res.data;
           });
           this.getRadomList(this.$route.query.id, 4);

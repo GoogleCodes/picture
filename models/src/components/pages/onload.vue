@@ -11,10 +11,9 @@
             <span>张 上传中不要离开本页</span>
           </div>
           <ul class="localIds">
-            <img id="IlocalIds" alt="">
-            <img id="JlocalIds" alt="">
-            <template v-for="(item, index) in list" v-show="isNoList">
-              <li class="fl localIds" :class="{ 'chonsepic': index == chonseIndex }" @click.stop="choosePic(item, index)">
+            <template v-for="(item, index) in fileList">
+              <!--  v-show="isNoList"  @click.stop="choosePic(item, index)"  -->
+              <li class="fl localIds" :class="{ 'chonsepic': index == chonseIndex }">
                 <div class="onload-pic" id="onloads">
                   <i class="el-icon-close icon-guanbi" @click="deletePic(index, item)"></i>
                   <i class="el-icon-check chonseok" v-show="chonseok"></i>
@@ -25,8 +24,11 @@
                 </div>
                 <div class="input">
                   <el-button class="prev fl" @click="changeNumber(index, -1)">-</el-button>
-                  <el-input v-model="item.sum" class="fl" placeholder="0" readonly></el-input>
+                  <el-input v-model="item.num" class="fl" placeholder="0" readonly></el-input>
                   <el-button class="next fl" @click="changeNumber(index, 1)">+</el-button>
+                </div>
+                <div>
+                  <el-input v-model="item.remarks">remarks</el-input>
                 </div>
               </li>
             </template>
@@ -35,23 +37,14 @@
 
         <div class="upload-pic clear">
           <div class="upload-demo">
-
             <el-button @click="changePicture">增加相片</el-button>
 
             <input id="img" class="file" multiple="multiple" name="file" type="file"
-                   accept="image/png,image/gif,image/jpeg" @change="changePicture" style="display: none;"/>
-          </div>
+                   accept="image/png,image/gif,image/jpeg" @change="changePicture"
+                   style="display: none;"/>
 
-          <!--<el-upload-->
-          <!--class="upload-demo" name="img"-->
-          <!--:action="uploadUrl"-->
-          <!--:on-success="handleAvatarSuccess"-->
-          <!--:http-request="changePicture"-->
-          <!--:file-list="fileList" :multiple="true">-->
-          <!--<el-button size="small" type="primary">增加相片</el-button>-->
-          <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
-          <!--</el-upload>-->
-          <el-button @click="orderNow()">立即下单</el-button>
+          </div>
+          <el-button @click="saveImages()">立即下单</el-button>
         </div>
         <div class="c_9fa0a0 toast">点击照片可以删除</div>
       </div>
@@ -59,7 +52,7 @@
     <div class="msg-ps clear">备注 ：(建议使用wifi/移动4G网络上传，上传时请耐心等候）</div>
 
     <div style="height: 150px;">
-      <previewer :list="list" ref="previewer" :options="options"></previewer>
+      <previewer :list="fileList" ref="previewer" :options="options"></previewer>
     </div>
 
   </div>
@@ -78,10 +71,9 @@
     data() {
       return {
         list: [],
+        serverId: '',
         orderList: [],
         IlocalIds: "",
-        JlocalIds: "",
-        localIdsList: [],
         isNoList: false,
         uploadUrl: 'https://xinye-art.com/public/api/home/front/imgupload',
         fileList: [],
@@ -115,22 +107,19 @@
           timestamp: res.timestamp,
           nonceStr: res.nonceStr,
           signature: res.signature,
-          jsApiList: ["checkJsApi", "downloadImage", "chooseImage", "uploadImage", "imagePreview", "getLocalImgData"]//res.jsApiList,
+          jsApiList: ["checkJsApi", "downloadImage", "chooseImage", "uploadImage", "imagePreview", "getLocalImgData"] // res.jsApiList,
         });
-
         wx.checkJsApi({
           jsApiList: [
             'chooseImage'
           ],
           success(res) {
-            // alert(JSON.stringify(res.checkResult.getLocation));
             if (res.checkResult.getLocation == false) {
               alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
               return;
             }
           }
         });
-
       });
     },
     watch: {
@@ -148,51 +137,38 @@
       previewer,
     },
     methods: {
-      //  提交订单
-      orderNow() {
-        let that = this;
-        this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
-          {uid: this.get_user_info.user.id}).then((res) => {
-          let arr = [], id = 0;
-          for (let i in res.data) {
-            id = res.data[i].id;
-            if (this.$route.query.id == id) {
-              that.orderList = res.data[i];
-              arr.push(that.orderList);
-              this.$store.commit('SET_GO_PAY', arr);
-              this.$router.push({path: '/cart/submit'});
-            }
-          }
-        });
-      },
       fileClick() {
         document.getElementById('img').click();
       },
       saveImages() {
-        let json = {}, arr = [], brr = [], option = {}, that = this;
-        for (let y in that.list) {
-          console.log(that.list[y].msrc, that.list[y].sum, 'that.list---for');
-          option = {
-            img: that.list[y].msrc,
-            num: that.list[y].sum
-          };
-          brr.push(option);
-        }
-//        for (let i in this.fileList) {
-//          json = {
-//            img: this.fileList[i].msrc,
-//            num: this.fileList[i].sum,
+        let brr = [], option = {}, that = this;
+        let arr = [], json = {};
+//        for (let y in that.list) {
+//          option = {
+//            img: that.list[y].src,
+//            num: that.list[y].num,
+//            remarks: that.list[y].remarks,
 //          };
-//          arr.push(json);
+//          brr.push(option);
 //        }
-        let count = brr; //arr.concat(brr);
-        console.log(count, "i'm saveImages!");
-        if (typeof JSON.stringify(count) === 'string') {
+        for (let i in that.fileList) {
+          json = {
+            img: that.fileList[i].src,
+            num: that.fileList[i].num,
+            remarks: that.fileList[i].remarks,
+            code: that.serverId,
+          };
+          arr.push(json);
+        }
+        console.log(arr, "sava");
+        if (typeof JSON.stringify(arr) === 'string') {
           this.$ajax.HttpPost('/api/home/shopcar/upSave', {
             id: that.$route.query.id,
-            img: JSON.stringify(count),
+            img: JSON.stringify(arr),
+            code: that.serverId,
             num: 1,
           }).then((res) => {
+            console.log(res, 'uploadSave');
             this.$message(res.msg);
 //            location.reload();
           });
@@ -201,23 +177,32 @@
       changeNumber(index, flag) {
         let option = {}, json = {}, arr = [], brr = [], that = this;
         if (flag >= 1) {
-          this.list[index].sum++;
+          this.fileList[index].num++;
         } else {
-          this.list[index].sum--;
+          this.fileList[index].num--;
         }
-        if (this.list[index].sum <= 1) {
-          this.list[index].sum = 1;
+        if (this.fileList[index].num <= 1) {
+          this.fileList[index].num = 1;
         }
-
+        console.log(this.fileList[index].num);
+        return;
+        for (let y in that.fileList) {
+          option = {
+            img: this.fileList[y].src,
+            num: this.fileList[y].num,
+            remarks: this.fileList[y].remarks,
+          };
+          brr.push(option);
+        }
         for (let i in this.list) {
           json = {
-            img: this.list[i].msrc,
-            num: this.list[i].sum,
+            img: this.list[i].src,
+            num: this.list[i].num,
+            remarks: this.list[i].remarks,
           };
           arr.push(json);
         }
-
-        let count = arr;
+        let count = arr.concat(brr);
         if (typeof JSON.stringify(count) === 'string') {
           this.$ajax.HttpPost('/api/home/shopcar/upSave', {
             id: that.$route.query.id,
@@ -240,11 +225,13 @@
       //  删除相片
       deletePic(index, item) {
         let getIndex = null, json = {}, arr = [];
-        this.list.splice(index, 1);
-        for (let i in this.list) {
+        this.fileList.splice(index, 1);
+        return;
+        for (let i in this.fileList) {
           json = {
-            img: this.list[i].src,
-            num: this.list[i].sum
+            img: this.fileList[i].src,
+            num: this.fileList[i].num,
+            remarks: '',
           };
           arr.push(json);
         }
@@ -262,9 +249,10 @@
       changePicture() {
         let evt = window.event;
         evt.stopPropagation();
-        let json = {}, arr = [], that = this;
-        let option = {}, brr = [], count = null;
-        wx.ready(function() {
+        let json = {}, that = this;
+        // 上传序号
+        var idx = 0;
+        wx.ready(function () {
           wx.chooseImage({
             count: 9, // 默认9
             sizeType: ['original'],
@@ -282,60 +270,90 @@
                       that.IlocalIds = localData.replace('jgp', 'jpeg');
                       json = {
                         src: that.IlocalIds,
-                        sum: 0
+                        num: 1,
+                        remarks: '',
                       };
-                      that.list.push(json);
-                      for (let i in that.list) {
-                        option = {
-                          img: that.list[i].msrc,
-                          num: that.list[i].sum
-                        };
-                        brr.push(option);
-                      }
-                      console.log(brr, '............');
-                      that.saveImages();
+                      that.fileList.push(json);
+//                      that.list.push(json);
+                      console.log(that.fileList, 'fileList');
                       i++;
-                      if (i < that.IlocalIds.length) {
+                      if (i < localData.length) {
                         localImgData();
                       }
-                    },
-                    fail(err) {
-                      console.log(JSON.stringify(err))
                     }
                   });
                 }
+
                 localImgData();
               } else {
-                json = {
-                  src: localIds,
-                  sum: 0,
-                };
-                that.list.push(json);
-                console.log(that.list, 'android...');
-                that.saveImages();
-//                document.getElementById('JlocalIds').src = localIds;
-//                this.JlocalIds = localIds;
-              }
-              wx.uploadImage({
-                localId: localIds.toString(), //  需要上传的图片的本地ID，由chooseImage接口获得
-                isShowProgressTips: 1, // 默认为1,显示进度提示
-                success(res) {
-                  var serverId = res.serverId; // 返回图片的服务器端ID
-                  //  当成功从微信服务端返回 serverid 上传到php自己服务器上
-                  wx.downloadImage({
-                    serverId: serverId.toString(), // 需要下载的图片的服务器端ID，由uploadImage接口获得
-                    isShowProgressTips: 1,// 默认为1，显示进度提示
-                    success(res) {
-                      var localId = res.localId; // 返回图片下载后的本地ID
-                      let img = document.createElement("img");
-                    }
-                  });
+                let i = 0;
+                function localImgData() {
+                  json = {
+                    src: localIds,
+                    num: 1,
+                    remarks: '',
+                  };
+                  that.fileList.push(json);
+                  i++;
+                  if (i < that.fileList.length) {
+                    localImgData();
+                  }
+                  console.log(that.fileList, 'fileList');
                 }
-              });
+                localImgData();
+//                that.saveImages();
+              }
+              uploadImage(localIds);
+
+              function uploadImage(localIds) {
+                let realLocalIds = localIds.toString().split(',');
+                let mediaIdArray = "";
+
+                wx.uploadImage({
+                  localId: realLocalIds[i].toString(), //  需要上传的图片的本地ID，由chooseImage接口获得
+                  isShowProgressTips: 1, // 默认为1,显示进度提示
+                  success(res) {
+                    idx++;
+                    var serverId = res.serverId; // 返回图片的服务器端ID
+                    this.serverId = res.serverId;
+                    mediaIdArray += serverId + ',';
+                    console.log(mediaIdArray, '---serverId');
+                    if (idx < mediaIdArray.length) {
+                      uploadImage(localIds);
+                    } else {
+                      idx = 0;
+                      let arr = [], json = {};
+                      that.serverId = serverId;
+                      for (let i in that.fileList) {
+                        json = {
+                          img: 'a',
+                          num: that.fileList[i].num,
+                          code: mediaIdArray,
+                          remarks: '',
+                        };
+                        arr.push(json);
+                      }
+                      console.log(arr, "sava");
+                      if (typeof JSON.stringify(arr) === 'string') {
+                        that.$ajax.HttpPost('/api/home/shopcar/upSave', {
+                          id: that.$route.query.id,
+                          img: JSON.stringify(arr),
+                          code: serverId,
+                          num: 1,
+                        }).then((res) => {
+                          console.log(res, 'uploadSave');
+                          this.$message(res.msg);
+                        });
+                      }
+                      mediaIdArray = '';
+                      return true;
+                    }
+                  }
+                });
+              }
             }
           });
         })
-
       },
       getLocalImgData(localIds) {
         let thisObj = this;
@@ -371,7 +389,7 @@
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
           {uid: this.get_user_info.user.id}).then((res) => {
           let id = 0;
-          if (this.list == "") {
+          if (this.list === "") {
             this.isNoList = false;
           } else {
             this.isNoList = true;
@@ -380,7 +398,7 @@
           for (let i in res.data) {
             id = res.data[i].id;
             if (this.$route.query.id == id) {
-              if (res.data[i].upimg == null) {
+              if (res.data[i].upimg == null || res.data[i].upimg.length == 0) {
                 return false;
               } else {
                 arr = arr.concat(res.data[i].upimg);
@@ -390,16 +408,14 @@
           for (let j in arr) {
             json = {
               src: arr[j].img,
-              sum: arr[j].num,
+              num: arr[j].num,
+              remarks: '',
             };
             this.list.push(json);
           }
+          console.log(this.list, 'fetchData()');
         }).catch((error) => {
         });
-      },
-      uploadFailed(index) {
-        this.imgs[index].state = 0;
-        document.getElementById('img' + this.pid + index).value = '';
       }
     }
   }
@@ -409,7 +425,7 @@
   /* 购物车上传照片 */
   .cart-upload-pic {
     margin: 60px 10px 10px;
-    padding: 10px 0px;
+    padding: 10px 0 20px;
     background: #fff;
   }
 

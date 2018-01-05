@@ -11,8 +11,8 @@
         <div class="pc-slide" v-else>
           <div class="view">
             <div class="swiper-container">
-              <a class="arrow-left" href="#"></a>
-              <a class="arrow-right" href="#"></a>
+              <a class="arrow-left" href="javascript:void(0);"></a>
+              <a class="arrow-right" href="javascript:void(0);"></a>
               <div class="swiper-wrapper">
                 <template v-for="k in swiper">
                   <div class="swiper-slide">
@@ -29,8 +29,8 @@
             <a class="arrow-right" href="#"></a>
             <div class="swiper-container">
               <div class="swiper-wrapper">
-                <template v-for="k in swiper">
-                  <div class="swiper-slide active-nav">
+                <template v-for="(k, i) in swiper">
+                  <div class="swiper-slide" :class="{'active-nav': i == 0}">
                     <img :src="k.url" style="width: 100%;height: 100%;">
                   </div>
                 </template>
@@ -635,11 +635,12 @@
   }
 
   .view .swiper-container {
-    width: 1200px;
+    width: 1160px;
     height: 350px;
   }
 
   .view .arrow-left {
+    background: url('../../../static/images/index_tab_l.png') no-repeat left top;
     position: absolute;
     left: 10px;
     top: 50%;
@@ -650,6 +651,7 @@
   }
 
   .view .arrow-right {
+    background: url('../../../static/images/index_tab_r.png') no-repeat left top;
     position: absolute;
     right: 10px;
     top: 50%;
@@ -685,6 +687,7 @@
   .preview .swiper-slide img {
     padding: 0;
     border: 3px solid #fff;
+    cursor: pointer;
   }
 
   .preview .active-nav img {

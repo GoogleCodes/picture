@@ -27,12 +27,14 @@
             <span>还没添加快递地址</span>
           </div>
         </div>
-        <div class="distribution clear" style="display: none">
-          <div class="distr-title ft-18">配送方式</div>
-          <ul>
-            <li class="fl expressli" v-for="(item, index) in exporess"
-                :class="{'active':index == currentExpress}" @click="currExpress(index, item)">申通快递</li>
-          </ul>
+        <div class="distribution clear">
+          <div style="display: none">
+            <div class="distr-title ft-18">配送方式</div>
+            <ul>
+              <li class="fl expressli" v-for="(item, index) in exporess"
+                  :class="{'active':index == currentExpress}" @click="currExpress(index, item)">申通快递</li>
+            </ul>
+          </div>
           <div class="pay clear">
             <div class="pay-title ft-18 clear">选中支付方式</div>
             <ul>
@@ -45,7 +47,7 @@
         <div class="list-goods clear">
           <div class="list-head ft-18">
             <i class="iconfont icon-gouwudai ft-20"></i>
-            <span>商品清单</span>
+            <span class="ft-18">商品清单</span>
             <router-link :to="{ path: '/cart/cart'}" class="backcart fr">返回购物车 &gt;</router-link>
           </div>
           <template v-for="(item, index) in shopmsg">
@@ -72,7 +74,14 @@
             </div>
           </template>
 
+          <div class="remarks">
+            <span class="remarks-title">增加备注</span>
+            <el-input type="textarea" :rows="2" :autosize="{ minRows: 3, maxRows: 8}" placeholder="请输入内容"
+                      v-model="shopRemarks"></el-input>
+          </div>
+
         </div>
+
       </div>
 
       <div class="item-price">
@@ -160,6 +169,7 @@
             receiver: [{required: true, message: '请输入收货人的姓名！', trigger: 'blur'}],
             phone: [{required: true, message: '请输入联系人电话号码！', trigger: 'blur'}]
           },
+          shopRemarks: "", //  商品备注
           shopmsg: this.$storage.storageGet('gopayData_info'),
           list: [],
           layer: false,
@@ -179,11 +189,15 @@
           ],
           exporessText: '',
           pay: [
-            {pic: '../../../static/images/43.jpg'},
-            {pic: '../../../static/images/44.jpg'},
+            {
+                pic: '../../../static/images/43.jpg'
+            },
+            {
+                pic: '../../../static/images/44.jpg'
+            },
           ],
           goWhatpay: '',
-          payindex: 0,
+          payindex: -1,
           payloots: 0,
           currAddress: -1,
           currAddJson: [],
@@ -192,7 +206,6 @@
     },
     mounted () {
       this.setAddress();
-      console.log(this.dome, "123123")
     },
     computed: {
       ...mapGetters({
@@ -202,7 +215,6 @@
         let sum = 0;
         for (let ll in this.shopmsg) {
           sum += this.shopmsg[ll].price * this.shopmsg[ll].num;
-          console.log(sum);
         }
         return sum.toFixed(2);
       },
@@ -251,9 +263,13 @@
           case this.currAddress == -1:
             this.$message('请选择地址');
             return false;
+          case  this.payindex == -1:
+            this.$message('请选择支付方式');
+            return false;
           default:
             const json = {
               uid: this.get_user_info.user.id,
+              remarks: this.shopRemarks,
               goodsdata: gid,
               num: 1,
               specdata: textSpecdata,
@@ -300,7 +316,6 @@
           this.goWhatpay = 'alipay';
           this.payloots = 1;
         }
-        console.log(this.payloots, '+-+-+-');
       },
       currExpress(index, item) {
         this.currentExpress = index
@@ -511,7 +526,6 @@
   .pay {
     padding-top: 20px;
     height: 100%;
-    overflow: hidden;
   }
 
   .pay ul li {
@@ -540,6 +554,20 @@
   .list-goods .list-shoping {
     height: 163px;
     border-bottom: 1px solid #c9caca;
+  }
+
+  .remarks {
+    margin: 50px 0 0 0;
+  }
+
+  .remarks .remarks-title {
+    font-size: 18px;
+  }
+
+  .remarks .el-textarea {
+    width: 40%;
+    display: block;
+    margin: 10px 0px 10px 0px;
   }
 
   .list-goods .list-shoping .shoping-pic {

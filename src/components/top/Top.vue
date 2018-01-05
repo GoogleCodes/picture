@@ -69,6 +69,7 @@
           id: this.get_user_info.user.id
         }).then((res) => {
           this.imageUrl = res.data.img;
+          this.user_name = res.data.uname;
         });
       },
       computed: {
@@ -90,7 +91,6 @@
         fetchData() {
           this.get_user_info.user !== undefined ? this.closeuser = true : this.closeuser = false;
           try {
-            this.user_name = this.get_user_info.user.name;
             this.load_data = true;
             this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
             {uid: this.get_user_info.user.id}).then((res) => {

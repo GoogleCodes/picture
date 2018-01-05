@@ -15,13 +15,12 @@
                 <div class="product-text">{{ $route.query.desc }}</div>
               </div>
               <div class="right-upload">
-                <el-upload action="https://xinye-art.com/public/api/home/front/imgupload"
+                <el-upload :action="action"
                            name="img" class="image-uploader-warp"
                            :drag="false"
                            :on-success="handleAvatarSuccess"
                            :multiple="true"
-                           :before-upload="handleBeforeUpload"
-                           :file-list="fileList" :on-remove="handleRemove">
+                           :file-list="fileList">
                   <el-button type="primary" class="upload-btn">
                     <i class="el-icon-upload el-icon--right"></i>
                     <i>上传</i>
@@ -81,16 +80,6 @@
         </div>
       </div>
     </div>
-    <!--<div class="layer-upload"></div>-->
-    <!--<div class="layer-pop">-->
-    <!--<ul class="fl">-->
-    <!--<li>-->
-    <!--<img src="../../../static/images/33.png" alt="">-->
-    <!--</li>-->
-    <!--</ul>-->
-    <!--<div class="fr iconfont el-icon-close"></div>-->
-    <!--<img src="../../../static/images/33.png" alt="">-->
-    <!--</div>-->
   </div>
 </template>
 
@@ -104,6 +93,7 @@
   export default {
     data() {
       return {
+        action: 'https://xinye-art.com/public/api/home/front/imgupload',
         fileList: [],
         fList: [],
         list: [],
@@ -113,7 +103,7 @@
         arr: [],
         options: {},
         orderList: [],
-        remarks: '1abaf'
+        remarks: '',
       }
     },
     created() {
@@ -136,6 +126,7 @@
       saveRemarks(index, remarks) {
         let json = {}, arr = [], that = this;
         this.list[index].remarks = remarks;
+        this.remarks = remarks;
         for (let i in this.list) {
           json = {
             img: this.list[i].src,
@@ -154,6 +145,7 @@
           });
         }
       },
+
       changeNumber(index, flag) {
         let option = {}, json = {}, arr = [], brr = [], that = this;
         if (flag >= 1) {
@@ -168,6 +160,7 @@
           json = {
             img: this.list[i].src,
             num: this.list[i].sum,
+            remarks: this.list[i].remarks
           };
           arr.push(json);
         }
@@ -188,7 +181,8 @@
         for (let i in this.list) {
           json = {
             img: this.list[i].src,
-            num: this.list[i].sum
+            num: this.list[i].sum,
+            remarks: this.list[i].remarks
           };
           arr.push(json);
         }
@@ -202,6 +196,7 @@
           });
         }
       },
+      //  提交订单
       goSubmit() {
         let that = this;
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
@@ -224,11 +219,6 @@
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
           {uid: this.get_user_info.user.id}).then((res) => {
           let id = 0;
-          if(this.list == "") {
-            this.isNoList = false;
-          } else {
-            this.isNoList = true;
-          }
           let json = {}, arr = [];
           for (let i in res.data) {
             id = res.data[i].id;
@@ -252,12 +242,15 @@
         }).catch((error) => {
         });
       },
+      //  保存图片
       saveImages() {
-        let json = {}, arr = [], brr = [], option = {};
+        let json = {}, arr = [];
+        let option = {}, brr = [];
         for(let y in this.list) {
           option = {
             img: this.list[y].src,
             num: this.list[y].sum,
+            remarks: this.list[y].remarks
           };
           brr.push(option);
         }
@@ -265,10 +258,10 @@
           json = {
             img: this.fileList[i].response.data.path,
             num: this.fileList[i].response.data.num,
-            remarks: ''
           };
           arr.push(json);
         }
+        //  数组拷贝
         let count = arr.concat(brr);
         if (typeof JSON.stringify(count) === 'string') {
           this.$ajax.HttpPost('/api/home/shopcar/upSave', {
@@ -281,28 +274,17 @@
           });
         }
       },
-      handleBeforeUpload(file) {
-
-      },
+      //  上传图片成功
       handleAvatarSuccess(res, file, fileList) {
-        let options = {sum: 1};
-        this.arr.push(options);
         try {
           setTimeout(() => {
             this.fileList = fileList;
+            //  将图片保存到数据库
             this.saveImages();
           }, 500)
         } catch (e) {
         }
       },
-      handleRemove(file, fileList) {
-        try {
-          for (let i in fileList) {
-            this.fileList = fileList[i];
-          }
-        } catch (e) {
-        }
-      }
     }
   }
 </script>
