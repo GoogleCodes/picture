@@ -28,7 +28,8 @@
                   <el-button class="next fl" @click="changeNumber(index, 1)">+</el-button>
                 </div>
                 <div>
-                  <el-input style="margin: 10px 0 0;" v-model="item.remarks" @blur="saveRemarks(index, item.remarks)">remarks</el-input>
+                  <el-input style="margin: 10px 0 0;" v-model="item.remarks"
+                            @blur="saveRemarks(index, item.remarks)"></el-input>
                 </div>
               </li>
             </template>
@@ -102,7 +103,7 @@
         url: window.location.href.split('#')[0]
       }).then((res) => {
         wx.config({
-          debug: true,
+          debug: false,
           appId: res.appId,
           timestamp: res.timestamp,
           nonceStr: res.nonceStr,
@@ -142,14 +143,14 @@
       },
       saveRemarks(index, remarks) {
         let json = {}, arr = [], that = this;
+        console.log(123);
+        return;
         this.list[index].remarks = remarks;
-        this.remarks = remarks;
         for (let i in this.list) {
           json = {
             img: this.list[i].src,
             num: this.list[i].num,
             remarks: this.list[i].remarks,
-            code: this.list[i].code
           };
           arr.push(json);
         }
@@ -255,7 +256,6 @@
             img: this.list[i].src,
             num: this.list[i].num,
             remarks: this.list[i].remarks,
-            code: this.list[i].code
           };
           arr.push(json);
         }
@@ -266,7 +266,7 @@
             num: 1,
           }).then((res) => {
             this.$message(res.msg);
-            location.reload();
+//            location.reload();
           });
         }
       },
@@ -275,7 +275,11 @@
         evt.stopPropagation();
         let json = {}, that = this;
         // ID数组
-        var localIds = null;
+        var localIds = [];
+        let images = {
+          localId: [],
+          serverId: [],
+        };
         // 上传序号
         var idx = 0;
         var serverIds = '';
@@ -285,116 +289,55 @@
             sizeType: ['original'],
             sourceType: ['album'],
             success(res) {
-              localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+              var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+              images.localId = res.localIds;
+              console.log(images.localId, " images.localId");
               //  必须做一下mediaId的设定，否则将会无法在安卓端得到微信上传功能的触发
-              let i = 0;
-              if (window.__wxjs_is_wkwebview) {  //判断是否是WKWebview内核，也就是苹果内核
-                function localImgData() {
-                  wx.getLocalImgData({
-                    localId: localIds[i],
-                    success(res) {
-                      var localData = res.localData;
-                      that.IlocalIds = localData.replace('jgp', 'jpeg');
-                      json = {
-                        src: that.IlocalIds,
-                        num: 1,
-                        remarks: '',
-                      };
-                      that.fileList.push(json);
-//                      that.list.push(json);
-                      i++;
-                      if (i < localData.length) {
-                        localImgData();
-                      }
-                    }
-                  });
-                }
-
-                localImgData();
-              } else {
-                let i = 0;
-                function localImgData() {
-                  json = {
-                    src: localIds,
-                    num: 1,
-                    remarks: '',
-                  };
-                  that.fileList.push(json);
-                  i++;
-                  if (i < that.fileList.length) {
-                    localImgData();
-                  }
-                  console.log(that.fileList, 'fileList');
-                }
-                localImgData();
-              }
-
-              uploadImage(localIds);
-
-              function uploadImage(localIds) {
+              UploadImage();
+              let length = images.localId.length;;
+              function UploadImage() {
                 wx.uploadImage({
-                  localId: localIds[idx].toString(), //  需要上传的图片的本地ID，由chooseImage接口获得
+                  //  需要上传的图片的本地ID，由chooseImage接口获得
+                  localId: images.localId[idx],
                   isShowProgressTips: 1, // 默认为1,显示进度提示
                   success(res) {
                     idx++;
-                    //存储图片媒体ID，用，号分割
-                    serverIds = res.serverId + ','
-
-                    console.log(serverIds, '---serverId');
-
-                    var serverId = res.serverId; // 返回图片的服务器端ID
-                    this.serverId = res.serverId;
-
-                    console.log(serverIds.length,  "----", idx < serverIds.length);
-
-                    if (idx < that.fileList) {  //  本地图片ID 还没全部获取完图片媒体ID
-                      //  调用上传递归函数
-                      uploadImage(localIds);
-                    } else {
-                      //  上传序号归零
-                      idx = 0;
-                      let arr = [], json = {}, xyz = {}, brr = [];
-                      that.serverId = serverId;
-                      for (let i in that.list) {
-                        xyz = {
-                          img: that.list[i].src,
-                          num: that.list[i].num,
-                          code: serverIds,
-                          remarks: that.list[i].remarks,
-                        }
-                        brr.push(xyz);
-                      }
-                      for (let i in that.fileList) {
-                        json = {
-                          img: 'a',
-                          num: that.fileList[i].num,
-                          code: serverIds,
-                          remarks: '',
-                        };
-                        arr.push(json);
-                      }
-                      let count = arr.concat(brr);
-                      console.log(count, "sava");
-                      if (typeof JSON.stringify(count) === 'string') {
-                        that.$ajax.HttpPost('/api/home/shopcar/upSave', {
-                          id: that.$route.query.id,
-                          img: JSON.stringify(count),
-                          code: serverIds,
-                          num: 1,
-                        }).then((res) => {
-                          console.log(res, 'uploadSave');
-                          that.$message(res.msg);
-//                          setTimeout((res) => {
-//                            location.reload();
-//                          }, 500)
-                        });
-                      }
-                      serverIds = '';
-                      return true;
+                    //存储图片媒体ID
+                    json = {
+                      img: 'a',
+                      num: 1,
+                      remarks: '',
+                      code: res.serverId,
+                    };
+                    if (idx < length) {
+                      UploadImage();
                     }
+                    images.serverId.push(json);
+                    let brr = [], pson = {};
+                    for (let i in that.list) {
+                      pson = {
+                        img: that.list[i].src,
+                        num: that.list[i].num,
+                        remarks: that.list[i].remarks,
+                        code: that.list[i].code,
+                      };
+                      brr.push(pson);
+                    }
+
+                    let count = images.serverId.concat(brr);
+                    console.log(count, "sava");
+                    if (typeof JSON.stringify(count) === 'string') {
+                      that.$ajax.HttpPost('/api/home/shopcar/upSave', {
+                        id: that.$route.query.id,
+                        img: JSON.stringify(count),
+                      }).then((res) => {
+                        that.$message(res.msg);
+                      });
+                    }
+
                   },
                   fail(err) {
-                    alert("上传失败，msg："+JSON.stringify(res));
+                    alert("上传失败，msg：" + JSON.stringify(res));
                   }
                 });
               }
@@ -405,7 +348,7 @@
       },
       //  上传成功相片
       handleAvatarSuccess(res, file, fileList) {
-        let options = {sum: 1};
+        let options = {num: 1};
         this.arr.push(options);
         try {
           setTimeout(() => {
@@ -420,11 +363,6 @@
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
           {uid: this.get_user_info.user.id}).then((res) => {
           let id = 0;
-          if (this.list === "") {
-            this.isNoList = false;
-          } else {
-            this.isNoList = true;
-          }
           let json = {}, arr = [];
           for (let i in res.data) {
             id = res.data[i].id;
@@ -438,10 +376,10 @@
           }
           for (let j in arr) {
             json = {
-              code: arr[j].code,
               src: arr[j].img,
               num: arr[j].num,
               remarks: arr[j].remarks,
+              code: arr[j].code
             };
             this.list.push(json);
           }
