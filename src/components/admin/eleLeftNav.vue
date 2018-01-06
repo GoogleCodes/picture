@@ -14,7 +14,9 @@
         <h2 class="admin-uname ft-16 fl">
           <p class="fl" style="margin-top: 8px;text-align: center;width:100%;" v-show="inputName">{{ uname }}</p>
           <el-input v-model="uname" @blur="chonse(uname)" class="fl" v-show="!inputName"></el-input>
-          <p class="iconfont icon-weibiaoti- fl" @click="updateName()"></p>
+          <el-tooltip class="item" effect="dark" content="点击修改用户名称" placement="top">
+            <p class="iconfont icon-weibiaoti- fl" @click="updateName()"></p>
+          </el-tooltip>
         </h2>
         <p class="admin-vip clear"></p>
       </div>

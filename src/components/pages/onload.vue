@@ -19,6 +19,7 @@
                            name="img" class="image-uploader-warp"
                            :drag="false"
                            :on-success="handleAvatarSuccess"
+                           :beforeUpload="beforeAvatarUpload"
                            :multiple="true"
                            :file-list="fileList">
                   <el-button type="primary" class="upload-btn">
@@ -26,6 +27,8 @@
                     <i>上传</i>
                   </el-button>
                 </el-upload>
+                <el-tag :closable="true" v-show="doubleMb" :close-transition="false" v-for="(k, i) in filesUpload"
+                  @close="handleClose(k)">{{ k.name }}&nbsp;&nbsp;&nbsp;图片大小不能超过 2MB!</el-tag>
                 <p>仅支持上传png/jpg格式图片分辨率300dpi以上</p>
               </div>
             </div>
@@ -104,6 +107,10 @@
         options: {},
         orderList: [],
         remarks: '',
+        filesUpload: [],
+        doubleMb: false,
+        isLt2M: null,
+
       }
     },
     created() {
@@ -246,6 +253,7 @@
       saveImages() {
         let json = {}, arr = [];
         let option = {}, brr = [];
+        let that = this;
         for(let y in this.list) {
           option = {
             img: this.list[y].src,
@@ -274,6 +282,24 @@
           });
         }
       },
+      handleClose(k) {
+        this.filesUpload.splice(this.filesUpload.indexOf(k), 1);
+      },
+      beforeAvatarUpload(file) {
+        this.filesUpload.push(file);
+        const isJPG = file.type === 'image/jpeg';
+        const isGIF = file.type === 'image/gif';
+        const isPNG = file.type === 'image/png';
+        const isBMP = file.type === 'image/bmp';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+          this.$message('上传图片大小不能超过 2MB!');
+          this.doubleMb = true;
+        } else {
+          this.doubleMb = false;
+        }
+        return (isJPG || isBMP || isGIF || isPNG) && isLt2M;
+      },
       //  上传图片成功
       handleAvatarSuccess(res, file, fileList) {
         try {
@@ -281,6 +307,7 @@
             this.fileList = fileList;
             //  将图片保存到数据库
             this.saveImages();
+            console.log(123123123);
           }, 500)
         } catch (e) {
         }
@@ -344,8 +371,21 @@
 
   .top-upload .right-upload {
     float: right;
+    /*width: 320px;*/
+    margin-right: 120px;
+  }
+  .image-uploader-warp {
     width: 320px;
-    margin-right: 190px;
+    margin: 0px auto;
+  }
+
+  .top-upload .right-upload .el-tag {
+    margin: 20px 0 0;
+    display: block;
+  }
+
+  .image-uploader-warp .el-upload--text {
+    width: 100%;
   }
 
   .top-upload .right-upload .upload-btn {
@@ -376,7 +416,7 @@
   }
 
   .top-upload .right-upload p {
-    padding: 20px 55px;
+    padding: 10px 55px;
     color: #333;
   }
 
@@ -599,6 +639,8 @@
     /*font-size: 20px;*/
     /*font-weight: bold;*/
   /*}*/
+
+
 
 </style>
 
