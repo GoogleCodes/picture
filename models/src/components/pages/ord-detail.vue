@@ -80,20 +80,19 @@
       components: {ElButton},
       data() {
         return {
-          listStop: this.$storageGet('cart_list_data'),
           data: {
             list: []
           }
         }
-      },
-      created() {
-//        this.listStop = this.$storageGet('cart_list_data');
       },
       computed: {
         ...mapGetters({
           get_user_info: GET_USER_INFO,
           get_user_openid: GET_USER_OPENID
         }),
+        listStop() {
+          return this.$storageGet('cart_list_data');
+        },
         amount () {
           return this.listStop.length;
         },
@@ -109,6 +108,7 @@
       },
       mounted() {
         this.setAddress();
+        console.log(this.listStop, "listStop........................");
       },
       methods: {
         SubmitOrder() {

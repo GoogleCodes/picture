@@ -183,6 +183,8 @@
             }
           }
         }
+        console.log(arr);
+        return;
         this.$storageSet('cart_list_data', arr);
         this.$router.push({
           path: '/pages/ord-detail'

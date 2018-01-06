@@ -45,7 +45,7 @@
                    style="display: none;"/>
 
           </div>
-          <el-button @click="saveImages()">立即下单</el-button>
+          <el-button @click="PlaceAnOrder()">立即下单</el-button>
         </div>
         <div class="c_9fa0a0 toast">点击照片可以删除</div>
       </div>
@@ -73,20 +73,15 @@
       return {
         list: [],
         serverId: '',
-        orderList: [],
-        IlocalIds: "",
         isNoList: false,
         uploadUrl: 'https://xinye-art.com/public/api/home/front/imgupload',
         fileList: [],
-        fList: [],
         arr: [],
         arrays: [],
         chonseIndex: 0,
         chonseok: false,
-        piclist: [],
         num: 0,
-        count: 0,
-        countArrays: [],
+        prices: 0,
         options: {
           getThumbBoundsFn(index) {
             let thumbnail = document.querySelectorAll('.previewer-demo-img')[index]
@@ -132,6 +127,10 @@
       ...mapGetters({
         get_user_info: GET_USER_INFO
       }),
+      chosePrice() {
+        let sum = 0;
+        return sum = this.prices * this.num;
+      }
     },
     components: {
       ElButton,
@@ -143,8 +142,6 @@
       },
       saveRemarks(index, remarks) {
         let json = {}, arr = [], that = this;
-        console.log(123);
-        return;
         this.list[index].remarks = remarks;
         for (let i in this.list) {
           json = {
@@ -164,39 +161,28 @@
           });
         }
       },
-      saveImages() {
-        let brr = [], option = {}, that = this;
-        let arr = [], json = {};
-//        for (let y in that.list) {
-//          option = {
-//            img: that.list[y].src,
-//            num: that.list[y].num,
-//            remarks: that.list[y].remarks,
-//          };
-//          brr.push(option);
-//        }
-        for (let i in that.fileList) {
-          json = {
-            img: that.fileList[i].src,
-            num: that.fileList[i].num,
-            remarks: that.fileList[i].remarks,
-            code: that.serverId,
-          };
-          arr.push(json);
-        }
-        console.log(arr, "sava");
-        if (typeof JSON.stringify(arr) === 'string') {
-          this.$ajax.HttpPost('/api/home/shopcar/upSave', {
-            id: that.$route.query.id,
-            img: JSON.stringify(arr),
-            code: that.serverId,
-            num: 1,
-          }).then((res) => {
-            console.log(res, 'uploadSave');
-            this.$message(res.msg);
-//            location.reload();
-          });
-        }
+      PlaceAnOrder() {
+        let that = this;
+        this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
+          {uid: this.get_user_info.user.id}).then((res) => {
+          let arr = [], json = {};
+          for (let i in res.data) {
+            if (that.$route.query.id == res.data[i].id) {
+              //  获取购物车商品
+              json = {
+                list: res.data[i],
+                price: that.chosePrice,
+              };
+              arr.push(json)
+              console.log(arr);
+              that.$storageSet('cart_list_data', arr);
+              that.$router.push({
+                path: '/pages/ord-detail'
+              });
+            }
+          }
+        }).catch((error) => {
+        });
       },
       changeNumber(index, flag) {
         let option = {}, json = {}, arr = [], brr = [], that = this;
@@ -332,6 +318,9 @@
                         img: JSON.stringify(count),
                       }).then((res) => {
                         that.$message(res.msg);
+                        setTimeout((res) => {
+                          location.reload();
+                        }, 500)
                       });
                     }
 
@@ -353,13 +342,14 @@
         try {
           setTimeout(() => {
             this.fileList = fileList;
-            this.saveImages();
+            this.PlaceAnOrder();
           }, 500)
         } catch (e) {
 
         }
       },
       fetchData() {
+        let that = this;
         this.$ajax.HttpPost(this.$api.get_content.GET_CART_DATA,
           {uid: this.get_user_info.user.id}).then((res) => {
           let id = 0;
@@ -370,6 +360,8 @@
               if (res.data[i].upimg == null || res.data[i].upimg.length == 0) {
                 return false;
               } else {
+                that.prices = res.data[i].price;
+                that.num = res.data[i].num;
                 arr = arr.concat(res.data[i].upimg);
               }
             }
