@@ -12,7 +12,7 @@
                           </div>
                           <div class="news-text">
                               <router-link :to="{ path: '/'}" class="block w100 h100">
-                                  <div class="title ft-18 fl">{{ item.post_title }}</div>
+                                  <div class="title ft-18 fl clamp_2 w100">{{ item.post_title }}</div>
                                   <div class="date fr">{{ item.published_time }}</div>
                               </router-link>
                           </div>
@@ -68,9 +68,10 @@
 
   .news ul li {
     width: 379px;
-    height: 372px;
+    height: 100%;
     background: #fff;
     margin: 35px 31px 0px 0px;
+    padding-bottom: 20px;
     transition: 0.5s;
   }
 
@@ -91,7 +92,7 @@
 
   .news ul li .news-text {
     margin: 15px 10px;
-    height: 35px;
+    height: 100%;
     line-height: 35px;
   }
 

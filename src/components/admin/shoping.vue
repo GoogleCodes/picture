@@ -105,6 +105,7 @@
                   <td class="itme-pic">
                     <p v-if="orderData.status == 0">待付款</p>
                     <p>订单详情</p>
+                    <p>{{ item.remarks }}</p>
                   </td>
                   <td style="width: 130px;">
                     <a class="nowpay privateBtn" v-if="orderData.status == 0" @click="goToPay(orderData.id, orderData.paytype)">立即付款</a>

@@ -127,3 +127,26 @@ scrollbarbutton:hover{-moz-appearance:none !important;background-color:rgb(255,0
 .c_9fa0a0 {color: #9fa0a0;}
 
 .marLeft {margin-left: 10px;}
+
+
+.clamp_2 {
+  -webkit-line-clamp: 2;
+  line-height: 24px;
+  height: 48px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: normal;
+}
+
+.clamp_3 {
+  -webkit-line-clamp: 3;
+  line-height: 24px;
+  height: 72px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: normal;
+}

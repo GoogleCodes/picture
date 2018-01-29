@@ -294,7 +294,7 @@
                     uid: this.get_user_info.user.id,
                     type: that.payloots,
                   }).then((res) => {
-                    console.log(res);
+
                   });
                 }
               this.$router.replace({ path: '/admin/manage'});

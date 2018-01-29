@@ -353,12 +353,23 @@
 }
 
 .admin .admin-left .admin-pic .admin-vip {
-  width: 44%;
-  height: 18px;
+  width: 65%;
+  height: 31px;
   position: relative;
   margin: 0px auto;
   top: 15px;
-  background: url('../images/17.png') no-repeat -3px -35px;
+  color: #efb336;
+  text-align: center;
+}
+
+.admin .admin-left .admin-pic .admin-vip .icon-vip1 {
+  font-size: 28px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 50px;
+  text-align: left;
+  display: block;
 }
 
 .admin .admin-right {

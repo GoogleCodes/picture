@@ -18,7 +18,10 @@
             <p class="iconfont icon-weibiaoti- fl" @click="updateName()"></p>
           </el-tooltip>
         </h2>
-        <p class="admin-vip clear"></p>
+        <p class="admin-vip clear">
+          <i class="iconfont icon-vip1 block"></i>
+          <span class="block">{{ levelText }}</span>
+        </p>
       </div>
     </div>
     <div class="admin-nav">
@@ -88,6 +91,7 @@
         fileList: [],
         inputName: true,
         imageShow: false,
+        levelText: ''
       }
     },
     computed: {
@@ -99,9 +103,11 @@
 
     },
     mounted() {
+      let that = this;
       this.$ajax.HttpPost('/api/home/user/userinfo',{
         id: this.get_user_info.user.id
       }).then((res) => {
+        let data = res.data;
         this.uname = res.data.uname
         this.imageUrl = res.data.img;
         if(this.imageUrl == '') {
@@ -109,7 +115,17 @@
         } else {
           this.imageShow = false;
         }
+        this.$ajax.HttpPost('/api/home/user/getLevelInfo').then((res) => {
+          let LevelList = res.data;
+          for (let i in LevelList) {
+            if (LevelList[i].id == data.level) {
+              that.levelText = LevelList[i].lname;
+            }
+          }
+        });
       });
+
+
     },
     methods: {
       ...mapActions({

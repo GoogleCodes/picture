@@ -49,7 +49,7 @@
                       <img :src="k.url" style="width: 100%;height: 100%;" alt="" >
                     </template>
                   </div>
-                  <div class="experience-desc ft-18">{{ item.photo_name }}</div>
+                  <div class="experience-desc ft-18 clamp_2">{{ item.photo_name }}</div>
                 </router-link>
               </div>
             </template>

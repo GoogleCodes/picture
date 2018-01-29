@@ -35,15 +35,14 @@
         <div class="wrap-list clear">
           <template v-for="(item, index) in data.albumList">
             <div class="wrap-li fl" :style="{
-            background: 'url('+ item.shotcut +') no-repeat 100%'}">
+            background: 'url('+ item.homeimg +') no-repeat 100%'}">
               <router-link :to="{ path: '/inside/orderlist/' + item.id}" class="wrap-more block">
                 <div class="wrap-li-pic wrap-li-hover"></div>
                 <div v-if="item.title !== ''" style="width: 100%;height: 100%;border-radius: 100%;">
                   <p class="ft-16">{{ item.title }}</p>
                   <span>{{ item.title }}</span>
                 </div>
-                <div v-else=""
-                     style="background: rgba(255,255,255,0.1);width: 100%;height: 100%;border-radius: 100%;"></div>
+                <div v-else="" style="background: rgba(255,255,255,0.1);width: 100%;height: 100%;border-radius: 100%;"></div>
               </router-link>
             </div>
           </template>
@@ -122,16 +121,13 @@
       this.getBanner();
     },
     created() {
-      this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1)
-        .then((res) => {
-        });
+      this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1).then((res) => {});
     },
     methods: {
       //  获取主图
       getBanner() {
         this.$ajax.HttpGet(this.$api.get_content.GET_BANNER).then((res) => {
           this.data.banner = res.data;
-          console.log(this.data.banner);
         });
       },
       getIndex () {
@@ -143,6 +139,7 @@
         this.$ajax.HttpGet(this.$api.get_content.GET_NAV + '?top=' + 1)
           .then((res) => {
             this.data.albumList = res.data;
+            console.log(this.data.albumList);
           });
       },
     }

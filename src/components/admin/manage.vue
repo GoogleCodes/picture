@@ -54,6 +54,8 @@
                   <p v-else-if="item.status = 2">已发货</p>
                   <p v-else-if="item.status = 3">已收货</p>
                   <p>订单详情</p>
+                  <p v-if="item.remarks == '' " style="color: #c40000;">没有留言</p>
+                  <p v-else>{{ item.remarks }}</p>
                 </td>
                 <td style="width: 130px;">
                   <a class="nowpay privateBtn" v-if="item.status == 0" @click="pay(item.id, item.paytype)">去付款</a>

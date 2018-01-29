@@ -3,9 +3,11 @@
         <div style="padding-top: 100px;"></div>
         <div class="newDetail w1200">
             <div class="detail-title">
-                <h1 class="ft-32" style="text-align: center;">{{ list.post_title }}</h1>
-                <span class="fl">{{ list.post_source }}</span>
-                <span class="fr">{{ list.published_time }}</span>
+                <h1 class="ft-32 clamp_2" style="text-align: center;">{{ list.post_title }}</h1>
+                <div class="clamp_2_date">
+                  <span class="fl">{{ list.post_source }}</span>
+                  <span class="fr">{{ list.published_time }}</span>
+                </div>
             </div>
             <div class="line"></div>
             <div class="detail-content">
@@ -76,11 +78,24 @@
   }
 
   .newDetail .detail-title {
-    width: 260px;
-    height: 66px;
+    /*width: 350px;*/
+    /*height: 66px;*/
     margin: 0px auto 0px;
     line-height: 35px;
     overflow: hidden;
+  }
+
+  .detail-title .clamp_2 {
+    text-align: center;
+    font-size: 32px;
+    line-height: 40px;
+    height: 100%;
+  }
+
+  .detail-title .clamp_2_date {
+    width: 235px;
+    overflow: hidden;
+    margin: 10px auto;
   }
 
   .newDetail .detail-title span {

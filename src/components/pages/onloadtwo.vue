@@ -257,17 +257,22 @@
   }
 
   .load-prc .item-pic .picture {
-    width: 621px;
-    height: 414px;
-    margin: 50px auto 78px;
+    width: 84%;
+    height: 0px;
+    margin: 50px auto;
+    position: relative;
     overflow: hidden;
+    padding-top: 125%;
     background: url('../../../static/images/38.png') no-repeat;
   }
 
   .load-prc .item-pic .picture .onloadPicture {
-    width: 85%;
+    width: 86.6%;
     height: 80%;
-    margin: 39px 48px;
+    margin: 47px auto;
+    position: absolute;
+    top: -4px;
+    left: 44px;
   }
 
   .load-prc .el-button{
@@ -488,8 +493,16 @@
 
   .el-upload--text {
     width: 320px;
+    height: 100%;
+    overflow: hidden;
     margin: 0px auto;
     display: block;
+  }
+
+  .image-uploader-warp .el-upload--text {
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
   }
 
   /* pop end */

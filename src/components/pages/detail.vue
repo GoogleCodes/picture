@@ -686,13 +686,13 @@
 
   .preview .swiper-slide img {
     padding: 0;
-    border: 3px solid #fff;
+    border: 2px solid #fff;
     cursor: pointer;
   }
 
   .preview .active-nav img {
     padding: 0;
-    border: 3px solid #F00;
+    border: 2px solid #F00;
   }
 
   .preview .swiper-container {

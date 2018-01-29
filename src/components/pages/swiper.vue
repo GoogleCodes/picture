@@ -148,12 +148,12 @@
     width: 13%;
     height: 100%;
     opacity: 1;
-    border: 4px solid rgba(0,0,0,0.1);
+    border: 2px solid rgba(0,0,0,0.1);
   }
 
   .gallery-thumbs .swiper-slide-active{
     opacity: 1;
-    border: 4px solid #c40000;
+    border: 2px solid #c40000;
   }
 
 </style>
