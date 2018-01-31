@@ -13,7 +13,10 @@
             <span>我的会员</span>
           </div>
           <div class="vip-item">
-            <h4 class="ft-14">{{ list.id }}、{{ list.lname }}</h4>
+            <h4 class="ft-14">
+              <i class="iconfont icon-vip1 block fl"></i>
+              <span>{{ list.id }}、{{ list.lname }}</span>
+            </h4>
             <div v-html="list.content"></div>
           </div>
         </div>
@@ -59,3 +62,10 @@
       },
   }
 </script>
+
+<style type="text/css">
+  .vip-item .icon-vip1 {
+    font-size: 28px;
+    color: #efb336;
+  }
+</style>
